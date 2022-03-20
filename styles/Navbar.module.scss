@@ -1,0 +1,30 @@
+.landingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3.5rem 3.5rem 0rem 3.5rem;
+  max-width: 103.6rem;
+  width: 100%;
+}
+
+.logoMaxWidth {
+  width: 3.5rem;
+}
+
+.landingConnect {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+
+.connectVector {
+  max-width: 41rem;
+  width: 100%;
+  border: 0.1rem solid var(--text-color);
+  opacity: 0.1;
+  margin-right: 2rem;
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
+}
