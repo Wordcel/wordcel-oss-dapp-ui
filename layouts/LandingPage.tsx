@@ -8,6 +8,7 @@ import editorGradient from '@/images/elements/editor-gradient.png';
 import censorship from '@/images/details/censorship.svg';
 import decentralized from '@/images/details/decentralized.svg';
 import openSourced from '@/images/details/open-sourced.svg';
+import { ConnectWallet } from './Wallet';
 
 const details = [
   {
@@ -50,11 +51,13 @@ export const LandingPage = () => {
               className="normal-text">Wordcel enables anyone to publish
               rich articles on the blockchain that are censorship resistant
             </p>
-            <button
-              style={{ maxWidth: '26.5rem' }}
-              className="main-btn">
-              Connect Wallet
-            </button>
+              <ConnectWallet redirectToWelcome={true}>
+                <button
+                  style={{ maxWidth: '26.5rem' }}
+                  className="main-btn">
+                  Connect Wallet
+                </button>
+              </ConnectWallet>
           </div>
         </div>
         <div className={styles.detailsContainer}>

@@ -4,6 +4,7 @@
   --text-color: hsl(0, 0%, 0%);
   --inverse-color: hsl(0, 0%, 100%);
   --btn-color: hsl(0, 0%, 7%);
+  --nav-border: hsl(0, 0%, 91%);
 }
 
 body {
@@ -53,6 +54,20 @@ a {
   color: var(--text-color);
 }
 
+.heading.center {
+  text-align: center;
+}
+
+.subheading {
+  font-weight: 600;
+  font-size: 2.6rem;
+  color: var(--text-color);
+}
+
+.subheading.light {
+  opacity: 0.29;
+}
+
 .normal-text {
   font-weight: 400;
   font-size: 2rem;
@@ -78,4 +93,12 @@ a {
   &:hover {
     opacity: 0.85;
   }
+}
+
+.nm {
+  margin: 0rem;
+}
+
+.pointer {
+  cursor: pointer;
 }

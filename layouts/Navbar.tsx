@@ -2,6 +2,7 @@ import logo from '@/images/logo.svg';
 import styles from '@/styles/Navbar.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ConnectWallet } from './Wallet';
 
 export const Navbar = () => {
   return (
@@ -15,8 +16,28 @@ export const Navbar = () => {
       </Link>
       <div className={styles.landingConnect}>
         <div className={styles.connectVector} />
-        <p className="dark-text">Connect Wallet</p>
+        <ConnectWallet
+          redirectToWelcome={true}
+          noFullSize={true}
+          noToast={true}
+        >
+          <p className="dark-text pointer">Connect Wallet</p>
+        </ConnectWallet>
       </div>
+    </div>
+  );
+};
+
+export const StaticNavbar = () => {
+  return (
+    <div className={styles.staticContainer}>
+      <Link href="/">
+        <a>
+          <div className={styles.maxWidthLogo}>
+            <Image alt="Wordcel" src={logo} />
+          </div>
+        </a>
+      </Link>
     </div>
   )
 };

@@ -28,3 +28,12 @@
     display: none;
   }
 }
+
+.staticContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 3.5rem;
+  border: 0.15rem solid var(--nav-border);
+}
