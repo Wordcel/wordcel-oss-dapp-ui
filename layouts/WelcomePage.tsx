@@ -4,8 +4,11 @@ import verifiedElement from '@/images/elements/verified.svg';
 import importGradient from '@/images/elements/welcome-gradient.png'
 import { StaticNavbar } from "./Navbar";
 import { DefaultHead } from "./DefaultHead";
+import { GetUserServerSide } from '@/types/props';
 
-export const WelcomePage = () => {
+export const WelcomePage = ({ user }: GetUserServerSide) => {
+  const firstName = user?.name.split(' ')[0] || '';
+  const blog_name = user?.blog_name || '';
   return (
     <div>
       <DefaultHead />
@@ -15,7 +18,7 @@ export const WelcomePage = () => {
           <div className={styles.verified}>
             <Image src={verifiedElement} alt="" />
           </div>
-          <h1 className="heading center">Welcome to Wordcel</h1>
+          <h1 className="heading center">Welcome to Wordcel <br />{firstName}</h1>
           <p
             style={{
               maxWidth: '45rem',
@@ -32,7 +35,7 @@ export const WelcomePage = () => {
             <p className="subheading nm">Import articles</p>
             <p
               style={{ marginTop: '1rem' }}
-              className="subheading nm light">Import articles from 1729?</p>
+              className="subheading nm light">Import articles from {blog_name}?</p>
             <button
               style={{ marginTop: '2.8rem' }}
               className="main-btn">Import Articles</button>

@@ -15,6 +15,7 @@ model User {
   name String
   public_key String
   nft_key String
+  blog_name String
   articles Article[]
 }
 
