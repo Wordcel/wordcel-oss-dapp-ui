@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { ConnectWallet } from './Wallet';
 import { DefaultHead } from './DefaultHead';
 import { Navbar } from './Navbar';
 import Image from 'next/image';
@@ -8,7 +10,6 @@ import editorGradient from '@/images/elements/editor-gradient.png';
 import censorship from '@/images/details/censorship.svg';
 import decentralized from '@/images/details/decentralized.svg';
 import openSourced from '@/images/details/open-sourced.svg';
-import { ConnectWallet } from './Wallet';
 
 const details = [
   {
@@ -26,9 +27,10 @@ const details = [
     title: 'Censorship Free',
     description: 'Wordcel is censorship resistant and can be used by anyone.'
   }
-]
+];
 
 export const LandingPage = () => {
+  const [clicked, setClicked] = useState(false);
   return (
     <div>
       <DefaultHead />
@@ -51,10 +53,13 @@ export const LandingPage = () => {
               className="normal-text">Wordcel enables anyone to publish
               rich articles on the blockchain that are censorship resistant
             </p>
-              <ConnectWallet redirectToWelcome={true}>
+              <ConnectWallet
+                noToast={true}
+                redirectToWelcome={clicked}>
                 <button
                   style={{ maxWidth: '26.5rem' }}
-                  className="main-btn">
+                  className="main-btn"
+                  onClick={() => setClicked(true)}>
                   Connect Wallet
                 </button>
               </ConnectWallet>

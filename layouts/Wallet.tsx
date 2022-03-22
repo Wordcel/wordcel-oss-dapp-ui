@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast';
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { ConnectionProvider, WalletProvider, useWallet } from '@solana/wallet-adapter-react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import {
@@ -73,7 +73,6 @@ export const ConnectWallet = ({
 }) => {
   const { wallet, connect, publicKey } = useWallet();
   const { visible, setVisible } = useWalletModal();
-
   const router = useRouter();
 
   useEffect(() => {
@@ -88,9 +87,10 @@ export const ConnectWallet = ({
     if (publicKey && !visible) {
       console.log(`User Public Key: ${publicKey}`);
       if (!noToast) toast.success('Connected to wallet');
-      if (redirectToWelcome) router.push('/welcome');
+      if (redirectToWelcome) router.push(`/welcome/${publicKey}`);
     }
-  }, [wallet, visible, publicKey]);
+  }, [wallet, visible, publicKey, redirectToWelcome]);
+
 
   const handleConnect = () => {
     if (!wallet) {

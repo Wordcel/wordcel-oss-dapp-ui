@@ -26,7 +26,7 @@ model Article {
   on_chain Boolean @default(false)
   blocks String?
   proof_of_post String?
-  slug String?
+  slug String? // generate this after the post is on-chain
   user_id Int
   owner User @relation(fields: [user_id], references: [id])
 }

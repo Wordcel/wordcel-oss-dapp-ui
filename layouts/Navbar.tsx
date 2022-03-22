@@ -2,9 +2,11 @@ import logo from '@/images/logo.svg';
 import styles from '@/styles/Navbar.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 import { ConnectWallet } from './Wallet';
 
 export const Navbar = () => {
+  const [clicked, setClicked] = useState(false);
   return (
     <div className={styles.landingContainer}>
       <Link href="/">
@@ -17,11 +19,12 @@ export const Navbar = () => {
       <div className={styles.landingConnect}>
         <div className={styles.connectVector} />
         <ConnectWallet
-          redirectToWelcome={true}
           noFullSize={true}
           noToast={true}
-        >
-          <p className="dark-text pointer">Connect Wallet</p>
+          redirectToWelcome={clicked}>
+          <p
+            onClick={() => setClicked(true)}
+            className="dark-text pointer">Connect Wallet</p>
         </ConnectWallet>
       </div>
     </div>

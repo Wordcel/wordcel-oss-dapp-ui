@@ -1,4 +1,4 @@
-import { LandingPage } from "@/layouts/LandingPage"
+import { LandingPage } from '@/layouts/LandingPage'
 
 const Home = () => {
   return <LandingPage />
