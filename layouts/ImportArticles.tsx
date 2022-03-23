@@ -1,15 +1,26 @@
+import Image from "next/image";
 import styles from "@/styles/Import.module.scss";
 import tickIcon from '@/images/icons/tick.svg';
 import { DefaultHead } from "./DefaultHead";
 import { StaticNavbar } from "./Navbar";
 import { Article, GetArticlesServerSide } from "@/types/props";
-import { useState } from "react";
-import Image from "next/image";
+import { useState, useEffect } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useRouter } from "next/router";
 
 export const ImportArticles = ({
   articles
 }: GetArticlesServerSide) => {
+  const router = useRouter();
   const [selected, setSelectedArticle] = useState<Article>();
+  const { publicKey } = useWallet();
+
+  useEffect(() => {
+    if (!publicKey || publicKey.toString() !== router.query.publicKey) {
+      router.push('/')
+    }
+  }, [publicKey, router]);
+
   return (
     <div>
       <DefaultHead />

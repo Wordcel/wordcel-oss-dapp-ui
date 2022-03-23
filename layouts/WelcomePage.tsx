@@ -5,12 +5,22 @@ import importGradient from '@/images/elements/welcome-gradient.png'
 import { StaticNavbar } from "./Navbar";
 import { DefaultHead } from "./DefaultHead";
 import { GetUserServerSide } from '@/types/props';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 export const WelcomePage = ({ user }: GetUserServerSide) => {
   const firstName = user?.name.split(' ')[0] || '';
   const blog_name = user?.blog_name || '';
   const router = useRouter();
+  const { publicKey } = useWallet();
+
+  useEffect(() => {
+    if (!publicKey || publicKey.toString() !== router.query.publicKey) {
+      router.push('/')
+    }
+  }, [publicKey, router]);
+
   return (
     <div>
       <DefaultHead />
