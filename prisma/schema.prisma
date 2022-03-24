@@ -25,9 +25,16 @@ model Article {
   description String
   image_url String
   on_chain Boolean @default(false)
-  blocks String?
+  blocks Block?
   proof_of_post String?
   slug String? // generate this after the post is on-chain
   user_id Int
   owner User @relation(fields: [user_id], references: [id])
+}
+
+model Block {
+  id Int @id @default(autoincrement())
+  data String
+  article_id Int
+  article Article @relation(fields: [article_id], references: [id])
 }
