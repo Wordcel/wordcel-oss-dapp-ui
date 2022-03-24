@@ -78,7 +78,9 @@ export const ConnectWallet = ({
   useEffect(() => {
     if (!publicKey && wallet) {
       try {
-        connect();
+        if (wallet.readyState === 'Installed') {
+          connect();
+        }
       } catch (e) {
         console.error(e);
       }
@@ -95,12 +97,6 @@ export const ConnectWallet = ({
   const handleConnect = () => {
     if (!wallet) {
       setVisible(true);
-    } else {
-      try {
-        connect();
-      } catch (e) {
-        console.error(e);
-      }
     }
   }
 

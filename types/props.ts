@@ -25,3 +25,9 @@ export interface GetUserServerSide {
 export interface GetArticlesServerSide {
   articles?: Article[];
 }
+
+export interface GetArticleServerSide {
+  article?: Article;
+  user_public_key?: string;
+  blocks?: string;
+}

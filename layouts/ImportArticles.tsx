@@ -21,6 +21,11 @@ export const ImportArticles = ({
     }
   }, [publicKey, router]);
 
+  const handleContinueClick = () => {
+    if (!selected) return;
+    router.push(`/import/article/${selected.id}`);
+  }
+
   return (
     <div>
       <DefaultHead />
@@ -42,6 +47,7 @@ export const ImportArticles = ({
                   cursor: selected ? "pointer" : "default",
                   opacity: selected ? '' : '0.75'
                 }}
+                onClick={handleContinueClick}
                 className="main-btn">Continue</button>
             </div>
           </div>
@@ -60,11 +66,11 @@ export const ImportArticles = ({
                   src={article.image_url}
                   alt=""
                 />
-                {selected === article && (
-                  <div className={styles.articleSelectedTick}>
-                    <Image src={tickIcon} alt="" />
-                  </div>
-                )}
+                <div
+                  style={{ display: selected === article ? 'block' : 'none' }}
+                  className={styles.articleSelectedTick}>
+                  <Image src={tickIcon} alt="" />
+                </div>
                 <div className={styles.articleContent}>
                   <p className="subheading sm">{article.title}</p>
                   <p className="normal-text">{article.description}</p>
