@@ -23,7 +23,7 @@ export const ImportArticles = ({
 
   const handleContinueClick = () => {
     if (!selected) return;
-    router.push(`/import/article/${selected.id}`);
+    router.push(`/edit/${selected.id}`);
   }
 
   return (
