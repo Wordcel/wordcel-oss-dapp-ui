@@ -47,10 +47,9 @@ const CustomEditor = ({
     delimiter: Delimiter,
     inlineCode: InlineCode,
     imageGallery: ImageGallery,
-    simpleImage: SimpleImage
+    image: SimpleImage
   }
   const EditorJS = createReactEditorJS();
-  console.log(blocks);
   return (
     <div style={{ fontSize: '170%' }}>
       <EditorJS

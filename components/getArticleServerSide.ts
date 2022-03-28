@@ -32,7 +32,7 @@ export const getArticleServerSide = async (context: any) => {
   if (!blocks) return redirect();
   return {
     props: {
-      ...article,
+      article,
       user_public_key: user.public_key,
       blocks: blocks?.data
     }

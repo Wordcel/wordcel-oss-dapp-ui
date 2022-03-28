@@ -98,10 +98,20 @@ a {
   }
 }
 
+.mb-main {
+  margin-bottom: 12rem;
+}
+
 .nm {
   margin: 0rem;
 }
 
 .pointer {
   cursor: pointer;
+}
+
+// fixes
+
+.codex-editor__redactor {
+  padding-bottom: 0rem !important;
 }
