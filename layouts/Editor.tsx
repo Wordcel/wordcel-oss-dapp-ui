@@ -21,6 +21,8 @@ import List from "@editorjs/list";
 // @ts-expect-error
 import Quote from "@editorjs/quote";
 // @ts-expect-error
+import ImageGallery from '@rodrigoodhin/editorjs-image-gallery';
+// @ts-expect-error
 import SimpleImage from "@editorjs/simple-image";
 
 interface Editor {
@@ -38,13 +40,13 @@ const CustomEditor = ({
     list: List,
     raw: Raw,
     paragraph: Paragraph,
-    paragrah: Paragraph, // please remove this in production, here now due to a typo in the blocks
     codeBox: CodeBox,
     linkTool: LinkTool,
     quote: Quote,
     checklist: CheckList,
     delimiter: Delimiter,
     inlineCode: InlineCode,
+    imageGallery: ImageGallery,
     simpleImage: SimpleImage
   }
   const EditorJS = createReactEditorJS();

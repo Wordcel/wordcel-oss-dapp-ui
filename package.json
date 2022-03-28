@@ -24,6 +24,7 @@
     "@editorjs/simple-image": "^1.4.1",
     "@editorjs/table": "^2.0.1",
     "@prisma/client": "^3.11.0",
+    "@rodrigoodhin/editorjs-image-gallery": "^0.1.0",
     "@solana/wallet-adapter-base": "^0.9.5",
     "@solana/wallet-adapter-react": "^0.15.4",
     "@solana/wallet-adapter-react-ui": "^0.9.6",
