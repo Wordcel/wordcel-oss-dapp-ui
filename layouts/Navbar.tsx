@@ -2,6 +2,7 @@ import logo from '@/images/logo.svg';
 import styles from '@/styles/Navbar.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
+import publishButton from '@/images/elements/publish.svg';
 import { useState } from 'react';
 import { ConnectWallet } from './Wallet';
 
@@ -31,9 +32,15 @@ export const Navbar = () => {
   );
 };
 
-export const StaticNavbar = () => {
+export const StaticNavbar = ({
+  publish
+}: {
+  publish?: () => void;
+}) => {
   return (
-    <div className={styles.staticContainer}>
+    <div
+      style={{ justifyContent: publish ? 'space-between' : 'center' }}
+      className={styles.staticContainer}>
       <Link href="/">
         <a>
           <div className={styles.maxWidthLogo}>
@@ -41,6 +48,13 @@ export const StaticNavbar = () => {
           </div>
         </a>
       </Link>
+      {publish && (
+        <div
+          onClick={publish}
+          className="pointer">
+          <Image src={publishButton} alt="Publish"/>
+        </div>
+      )}
     </div>
   )
 };

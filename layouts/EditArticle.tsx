@@ -33,6 +33,11 @@ export const EditArticle = (props: GetArticleServerSide) => {
     headerInstance.current = instance
   }, []);
 
+  const handlePublish = () => {
+    console.log(headingBlocks);
+    console.log(blocks);
+  }
+
   useEffect(() => {
     if (!publicKey || publicKey.toString() !== props.user_public_key) {
       router.push('/');
@@ -42,11 +47,11 @@ export const EditArticle = (props: GetArticleServerSide) => {
   return (
     <div>
       <DefaultHead
-        title={props.article?.title}
+        title={`Edit - ${props.article?.title}`}
         description={props.article?.description}
         image={props.article?.image_url}
       />
-      <StaticNavbar />
+      <StaticNavbar publish={handlePublish} />
       <div className={styles.container}>
         <div className={styles.editorMaxWidth}>
           {typeof window !== 'undefined' && (
