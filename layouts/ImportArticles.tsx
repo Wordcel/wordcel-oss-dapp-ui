@@ -9,7 +9,8 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
 
 export const ImportArticles = ({
-  articles
+  articles,
+  user
 }: GetArticlesServerSide) => {
   const router = useRouter();
   const [selected, setSelectedArticle] = useState<Article>();
@@ -23,7 +24,7 @@ export const ImportArticles = ({
 
   const handleContinueClick = () => {
     if (!selected) return;
-    router.push(`/edit/${selected.id}`);
+    router.push(`/edit/${user?.username}/${selected.slug}`);
   }
 
   return (

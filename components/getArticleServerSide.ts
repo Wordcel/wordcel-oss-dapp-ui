@@ -11,10 +11,14 @@ const redirect = () => {
 }
 
 export const getArticleServerSide = async (context: any) => {
-  const article_id = Number(context.query.id);
+  const slug = context.query.slug;
+  const username = context.query.username;
   const article = await prisma.article.findFirst({
     where: {
-      id: article_id
+      slug,
+      owner: {
+        username
+      }
     }
   });
   if (!article) return redirect();
@@ -26,7 +30,7 @@ export const getArticleServerSide = async (context: any) => {
   if (!user) return redirect();
   const blocks = await prisma.block.findFirst({
     where: {
-      article_id
+      article_id: article.id
     }
   });
   if (!blocks) return redirect();

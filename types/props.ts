@@ -1,6 +1,7 @@
 export interface User {
   id: number;
   name: string;
+  username: string;
   public_key: string;
   nft_key: string;
   blog_name: string;
@@ -24,6 +25,7 @@ export interface GetUserServerSide {
 
 export interface GetArticlesServerSide {
   articles?: Article[];
+  user?: User;
 }
 
 export interface GetArticleServerSide {

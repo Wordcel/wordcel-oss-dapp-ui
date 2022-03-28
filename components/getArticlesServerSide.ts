@@ -21,7 +21,8 @@ export const getArticlesServerSide = async (context: any) => {
   })
   return {
     props: {
-      articles
+      articles,
+      user
     }
   }
 }

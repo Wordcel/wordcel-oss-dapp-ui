@@ -4,7 +4,10 @@ import { GetArticlesServerSide } from "@/types/props";
 import { GetServerSideProps } from "next";
 
 const ImportPage = (props: GetArticlesServerSide) => {
-  return <ImportArticles articles={props.articles} />;
+  return <ImportArticles
+    user={props.user}
+    articles={props.articles}
+  />;
 };
 
 export default ImportPage;
