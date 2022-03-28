@@ -12,7 +12,7 @@ import { StaticNavbar } from './Navbar';
 export const EditArticle = (props: GetArticleServerSide) => {
   const router = useRouter();
   const [blocks, setBlocks] = useState(JSON.parse(props.blocks || ''))
-  const [headingBlocks, setHeadingBlocks] = useState([
+  const [headingBlocks, setHeadingBlocks] = useState<any>([
     { type: 'header', data: { level: '1', text: props.article?.title } },
     { type: 'paragraph', data: { text: props.article?.description } },
     { type: 'image', data: { url: props.article?.image_url } },
@@ -33,6 +33,20 @@ export const EditArticle = (props: GetArticleServerSide) => {
     headerInstance.current = instance
   }, []);
 
+  // User this for updating the blocks
+  const handleSave = useCallback(async () => {
+    const savedData = await editorInstance.current?.save();
+    setBlocks(savedData);
+  }, []);
+
+  // Use this for updating the header state
+  const handleHeadingSave = useCallback(async () => {
+    const savedData = await headerInstance.current?.save();
+    if (!savedData) return;
+    setHeadingBlocks(savedData);
+  }, []);
+
+  // Use this for publishing functions
   const handlePublish = () => {
     console.log(headingBlocks);
     console.log(blocks);
