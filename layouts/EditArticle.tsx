@@ -41,7 +41,11 @@ export const EditArticle = (props: GetArticleServerSide) => {
 
   return (
     <div>
-      <DefaultHead />
+      <DefaultHead
+        title={props.article?.title}
+        description={props.article?.description}
+        image={props.article?.image_url}
+      />
       <StaticNavbar />
       <div className={styles.container}>
         <div className={styles.editorMaxWidth}>
