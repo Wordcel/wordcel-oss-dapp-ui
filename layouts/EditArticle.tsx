@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import styles from '@/styles/Editor.module.scss';
+import { uploadArweave } from '@/components/upload';
 import { EditorCore } from "@react-editor-js/core";
 import { GetArticleServerSide } from '@/types/props';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -7,11 +8,12 @@ import { useRouter } from 'next/router';
 import { useEffect, useCallback, useRef, useState } from 'react';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
+import toast from 'react-hot-toast';
 
 
 export const EditArticle = (props: GetArticleServerSide) => {
   const router = useRouter();
-  const [blocks, setBlocks] = useState(JSON.parse(props.blocks || ''))
+  const [blocks, setBlocks] = useState<any>(JSON.parse(props.blocks || ''));
   const [headingBlocks, setHeadingBlocks] = useState<any>([
     { type: 'header', data: { level: '1', text: props.article?.title } },
     { type: 'paragraph', data: { text: props.article?.description } },
@@ -33,23 +35,26 @@ export const EditArticle = (props: GetArticleServerSide) => {
     headerInstance.current = instance
   }, []);
 
-  // User this for updating the blocks
-  const handleSave = useCallback(async () => {
-    const savedData = await editorInstance.current?.save();
-    setBlocks(savedData);
-  }, []);
-
-  // Use this for updating the header state
-  const handleHeadingSave = useCallback(async () => {
-    const savedData = await headerInstance.current?.save();
-    if (!savedData) return;
-    setHeadingBlocks(savedData);
-  }, []);
-
   // Use this for publishing functions
-  const handlePublish = () => {
-    console.log(headingBlocks);
-    console.log(blocks);
+  const handlePublish = async () => {
+    const savedHeaderContent = await headerInstance.current?.save();
+    const savedContent = await editorInstance.current?.save();
+    if (!savedHeaderContent || !savedContent) return;
+    const addedBlocks = [...savedHeaderContent.blocks, ...savedContent.blocks];
+    const payload = {
+      content: {
+        blocks: addedBlocks
+      },
+      type: 'blocks'
+    };
+    const upload = uploadArweave(payload);
+    toast.promise(upload, {
+      loading: 'Uploading to Arweave',
+      success: 'Uploaded Successfully!',
+      error: 'Upload Failed!'
+    })
+    const uri = await upload;
+    console.log(uri);
   }
 
   useEffect(() => {

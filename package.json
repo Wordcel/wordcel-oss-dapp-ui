@@ -30,6 +30,7 @@
     "@solana/wallet-adapter-react-ui": "^0.9.6",
     "@solana/wallet-adapter-wallets": "^0.15.5",
     "@solana/web3.js": "^1.36.0",
+    "arweave": "^1.10.23",
     "next": "12.1.0",
     "nprogress": "^0.2.0",
     "prisma": "^3.11.0",

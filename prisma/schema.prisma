@@ -28,6 +28,7 @@ model Article {
   on_chain Boolean @default(false)
   blocks Block?
   proof_of_post String?
+  arweave_url String?
   slug String
   user_id Int
   owner User @relation(fields: [user_id], references: [id])

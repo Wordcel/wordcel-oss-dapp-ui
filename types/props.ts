@@ -16,6 +16,7 @@ export interface Article {
   user_id: number;
   blocks?: string;
   proof_of_post?: string;
+  arweave_url?: string;
   slug?: string
 }
 
