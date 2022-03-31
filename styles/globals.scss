@@ -37,6 +37,18 @@ a {
   box-sizing: border-box;
 }
 
+// defaults
+
+.default-link {
+  color: var(--text-color);
+  opacity: 0.75;
+  text-decoration: underline;
+  transition: all 0.15s ease-in-out;
+  &:hover {
+    opacity: 0.95;
+  }
+}
+
 .dark-text {
   font-weight: 600;
   font-size: 1.9rem;
@@ -110,8 +122,33 @@ a {
   cursor: pointer;
 }
 
+
+
 // fixes
 
 .codex-editor__redactor {
   padding-bottom: 0rem !important;
+}
+
+.ce-block__content {
+  max-width: 100%;
+}
+
+.reader-paragraph {
+  & a {
+    color: var(--text-color);
+    opacity: 0.75;
+    text-decoration: underline;
+    transition: all 0.15s ease-in-out;
+    &:hover {
+      opacity: 0.95;
+    }
+  }
+}
+
+.reader-image {
+  margin: 3rem 0rem;
+  & img {
+    max-width: 100%;
+  }
 }

@@ -1259,11 +1259,6 @@ circular-json@^0.5.9:
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.5.9.tgz#932763ae88f4f7dead7a0d09c8a51a4743a53b1d"
   integrity sha512-4ivwqHpIFJZBuhN3g/pEcdbnGUywkBblloGbkglyloVjjR3uT6tieI89MVOfbP2tHX5sgb01FuLgAOzebNlJNQ==
 
-classnames@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
-  integrity sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
-
 code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
@@ -1497,15 +1492,12 @@ domutils@^2.8.0:
     domelementtype "^2.2.0"
     domhandler "^4.2.0"
 
-editorjs-react-renderer@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/editorjs-react-renderer/-/editorjs-react-renderer-3.0.1.tgz#bc61f74f21e57bd22d3bf8bf3308b4535941361b"
-  integrity sha512-zktU6qX/TghA7OXy2E611H9tP6TIdIRO6evE2jGylzcIq7rIjh052IEQe6AXLZ6vj+QWw36gRHPdU+iYVmjwkQ==
+editorjs-blocks-react-renderer@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/editorjs-blocks-react-renderer/-/editorjs-blocks-react-renderer-1.2.4.tgz#bec61247187cc082a4d5b21c616025515a5553b8"
+  integrity sha512-oplMOLKAgMBJ/URPXDOa5pm5XAoTTAn1p+NS9AdbH+Fr2fbnTZuiYIhQdmlkXQfH+DVtPztAFtz5G54z6aDq3w==
   dependencies:
-    buffer "^6.0.3"
-    classnames "^2.3.1"
-    html-react-parser "^1.4.0"
-    react "^17.0.2"
+    html-react-parser "^1.4.5"
 
 eip1193-provider@^1.0.1:
   version "1.0.1"
@@ -2154,10 +2146,10 @@ html-dom-parser@1.1.1:
     domhandler "4.3.1"
     htmlparser2 "7.2.0"
 
-html-react-parser@^1.4.0:
-  version "1.4.9"
-  resolved "https://registry.yarnpkg.com/html-react-parser/-/html-react-parser-1.4.9.tgz#fd0416728a5819292f5f718a76daa2659c46891f"
-  integrity sha512-V45RVd7GEGtk5bmL9iBV/AkaTE6jj9uhvUrJ/cWlq06DrcMzvz2kqMeZfWEV2pIWkRDzLAqrotCfmFSvdTjpHA==
+html-react-parser@^1.4.5:
+  version "1.4.10"
+  resolved "https://registry.yarnpkg.com/html-react-parser/-/html-react-parser-1.4.10.tgz#36862197876ccb9a32736f462555ba561350b715"
+  integrity sha512-GiG7mEwI0enY7hz0F0Zx1B4D0MCQWx2xH0KdVNV9fjqOXwwnPYM79meJ2dsIJf9QR4qQTTPEdSq7wlJfq/i6Tw==
   dependencies:
     domhandler "4.3.1"
     html-dom-parser "1.1.1"
@@ -3053,7 +3045,7 @@ react-property@2.0.0:
   resolved "https://registry.yarnpkg.com/react-property/-/react-property-2.0.0.tgz#2156ba9d85fa4741faf1918b38efc1eae3c6a136"
   integrity sha512-kzmNjIgU32mO4mmH5+iUyrqlpFQhF8K2k7eZ4fdLSOPFrD1XgEuSBv9LDEgxRXTMBqMd8ppT0x6TIzqE5pdGdw==
 
-react@17.0.2, react@^17.0.2:
+react@17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
   integrity sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==
