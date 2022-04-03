@@ -27,9 +27,11 @@ export const ViewArticle = (props: GetArticleServerSide) => {
       />
       <StaticNavbar />
       <div className={styles.container}>
-        <div className={styles.editorMaxWidth}>
+        <div
+          style={{ display: 'flex', justifyContent: 'center' }}
+          className={styles.editorMaxWidth}>
           {typeof window !== 'undefined' && (
-            <div className="mb-main">
+            <div className="reader-max-width">
               <Reader blocks={addedBlocks} />
             </div>
           )}

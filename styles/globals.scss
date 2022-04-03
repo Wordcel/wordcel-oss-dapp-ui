@@ -123,18 +123,18 @@ a {
 }
 
 
-
 // fixes
 
 .codex-editor__redactor {
   padding-bottom: 0rem !important;
 }
 
-.ce-block__content {
-  max-width: 100%;
+.reader-max-width {
+  max-width: 69rem;
 }
 
 .reader-paragraph {
+  line-height: 3rem !important;
   & a {
     color: var(--text-color);
     opacity: 0.75;

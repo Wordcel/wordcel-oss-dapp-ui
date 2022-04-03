@@ -16,7 +16,9 @@ const Reader = ({
     }
   }
   return (
-    <div style={{ fontSize: '170%' }}>
+    <div style={{
+      fontSize: '170%'
+    }}>
       <Output data={{
         blocks: blocks,
         version: '1',
