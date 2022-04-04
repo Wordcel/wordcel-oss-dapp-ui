@@ -13,6 +13,12 @@ const Reader = ({
     },
     paragraph: {
       className: "reader-paragraph"
+    },
+    list: {
+      className: "reader-list"
+    },
+    embed: {
+      className: "reader-embed"
     }
   }
   return (

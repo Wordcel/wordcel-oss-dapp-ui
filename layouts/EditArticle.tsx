@@ -13,15 +13,15 @@ import toast from 'react-hot-toast';
 
 export const EditArticle = (props: GetArticleServerSide) => {
   const router = useRouter();
-  const [blocks, setBlocks] = useState<any>(JSON.parse(props.blocks || ''));
-  const [headingBlocks, setHeadingBlocks] = useState<any>([
+  const [blocks] = useState<any>(JSON.parse(props.blocks || ''));
+  const [headingBlocks] = useState<any>([
     { type: 'header', data: { level: '1', text: props.article?.title } },
     { type: 'paragraph', data: { text: props.article?.description } },
     { type: 'image', data: { url: props.article?.image_url } },
   ]);
   const { publicKey } = useWallet();
 
-  let Editor = dynamic(() => import('@/layouts/Editor'), {
+  const Editor = dynamic(() => import('@/layouts/Editor'), {
     ssr: false
   });
   let headerInstance = useRef<EditorCore | null>(null);
@@ -90,5 +90,3 @@ export const EditArticle = (props: GetArticleServerSide) => {
     </div>
   );
 };
-
-

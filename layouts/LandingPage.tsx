@@ -15,17 +15,17 @@ const details = [
   {
     icon: decentralized,
     title: 'Decentralized',
-    description: 'Wordcel enables anyone to publish rich articles on the blockchain that are '
+    description: 'All content on Wordcel is stored permanently, powered by the Arweave network'
   },
   {
     icon: openSourced,
     title: 'Open Sourced',
-    description: 'Wordcel is open-sourced and available for your contributions on Github.'
+    description: 'Wordcel is open-sourced and available for your contributions on Github'
   },
   {
     icon: censorship,
     title: 'Censorship Free',
-    description: 'Wordcel is censorship resistant and can be used by anyone.'
+    description: 'Wordcel is censorship resistant and can be used by anyone'
   }
 ];
 
