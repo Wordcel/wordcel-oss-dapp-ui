@@ -9,7 +9,6 @@ import {
   SolflareWalletAdapter,
   SolletExtensionWalletAdapter,
   SolletWalletAdapter,
-  TorusWalletAdapter,
   GlowWalletAdapter
 } from '@solana/wallet-adapter-wallets';
 import {
@@ -30,6 +29,7 @@ export const clusterApiUrl = (cluster: 'devnet' | 'mainnet-beta') => (
 export const Wallet: FC = ({
   children
 }) => {
+  // If window exists and is on localhost, choose devnet, else choose mainnet
   const network =
     (typeof window !== 'undefined'
     && window.location.host.includes('localhost'))
@@ -40,7 +40,6 @@ export const Wallet: FC = ({
       new PhantomWalletAdapter(),
       new SlopeWalletAdapter(),
       new SolflareWalletAdapter({ network }),
-      new TorusWalletAdapter(),
       new LedgerWalletAdapter(),
       new SolletWalletAdapter({ network }),
       new SolletExtensionWalletAdapter({ network }),
@@ -73,31 +72,35 @@ export const ConnectWallet = ({
 }) => {
   const { wallet, connect, publicKey } = useWallet();
   const { visible, setVisible } = useWalletModal();
+  const [clicked, setClicked] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    if (!publicKey && wallet) {
+    const req = !publicKey && wallet && wallet.readyState === 'Installed' && clicked;
+    if (req) {
       try {
-        if (wallet.readyState === 'Installed') {
-          connect();
-        }
+        connect();
       } catch (e) {
         console.error(e);
       }
       return;
     }
-    if (publicKey && !visible) {
+    if (publicKey) {
       console.log(`User Public Key: ${publicKey}`);
       if (!noToast) toast.success('Connected to wallet');
       if (redirectToWelcome) router.push(`/welcome/${publicKey}`);
     }
-  }, [wallet, visible, publicKey, redirectToWelcome]);
-
+  }, [
+    wallet,
+    visible,
+    publicKey,
+    redirectToWelcome,
+    clicked
+  ]);
 
   const handleConnect = () => {
-    if (!wallet) {
-      setVisible(true);
-    }
+    if (wallet) return;
+    setVisible(true);
   }
 
   return (
@@ -106,7 +109,10 @@ export const ConnectWallet = ({
         width: noFullSize ? 'max-content' : '100%',
         height: noFullSize ? 'max-content' : '100%'
       }}
-      onClick={handleConnect}
+      onClick={() => {
+        setClicked(true);
+        handleConnect();
+      }}
     >
       {children}
     </div>

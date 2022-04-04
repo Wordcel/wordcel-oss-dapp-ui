@@ -6,8 +6,8 @@ import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 
 export const ViewArticle = (props: GetArticleServerSide) => {
-  const [blocks, setBlocks] = useState<any>(JSON.parse(props.blocks || ''));
-  const [headingBlocks, setHeadingBlocks] = useState<any>([
+  const [blocks] = useState<any>(JSON.parse(props.blocks || ''));
+  const [headingBlocks] = useState<any>([
     { type: 'header', data: { level: '1', text: props.article?.title } },
     { type: 'paragraph', data: { text: props.article?.description } },
     { type: 'image', data: { url: props.article?.image_url } },
