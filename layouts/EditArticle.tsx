@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic';
 import styles from '@/styles/Editor.module.scss';
-import { uploadArweave } from '@/components/upload';
+import { publishPost } from '@/components/publishArticle';
 import { EditorCore } from "@react-editor-js/core";
 import { GetArticleServerSide } from '@/types/props';
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { useRouter } from 'next/router';
 import { useEffect, useCallback, useRef, useState } from 'react';
 import { DefaultHead } from './DefaultHead';
@@ -20,6 +20,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
     { type: 'image', data: { url: props.article?.image_url } },
   ]);
   const { publicKey } = useWallet();
+  const anchorWallet = useAnchorWallet();
 
   const Editor = dynamic(() => import('@/layouts/Editor'), {
     ssr: false
@@ -37,6 +38,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
 
   // Use this for publishing functions
   const handlePublish = async () => {
+    if (!anchorWallet) return;
     const savedHeaderContent = await headerInstance.current?.save();
     const savedContent = await editorInstance.current?.save();
     if (!savedHeaderContent || !savedContent) return;
@@ -47,14 +49,18 @@ export const EditArticle = (props: GetArticleServerSide) => {
       },
       type: 'blocks'
     };
-    const upload = uploadArweave(payload);
-    toast.promise(upload, {
-      loading: 'Uploading to Arweave',
-      success: 'Uploaded Successfully!',
-      error: 'Upload Failed!'
-    })
-    const uri = await upload;
-    console.log(uri);
+    console.log(payload);
+    const postTransaction = publishPost(
+      payload,
+      anchorWallet as any
+    );
+    toast.promise(postTransaction, {
+      loading: 'Publishing Article',
+      success: 'Article Published Successfully!',
+      error: 'Publishing Failed!'
+    });
+    const post = await postTransaction;
+    console.log(post);
   }
 
   useEffect(() => {

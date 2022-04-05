@@ -1,7 +1,7 @@
 import Arweave from 'arweave';
 import { OutputData } from "@editorjs/editorjs";
 
-interface ContentPayload {
+export interface ContentPayload {
   content: OutputData,
   type: string
 }

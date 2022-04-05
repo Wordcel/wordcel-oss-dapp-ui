@@ -1,0 +1,250 @@
+{
+  "version": "0.1.0",
+  "name": "wordcel",
+  "instructions": [{
+      "name": "initialize",
+      "accounts": [{
+          "name": "publication",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [{
+        "name": "publicationBump",
+        "type": "u8"
+      }]
+    },
+    {
+      "name": "createPost",
+      "accounts": [{
+          "name": "publication",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "post",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [{
+          "name": "postBump",
+          "type": "u8"
+        },
+        {
+          "name": "metadataUri",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "updatePost",
+      "accounts": [{
+          "name": "publication",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "post",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [{
+        "name": "metadataUri",
+        "type": "string"
+      }]
+    },
+    {
+      "name": "initializeSubscriber",
+      "accounts": [{
+          "name": "subscriber",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [{
+        "name": "subscriberBump",
+        "type": "u8"
+      }]
+    },
+    {
+      "name": "initializeSubscription",
+      "accounts": [{
+          "name": "subscriber",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "publication",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [{
+        "name": "subscriptionBump",
+        "type": "u8"
+      }]
+    },
+    {
+      "name": "cancelSubscription",
+      "accounts": [{
+          "name": "subscriber",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "subscription",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [{
+      "name": "Publication",
+      "type": {
+        "kind": "struct",
+        "fields": [{
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "postNonce",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Post",
+      "type": {
+        "kind": "struct",
+        "fields": [{
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "publication",
+            "type": "publicKey"
+          },
+          {
+            "name": "metadataUri",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Subscriber",
+      "type": {
+        "kind": "struct",
+        "fields": [{
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "subscriptionNonce",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Subscription",
+      "type": {
+        "kind": "struct",
+        "fields": [{
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "publication",
+            "type": "publicKey"
+          },
+          {
+            "name": "subscriber",
+            "type": "publicKey"
+          }
+        ]
+      }
+    }
+  ],
+  "metadata": {
+    "address": "v4enuof3drNvU2Y3b5m7K62hMq3QUP6qQSV2jjxAhkp"
+  }
+}
