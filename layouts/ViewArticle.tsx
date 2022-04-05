@@ -16,7 +16,12 @@ export const ViewArticle = (props: GetArticleServerSide) => {
     ssr: false
   });
 
-  const addedBlocks = [...headingBlocks, ...blocks];
+  const addedBlocks = () => {
+    const local_blocks = [];
+    if (!props.article?.arweave_url) local_blocks.push(...headingBlocks);
+    local_blocks.push(...blocks);
+    return local_blocks;
+  }
 
   return (
     <div>
@@ -32,7 +37,7 @@ export const ViewArticle = (props: GetArticleServerSide) => {
           className={styles.editorMaxWidth}>
           {typeof window !== 'undefined' && (
             <div className="reader-max-width">
-              <Reader blocks={addedBlocks} />
+              <Reader blocks={addedBlocks()} />
             </div>
           )}
         </div>

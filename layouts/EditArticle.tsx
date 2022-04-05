@@ -15,7 +15,6 @@ import { getUserSignature } from '@/components/signMessage';
 export const EditArticle = (props: GetArticleServerSide) => {
   const router = useRouter();
   const [blocks] = useState<any>(JSON.parse(props.blocks || ''));
-  console.log(blocks);
   const [headingBlocks] = useState<any>([
     { type: 'header', data: { level: '1', text: props.article?.title } },
     { type: 'paragraph', data: { text: props.article?.description } },
@@ -61,7 +60,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
     toast.promise(postTransaction, {
       loading: 'Publishing Article',
       success: 'Article Published Successfully!',
-      error: 'Publishing Failed! Trying again...'
+      error: 'Publishing Failed!'
     });
     const txid = await postTransaction;
     if (!txid) return;

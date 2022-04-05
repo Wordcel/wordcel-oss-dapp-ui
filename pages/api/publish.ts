@@ -81,7 +81,10 @@ async function updateBlocks(
   arweave_url: string
 ) {
   const blocks = await getBlocks(arweave_url);
-  const string_blocks = JSON.stringify(blocks);
+  const title = blocks[0].data.text;
+  const description = blocks[1].data.text;
+  const image_url = blocks[2].data.url;
+  const string_blocks = JSON.stringify(blocks.slice(0, 3));
   if (!blocks) return;
   const existing_db_blocks = await prisma.block.findFirst({
     where: {
@@ -89,6 +92,16 @@ async function updateBlocks(
     }
   });
   if (!existing_db_blocks) return;
+  const article_update = await prisma.article.update({
+    where: {
+      id: existing_db_blocks.article_id
+    },
+    data: {
+      title: title || '',
+      description: description || '',
+      image_url: image_url || '',
+    }
+  });
   const updated = await prisma.block.update({
     where: { id: existing_db_blocks.id },
     data: {
