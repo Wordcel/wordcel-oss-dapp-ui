@@ -32,6 +32,7 @@
     "@solana/wallet-adapter-wallets": "^0.15.5",
     "@solana/web3.js": "^1.36.0",
     "arweave": "^1.10.23",
+    "axios": "^0.26.1",
     "editorjs-blocks-react-renderer": "^1.2.4",
     "next": "12.1.0",
     "nprogress": "^0.2.0",
@@ -41,7 +42,8 @@
     "react-editor-js": "^2.0.6",
     "react-hot-toast": "^2.2.0",
     "sass": "^1.49.9",
-    "sharp": "^0.30.3"
+    "sharp": "^0.30.3",
+    "tweetnacl": "^1.0.3"
   },
   "devDependencies": {
     "@types/editorjs__header": "^2.6.0",

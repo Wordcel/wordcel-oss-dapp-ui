@@ -32,5 +32,6 @@ export interface GetArticlesServerSide {
 export interface GetArticleServerSide {
   article?: Article;
   user_public_key?: string;
+  username: string;
   blocks?: string;
 }

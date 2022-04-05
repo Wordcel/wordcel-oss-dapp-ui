@@ -1,9 +1,9 @@
-import idl from '@/components/config/devnet-idl.json';
 import * as anchor from '@project-serum/anchor';
-import { uploadArweave } from "./upload";
-import { ContentPayload } from '@/components/upload';
-import { SystemProgram, PublicKey } from '@solana/web3.js';
 import toast from 'react-hot-toast';
+import idl from '@/components/config/devnet-idl.json';
+import { PublishArticleRequest } from '@/types/api';
+import { SystemProgram, PublicKey } from '@solana/web3.js';
+import { uploadArweave, ContentPayload } from '@/components/upload';
 
 const preflightCommitment = "processed";
 const endpoint = 'https://psytrbhymqlkfrhudd.dev.genesysgo.net:8899/'
@@ -16,7 +16,7 @@ const provider = (wallet: anchor.Wallet) => new anchor.Provider(
   { preflightCommitment: preflightCommitment }
 );
 
-export async function getPublication(
+export async function getPublicationAccount(
   publicationSeeds: Buffer[],
   program: anchor.Program
 ) {
@@ -26,7 +26,7 @@ export async function getPublication(
   );
 }
 
-async function createPublication(
+async function createPublicationAccount(
   publicationSeeds: Buffer[],
   user: PublicKey,
   program: anchor.Program
@@ -47,13 +47,14 @@ async function createPublication(
 
 export async function publishPost(
   data: ContentPayload,
-  wallet: anchor.Wallet
+  wallet: anchor.Wallet,
+  signature: Uint8Array,
+  id: string | number
 ) {
-  console.log(idl);
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
   const publicationSeeds = [Buffer.from("publication"), wallet.publicKey.toBuffer()];
 
-  const existingPublication = await getPublication(
+  const existingPublication = await getPublicationAccount(
     publicationSeeds,
     program
   );
@@ -66,20 +67,23 @@ export async function publishPost(
     mutPublicationAccount = publicationAccount;
   } catch (e) {
     console.log('Publication account does not exist');
-    const newPublicationAccount = await createPublication(
+    const newPublicationAccount = await createPublicationAccount(
       publicationSeeds,
       wallet.publicKey,
       program
     );
+    if (!newPublicationAccount) return;
     mutPublicationAccount = newPublicationAccount;
     console.log(newPublicationAccount);
   }
 
   const postSeeds = [Buffer.from("post"), publicationKey.toBuffer(), new anchor.BN(mutPublicationAccount.postNonce).toArrayLike(Buffer)];
   const [postAccount, postBump] = await anchor.web3.PublicKey.findProgramAddress(postSeeds, program.programId);
+
   toast('Uploading to Arweave...');
   const metadataURI = await uploadArweave(data);
   console.log(`Arweave URI: ${metadataURI}`);
+
   const tx = program.transaction.createPost(postBump, metadataURI, {
     accounts: {
       post: postAccount,
@@ -95,11 +99,31 @@ export async function publishPost(
   try {
     const txid = await connection.sendRawTransaction(signedTx.serialize());
     if (!txid) return;
-    const verified = connection.confirmTransaction(txid, preflightCommitment);
-    return verified;
+    const verified = await connection.confirmTransaction(txid, preflightCommitment);
+    const saved = await publishToServer({
+      id: id.toString(),
+      arweave_url: metadataURI,
+      public_key: wallet.publicKey.toString(),
+      signature: signature,
+      proof_of_post: postAccount.toBase58(),
+    });
+    if (verified.value.err !== null && saved) return txid;
   }
   catch (e) {
     console.log(e);
     return;
   }
+}
+
+async function publishToServer(
+  data: PublishArticleRequest
+) {
+  const request = await fetch('/api/publish', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+  return request.ok;
 }

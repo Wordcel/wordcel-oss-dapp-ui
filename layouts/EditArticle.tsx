@@ -9,17 +9,19 @@ import { useEffect, useCallback, useRef, useState } from 'react';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import toast from 'react-hot-toast';
+import { getUserSignature } from '@/components/signMessage';
 
 
 export const EditArticle = (props: GetArticleServerSide) => {
   const router = useRouter();
   const [blocks] = useState<any>(JSON.parse(props.blocks || ''));
+  console.log(blocks);
   const [headingBlocks] = useState<any>([
     { type: 'header', data: { level: '1', text: props.article?.title } },
     { type: 'paragraph', data: { text: props.article?.description } },
     { type: 'image', data: { url: props.article?.image_url } },
   ]);
-  const { publicKey } = useWallet();
+  const { publicKey, signMessage } = useWallet();
   const anchorWallet = useAnchorWallet();
 
   const Editor = dynamic(() => import('@/layouts/Editor'), {
@@ -36,12 +38,13 @@ export const EditArticle = (props: GetArticleServerSide) => {
     headerInstance.current = instance
   }, []);
 
-  // Use this for publishing functions
   const handlePublish = async () => {
-    if (!anchorWallet) return;
+    if (!anchorWallet || !props.article) return;
     const savedHeaderContent = await headerInstance.current?.save();
     const savedContent = await editorInstance.current?.save();
-    if (!savedHeaderContent || !savedContent) return;
+    if (!savedHeaderContent || !savedContent || !signMessage) return;
+    const signature = await getUserSignature(signMessage);
+    if (!signature) return;
     const addedBlocks = [...savedHeaderContent.blocks, ...savedContent.blocks];
     const payload = {
       content: {
@@ -49,18 +52,21 @@ export const EditArticle = (props: GetArticleServerSide) => {
       },
       type: 'blocks'
     };
-    console.log(payload);
     const postTransaction = publishPost(
       payload,
-      anchorWallet as any
+      anchorWallet as any,
+      signature,
+      props.article?.id
     );
     toast.promise(postTransaction, {
       loading: 'Publishing Article',
       success: 'Article Published Successfully!',
-      error: 'Publishing Failed!'
+      error: 'Publishing Failed! Trying again...'
     });
-    const post = await postTransaction;
-    console.log(post);
+    const txid = await postTransaction;
+    if (!txid) return;
+    console.log(`TXID: ${txid}`);
+    router.push(`/${props.username}/${props.article?.slug}`);
   }
 
   useEffect(() => {
