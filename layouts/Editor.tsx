@@ -40,7 +40,7 @@ const CustomEditor = ({
     list: List,
     raw: Raw,
     paragraph: Paragraph,
-    codeBox: CodeBox,
+    code: CodeBox,
     linkTool: LinkTool,
     quote: Quote,
     checklist: CheckList,

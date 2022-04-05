@@ -8,6 +8,7 @@ import {
   verifyMethod,
   authenticate
 } from '@/lib/server';
+import { sanitizeHtml } from '@/lib/sanitize';
 import { getBlocks } from '@/components/getArticleBlocks';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -97,8 +98,8 @@ async function updateBlocks(
       id: existing_db_blocks.article_id
     },
     data: {
-      title: title || '',
-      description: description || '',
+      title: sanitizeHtml(title) || '',
+      description: sanitizeHtml(description) || '',
       image_url: image_url || '',
     }
   });
