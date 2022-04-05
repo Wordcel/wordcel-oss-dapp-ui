@@ -107,7 +107,7 @@ export async function publishPost(
       signature: signature,
       proof_of_post: postAccount.toBase58(),
     });
-    if (verified.value.err !== null && saved) return txid;
+    if (verified.value.err === null && saved) return txid;
   }
   catch (e) {
     console.log(e);

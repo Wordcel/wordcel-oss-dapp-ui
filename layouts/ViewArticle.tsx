@@ -7,21 +7,9 @@ import { StaticNavbar } from './Navbar';
 
 export const ViewArticle = (props: GetArticleServerSide) => {
   const [blocks] = useState<any>(JSON.parse(props.blocks || ''));
-  const [headingBlocks] = useState<any>([
-    { type: 'header', data: { level: '1', text: props.article?.title } },
-    { type: 'paragraph', data: { text: props.article?.description } },
-    { type: 'image', data: { url: props.article?.image_url } },
-  ]);
   const Reader = dynamic(() => import('@/layouts/Reader'), {
     ssr: false
   });
-
-  const addedBlocks = () => {
-    const local_blocks = [];
-    if (!props.article?.arweave_url) local_blocks.push(...headingBlocks);
-    local_blocks.push(...blocks);
-    return local_blocks;
-  }
 
   return (
     <div>
@@ -37,7 +25,7 @@ export const ViewArticle = (props: GetArticleServerSide) => {
           className={styles.editorMaxWidth}>
           {typeof window !== 'undefined' && (
             <div className="reader-max-width">
-              <Reader blocks={addedBlocks()} />
+              <Reader blocks={blocks} />
             </div>
           )}
         </div>

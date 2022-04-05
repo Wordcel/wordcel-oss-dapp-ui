@@ -15,40 +15,26 @@ import { getUserSignature } from '@/components/signMessage';
 export const EditArticle = (props: GetArticleServerSide) => {
   const router = useRouter();
   const [blocks] = useState<any>(JSON.parse(props.blocks || ''));
-  const [headingBlocks] = useState<any>([
-    { type: 'header', data: { level: '1', text: props.article?.title } },
-    { type: 'paragraph', data: { text: props.article?.description } },
-    { type: 'image', data: { url: props.article?.image_url } },
-  ]);
   const { publicKey, signMessage } = useWallet();
   const anchorWallet = useAnchorWallet();
 
   const Editor = dynamic(() => import('@/layouts/Editor'), {
     ssr: false
   });
-  let headerInstance = useRef<EditorCore | null>(null);
   let editorInstance = useRef<EditorCore | null>(null);
 
   const handleInitialize = useCallback((instance) => {
     editorInstance.current = instance
   }, []);
 
-  const handleHeaderEditorInit = useCallback((instance) => {
-    headerInstance.current = instance
-  }, []);
-
   const handlePublish = async () => {
     if (!anchorWallet || !props.article) return;
-    const savedHeaderContent = await headerInstance.current?.save();
     const savedContent = await editorInstance.current?.save();
-    if (!savedHeaderContent || !savedContent || !signMessage) return;
+    if (!savedContent || !signMessage) return;
     const signature = await getUserSignature(signMessage);
     if (!signature) return;
-    const addedBlocks = [...savedHeaderContent.blocks, ...savedContent.blocks];
     const payload = {
-      content: {
-        blocks: addedBlocks
-      },
+      content: { blocks: savedContent.blocks },
       type: 'blocks'
     };
     const postTransaction = publishPost(
@@ -64,7 +50,8 @@ export const EditArticle = (props: GetArticleServerSide) => {
     });
     const txid = await postTransaction;
     if (!txid) return;
-    console.log(`TXID: ${txid}`);
+    console.log(`Transaction ID: ${txid}`);
+    toast('Redirecting...');
     router.push(`/${props.username}/${props.article?.slug}`);
   }
 
@@ -86,10 +73,6 @@ export const EditArticle = (props: GetArticleServerSide) => {
         <div className={styles.editorMaxWidth}>
           {typeof window !== 'undefined' && (
             <div className="mb-main">
-              <Editor
-                blocks={headingBlocks}
-                handleInstance={handleHeaderEditorInit}
-              />
               <Editor
                 blocks={blocks}
                 handleInstance={handleInitialize}
