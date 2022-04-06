@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import idl from '@/components/config/devnet-idl.json';
 import { PublishArticleRequest } from '@/types/api';
 import { SystemProgram, PublicKey } from '@solana/web3.js';
-import { uploadArweave, ContentPayload } from '@/components/upload';
+import { uploadBackend, ContentPayload, uploadArweave } from '@/components/upload';
 
 const preflightCommitment = "processed";
 const endpoint = 'https://psytrbhymqlkfrhudd.dev.genesysgo.net:8899/'
@@ -81,7 +81,10 @@ export async function publishPost(
   const [postAccount, postBump] = await anchor.web3.PublicKey.findProgramAddress(postSeeds, program.programId);
 
   toast('Uploading to Arweave...');
+  // Switch to this if uploading from backend
+  // const metadataURI = await uploadBackend(data);
   const metadataURI = await uploadArweave(data);
+  if (!metadataURI) return;
   console.log(`Arweave URI: ${metadataURI}`);
 
   const tx = program.transaction.createPost(postBump, metadataURI, {
