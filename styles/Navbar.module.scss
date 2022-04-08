@@ -8,7 +8,16 @@
 }
 
 .logoMaxWidth {
-  width: 3.5rem;
+  @media only screen and (max-width: 786px) {
+    & img {
+      width: 15rem !important;
+    }
+  }
+  @media only screen and (max-width: 400px) {
+    & img {
+      width: 11rem !important;
+    }
+  }
 }
 
 .landingConnect {
@@ -36,4 +45,14 @@
   justify-content: center;
   padding: 2rem 3.5rem;
   border: 0.15rem solid var(--nav-border);
+}
+
+.proofOfPost {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arweaveBadge {
+  height: 4.2rem;
 }

@@ -18,7 +18,12 @@ export const ViewArticle = (props: GetArticleServerSide) => {
         description={props.article?.description}
         image={props.article?.image_url}
       />
-      <StaticNavbar />
+      <StaticNavbar
+        proof_of_post={{
+          arweave_url: props.article?.arweave_url,
+          account: props.article?.proof_of_post
+        }}
+      />
       <div className={styles.container}>
         <div
           style={{ display: 'flex', justifyContent: 'center' }}

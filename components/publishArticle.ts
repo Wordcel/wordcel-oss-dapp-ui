@@ -3,12 +3,12 @@ import toast from 'react-hot-toast';
 import idl from '@/components/config/devnet-idl.json';
 import { PublishArticleRequest } from '@/types/api';
 import { SystemProgram, PublicKey } from '@solana/web3.js';
-import { uploadBackend, ContentPayload, uploadArweave } from '@/components/upload';
+import { ContentPayload, uploadArweave } from '@/components/upload';
+import { ENDPOINT } from './config/constants';
 
 const preflightCommitment = "processed";
-const endpoint = 'https://psytrbhymqlkfrhudd.dev.genesysgo.net:8899/'
 const programID = new anchor.web3.PublicKey(idl.metadata.address);
-const connection = new anchor.web3.Connection(endpoint, preflightCommitment);
+const connection = new anchor.web3.Connection(ENDPOINT, preflightCommitment);
 
 const provider = (wallet: anchor.Wallet) => new anchor.Provider(
   connection,
