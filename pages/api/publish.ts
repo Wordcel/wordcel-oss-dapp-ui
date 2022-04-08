@@ -82,9 +82,12 @@ async function updateBlocks(
   arweave_url: string
 ) {
   const blocks = await getBlocks(arweave_url);
-  const title = blocks[0].data.text;
-  const description = blocks[1].data.text;
-  const image_url = blocks[2].data.url;
+  const headings = blocks.filter((block: any) => block.type === 'header');
+  const text_content = blocks.filter((block: any) => block.type === 'paragraph');
+  const image_content = blocks.filter((block: any) => block.type === 'image');
+  const title = headings[0]?.data.text || text_content[0]?.data.text|| 'Untitled Article';
+  const description = text_content[0]?.data.text || 'No description';
+  const image_url = image_content[0]?.data.url || '';
   const string_blocks = JSON.stringify(blocks.slice(0, 3));
   if (!blocks) return;
   const existing_db_blocks = await prisma.block.findFirst({

@@ -24,24 +24,3 @@ export async function uploadArweave(data: ContentPayload) {
   }
   return `https://arweave.net/${id}`
 };
-
-export async function uploadBackend(
-  payload: ContentPayload
-): Promise<string | null> {
-  try {
-    const request = await fetch('/api/upload', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        data: payload
-      })
-    });
-    const { arweave_url } = await request.json();
-    return arweave_url;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
-};
