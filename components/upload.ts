@@ -7,7 +7,9 @@ export interface ContentPayload {
 }
 
 export async function uploadArweave(data: ContentPayload) {
-  const arweave = Arweave.init({});
+  const arweave = Arweave.init({
+    host: window.location.host.includes('localhost') ? undefined : 'arweave.net'
+  });
   let key = await arweave.wallets.generate();
   let transaction = await arweave.createTransaction({
     "data": JSON.stringify(data)

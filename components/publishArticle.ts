@@ -81,8 +81,6 @@ export async function publishPost(
   const [postAccount, postBump] = await anchor.web3.PublicKey.findProgramAddress(postSeeds, program.programId);
 
   toast('Uploading to Arweave...');
-  // Switch to this if uploading from backend
-  // const metadataURI = await uploadBackend(data);
   const metadataURI = await uploadArweave(data);
   if (!metadataURI) return;
   console.log(`Arweave URI: ${metadataURI}`);
