@@ -42,6 +42,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/blockquote.js", "lib/blockquote.s"],
+  "exclude": ["node_modules", "external"]
 }

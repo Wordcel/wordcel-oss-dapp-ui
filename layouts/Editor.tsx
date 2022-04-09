@@ -24,6 +24,7 @@ import Quote from "@editorjs/quote";
 import ImageGallery from '@rodrigoodhin/editorjs-image-gallery';
 // @ts-expect-error
 import SimpleImage from "@editorjs/simple-image";
+import Blockquote from "../external/blockquote";
 
 interface Editor {
   handleInstance: (instance: any) => void;
@@ -43,6 +44,7 @@ const CustomEditor = ({
     code: CodeBox,
     linkTool: LinkTool,
     quote: Quote,
+    blockquote: Blockquote,
     checklist: CheckList,
     delimiter: Delimiter,
     inlineCode: InlineCode,

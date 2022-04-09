@@ -1,5 +1,5 @@
 export interface PublishArticleRequest {
-  id: string;
+  id: string | undefined;
   arweave_url: string;
   public_key: string;
   signature: Uint8Array;

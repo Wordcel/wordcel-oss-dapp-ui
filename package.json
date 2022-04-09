@@ -43,6 +43,7 @@
     "react-hot-toast": "^2.2.0",
     "sass": "^1.49.9",
     "sharp": "^0.30.3",
+    "slugify": "^1.6.5",
     "tweetnacl": "^1.0.3"
   },
   "devDependencies": {

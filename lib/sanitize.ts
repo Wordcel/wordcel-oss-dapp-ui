@@ -4,6 +4,7 @@ const removeFromWord = (word: string) => {
   editedWord = editedWord.replace('<br/>', '');
   editedWord = editedWord.replace('</br>', '');
   editedWord = editedWord.replace('&nbsp;', '');
+  editedWord = editedWord.replace('&gt;', '');
   return editedWord;
 }
 

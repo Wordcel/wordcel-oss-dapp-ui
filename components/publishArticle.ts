@@ -49,7 +49,8 @@ export async function publishPost(
   data: ContentPayload,
   wallet: anchor.Wallet,
   signature: Uint8Array,
-  id: string | number
+  id?: string | number,
+  getResponse?: boolean
 ) {
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
   const publicationSeeds = [Buffer.from("publication"), wallet.publicKey.toBuffer()];
@@ -102,13 +103,14 @@ export async function publishPost(
     if (!txid) return;
     const verified = await connection.confirmTransaction(txid, preflightCommitment);
     const saved = await publishToServer({
-      id: id.toString(),
+      id: id?.toString(),
       arweave_url: metadataURI,
       public_key: wallet.publicKey.toString(),
       signature: signature,
       proof_of_post: postAccount.toBase58(),
     });
-    if (verified.value.err === null && saved) return txid;
+    if (verified.value.err === null && saved && !getResponse) return txid;
+    if (verified.value.err === null && saved && getResponse) return saved;
   }
   catch (e) {
     console.log(e);
@@ -119,12 +121,15 @@ export async function publishPost(
 async function publishToServer(
   data: PublishArticleRequest
 ) {
-  const request = await fetch('/api/publish', {
+  const request = await fetch(
+    data.id ? '/api/publish' : '/api/publish/new',
+  {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
   });
-  return request.ok;
+  const response = await request.json();
+  return response;
 }
