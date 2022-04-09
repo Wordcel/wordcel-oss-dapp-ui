@@ -1,4 +1,4 @@
-![Opengraph](https://user-images.githubusercontent.com/61944452/162042925-94ba8e2a-65c3-4edb-a47a-66793d8a42be.png)
+![Opengraph](https://user-images.githubusercontent.com/61944452/162560018-f7397679-60b7-437e-8260-26f44502381c.png)
 
 ___
 
