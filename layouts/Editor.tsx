@@ -25,16 +25,38 @@ import ImageGallery from '@rodrigoodhin/editorjs-image-gallery';
 // @ts-expect-error
 import SimpleImage from "@editorjs/simple-image";
 import Blockquote from "../external/blockquote";
+import { useEffect } from "react"
 
 interface Editor {
   handleInstance: (instance: any) => void;
   blocks?: any[]
 }
 
+const allowLinks = (
+  element: any
+) => {
+  try {
+    Object.defineProperty(element, 'sanitize',  {
+      get() {
+        return {
+          text: { a: true },
+          items: { a: true }
+        };
+      }
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 const CustomEditor = ({
   handleInstance,
   blocks
 }: Editor) => {
+  useEffect(() => {
+    const toAllowLinks = [Paragraph, List, Header, InlineCode, Quote, Blockquote, Embed];
+    toAllowLinks.forEach((link) => allowLinks(link));
+  }, [])
   const EDITOR_JS_TOOLS = {
     embed: Embed,
     header: Header,

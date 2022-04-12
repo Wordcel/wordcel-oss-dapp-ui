@@ -13,7 +13,7 @@ body {
 }
 
 html {
-  font-size: 62.5%;
+  font-size: 62.5%; // setting the font size to 10px
   @media only screen and (max-width: 1280px) {
     font-size: 55%;
   }
@@ -143,7 +143,7 @@ a {
 
 .reader-max-width {
   max-width: 69rem;
-  padding-bottom: 18rem;
+  padding-bottom: 8rem;
 }
 
 .reader-paragraph {
@@ -182,4 +182,22 @@ a {
   & img {
     max-width: 100%;
   }
+  & figcaption {
+    font-size: 1.6rem;
+    opacity: 0.5;
+    font-family: 'Spectral', 'Inter', sans-serif, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue;
+  }
+}
+
+.reader-blockquote {
+  margin: 0rem;
+  font-family: 'Spectral', 'Inter', sans-serif, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+  Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue;
+  font-style: italic;
+  font-size: 2.1rem;
+  font-weight: 500;
+  opacity: 0.5;
+  padding-left: 2rem;
+  border-left: 0.5rem solid var(--text-color);
 }

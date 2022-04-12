@@ -19,6 +19,9 @@ const Reader = ({
     },
     embed: {
       className: "reader-embed"
+    },
+    quote: {
+      className: "reader-blockquote"
     }
   }
   return (
