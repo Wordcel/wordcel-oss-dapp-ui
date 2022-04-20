@@ -35,6 +35,7 @@
     "axios": "^0.26.1",
     "editorjs-blocks-react-renderer": "^1.2.4",
     "next": "12.1.0",
+    "nft.storage": "^6.2.0",
     "nprogress": "^0.2.0",
     "prisma": "^3.11.0",
     "react": "17.0.2",
