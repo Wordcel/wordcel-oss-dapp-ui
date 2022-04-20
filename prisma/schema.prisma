@@ -17,6 +17,11 @@ model User {
   public_key String
   nft_key String
   blog_name String
+  bio String?
+  twitter String?
+  discord String?
+  image_url String?
+  banner_url String?
   articles Article[]
 }
 

@@ -17,4 +17,4 @@ export const getServerSideProps: GetServerSideProps = async (
 ) => {
   const props = await getArticlesServerSide(context);
   return props;
-}
+};

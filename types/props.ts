@@ -5,6 +5,11 @@ export interface User {
   public_key: string;
   nft_key: string;
   blog_name: string;
+  bio?: string;
+  twitter?: string;
+  discord?: string;
+  image_url?: string;
+  banner_url?: string;
 }
 
 export interface Article {
@@ -22,6 +27,7 @@ export interface Article {
 
 export interface GetUserServerSide {
   user?: User;
+  articles?: Article[];
 }
 
 export interface GetArticlesServerSide {

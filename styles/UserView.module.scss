@@ -1,0 +1,32 @@
+.profileContainer {
+  position: relative;
+}
+
+.banner {
+  height: 17.5rem;
+  width: 100%;
+  & img {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.profilePadding {
+  padding: 0rem 3.5rem;
+}
+
+.profile {
+  position: relative;
+  top: -5rem;
+  max-width: 85.6rem;
+  margin: 0 auto;
+  padding-bottom: 2.5rem;
+  border-bottom: 0.1rem solid rgba(0, 0, 0, 0.13);
+}
+
+.avatar {
+  width: 9rem;
+  height: 9rem;
+  border-radius: 9rem;
+  object-fit: cover;
+}

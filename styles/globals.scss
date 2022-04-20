@@ -6,6 +6,7 @@
   --inverse-color: hsl(0, 0%, 100%);
   --btn-color: hsl(0, 0%, 7%);
   --nav-border: hsl(0, 0%, 91%);
+  --gray-text-color: hsl(0, 0%, 75%);
 }
 
 body {
@@ -68,6 +69,10 @@ a {
   color: var(--text-color);
 }
 
+.heading.sm {
+  font-size: 2.4rem;
+}
+
 .heading.center {
   text-align: center;
 }
@@ -76,6 +81,13 @@ a {
   font-weight: 600;
   font-size: 2.6rem;
   color: var(--text-color);
+}
+
+.light-sub-heading {
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 2.4rem;
+  color: var(--gray-text-color);
 }
 
 .subheading.sm {
@@ -95,6 +107,10 @@ a {
 
 .normal-text.sm {
   font-size: 1.6rem;
+}
+
+.normal-text.thin {
+  font-weight: 300;
 }
 
 .main-btn {
@@ -131,10 +147,17 @@ a {
   margin: 0rem;
 }
 
+.nm-bottom {
+  margin-bottom: 0rem;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
 .pointer {
   cursor: pointer;
 }
-
 
 // fixes
 
@@ -201,4 +224,9 @@ a {
   opacity: 0.5;
   padding-left: 2rem;
   border-left: 0.5rem solid var(--text-color);
+}
+
+.wide-max-width {
+  max-width: 85.6rem;
+  width: 100%;
 }
