@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import styles from '@/styles/Editor.module.scss';
 import { publishPost } from '@/components/publishArticle';
@@ -8,7 +9,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useCallback, useRef, useState } from 'react';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
-import toast from 'react-hot-toast';
 import { getUserSignature } from '@/components/signMessage';
 
 
@@ -21,7 +21,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
   const Editor = dynamic(() => import('@/layouts/Editor'), {
     ssr: false
   });
-  let editorInstance = useRef<EditorCore | null>(null);
+  const editorInstance = useRef<EditorCore | null>(null);
 
   const handleInitialize = useCallback((instance) => {
     editorInstance.current = instance
