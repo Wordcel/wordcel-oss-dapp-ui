@@ -88,8 +88,8 @@ export async function publishPost(
 
   toast('Uploading to Arweave...');
   // const metadataURI = await uploadArweave(data);
-  const metadataURI = await uploadNFTStorage(data);
-  // const metadataURI = await uploadBundle(data);
+  // const metadataURI = await uploadNFTStorage(data);
+  const metadataURI = await uploadBundle(data);
 
   if (!metadataURI) return;
   console.log(`Arweave URI: ${metadataURI}`);
