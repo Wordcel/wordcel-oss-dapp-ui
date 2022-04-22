@@ -5,9 +5,10 @@ import { PublishArticleRequest } from '@/types/api';
 import { SystemProgram, PublicKey } from '@solana/web3.js';
 import {
   ContentPayload,
-  uploadArweave,
-  uploadNFTStorage
+  // uploadArweave,
+  // uploadNFTStorage
 } from '@/components/upload';
+import { WalletContextState } from '@solana/wallet-adapter-react';
 import { uploadBundle } from '@/components/uploadBundlr';
 import { ENDPOINT } from './config/constants';
 
@@ -53,45 +54,52 @@ async function createPublicationAccount(
 export async function publishPost(
   data: ContentPayload,
   wallet: anchor.Wallet,
+  adapterWallet: WalletContextState,
   signature: Uint8Array,
   id?: string | number,
   getResponse?: boolean
 ) {
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
   const publicationSeeds = [Buffer.from("publication"), wallet.publicKey.toBuffer()];
-
   const existingPublication = await getPublicationAccount(
     publicationSeeds,
     program
   );
   const publicationKey = existingPublication[0];
   let mutPublicationAccount;
-
+  toast.dismiss();
   try {
     const publicationAccount = await program.account.publication.fetch(publicationKey);
     console.log(publicationAccount);
     mutPublicationAccount = publicationAccount;
   } catch (e) {
-    console.log('Publication account does not exist');
+    toast('Publication account does not exist');
     const newPublicationAccount = await createPublicationAccount(
       publicationSeeds,
       wallet.publicKey,
       program
     );
-    if (!newPublicationAccount) return;
+    if (!newPublicationAccount) {
+      throw new Error(`Publication account creation failed`);
+    };
     mutPublicationAccount = newPublicationAccount;
     console.log(newPublicationAccount);
   }
 
   const postSeeds = [Buffer.from("post"), publicationKey.toBuffer(), new anchor.BN(mutPublicationAccount.postNonce).toArrayLike(Buffer)];
   const [postAccount, postBump] = await anchor.web3.PublicKey.findProgramAddress(postSeeds, program.programId);
-
-  toast('Uploading to Arweave...');
+  toast.loading('Uploading');
   // const metadataURI = await uploadArweave(data);
-  const metadataURI = await uploadNFTStorage(data);
-  // const metadataURI = await uploadBundle(data);
+  // const metadataURI = await uploadNFTStorage(data);
+  const metadataURI = await uploadBundle(
+    data,
+    adapterWallet
+  );
+  toast.dismiss();
 
-  if (!metadataURI) return;
+  if (!metadataURI) {
+    throw new Error('Upload failed');
+  };
   console.log(`Arweave URI: ${metadataURI}`);
 
   const tx = program.transaction.createPost(postBump, metadataURI, {
@@ -108,8 +116,17 @@ export async function publishPost(
   const signedTx = await wallet.signTransaction(tx);
   try {
     const txid = await connection.sendRawTransaction(signedTx.serialize());
-    if (!txid) return;
-    const verified = await connection.confirmTransaction(txid, preflightCommitment);
+    if (!txid) {
+      throw new Error('Transaction failed');
+    };
+    const confirmation = connection.confirmTransaction(txid, preflightCommitment);
+    toast.promise(confirmation, {
+      loading: 'Confirming Transaction',
+      success: 'Article Published',
+      error: 'Transaction Failed'
+    });
+    const verified = await confirmation;
+    toast.loading('Caching');
     const saved = await publishToServer({
       id: id?.toString(),
       arweave_url: metadataURI,
@@ -117,6 +134,7 @@ export async function publishPost(
       signature: signature,
       proof_of_post: postAccount.toBase58(),
     });
+    toast.dismiss();
     if (verified.value.err === null && saved && !getResponse) return txid;
     if (verified.value.err === null && saved && getResponse) return saved;
   }

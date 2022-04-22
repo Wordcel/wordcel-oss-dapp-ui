@@ -8,8 +8,6 @@ import {
   verifyMethod,
   authenticate
 } from '@/lib/server';
-import { sanitizeHtml } from '@/lib/sanitize';
-import { getBlocks } from '@/components/getArticleBlocks';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const allowed = verifyMethod(req, res, 'POST');
@@ -62,13 +60,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     });
 
-    const blocks_updated = await updateBlocks(arweave_url);
-
     res.status(200).json({
       success: 'Article updated',
       article: updated
     });
-
 
   } catch (e) {
     console.error('Request error', e);
@@ -77,39 +72,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
   }
 }
-
-async function updateBlocks(
-  arweave_url: string
-) {
-  const blocks = await getBlocks(arweave_url);
-  const headings = blocks.filter((block: any) => block.type === 'header');
-  const text_content = blocks.filter((block: any) => block.type === 'paragraph');
-  const image_content = blocks.filter((block: any) => block.type === 'image');
-  const title = headings[0]?.data.text || text_content[0]?.data.text|| 'Untitled Article';
-  const description = text_content[0]?.data.text || 'No description';
-  const image_url = image_content[0]?.data.url || '';
-  const string_blocks = JSON.stringify(blocks.slice(0, 3));
-  if (!blocks) return;
-  const existing_db_blocks = await prisma.block.findFirst({
-    where: {
-      article: { arweave_url }
-    }
-  });
-  if (!existing_db_blocks) return;
-  const article_update = await prisma.article.update({
-    where: {
-      id: existing_db_blocks.article_id
-    },
-    data: {
-      title: sanitizeHtml(title) || '',
-      description: sanitizeHtml(description) || '',
-      image_url: image_url || '',
-    }
-  });
-  const updated = await prisma.block.update({
-    where: { id: existing_db_blocks.id },
-    data: {
-      data: string_blocks
-    }
-  });
-};

@@ -11,12 +11,12 @@ import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { getUserSignature } from '@/components/signMessage';
 
-
 export const EditArticle = (props: GetArticleServerSide) => {
   const router = useRouter();
   const [blocks] = useState<any>(JSON.parse(props.blocks || ''));
   const { publicKey, signMessage } = useWallet();
   const anchorWallet = useAnchorWallet();
+  const wallet = useWallet();
 
   const Editor = dynamic(() => import('@/layouts/Editor'), {
     ssr: false
@@ -30,6 +30,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
   const handlePublish = async () => {
     if (!anchorWallet || !props.article) return;
     const savedContent = await editorInstance.current?.save();
+    toast.loading('Saving article...');
     if (!savedContent || !signMessage) return;
     const signature = await getUserSignature(signMessage);
     if (!signature) return;
@@ -37,17 +38,14 @@ export const EditArticle = (props: GetArticleServerSide) => {
       content: { blocks: savedContent.blocks },
       type: 'blocks'
     };
+    toast.dismiss();
     const postTransaction = publishPost(
       payload,
       anchorWallet as any,
+      wallet,
       signature,
       props.article?.id
     );
-    toast.promise(postTransaction, {
-      loading: 'Publishing Article',
-      success: 'Article Published Successfully!',
-      error: 'Publishing Failed!'
-    });
     const txid = await postTransaction;
     if (!txid) return;
     console.log(`Transaction ID: ${txid}`);
