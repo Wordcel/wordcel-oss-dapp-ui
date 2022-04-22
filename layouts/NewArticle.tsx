@@ -15,6 +15,7 @@ export const NewArticle = () => {
   const router = useRouter();
   const { signMessage } = useWallet();
   const anchorWallet = useAnchorWallet();
+  const wallet = useWallet();
 
   const Editor = dynamic(() => import('@/layouts/Editor'), {
     ssr: false
@@ -39,6 +40,7 @@ export const NewArticle = () => {
     const postTransaction = publishPost(
       payload,
       anchorWallet as any,
+      wallet,
       signature,
       undefined,
       true
