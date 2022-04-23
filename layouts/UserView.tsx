@@ -4,6 +4,7 @@ import styles from '@/styles/UserView.module.scss';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from '@/layouts/Navbar';
 import { GetUserServerSide } from '@/types/props';
+import { ArticlePreview } from './ArticlePreview';
 
 // Images
 import defaultBanner from '@/images/gradients/user-default-banner.png';
@@ -18,9 +19,10 @@ export const UserView = (props: GetUserServerSide) => {
     .concat('....')
     .concat(props.user?.public_key.substring(props.user?.public_key.length - 4));
 
-    return (
-      <>
-        {props.user && (
+  return (
+    <div>
+      {props.user && (
+        <>
           <div>
             <DefaultHead title={SEOTitle} description={Bio} />
             <StaticNavbar />
@@ -38,15 +40,25 @@ export const UserView = (props: GetUserServerSide) => {
                   <p className="heading sm nm-bottom">{Name}</p>
                   <p className="light-sub-heading nm mt-1">{TrimmedPublicKey}</p>
                   {Bio && (
-                    <p className="normal-text thin">{Bio}</p>
+                    <p className="normal-text">{Bio}</p>
                   )}
                   <p></p>
                 </div>
               </div>
             </div>
           </div>
-        )}
-        {/* Add a 404 component here, whenever done */}
-    </>
+          <div className={styles.articles}>
+            {props.articles && props.articles.map((article) => article.on_chain && (
+              <ArticlePreview
+                key={article.slug}
+                article={article}
+                user={props.user}
+              />
+            ))}
+          </div>
+        </>
+      )}
+      {/* Add a 404 component here, whenever done */}
+    </div>
   );
 };

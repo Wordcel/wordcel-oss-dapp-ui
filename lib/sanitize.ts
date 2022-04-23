@@ -17,4 +17,13 @@ export const sanitizeHtml = (
   });
   const clean = cleanArray.filter((word) => word !== '');
   return clean.join(' ');
-}
+};
+
+export const shortenSentence = (
+  sentence: string
+) => {
+  if (sentence.length < 220) return sentence;
+  const shortened = sentence.substring(0, 220)
+    .concat('...');
+  return shortened;
+};

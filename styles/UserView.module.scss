@@ -30,3 +30,41 @@
   border-radius: 9rem;
   object-fit: cover;
 }
+
+.articles {
+  padding: 0rem 3.5rem;
+}
+
+.articleContainer {
+  max-width: 85.6rem;
+  margin: 0 auto;
+  &:not(:first-child) {
+    padding: 6rem 0rem;
+  }
+  &:first-child {
+    padding-bottom: 6rem;
+  }
+  &:not(:last-child) {
+    border-bottom: 0.1rem solid rgba(0, 0, 0, 0.13);
+  }
+}
+
+.articleImage {
+  width: 100%;
+  object-fit: cover;
+  @media only screen and (min-width: 768px) {
+    height: 31.3rem;
+  }
+}
+
+.articleDescription {
+  @media only screen and (min-width: 768px) {
+    display: flex;
+    align-items: center;
+    & > p {
+      &:not(:first-child) {
+        margin-left: 1.5rem;
+      }
+    }
+  }
+}
