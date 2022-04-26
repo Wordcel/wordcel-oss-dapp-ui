@@ -20,10 +20,11 @@ export const sanitizeHtml = (
 };
 
 export const shortenSentence = (
-  sentence: string
+  sentence: string,
+  length = 220
 ) => {
-  if (sentence.length < 220) return sentence;
-  const shortened = sentence.substring(0, 220)
+  if (sentence.length < length) return sentence;
+  const shortened = sentence.substring(0, length)
     .concat('...');
   return shortened;
 };

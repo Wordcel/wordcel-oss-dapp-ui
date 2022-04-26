@@ -5,6 +5,7 @@ import { DefaultHead } from "./DefaultHead";
 import { StaticNavbar } from "./Navbar";
 import { Article, GetArticlesServerSide } from "@/types/props";
 import { useState, useEffect } from "react";
+import { shortenSentence } from "@/lib/sanitize";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
 
@@ -74,7 +75,10 @@ export const ImportArticles = ({
                 </div>
                 <div className={styles.articleContent}>
                   <p className="subheading sm">{article.title}</p>
-                  <p className="normal-text">{article.description}</p>
+                  <p className="normal-text">{shortenSentence(
+                    article.description,
+                    80
+                  )}</p>
                 </div>
               </div>
             ))}
