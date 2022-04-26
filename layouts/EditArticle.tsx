@@ -30,7 +30,6 @@ export const EditArticle = (props: GetArticleServerSide) => {
   const handlePublish = async () => {
     if (!anchorWallet || !props.article) return;
     const savedContent = await editorInstance.current?.save();
-    toast.loading('Saving article...');
     if (!savedContent || !signMessage) return;
     const signature = await getUserSignature(signMessage);
     if (!signature) return;
@@ -38,7 +37,6 @@ export const EditArticle = (props: GetArticleServerSide) => {
       content: { blocks: savedContent.blocks },
       type: 'blocks'
     };
-    toast.dismiss();
     const postTransaction = publishPost(
       payload,
       anchorWallet as any,

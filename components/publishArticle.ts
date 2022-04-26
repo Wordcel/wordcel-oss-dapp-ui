@@ -96,10 +96,10 @@ export async function publishPost(
     adapterWallet
   );
   toast.dismiss();
-
   if (!metadataURI) {
     throw new Error('Upload failed');
   };
+  toast.success('Uploaded');
   console.log(`Arweave URI: ${metadataURI}`);
 
   const tx = program.transaction.createPost(postBump, metadataURI, {
@@ -126,7 +126,7 @@ export async function publishPost(
       error: 'Transaction Failed'
     });
     const verified = await confirmation;
-    toast.loading('Caching');
+    toast.loading('Saving');
     const saved = await publishToServer({
       id: id?.toString(),
       arweave_url: metadataURI,
