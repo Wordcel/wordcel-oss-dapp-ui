@@ -1,0 +1,9 @@
+.authorBox {
+  display: flex;
+  position: relative;
+  width: 100%;
+  min-height: 24rem;
+  margin-top: 7rem;
+  border-radius: 1.6rem;
+  background-color: var(--author-box);
+}

@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
-import styles from '@/styles/Editor.module.scss';
+import styles from '@/styles/Reader.module.scss';
+import editorStyles from '@/styles/Editor.module.scss';
 import { GetArticleServerSide } from '@/types/props';
 import { useState } from 'react';
 import { DefaultHead } from './DefaultHead';
@@ -24,13 +25,14 @@ export const ViewArticle = (props: GetArticleServerSide) => {
           account: props.article?.proof_of_post
         }}
       />
-      <div className={styles.container}>
+      <div className={editorStyles.container}>
         <div
           style={{ display: 'flex', justifyContent: 'center' }}
-          className={styles.editorMaxWidth}>
+          className={editorStyles.editorMaxWidth}>
           {typeof window !== 'undefined' && (
             <div className="reader-max-width">
               <Reader blocks={blocks} />
+              <div className={styles.authorBox}></div>
             </div>
           )}
         </div>
