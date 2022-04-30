@@ -45,14 +45,25 @@
   justify-content: center;
   padding: 2rem 3.5rem;
   border: 0.15rem solid var(--nav-border);
+  @media only screen and (max-width: 480px) {
+    flex-direction: column;
+  }
 }
 
 .proofOfPost {
   display: flex;
   align-items: center;
   justify-content: center;
+  @media only screen and (max-width: 480px) {
+    margin-top: 2rem;
+  }
 }
 
 .arweaveBadge {
   height: 4.2rem;
+}
+
+.popBadge {
+  height: 4.2rem;
+  margin-right: 1.5rem;
 }

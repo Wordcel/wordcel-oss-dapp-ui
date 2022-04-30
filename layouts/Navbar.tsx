@@ -4,6 +4,7 @@ import logo from '@/images/logo.svg';
 import styles from '@/styles/Navbar.module.scss';
 import publishButton from '@/images/elements/publish.svg';
 import arweaveBadge from '@/images/elements/arweave.svg';
+import pop_image from '@/images/elements/proof-of-post.svg';
 import { useState } from 'react';
 import { ConnectWallet } from '@/layouts/Wallet';
 import { CLUSTER } from '@/components/config/constants';
@@ -70,7 +71,11 @@ export const StaticNavbar = ({
             href={`https://solscan.io/account/${proof_of_post.account}?cluster=${CLUSTER}`}
             target="_blank"
             rel="noopener noreferrer">
-              <button className="main-btn sm pop">Proof of Post</button>
+              <img
+                className={styles.popBadge}
+                src={pop_image.src}
+                alt="Proof of Post"
+              />
           </a>
           <a href={proof_of_post.arweave_url} target="_blank" rel="noopener noreferrer">
             <img
