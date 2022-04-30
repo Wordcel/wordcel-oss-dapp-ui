@@ -40,4 +40,5 @@ export interface GetArticleServerSide {
   user_public_key?: string;
   username: string;
   blocks?: string;
+  user?: User;
 }

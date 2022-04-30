@@ -6,4 +6,12 @@
   margin-top: 7rem;
   border-radius: 1.6rem;
   background-color: var(--author-box);
+  padding: 4rem 2.7rem;
+  align-items: center;
+}
+
+.authorBadge {
+  position: absolute;
+  top: -1.25rem;
+  left: 5%;
 }

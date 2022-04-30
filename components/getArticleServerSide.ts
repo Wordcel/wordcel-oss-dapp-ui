@@ -51,7 +51,8 @@ export const getArticleServerSide = async (context: any) => {
       article,
       user_public_key: user.public_key,
       username: user.username,
-      blocks
+      blocks,
+      user
     }
   }
 }
