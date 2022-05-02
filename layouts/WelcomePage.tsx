@@ -1,60 +1,65 @@
-import Image from 'next/image';
-import styles from '@/styles/Welcome.module.scss';
-import verifiedElement from '@/images/elements/verified.svg';
-import importGradient from '@/images/elements/welcome-gradient.png'
-import { StaticNavbar } from "./Navbar";
-import { DefaultHead } from "./DefaultHead";
-import { GetUserServerSide } from '@/types/props';
-import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useWallet } from '@solana/wallet-adapter-react';
+import { GetArticlesServerSide } from '@/types/props';
+import { DefaultHead } from './DefaultHead';
+import { StaticNavbar } from './Navbar';
+import { DefaultBox } from '@/elements/Box';
+import publishNew from '@/images/elements/publish-new-article.svg';
+import importArticles from '@/images/elements/import-articles.svg';
+import styles from '@/styles/Welcome.module.scss';
+import { getTrimmedPublicKey } from '@/components/getTrimmedPublicKey';
 
-export const WelcomePage = ({ user }: GetUserServerSide) => {
-  const firstName = user?.name.split(' ')[0] || '';
-  const blog_name = user?.blog_name || '';
+export const WelcomePage = (
+  props: GetArticlesServerSide
+) => {
   const router = useRouter();
-  const { publicKey } = useWallet();
-
-  useEffect(() => {
-    if (!publicKey || publicKey.toString() !== router.query.publicKey) {
-      router.push('/')
-    }
-  }, [publicKey, router]);
 
   return (
-    <div>
-      <DefaultHead />
+    <div className="max-width">
+      <DefaultHead title={`Welcome ${props.user?.name}`} />
       <StaticNavbar />
-      <div className={styles.container}>
-        <div className={styles.content}>
-          <div className={styles.verified}>
-            <Image src={verifiedElement} alt="" />
-          </div>
-          <h1 className="heading center">Welcome to Wordcel <br />{firstName}</h1>
-          <p
-            style={{
-              maxWidth: '45rem',
-              textAlign: 'center',
-              marginTop: '0rem'
-            }}
-            className="normal-text">Wordcel enables anyone to publish
-            rich articles on the blockchain that are censorship resistant
-          </p>
-          <div className={styles.importBox}>
-            <div className={styles.importGradient}>
-              <Image alt="" src={importGradient} />
+      <div className="main-padding">
+
+        <div className={styles.heroSection}>
+          <DefaultBox>
+            <div
+              className="flex align-items-center justify-content-center height-100 pointer"
+              onClick={() => router.push('/new')}>
+              <img className={styles.publishImage} src={publishNew.src} alt="Publish New Article" />
             </div>
-            <p className="subheading nm">Import articles</p>
-            <p
-              style={{ marginTop: '1rem' }}
-              className="subheading nm light">Import articles from {blog_name}?</p>
-            <button
-              onClick={() => router.push(`/import/${user?.public_key}`)}
-              style={{ marginTop: '2.8rem' }}
-              className="main-btn">Import Articles</button>
-          </div>
+          </DefaultBox>
+          <DefaultBox>
+            <div className="flex column align-items-start justify-space-between height-100">
+              <img src={importArticles.src} alt="Import Articles" />
+              <input type="text" disabled={true} placeholder="Article / Blog URL" className="gray-input" />
+              <button
+                onClick={() => router.push(`/import/${props.user?.public_key}`)}
+                style={{
+                  height: '4.2rem',
+                  fontSize: '1.6rem'
+                }} className="main-btn">Import</button>
+            </div>
+          </DefaultBox>
+          <DefaultBox>
+            <div className="flex column align-items-start justify-space-between height-100">
+              <div className="flex">
+                <img className="avatar sm" src={props.user?.image_url} alt="Avatar" />
+                <div>
+                  <p className="subheading xs nm ml-2 mt-1">{props.user?.name}</p>
+                  <p className="subheading xs nm ml-2 light">{getTrimmedPublicKey(
+                    props.user?.public_key || ''
+                  )}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => router.push(`/${props.user?.username}`)}
+                style={{
+                  height: '4.2rem',
+                  fontSize: '1.6rem'
+                }} className="gray-btn mt-1-5">View Profile</button>
+            </div>
+          </DefaultBox>
         </div>
       </div>
     </div>
-  )
+  );
 };

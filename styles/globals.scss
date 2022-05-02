@@ -5,8 +5,14 @@
   --btn-color: hsl(0, 0%, 7%);
   --nav-border: hsl(0, 0%, 91%);
   --gray-text-color: hsl(0, 0%, 75%);
+  --gray-button-text: hsla(0, 0%, 7%, 0.51);
+  --gray-button-bg: hsla(0, 0%, 7%, 0.07);
   --author-box: hsl(0, 0%, 96%);
   --author-text-bg: hsl(0, 0%, 80%);
+  --input-text: hsl(0, 0%, 88%);
+  --input-border: hsl(0, 0%, 91%);
+  --input-background: hsla(0, 0%, 96%, 0.02);
+
 }
 
 body {
@@ -102,6 +108,9 @@ a {
 .subheading.sm {
   font-size: 2.4rem;
 }
+.subheading.xs {
+  font-size: 1.6rem;
+}
 
 .subheading.light {
   opacity: 0.29;
@@ -141,6 +150,34 @@ a {
   &:hover {
     opacity: 0.85;
   }
+}
+
+.gray-btn {
+  width: 100%;
+  height: 6.1rem;
+  border-radius: 0.8rem;
+  background-color: var(--gray-button-bg);
+  color: var(--gray-button-text);
+  font-weight: 600;
+  font-size: 2rem;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+
+.avatar {
+  width: 9rem;
+  height: 9rem;
+  border-radius: 9rem;
+  object-fit: cover;
+}
+.avatar.sm {
+  width: 5.6rem;
+  height: 5.6rem;
 }
 
 .main-btn.sm {
@@ -185,6 +222,9 @@ a {
 .mt-1 {
   margin-top: 1rem;
 }
+.mt-1-5 {
+  margin-top: 1.5rem;
+}
 .ml-1 {
   margin-left: 1rem;
 }
@@ -204,13 +244,25 @@ a {
 .flex {
   display: flex;
 }
+.flex.column {
+  flex-direction: column;
+}
 
+.align-items-start {
+  align-items: flex-start;
+}
 .align-items-center {
   align-items: center;
 }
 
 .justify-content-center {
   justify-content: center;
+}
+.justify-content-start {
+  justify-content: flex-start;
+}
+.justify-space-between {
+  justify-content: space-between;
 }
 
 .pointer {
@@ -291,4 +343,39 @@ a {
 .wide-max-width {
   max-width: 85.6rem;
   width: 100%;
+}
+
+.main-padding {
+  padding: 3.5rem;
+  @media screen and (max-width: 768px) {
+    padding: 2rem;
+  }
+  @media screen and (max-width: 576px) {
+    padding: 1.5rem;
+  }
+}
+
+.gray-input {
+  background: var(--input-background);
+  border: 1px solid var(--input-border);
+  box-sizing: border-box;
+  border-radius: 0.8rem;
+  width: 100%;
+  height: 4.2rem;
+  outline: none;
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 1.9rem;
+  font-family: inherit;
+  &::placeholder {
+    text-align: center;
+    color: var(--input-text);
+  }
+  &:placeholder {
+    text-align: center;
+    color: var(--input-text);
+  }
+  &:disabled {
+    cursor: not-allowed;
+  }
 }

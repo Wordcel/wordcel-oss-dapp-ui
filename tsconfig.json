@@ -12,6 +12,9 @@
       "@/lib/*": [
         "lib/*"
       ],
+      "@/elements/*": [
+        "elements/*"
+      ],
       "@/types/*": [
         "types/*"
       ],

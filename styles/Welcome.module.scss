@@ -1,43 +1,12 @@
-.container {
-  margin-top: 10rem;
-  width: 100%;
-  display: flex;
-  align-items: center;
+.heroSection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(32rem, 32rem));
+  margin-top: 3rem;
+  grid-gap: 2rem;
   justify-content: center;
-  padding: 0rem 3.5rem;
 }
 
-.content {
-  max-width: 54.5rem;
+.publishImage {
+  max-width: 18rem;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.verified {
-  width: 22.5rem !important;
-}
-
-.importBox {
-  position: relative;
-  width: 100%;
-  height: 21.2rem;
-  padding: 2rem 3rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  box-shadow: 0px 0.4rem 1.4rem rgba(0, 0, 0, 0.08);
-  background: var(--inverse-color);
-  margin: 6rem 0rem;
-}
-
-.importGradient {
-  position: absolute;
-  top: -35%;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
 }
