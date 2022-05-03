@@ -1,19 +1,21 @@
 import { useRouter } from 'next/router';
-import { GetArticlesServerSide } from '@/types/props';
+import { Article, GetArticlesServerSide } from '@/types/props';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { DefaultBox } from '@/elements/Box';
 import { getTrimmedPublicKey } from '@/components/getTrimmedPublicKey';
+import { VerticalArticlePreview } from './ArticlePreview';
+import noArticles from '@/images/elements/no-articles.svg';
 import publishNew from '@/images/elements/publish-new-article.svg';
 import importArticles from '@/images/elements/import-articles.svg';
 import styles from '@/styles/Welcome.module.scss';
-import { VerticalArticlePreview } from './ArticlePreview';
 
 export const WelcomePage = (
   props: GetArticlesServerSide
 ) => {
   const router = useRouter();
-  const onChainArticles = props.articles ? props.articles.filter((article) => article.on_chain) : [];
+  // const onChainArticles = props.articles ? props.articles.filter((article) => article.on_chain) : [];
+  const onChainArticles: Article[] = [];
   return (
     <div className="max-width">
       <DefaultHead title={`Welcome ${props.user?.name}`} />
@@ -77,6 +79,11 @@ export const WelcomePage = (
               user={props.user}
             />
           ))}
+          {onChainArticles.length === 0 && (
+            <div className="flex justify-content-center mt-12">
+              <img className={styles.noArticlesImage} src={noArticles.src} alt="No published articles" />
+            </div>
+          )}
         </div>
       </div>
     </div>
