@@ -39,7 +39,7 @@ export const getUserServerSide = async (
     return {
       props: {
         user,
-        articles
+        articles: JSON.parse(JSON.stringify(articles))
       }
     }
   }

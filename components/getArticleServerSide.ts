@@ -48,7 +48,7 @@ export const getArticleServerSide = async (context: any) => {
 
   return {
     props: {
-      article,
+      article: JSON.parse(JSON.stringify(article)),
       user_public_key: user.public_key,
       username: user.username,
       blocks,

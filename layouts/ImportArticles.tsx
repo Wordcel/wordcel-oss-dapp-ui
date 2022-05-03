@@ -16,17 +16,14 @@ export const ImportArticles = ({
 }: GetArticlesServerSide) => {
   const router = useRouter();
   const [selected, setSelectedArticle] = useState<Article>();
-  const [offChainArticles, setOffChainArticles] = useState<Article[]>([]);
+  const [offChainArticles] = useState<Article[]>(
+    articles ? articles.filter((article) => !article.on_chain) : []
+  );
   const { publicKey } = useWallet();
 
   useEffect(() => {
     if (!publicKey || publicKey.toString() !== router.query.publicKey) {
       router.push('/')
-    }
-    if (articles) {
-      setOffChainArticles(
-        articles.filter((article) => !article.on_chain)
-      )
     }
   }, [publicKey, router, articles]);
 

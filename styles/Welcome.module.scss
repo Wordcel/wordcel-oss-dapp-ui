@@ -10,3 +10,24 @@
   max-width: 18rem;
   width: 100%;
 }
+
+.heading {
+  display: flex;
+  align-items: center;
+  max-width: 102rem;
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 0.1rem solid rgba(186, 186, 186, 0.22);
+  @media only screen and (max-width: 940px) {
+    justify-content: center;
+  }
+}
+
+.articles {
+  max-width: 102rem;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 12rem;
+}

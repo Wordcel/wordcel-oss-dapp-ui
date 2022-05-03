@@ -3,16 +3,17 @@ import { GetArticlesServerSide } from '@/types/props';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { DefaultBox } from '@/elements/Box';
+import { getTrimmedPublicKey } from '@/components/getTrimmedPublicKey';
 import publishNew from '@/images/elements/publish-new-article.svg';
 import importArticles from '@/images/elements/import-articles.svg';
 import styles from '@/styles/Welcome.module.scss';
-import { getTrimmedPublicKey } from '@/components/getTrimmedPublicKey';
+import { VerticalArticlePreview } from './ArticlePreview';
 
 export const WelcomePage = (
   props: GetArticlesServerSide
 ) => {
   const router = useRouter();
-  console.log(props)
+  const onChainArticles = props.articles ? props.articles.filter((article) => article.on_chain) : [];
   return (
     <div className="max-width">
       <DefaultHead title={`Welcome ${props.user?.name}`} />
@@ -57,6 +58,25 @@ export const WelcomePage = (
                 }} className="gray-btn mt-1-5">View Profile</button>
             </div>
           </DefaultBox>
+        </div>
+        <div className={styles.heading}>
+          <p className="subheading mxs bold">
+            Your Articles
+          </p>
+          <svg
+            style={{ marginLeft: '1.5rem' }} width={8} height={8} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+            <circle cx={4} cy={4} r={4} fill="#A2A2A2" />
+          </svg>
+          <p className="ml-1-5 subheading light mxs bold">{onChainArticles.length}</p>
+        </div>
+        <div className={styles.articles}>
+          {onChainArticles.map((article) => (
+            <VerticalArticlePreview
+              key={article.proof_of_post}
+              article={article}
+              user={props.user}
+            />
+          ))}
         </div>
       </div>
     </div>
