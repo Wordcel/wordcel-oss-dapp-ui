@@ -21,7 +21,7 @@ export const getArticlesServerSide = async (context: any) => {
   })
   return {
     props: {
-      articles,
+      articles: JSON.parse(JSON.stringify(articles)),
       user
     }
   }

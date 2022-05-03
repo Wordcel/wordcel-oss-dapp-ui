@@ -12,13 +12,12 @@ export const WelcomePage = (
   props: GetArticlesServerSide
 ) => {
   const router = useRouter();
-
+  console.log(props)
   return (
     <div className="max-width">
       <DefaultHead title={`Welcome ${props.user?.name}`} />
       <StaticNavbar />
       <div className="main-padding">
-
         <div className={styles.heroSection}>
           <DefaultBox>
             <div
