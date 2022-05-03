@@ -42,7 +42,9 @@ export const EditArticle = (props: GetArticleServerSide) => {
       anchorWallet as any,
       wallet,
       signature,
-      props.article?.id
+      props.article?.id,
+      undefined,
+      props.article.proof_of_post
     );
     const txid = await postTransaction;
     if (!txid) return;

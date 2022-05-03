@@ -57,7 +57,8 @@ export async function publishPost(
   adapterWallet: WalletContextState,
   signature: Uint8Array,
   id?: string | number,
-  getResponse?: boolean
+  getResponse?: boolean,
+  published_post = ''
 ) {
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
   const publicationSeeds = [Buffer.from("publication"), wallet.publicKey.toBuffer()];
@@ -101,23 +102,35 @@ export async function publishPost(
   };
   toast.success('Uploaded');
   console.log(`Arweave URI: ${metadataURI}`);
-
-  const tx = program.transaction.createPost(postBump, metadataURI, {
-    accounts: {
-      post: postAccount,
-      publication: publicationKey,
-      authority: wallet.publicKey,
-      systemProgram: SystemProgram.programId
-    },
-  });
-  const { blockhash } = await connection.getRecentBlockhash();
-  tx.recentBlockhash = blockhash;
-  tx.feePayer = wallet.publicKey;
-  const signedTx = await wallet.signTransaction(tx);
+  let txid;
+  if (published_post) {
+    txid = await program.rpc.updatePost(metadataURI, {
+      accounts: {
+        post: new PublicKey(published_post),
+        publication: publicationKey,
+        authority: wallet.publicKey,
+        systemProgram: SystemProgram.programId,
+      }
+    });
+    console.log(`update tx: ${txid}`);
+  } else {
+    const tx = program.transaction.createPost(postBump, metadataURI, {
+      accounts: {
+        post: postAccount,
+        publication: publicationKey,
+        authority: wallet.publicKey,
+        systemProgram: SystemProgram.programId
+      },
+    });
+    const { blockhash } = await connection.getRecentBlockhash();
+    tx.recentBlockhash = blockhash;
+    tx.feePayer = wallet.publicKey;
+    const signedTx = await wallet.signTransaction(tx);
+    txid = await connection.sendRawTransaction(signedTx.serialize());
+  }
   try {
-    const txid = await connection.sendRawTransaction(signedTx.serialize());
     if (!txid) {
-      throw new Error('Transaction failed');
+      throw new Error('Transaction Rejected');
     };
     const confirmation = connection.confirmTransaction(txid, preflightCommitment);
     toast.promise(confirmation, {

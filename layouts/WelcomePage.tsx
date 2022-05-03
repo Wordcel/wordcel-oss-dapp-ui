@@ -14,8 +14,7 @@ export const WelcomePage = (
   props: GetArticlesServerSide
 ) => {
   const router = useRouter();
-  // const onChainArticles = props.articles ? props.articles.filter((article) => article.on_chain) : [];
-  const onChainArticles: Article[] = [];
+  const onChainArticles = props.articles ? props.articles.filter((article) => article.on_chain) : [];
   return (
     <div className="max-width">
       <DefaultHead title={`Welcome ${props.user?.name}`} />
