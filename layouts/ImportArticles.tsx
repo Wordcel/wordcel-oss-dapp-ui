@@ -1,6 +1,7 @@
 import Image from "next/image";
 import styles from "@/styles/Import.module.scss";
 import tickIcon from '@/images/icons/tick.svg';
+import alreadyOnChain from '@/images/elements/already-on-chain.svg';
 import { DefaultHead } from "./DefaultHead";
 import { StaticNavbar } from "./Navbar";
 import { Article, GetArticlesServerSide } from "@/types/props";
@@ -15,13 +16,19 @@ export const ImportArticles = ({
 }: GetArticlesServerSide) => {
   const router = useRouter();
   const [selected, setSelectedArticle] = useState<Article>();
+  const [offChainArticles, setOffChainArticles] = useState<Article[]>([]);
   const { publicKey } = useWallet();
 
   useEffect(() => {
     if (!publicKey || publicKey.toString() !== router.query.publicKey) {
       router.push('/')
     }
-  }, [publicKey, router]);
+    if (articles) {
+      setOffChainArticles(
+        articles.filter((article) => !article.on_chain)
+      )
+    }
+  }, [publicKey, router, articles]);
 
   const handleContinueClick = () => {
     if (!selected) return;
@@ -54,7 +61,7 @@ export const ImportArticles = ({
             </div>
           </div>
           <div className={styles.articleGrid}>
-            {articles && articles?.map((article) => (
+            {offChainArticles && offChainArticles?.map((article) => (
               <div
                 key={article.title}
                 className={styles.article}
@@ -83,6 +90,11 @@ export const ImportArticles = ({
               </div>
             ))}
           </div>
+          {offChainArticles.length === 0 && (
+            <div className="m-0-auto">
+              <img src={alreadyOnChain.src} alt="" />
+            </div>
+          )}
         </div>
       </div>
     </div>
