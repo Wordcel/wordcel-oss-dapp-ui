@@ -31,6 +31,7 @@ model Article {
   description String
   image_url String
   on_chain Boolean @default(false)
+  created_at DateTime @default(now())
   blocks Block?
   proof_of_post String?
   arweave_url String?
