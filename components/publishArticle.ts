@@ -98,6 +98,7 @@ export async function publishPost(
   );
   toast.dismiss();
   if (!metadataURI) {
+    toast.error('Upload failed');
     throw new Error('Upload failed');
   };
   toast.success('Uploaded');
@@ -130,7 +131,7 @@ export async function publishPost(
   }
   try {
     if (!txid) {
-      throw new Error('Transaction Rejected');
+      throw new Error('Transaction creation failed');
     };
     const confirmation = connection.confirmTransaction(txid, preflightCommitment);
     toast.promise(confirmation, {
@@ -139,6 +140,7 @@ export async function publishPost(
       error: 'Transaction Failed'
     });
     const verified = await confirmation;
+    if (verified.value.err !== null) return;
     toast.loading('Saving');
     const saved = await publishToServer({
       id: id?.toString(),
@@ -148,10 +150,9 @@ export async function publishPost(
       proof_of_post: postAccount.toBase58(),
     });
     toast.dismiss();
-    if (verified.value.err === null && saved && !getResponse) return txid;
-    if (verified.value.err === null && saved && getResponse) return saved;
-  }
-  catch (e) {
+    if (saved && !getResponse) return txid;
+    if (saved && getResponse) return saved;
+  } catch (e) {
     console.log(e);
     return;
   }

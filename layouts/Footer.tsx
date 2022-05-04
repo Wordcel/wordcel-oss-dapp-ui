@@ -20,7 +20,7 @@ export const Footer = () => {
             </p>
           </div>
           <div className={styles.socialContainer}>
-            <p className="normal-text dark bold mt-2 sm nm">Follow Us</p>
+            <p className="normal-text op-1 bold mt-2 sm nm">Follow Us</p>
             <div className={styles.socials}>
               {socials.map((social) => (
                 <a
