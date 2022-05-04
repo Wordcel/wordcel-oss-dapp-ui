@@ -8,6 +8,8 @@ import {
   verifyMethod,
   authenticate
 } from '@/lib/server';
+import { getHeaderContent } from '@/components/getHeaderContent';
+import { getBlocks } from '@/components/getArticleBlocks';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const allowed = verifyMethod(req, res, 'POST');
@@ -35,6 +37,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return;
     }
 
+    const user = await prisma.user.findFirst({
+      where: {
+        public_key,
+      }
+    });
+
+    if (!user) {
+      res.status(400).json({
+        error: 'User does not exist'
+      });
+      return;
+    }
+
     const exists = await prisma.article.findFirst({
       where: {
         id: id_int,
@@ -49,6 +64,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return;
     }
 
+    const blocks = await getBlocks(arweave_url);
+    if (!blocks) return;
+
+    const {
+      title,
+      description,
+      image_url,
+      slug
+    } = getHeaderContent(blocks);
+
     const updated = await prisma.article.update({
       where: {
         id: id_int,
@@ -56,13 +81,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       data: {
         arweave_url,
         on_chain: true,
-        proof_of_post
+        proof_of_post,
+        title,
+        description,
+        image_url,
+        slug
       }
     });
 
     res.status(200).json({
       success: 'Article updated',
-      article: updated
+      article: updated,
+      username: user.username
     });
 
   } catch (e) {

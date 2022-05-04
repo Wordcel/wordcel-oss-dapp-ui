@@ -8,7 +8,7 @@ import {
   verifyMethod,
   authenticate
 } from '@/lib/server';
-import slugify from 'slugify';
+import { getHeaderContent } from '@/components/getHeaderContent';
 import { sanitizeHtml } from '@/lib/sanitize';
 import { getBlocks } from '@/components/getArticleBlocks';
 
@@ -46,18 +46,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const blocks = await getBlocks(arweave_url);
     if (!blocks) return;
 
-    const headings = blocks.filter((block: any) => block.type === 'header');
-    const text_content = blocks.filter((block: any) => block.type === 'paragraph');
-    const image_content = blocks.filter((block: any) => block.type === 'image');
-    const title = headings[0]?.data.text || text_content[0]?.data.text|| 'Untitled Article';
-    const description = text_content[0]?.data.text || 'No description';
-    const image_url = image_content[0]?.data.url || '';
-    let slug = slugify(title, { lower: true });
-
-    const exists = await prisma.article.findFirst({ where: { slug } });
-    if (exists) {
-      slug = `${slug}-${Date.now()}`;
-    }
+    const {
+      title,
+      description,
+      image_url,
+      slug
+    } = getHeaderContent(blocks);
 
     const newArticle = await prisma.article.create({
       data: {

@@ -147,7 +147,7 @@ export async function publishPost(
       arweave_url: metadataURI,
       public_key: wallet.publicKey.toString(),
       signature: signature,
-      proof_of_post: postAccount.toBase58(),
+      proof_of_post: published_post || postAccount.toBase58(),
     });
     toast.dismiss();
     if (saved && !getResponse) return txid;

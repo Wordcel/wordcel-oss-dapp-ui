@@ -44,14 +44,17 @@ export const EditArticle = (props: GetArticleServerSide) => {
       wallet,
       signature,
       props.article?.id,
-      undefined,
+      true,
       props.article.proof_of_post
     );
-    const txid = await postTransaction;
-    if (!txid) return;
-    console.log(`Transaction ID: ${txid}`);
+    const response = await postTransaction;
+    if (!response) {
+      toast.dismiss();
+      toast.error('Failed to publish article');
+      return;
+    };
     toast('Redirecting...');
-    router.push(`/${props.username}/${props.article?.slug}`);
+    router.push(`/${response.username}/${response.article.slug}`);
   }
 
   useEffect(() => {
