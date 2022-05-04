@@ -10,6 +10,7 @@ import editorGradient from '@/images/elements/editor-gradient.png';
 import censorship from '@/images/details/censorship.svg';
 import decentralized from '@/images/details/decentralized.svg';
 import openSourced from '@/images/details/open-sourced.svg';
+import { Footer } from './Footer';
 
 const details = [
   {
@@ -32,7 +33,7 @@ const details = [
 export const LandingPage = () => {
   const [clicked, setClicked] = useState(false);
   return (
-    <div>
+    <div className="container-flex">
       <DefaultHead />
       <div className={styles.heroGradient}>
         <Navbar />
@@ -83,6 +84,7 @@ export const LandingPage = () => {
           ))}
         </div>
       </div>
+      <Footer />
     </div>
   )
 };

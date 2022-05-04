@@ -9,6 +9,7 @@ import { useCallback, useRef } from 'react';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { getUserSignature } from '@/components/signMessage';
+import { Footer } from './Footer';
 
 
 export const NewArticle = () => {
@@ -57,7 +58,7 @@ export const NewArticle = () => {
   }
 
   return (
-    <div>
+    <div className="container-flex">
       <DefaultHead title="Publish new article" />
       <StaticNavbar publish={handlePublish} />
       <div className={styles.container}>
@@ -69,6 +70,7 @@ export const NewArticle = () => {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

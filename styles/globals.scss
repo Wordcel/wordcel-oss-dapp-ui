@@ -49,6 +49,12 @@ a {
 
 // defaults
 
+.container-flex {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .default-link {
   color: var(--text-color);
   opacity: 0.75;
@@ -126,6 +132,12 @@ a {
   font-size: 2rem;
   color: var(--text-color);
   opacity: 0.5;
+}
+.normal-text.dark {
+  opacity: 1;
+}
+.normal-text.bold {
+  font-weight: 700;
 }
 
 .normal-text.sm {
@@ -211,6 +223,13 @@ a {
   margin-bottom: 0rem;
 }
 
+.txt-left {
+  text-align: left;
+}
+.txt-center {
+  text-align: center;
+}
+
 .flex-inline {
   display: flex;
   align-items: center;
@@ -250,6 +269,10 @@ a {
 }
 .m-0-auto {
   margin: 0 auto;
+}
+
+.brdr-right {
+  border-right: 0.1rem solid rgba(30, 40, 51, 0.07);
 }
 
 .flex {

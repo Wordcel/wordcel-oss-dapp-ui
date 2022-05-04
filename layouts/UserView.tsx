@@ -1,6 +1,7 @@
 // Stylesheet
 import styles from '@/styles/UserView.module.scss';
 
+import { Footer } from './Footer';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from '@/layouts/Navbar';
 import { GetUserServerSide } from '@/types/props';
@@ -20,7 +21,7 @@ export const UserView = (props: GetUserServerSide) => {
     .concat(props.user?.public_key.substring(props.user?.public_key.length - 4));
 
   return (
-    <div>
+    <div className="container-flex">
       {props.user && (
         <>
           <div>
@@ -59,6 +60,7 @@ export const UserView = (props: GetUserServerSide) => {
         </>
       )}
       {/* Add a 404 component here, whenever done */}
+      <Footer />
     </div>
   );
 };

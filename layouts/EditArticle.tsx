@@ -10,6 +10,7 @@ import { useEffect, useCallback, useRef, useState } from 'react';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { getUserSignature } from '@/components/signMessage';
+import { Footer } from './Footer';
 
 export const EditArticle = (props: GetArticleServerSide) => {
   const router = useRouter();
@@ -60,7 +61,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
   }, [publicKey, props]);
 
   return (
-    <div>
+    <div className="container-flex">
       <DefaultHead
         title={`Edit - ${props.article?.title}`}
         description={props.article?.description}
@@ -79,6 +80,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

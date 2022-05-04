@@ -7,6 +7,7 @@ import { GetArticleServerSide } from '@/types/props';
 import { useState } from 'react';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
+import { Footer } from './Footer';
 
 export const AuthorBox = (props: GetArticleServerSide) => {
   const Name = props.user?.name;
@@ -49,7 +50,7 @@ export const ViewArticle = (props: GetArticleServerSide) => {
   });
 
   return (
-    <div>
+    <div className="container-flex">
       <DefaultHead
         title={props.article?.title}
         description={props.article?.description}
@@ -73,6 +74,7 @@ export const ViewArticle = (props: GetArticleServerSide) => {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

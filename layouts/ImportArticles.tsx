@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { shortenSentence } from "@/lib/sanitize";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
+import { Footer } from "./Footer";
 
 export const ImportArticles = ({
   articles,
@@ -33,7 +34,7 @@ export const ImportArticles = ({
   }
 
   return (
-    <div>
+    <div className="container-flex">
       <DefaultHead />
       <StaticNavbar />
       <div className={styles.container}>
@@ -94,6 +95,7 @@ export const ImportArticles = ({
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
