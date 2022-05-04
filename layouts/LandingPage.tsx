@@ -20,7 +20,7 @@ const details = [
   {
     icon: openSourced,
     title: 'Open Sourced',
-    description: 'Wordcel is open-sourced and available for your contributions on Github'
+    description: 'Wordcel will be open-sourced soon for contributions on GitHub'
   },
   {
     icon: censorship,
