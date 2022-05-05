@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import styles from '@/styles/Reader.module.scss';
 import editorStyles from '@/styles/Editor.module.scss';
@@ -16,7 +17,6 @@ export const AuthorBox = (props: GetArticleServerSide) => {
   const TrimmedPublicKey = props.user?.public_key.substring(0, 4)
     .concat('....')
     .concat(props.user?.public_key.substring(props.user?.public_key.length - 4));
-
   return (
     <div className={styles.authorBox}>
       <img
@@ -31,7 +31,11 @@ export const AuthorBox = (props: GetArticleServerSide) => {
           alt={props.user?.username}
         />
         <div className="ml-2">
-          <p className="heading sm nm-bottom nm-top">{Name}</p>
+          <Link href={`/${props.user?.username}`}>
+            <a>
+              <p className="heading sm nm-bottom nm-top">{Name}</p>
+            </a>
+          </Link>
           <p className="light-sub-heading nm">{TrimmedPublicKey}</p>
           {Bio && (
             <p className="normal-text sm nm-bottom mt-1">{Bio}</p>
