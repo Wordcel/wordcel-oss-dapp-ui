@@ -59,10 +59,19 @@ const CustomEditor = ({
   }, [])
   const EDITOR_JS_TOOLS = {
     embed: Embed,
-    header: Header,
-    list: List,
+    header: {
+      class: Header,
+      inlineToolbar: ['link', 'bold', 'italic'],
+    },
+    list: {
+      class: List,
+      inlineToolbar: ['link', 'bold', 'italic'],
+    },
     raw: Raw,
-    paragraph: Paragraph,
+    paragraph: {
+      class: Paragraph,
+      inlineToolbar: ['link', 'bold', 'italic'],
+    },
     code: CodeBox,
     linkTool: LinkTool,
     quote: Quote,
