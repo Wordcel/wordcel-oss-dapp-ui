@@ -5,7 +5,7 @@ import { publishPost } from '@/components/publishArticle';
 import { EditorCore } from "@react-editor-js/core";
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { useRouter } from 'next/router';
-import { useCallback, useRef } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { getUserSignature } from '@/components/signMessage';
@@ -14,7 +14,7 @@ import { Footer } from './Footer';
 
 export const NewArticle = () => {
   const router = useRouter();
-  const { signMessage } = useWallet();
+  const { publicKey, signMessage } = useWallet();
   const anchorWallet = useAnchorWallet();
   const wallet = useWallet();
 
@@ -56,6 +56,19 @@ export const NewArticle = () => {
     toast('Redirecting...');
     router.push(`/${response.username}/${response.article.slug}`);
   }
+
+  useEffect(() => {
+    if (publicKey === null) {
+      router.push('/');
+    } else {
+      (async function () {
+        const request = await fetch(`/api/user/get/${publicKey}`);
+        if (!request.ok) {
+          router.push('/');
+        }
+      })();
+    }
+  }, [publicKey]);
 
   return (
     <div className="container-flex">
