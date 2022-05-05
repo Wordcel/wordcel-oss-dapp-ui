@@ -15,7 +15,9 @@ export const ArticlePreview = ({
   const router = useRouter();
   return (
     <div className={styles.articleContainer}>
-      <p className="heading md nm">{article.title}</p>
+      <p
+        onClick={() => router.push(`/${user?.username}/${article.slug}`)}
+        className="heading md nm pointer">{article.title}</p>
       <div>
         <p>
           <span className="normal-text cs">
