@@ -52,13 +52,19 @@ export const ViewArticle = (props: GetArticleServerSide) => {
   const Reader = dynamic(() => import('@/layouts/Reader'), {
     ssr: false
   });
-
+  const SEOData = {
+    title: props.article?.title,
+    name: props.user?.name,
+    image: props.user?.image_url
+  };
+  const base64Data = Buffer.from(JSON.stringify(SEOData)).toString('base64');
+  const SEOImage = `https://i0.wp.com/og.up.railway.app/article/${base64Data}`;
   return (
     <div className="container-flex">
       <DefaultHead
         title={props.article?.title}
         description={props.article?.description}
-        image={props.article?.image_url}
+        image={SEOImage}
       />
       <StaticNavbar
         proof_of_post={{

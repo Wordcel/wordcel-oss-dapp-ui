@@ -19,13 +19,20 @@ export const UserView = (props: GetUserServerSide) => {
   const TrimmedPublicKey = props.user?.public_key.substring(0, 4)
     .concat('....')
     .concat(props.user?.public_key.substring(props.user?.public_key.length - 4));
-
+  const SEOData = {
+    name: props.user?.name,
+    image: props.user?.image_url,
+    bio: props.user?.bio,
+    username: props.user?.username
+  }
+  const base64Data = Buffer.from(JSON.stringify(SEOData)).toString('base64');
+  const SEOImage = `https://i0.wp.com/og.up.railway.app/user/${base64Data}`
   return (
     <div className="container-flex">
       {props.user && (
         <>
           <div>
-            <DefaultHead title={SEOTitle} description={Bio} />
+            <DefaultHead title={SEOTitle} description={Bio} image={SEOImage} />
             <StaticNavbar />
             <div className={styles.profileContainer}>
               <div className={styles.banner}>
