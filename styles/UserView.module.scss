@@ -93,6 +93,8 @@
 
 .verticalPreview {
   display: flex;
+  max-width: 72rem;
+  width: 100%;
   @media only screen and (max-width: 940px) {
     flex-direction: column;
   }
