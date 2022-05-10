@@ -1,21 +1,31 @@
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Article, GetArticlesServerSide } from '@/types/props';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { GetArticlesServerSide } from '@/types/props';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { DefaultBox } from '@/elements/Box';
 import { getTrimmedPublicKey } from '@/components/getTrimmedPublicKey';
 import { VerticalArticlePreview } from './ArticlePreview';
+import { Footer } from './Footer';
 import noArticles from '@/images/elements/no-articles.svg';
 import publishNew from '@/images/elements/publish-new-article.svg';
 import importArticles from '@/images/elements/import-articles.svg';
 import styles from '@/styles/Welcome.module.scss';
-import { Footer } from './Footer';
 
 export const WelcomePage = (
   props: GetArticlesServerSide
 ) => {
   const router = useRouter();
   const onChainArticles = props.articles ? props.articles.filter((article) => article.on_chain) : [];
+  const { publicKey } = useWallet();
+
+  useEffect(() => {
+    if (!publicKey || publicKey.toString() !== router.query.publicKey) {
+      router.push('/')
+    }
+  }, [])
+
   return (
     <div className="container-flex">
       <div className="max-width">
