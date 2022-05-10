@@ -1,5 +1,9 @@
 const removeFromWord = (word: string) => {
   let editedWord = word.replace('<br />', '');
+  editedWord = editedWord.replace('<b>', '');
+  editedWord = editedWord.replace('</b>', '');
+  editedWord = editedWord.replace('<i>', '');
+  editedWord = editedWord.replace('</i>', '');
   editedWord = editedWord.replace('<br>', '');
   editedWord = editedWord.replace('<br/>', '');
   editedWord = editedWord.replace('</br>', '');
