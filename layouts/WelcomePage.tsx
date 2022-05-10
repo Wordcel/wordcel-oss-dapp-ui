@@ -43,7 +43,7 @@ export const WelcomePage = (
             <DefaultBox>
               <div className="flex column align-items-start justify-space-between height-100">
                 <img src={importArticles.src} alt="Import Articles" />
-                <input type="text" disabled={true} placeholder="Article / Blog URL" className="gray-input" />
+                <input type="text" disabled={true} placeholder={props.user?.blog_name} className="gray-input" />
                 <button
                   onClick={() => router.push(`/import/${props.user?.public_key}`)}
                   style={{

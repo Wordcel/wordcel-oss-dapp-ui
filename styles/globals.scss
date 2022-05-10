@@ -410,6 +410,6 @@ a {
     color: var(--input-text);
   }
   &:disabled {
-    cursor: not-allowed;
+    cursor: default;
   }
 }
