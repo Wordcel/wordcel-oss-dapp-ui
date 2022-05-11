@@ -7,14 +7,17 @@ import { StaticNavbar } from '@/layouts/Navbar';
 import { GetUserServerSide } from '@/types/props';
 import { ArticlePreview } from './ArticlePreview';
 
-import { initializeSubscriberAccount } from '@/components/contractInteraction';
+import { subscribeToPublication } from '@/components/contractInteraction';
 
 // Images
 import defaultBanner from '@/images/gradients/user-default-banner.png';
-import { useAnchorWallet } from '@solana/wallet-adapter-react';
+import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
+import { PublicKey } from '@solana/web3.js';
 
 export const UserView = (props: GetUserServerSide) => {
   const wallet = useAnchorWallet();
+  const { publicKey } = useWallet();
+
   const Name = props.user?.name;
   const Bio = props.user?.bio;
   const SEOTitle = `${props.user?.blog_name} by ${props.user?.name}`
@@ -31,9 +34,20 @@ export const UserView = (props: GetUserServerSide) => {
   }
   const base64Data = Buffer.from(JSON.stringify(SEOData)).toString('base64');
   const SEOImage = `https://i0.wp.com/og.up.railway.app/user/${base64Data}`
+
+  const handleSubscribeButtonClick = () => {
+    if (!publicKey) {
+
+    }
+    subscribeToPublication(
+      wallet as any,
+      new PublicKey(props.user?.public_key || '')
+    )
+  };
+
   return (
     <div className="container-flex">
-      {props.user && wallet && (
+      {props.user && (
         <>
           <div>
             <DefaultHead title={SEOTitle} description={Bio} image={SEOImage} />
@@ -54,7 +68,12 @@ export const UserView = (props: GetUserServerSide) => {
                       <p className="heading sm nm-bottom">{Name}</p>
                       <p className="light-sub-heading nm mt-1">{TrimmedPublicKey}</p>
                     </div>
-                    <button onClick={() => initializeSubscriberAccount(wallet as any)} className="main-btn sm">SUBSCRIBE</button>
+                    <button
+                      onClick={handleSubscribeButtonClick}
+                      className="main-btn sm"
+                    >
+                      SUBSCRIBE
+                    </button>
                   </div>
                   {Bio && (
                     <p className="normal-text">{Bio}</p>
