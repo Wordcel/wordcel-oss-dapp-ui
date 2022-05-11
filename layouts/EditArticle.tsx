@@ -1,7 +1,7 @@
 import toast from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import styles from '@/styles/Editor.module.scss';
-import { publishPost } from '@/components/publishArticle';
+import { publishPost } from '@/components/contractInteraction';
 import { EditorCore } from "@react-editor-js/core";
 import { GetArticleServerSide } from '@/types/props';
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';

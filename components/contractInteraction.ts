@@ -3,11 +3,7 @@ import toast from 'react-hot-toast';
 import idl from '@/components/config/devnet-idl.json';
 import { PublishArticleRequest } from '@/types/api';
 import { SystemProgram, PublicKey } from '@solana/web3.js';
-import {
-  ContentPayload,
-  // uploadArweave,
-  // uploadNFTStorage
-} from '@/components/upload';
+import { ContentPayload } from '@/components/upload';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { uploadBundle } from '@/components/uploadBundlr';
 import { ENDPOINT } from './config/constants';
@@ -90,8 +86,6 @@ export async function publishPost(
   const postSeeds = [Buffer.from("post"), publicationKey.toBuffer(), new anchor.BN(mutPublicationAccount.postNonce).toArrayLike(Buffer)];
   const [postAccount, postBump] = await anchor.web3.PublicKey.findProgramAddress(postSeeds, program.programId);
   toast.loading('Uploading');
-  // const metadataURI = await uploadArweave(data);
-  // const metadataURI = await uploadNFTStorage(data);
   const metadataURI = await uploadBundle(
     data,
     adapterWallet
@@ -172,4 +166,63 @@ async function publishToServer(
   });
   const response = await request.json();
   return response;
+}
+
+
+export async function initializeSubscriberAccount(
+  wallet: anchor.Wallet,
+) {
+  const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
+  const subscriberSeeds = [Buffer.from("subscriber"), wallet.publicKey.toBuffer()];
+  const [subscriberAccount, subscriptionBump] = await anchor.web3.PublicKey.findProgramAddress(
+    subscriberSeeds,
+    program.programId
+  );
+  const txid = await program.rpc.initializeSubscriber(subscriptionBump, {
+    accounts: {
+      subscriber: subscriberAccount,
+      user: wallet.publicKey,
+      systemProgram: SystemProgram.programId
+    }
+  });
+  console.log(`Subscription Account Creation: ${txid}`);
+  return subscriberAccount;
+};
+
+export async function subscribeToPublication(
+  wallet: anchor.Wallet,
+  publicationOwner: PublicKey
+) {
+  // WIP
+  const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
+  const subscriberSeeds = [Buffer.from("subscriber"), wallet.publicKey.toBuffer()];
+  const publicationSeeds = [Buffer.from("publication"), publicationOwner.toBuffer()];
+  const [subscriberAccount, subscriptionBump] = await anchor.web3.PublicKey.findProgramAddress(
+    subscriberSeeds,
+    program.programId
+  );
+  const [publicationAccount] = await anchor.web3.PublicKey.findProgramAddress(
+    publicationSeeds,
+    program.programId
+  );
+  // const subcriptionSeeds = [Buffer.from("subcription"), subscriberAccount.toBuffer(), ]
+  let mutSubscriberAccount = subscriberAccount;
+  if (!mutSubscriberAccount) {
+    toast('Subscriber account does not exist');
+    try {
+      const newsubscriberAccount = await initializeSubscriberAccount(wallet);
+      mutSubscriberAccount = newsubscriberAccount;
+    } catch (e) {
+      console.error(e);
+      toast.error('Subscriber account creation failed');
+    }
+  }
+  const txid = await program.rpc.initializeSubscription(subscriptionBump, {
+    accounts: {
+      subscriber: mutSubscriberAccount,
+      authority: wallet.publicKey,
+      publication: publicationAccount,
+      systemProgram: SystemProgram.programId
+    }
+  });
 }
