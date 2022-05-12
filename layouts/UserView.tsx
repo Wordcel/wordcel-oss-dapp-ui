@@ -50,6 +50,7 @@ export const UserView = (props: GetUserServerSide) => {
       )
     };
     if (publicKey) {
+      setSubscribed(publicKey.toBase58() === props.user?.public_key)
       const json = localStorage.getItem('subscriptions');
       const data = JSON.parse(json || '[]');
       if (data.includes(props.user?.public_key)) {
