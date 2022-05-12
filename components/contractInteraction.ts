@@ -2,7 +2,7 @@ import * as anchor from '@project-serum/anchor';
 import toast from 'react-hot-toast';
 import idl from '@/components/config/devnet-idl.json';
 import { PublishArticleRequest } from '@/types/api';
-import { SystemProgram, PublicKey, Keypair } from '@solana/web3.js';
+import { SystemProgram, PublicKey } from '@solana/web3.js';
 import { ContentPayload } from '@/components/upload';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { uploadBundle } from '@/components/uploadBundlr';
@@ -189,14 +189,47 @@ export async function initializeSubscriberAccount(
   return subscriberKey;
 };
 
-export async function subscribeToPublication(
+export async function getIfSubscribed(
   wallet: anchor.Wallet,
   publicationOwner: PublicKey
+) {
+  try {
+    const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
+    const subscriberSeeds = [Buffer.from("subscriber"), wallet.publicKey.toBuffer()];
+    const [subscriberKey] = await anchor.web3.PublicKey.findProgramAddress(
+      subscriberSeeds,
+      program.programId
+    );
+    console.log(`Subscriber Key: ${subscriberKey}`);
+
+    const subscriberAccount = await program.account.subscriber.fetch(subscriberKey);
+    console.log(subscriberAccount);
+    if (!subscriberAccount) return false;
+    const subcriptionSeeds = [Buffer.from("subscription"), subscriberKey.toBuffer(), new anchor.BN(subscriberAccount.subscriptionNonce).toArrayLike(Buffer)];
+    const [subscriptionKey] = await anchor.web3.PublicKey.findProgramAddress(
+      subcriptionSeeds,
+      program.programId
+    );
+    console.log(`Subscription Key" ${subscriptionKey}`)
+    console.log('it works till here')
+
+    const subscriptionAccount = await program.account.subscription.fetch(subscriptionKey);
+    console.log(subscriptionAccount);
+    if (!subscriptionAccount) return false;
+  } catch (e) {
+    console.log(e)
+    return false;
+  }
+}
+
+export async function subscribeToPublication(
+  wallet: anchor.Wallet,
+  publicationOwner: PublicKey,
+  setSubscribed: (subscribed: boolean) => void
 ) {
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
   const subscriberSeeds = [Buffer.from("subscriber"), wallet.publicKey.toBuffer()];
   const publicationSeeds = [Buffer.from("publication"), publicationOwner.toBuffer()];
-
   const [subscriberKey] = await anchor.web3.PublicKey.findProgramAddress(
     subscriberSeeds,
     program.programId
@@ -214,15 +247,11 @@ export async function subscribeToPublication(
     }
     subscriberAccount = newSubscriberAccount;
   }
-
-  console.log('Subscriber Account', subscriberAccount);
-
   const [publicationKey] = await anchor.web3.PublicKey.findProgramAddress(
     publicationSeeds,
     program.programId
   );
-
-  const subcriptionSeeds = [Buffer.from("subcription"), subscriberKey.toBuffer(), new anchor.BN(subscriberAccount.subscriptionNonce).toArrayLike(Buffer)];
+  const subcriptionSeeds = [Buffer.from("subscription"), subscriberKey.toBuffer(), new anchor.BN(subscriberAccount.subscriptionNonce).toArrayLike(Buffer)];
   const [subscriptionKey, subscriptionBump] = await anchor.web3.PublicKey.findProgramAddress(
     subcriptionSeeds,
     program.programId
@@ -233,7 +262,7 @@ export async function subscribeToPublication(
     console.log(subscriptionAccount);
   } catch {
     console.log('Subscription account does not exist')
-    const txid = await program.rpc.initializeSubscription(subscriptionBump, {
+    const tx = await program.transaction.initializeSubscription(subscriptionBump, {
       accounts: {
         subscriber: subscriberKey,
         subscription: subscriptionKey,
@@ -242,6 +271,33 @@ export async function subscribeToPublication(
         systemProgram: SystemProgram.programId
       }
     });
-    console.log(txid);
+    const { blockhash } = await connection.getRecentBlockhash();
+    tx.recentBlockhash = blockhash;
+    tx.feePayer = wallet.publicKey;
+    const signedTx = await wallet.signTransaction(tx);
+    const txid = await connection.sendRawTransaction(signedTx.serialize());
+    if (!txid) {
+      throw new Error('Transaction creation failed');
+    };
+    const confirmation = connection.confirmTransaction(txid, preflightCommitment);
+    toast.promise(confirmation, {
+      loading: 'Confirming Transaction',
+      success: 'Subscribed',
+      error: 'Transaction Failed'
+    });
+    const verified = await confirmation;
+    if (verified.value.err !== null) {
+      throw new Error('Transaction failed')
+    };
+    // remove the stuff below this once contract is fixed
+    setSubscribed(true);
+    const existingSubscriptionsJSON = localStorage.getItem('subscriptions');
+    if (!existingSubscriptionsJSON) {
+      localStorage.setItem('subscriptions', JSON.stringify([publicationOwner]))
+    } else {
+      const data = JSON.parse(existingSubscriptionsJSON);
+      data.push(publicationOwner);
+      localStorage.setItem('subscriptions', JSON.stringify(data));
+    }
   }
 }

@@ -63,7 +63,7 @@ export const ConnectWallet = ({
   children,
   noFullSize,
   redirectToWelcome,
-  noToast
+  noToast,
 }: {
   children: React.ReactNode;
   noFullSize?: boolean;

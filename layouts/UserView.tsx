@@ -11,12 +11,17 @@ import { subscribeToPublication } from '@/components/contractInteraction';
 
 // Images
 import defaultBanner from '@/images/gradients/user-default-banner.png';
-import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
+
+import { useWallet, useAnchorWallet } from '@solana/wallet-adapter-react';
 import { PublicKey } from '@solana/web3.js';
+import { ConnectWallet } from './Wallet';
+import { useEffect, useState } from 'react';
 
 export const UserView = (props: GetUserServerSide) => {
-  const wallet = useAnchorWallet();
+  const [clicked, setClicked] = useState(0);
+  const [subscribed, setSubscribed] = useState(false);
   const { publicKey } = useWallet();
+  const wallet = useAnchorWallet();
 
   const Name = props.user?.name;
   const Bio = props.user?.bio;
@@ -35,15 +40,23 @@ export const UserView = (props: GetUserServerSide) => {
   const base64Data = Buffer.from(JSON.stringify(SEOData)).toString('base64');
   const SEOImage = `https://i0.wp.com/og.up.railway.app/user/${base64Data}`
 
-  const handleSubscribeButtonClick = () => {
-    if (!publicKey) {
-
+  useEffect(() => {
+    if (publicKey && clicked !== 0 && props.user?.public_key) {
+      if (subscribed) return;
+      subscribeToPublication(
+        wallet as any,
+        new PublicKey(props.user.public_key),
+        setSubscribed
+      )
+    };
+    if (publicKey) {
+      const json = localStorage.getItem('subscriptions');
+      const data = JSON.parse(json || '[]');
+      if (data.includes(props.user?.public_key)) {
+        setSubscribed(true);
+      }
     }
-    subscribeToPublication(
-      wallet as any,
-      new PublicKey(props.user?.public_key || '')
-    )
-  };
+  }, [clicked, publicKey]);
 
   return (
     <div className="container-flex">
@@ -68,12 +81,24 @@ export const UserView = (props: GetUserServerSide) => {
                       <p className="heading sm nm-bottom">{Name}</p>
                       <p className="light-sub-heading nm mt-1">{TrimmedPublicKey}</p>
                     </div>
-                    <button
-                      onClick={handleSubscribeButtonClick}
-                      className="main-btn sm"
+                    <ConnectWallet
+                      noFullSize={true}
+                      redirectToWelcome={false}
+                      noToast={true}
                     >
-                      SUBSCRIBE
-                    </button>
+                      <button
+                        onClick={() => setClicked(clicked + 1)}
+                        className="main-btn sm"
+                        style={{
+                          backgroundColor: subscribed ? 'transparent' : '',
+                          border: subscribed ? '0.2rem solid black' : '',
+                          cursor: subscribed ? 'not-allowed' : 'pointer',
+                          color: subscribed ? 'black' : ''
+                        }}
+                      >
+                        {subscribed ? 'SUBSCRIBED' : 'SUBSCRIBE'}
+                      </button>
+                    </ConnectWallet>
                   </div>
                   {Bio && (
                     <p className="normal-text">{Bio}</p>
