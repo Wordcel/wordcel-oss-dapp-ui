@@ -17,6 +17,9 @@ export const getArticlesServerSide = async (context: any) => {
   const articles = await prisma.article.findMany({
     where: {
       user_id: user.id
+    },
+    orderBy: {
+      created_at: 'desc',
     }
   })
   return {

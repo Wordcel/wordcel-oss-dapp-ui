@@ -5,6 +5,7 @@ export interface User {
   public_key: string;
   nft_key: string;
   blog_name: string;
+  import_enabled: boolean;
   bio?: string;
   twitter?: string;
   discord?: string;
