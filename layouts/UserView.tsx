@@ -25,7 +25,7 @@ export const UserView = (props: GetUserServerSide) => {
 
   const Name = props.user?.name;
   const Bio = props.user?.bio;
-  const SEOTitle = `${props.user?.blog_name} by ${props.user?.name}`
+  const SEOTitle = props.user?.blog_name ? `${props.user?.blog_name} by ${props.user?.name}` : '';
   const Banner = props.user?.banner_url || defaultBanner.src;
   const Avatar = props.user?.image_url || `https://avatars.wagmi.bio/${props.user?.name}`;
   const TrimmedPublicKey = props.user?.public_key.substring(0, 4)
@@ -61,11 +61,11 @@ export const UserView = (props: GetUserServerSide) => {
 
   return (
     <div className="container-flex">
+      <DefaultHead title={SEOTitle} description={Bio} image={SEOImage} />
+      <StaticNavbar />
       {props.user && (
         <>
           <div>
-            <DefaultHead title={SEOTitle} description={Bio} image={SEOImage} />
-            <StaticNavbar />
             <div className={styles.profileContainer}>
               <div className={styles.banner}>
                 <img src={Banner} alt="User Banner" />
