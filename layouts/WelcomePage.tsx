@@ -40,18 +40,20 @@ export const WelcomePage = (
                 <img className={styles.publishImage} src={publishNew.src} alt="Publish New Article" />
               </div>
             </DefaultBox>
-            <DefaultBox>
-              <div className="flex column align-items-start justify-space-between height-100">
-                <img src={importArticles.src} alt="Import Articles" />
-                <input type="text" disabled={true} placeholder={props.user?.blog_name} className="gray-input" />
-                <button
-                  onClick={() => router.push(`/import/${props.user?.public_key}`)}
-                  style={{
-                    height: '4.2rem',
-                    fontSize: '1.6rem'
-                  }} className="main-btn">Import</button>
-              </div>
-            </DefaultBox>
+            {props.user?.import_enabled && (
+              <DefaultBox>
+                <div className="flex column align-items-start justify-space-between height-100">
+                  <img src={importArticles.src} alt="Import Articles" />
+                  <input type="text" disabled={true} placeholder={props.user?.blog_name} className="gray-input" />
+                  <button
+                    onClick={() => router.push(`/import/${props.user?.public_key}`)}
+                    style={{
+                      height: '4.2rem',
+                      fontSize: '1.6rem'
+                    }} className="main-btn">Import</button>
+                </div>
+              </DefaultBox>
+            )}
             <DefaultBox>
               <div className="flex column align-items-start justify-space-between height-100">
                 <div className="flex">
