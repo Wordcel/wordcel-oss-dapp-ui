@@ -11,6 +11,8 @@ import { subscribeToPublication } from '@/components/contractInteraction';
 
 // Images
 import defaultBanner from '@/images/gradients/user-default-banner.png';
+import TwitterIcon from '@/images/dynamic/Twitter';
+import DiscordIcon from '@/images/dynamic/Discord';
 
 import { useWallet, useAnchorWallet } from '@solana/wallet-adapter-react';
 import { PublicKey } from '@solana/web3.js';
@@ -82,20 +84,38 @@ export const UserView = (props: GetUserServerSide) => {
                       <p className="heading sm nm-bottom">{Name}</p>
                       <p className="light-sub-heading nm mt-1">{TrimmedPublicKey}</p>
                     </div>
-                    <ConnectWallet noFullSize={true} noToast={true}>
-                      <button
-                        onClick={() => setClicked(clicked + 1)}
-                        className="main-btn sm"
-                        style={{
-                          backgroundColor: subscribed ? 'transparent' : '',
-                          border: subscribed ? '0.2rem solid black' : '',
-                          cursor: subscribed ? 'not-allowed' : 'pointer',
-                          color: subscribed ? 'black' : ''
-                        }}
-                      >
-                        {subscribed ? 'SUBSCRIBED' : 'SUBSCRIBE'}
-                      </button>
-                    </ConnectWallet>
+                    <div>
+                      <ConnectWallet noFullSize={true} noToast={true}>
+                        <button
+                          onClick={() => setClicked(clicked + 1)}
+                          className="main-btn sm"
+                          style={{
+                            backgroundColor: subscribed ? 'transparent' : '',
+                            border: subscribed ? '0.2rem solid black' : '',
+                            cursor: subscribed ? 'not-allowed' : 'pointer',
+                            color: subscribed ? 'black' : ''
+                          }}
+                        >
+                          {subscribed ? 'SUBSCRIBED' : 'SUBSCRIBE'}
+                        </button>
+                      </ConnectWallet>
+                      <div className="user-socials">
+                        <a
+                          href={`https://twitter.com/${props.user.twitter}`}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                          key={props.user.twitter}>
+                            <TwitterIcon color="#1E2833" />
+                        </a>
+                        <a
+                          href={props.user.discord}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                          key={props.user.discord}>
+                            <DiscordIcon color="#1E2833" />
+                        </a>
+                      </div>
+                    </div>
                   </div>
                   {Bio && (
                     <p className="normal-text">{Bio}</p>
