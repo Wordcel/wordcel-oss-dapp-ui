@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma'
+import { WHITELIST_URL } from './config/constants';
 
 export const getUserServerSide = async (
   context: any,
@@ -25,7 +26,7 @@ export const getUserServerSide = async (
     return {
       redirect: {
         permanent: false,
-        destination: 'https://tally.so/r/w2d59m'
+        destination: WHITELIST_URL
       },
       props: {}
     }

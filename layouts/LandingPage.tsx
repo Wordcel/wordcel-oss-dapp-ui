@@ -1,16 +1,22 @@
-import { useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { useEffect, useState } from 'react';
 import { ConnectWallet } from './Wallet';
 import { DefaultHead } from './DefaultHead';
 import { Navbar } from './Navbar';
+import { Footer } from './Footer';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { getIfWhitelisted } from '@/components/getIfUserIsWhitelisted';
+import { useRouter } from 'next/router';
+import { WHITELIST_URL } from '@/components/config/constants';
 import Image from 'next/image';
 import quillIcon from '@/images/icons/quill.svg';
 import styles from '@/styles/Home.module.scss';
 import editorPreview from '@/images/elements/editor.svg'
 import editorGradient from '@/images/elements/editor-gradient.png';
+import noWL from '@/images/elements/noWL.svg';
 import censorship from '@/images/details/censorship.svg';
 import decentralized from '@/images/details/decentralized.svg';
 import openSourced from '@/images/details/open-sourced.svg';
-import { Footer } from './Footer';
 
 const details = [
   {
@@ -31,12 +37,34 @@ const details = [
 ];
 
 export const LandingPage = () => {
-  const [clicked, setClicked] = useState(false);
+  const router = useRouter();
+  const { publicKey } = useWallet();
+  const [clicked, setClicked] = useState(0);
+  const [whitelisted, setWhitelisted] = useState<null | boolean>(null);
+
+  useEffect(() => {
+    (async function () {
+      if (!publicKey) return;
+      if (whitelisted && clicked !== 0) {
+        router.push(`/welcome/${publicKey.toBase58()}`)
+        return;
+      }
+      toast.loading('Loading')
+      const fWhitelisted = await getIfWhitelisted(publicKey.toBase58());
+      toast.dismiss();
+      setWhitelisted(fWhitelisted);
+    })();
+  }, [clicked, publicKey])
+
   return (
     <div className="container-flex">
       <DefaultHead />
       <div className={styles.heroGradient}>
-        <Navbar />
+        <Navbar
+          whitelisted={whitelisted}
+          clicked={clicked}
+          setClicked={setClicked}
+        />
         <div className={styles.sectionOne}>
           <div className={styles.sectionOneImage}>
             <Image alt="" src={editorPreview} />
@@ -54,16 +82,27 @@ export const LandingPage = () => {
               className="normal-text">Wordcel enables anyone to publish
               rich articles on the blockchain that are censorship resistant
             </p>
-              <ConnectWallet
-                noToast={true}
-                redirectToWelcome={clicked}>
+            {whitelisted === false && (
+              <div className={styles.noWL}>
+                <img src={noWL.src} alt="" />
+                <a
+                  href={WHITELIST_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="blue-text lg dark ml-2 pointer"
+                >JOIN NOW</a>
+              </div>
+            )}
+            {(whitelisted === true || whitelisted === null) && (
+              <ConnectWallet noToast={true}>
                 <button
                   style={{ maxWidth: '26.5rem' }}
                   className="main-btn"
-                  onClick={() => setClicked(true)}>
-                  Connect Wallet
+                  onClick={() => setClicked(clicked + 1)}>
+                  {whitelisted === true ? 'Dashboard' : 'Connect Wallet'}
                 </button>
               </ConnectWallet>
+            )}
           </div>
         </div>
         <div className={styles.detailsContainer}>

@@ -1,6 +1,7 @@
 :root {
   --text-color: hsl(0, 0%, 0%);
   --blue-text-color: hsl(209, 45%, 52%);
+  --dark-blue-color: hsl(226, 64%, 63%);
   --inverse-color: hsl(0, 0%, 100%);
   --btn-color: hsl(0, 0%, 7%);
   --nav-border: hsl(0, 0%, 91%);
@@ -70,6 +71,14 @@ a {
   color: var(--blue-text-color);
   font-weight: 600;
   font-size: 1.3rem;
+}
+
+.blue-text.lg {
+  font-size: 1.6rem;
+}
+
+.blue-text.dark {
+  color: var(--dark-blue-color);
 }
 
 .dark-text {

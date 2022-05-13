@@ -82,11 +82,7 @@ export const UserView = (props: GetUserServerSide) => {
                       <p className="heading sm nm-bottom">{Name}</p>
                       <p className="light-sub-heading nm mt-1">{TrimmedPublicKey}</p>
                     </div>
-                    <ConnectWallet
-                      noFullSize={true}
-                      redirectToWelcome={false}
-                      noToast={true}
-                    >
+                    <ConnectWallet noFullSize={true} noToast={true}>
                       <button
                         onClick={() => setClicked(clicked + 1)}
                         className="main-btn sm"

@@ -5,12 +5,18 @@ import styles from '@/styles/Navbar.module.scss';
 import publishButton from '@/images/elements/publish.svg';
 import arweaveBadge from '@/images/elements/arweave.svg';
 import pop_image from '@/images/elements/proof-of-post.svg';
-import { useState } from 'react';
 import { ConnectWallet } from '@/layouts/Wallet';
-import { CLUSTER } from '@/components/config/constants';
+import { CLUSTER, WHITELIST_URL } from '@/components/config/constants';
 
-export const Navbar = () => {
-  const [clicked, setClicked] = useState(false);
+export const Navbar = ({
+  whitelisted,
+  clicked,
+  setClicked
+}: {
+  whitelisted: boolean | null;
+  clicked: number;
+  setClicked(clicked: number): void;
+}) => {
   return (
     <div className={styles.landingContainer}>
       <Link href="/">
@@ -22,13 +28,17 @@ export const Navbar = () => {
       </Link>
       <div className={styles.landingConnect}>
         <div className={styles.connectVector} />
-        <ConnectWallet
-          noFullSize={true}
-          noToast={true}
-          redirectToWelcome={clicked}>
-          <p
-            onClick={() => setClicked(true)}
-            className="dark-text pointer">Connect Wallet</p>
+        <ConnectWallet noFullSize={true} noToast={true}>
+          <p onClick={() => {
+            setClicked(clicked + 1);
+            if (whitelisted === false) {
+              window.open(WHITELIST_URL, '_blank');
+            }
+          }} className="dark-text pointer">
+            {whitelisted === null ? 'Connect Wallet' : ''}
+            {whitelisted === false ? 'Join Whitelist' : ''}
+            {whitelisted === true ? 'Dashboard' : ''}
+          </p>
         </ConnectWallet>
       </div>
     </div>

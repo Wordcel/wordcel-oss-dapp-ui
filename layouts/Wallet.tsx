@@ -62,12 +62,10 @@ export const Wallet: FC = ({
 export const ConnectWallet = ({
   children,
   noFullSize,
-  redirectToWelcome,
   noToast,
 }: {
   children: React.ReactNode;
   noFullSize?: boolean;
-  redirectToWelcome?: boolean;
   noToast?: boolean;
 }) => {
   const { wallet, connect, publicKey } = useWallet();
@@ -88,13 +86,11 @@ export const ConnectWallet = ({
     if (publicKey) {
       console.log(`User Public Key: ${publicKey}`);
       if (!noToast) toast.success('Connected to wallet');
-      if (redirectToWelcome) router.push(`/welcome/${publicKey}`);
     }
   }, [
     wallet,
     visible,
     publicKey,
-    redirectToWelcome,
     clicked
   ]);
 
@@ -117,4 +113,4 @@ export const ConnectWallet = ({
       {children}
     </div>
   );
-}
+};
