@@ -84,7 +84,7 @@ export const LandingPage = () => {
             </p>
             {whitelisted === false && (
               <div className={styles.noWL}>
-                <img src={noWL.src} alt="" />
+                <img className={styles.noWLImage} src={noWL.src} alt="" />
                 <a
                   href={WHITELIST_URL}
                   target="_blank"

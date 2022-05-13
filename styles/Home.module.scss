@@ -105,4 +105,15 @@
   align-items: center;
   justify-content: space-between;
   padding: 0rem 3.5rem;
+  @media only screen and (max-width: 1280px) {
+    padding: 0rem 2.5rem;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 0 2rem;
+  }
+}
+
+.noWLImage {
+  max-width: 27.1rem;
+  width: 100%;
 }
