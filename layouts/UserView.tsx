@@ -84,7 +84,7 @@ export const UserView = (props: GetUserServerSide) => {
                       <p className="heading sm nm-bottom">{Name}</p>
                       <p className="light-sub-heading nm mt-1">{TrimmedPublicKey}</p>
                     </div>
-                    <div>
+                    <div className="mt-2">
                       <ConnectWallet noFullSize={true} noToast={true}>
                         <button
                           onClick={() => setClicked(clicked + 1)}
@@ -100,20 +100,24 @@ export const UserView = (props: GetUserServerSide) => {
                         </button>
                       </ConnectWallet>
                       <div className="user-socials">
-                        <a
-                          href={`https://twitter.com/${props.user.twitter}`}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                          key={props.user.twitter}>
-                            <TwitterIcon color="#1E2833" />
-                        </a>
-                        <a
-                          href={props.user.discord}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                          key={props.user.discord}>
-                            <DiscordIcon color="#1E2833" />
-                        </a>
+                        {props.user.twitter && (
+                          <a
+                            href={`https://twitter.com/${props.user.twitter}`}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                            key={props.user.twitter}>
+                              <TwitterIcon color="#1E2833" />
+                          </a>
+                        )}
+                        {props.user.discord && (
+                          <a
+                            href={props.user.discord}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                            key={props.user.discord}>
+                              <DiscordIcon color="#1E2833" />
+                          </a>
+                        )}
                       </div>
                     </div>
                   </div>
