@@ -74,7 +74,12 @@ export const VerticalArticlePreview = ({
         </div>
       </div>
       <div className={styles.verticalArticleAdditional}>
-        <p className="normal-text sm nm width-100">{formatted_date}</p>
+        <div className="width-100">
+          <p className="normal-text sm nm">{formatted_date}</p>
+          {!article.on_chain && (
+            <p className="draft">DRAFT</p>
+          )}
+        </div>
         <img
           onClick={() => router.push(`/edit/${user?.username}/${article.slug}`)}
           className={styles.editArticle} src={editArticle.src} alt="Edit Article" />

@@ -1,23 +1,22 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { GetArticlesServerSide } from '@/types/props';
-import { DefaultHead } from './DefaultHead';
-import { StaticNavbar } from './Navbar';
-import { DefaultBox } from '@/elements/Box';
-import { getTrimmedPublicKey } from '@/components/getTrimmedPublicKey';
-import { VerticalArticlePreview } from './ArticlePreview';
-import { Footer } from './Footer';
 import noArticles from '@/images/elements/no-articles.svg';
 import publishNew from '@/images/elements/publish-new-article.svg';
 import importArticles from '@/images/elements/import-articles.svg';
 import styles from '@/styles/Welcome.module.scss';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { Footer } from './Footer';
+import { DefaultHead } from './DefaultHead';
+import { StaticNavbar } from './Navbar';
+import { DefaultBox } from '@/elements/Box';
+import { getTrimmedPublicKey } from '@/components/getTrimmedPublicKey';
+import { GetArticlesServerSide } from '@/types/props';
+import { VerticalArticlePreview } from './ArticlePreview';
 
 export const WelcomePage = (
   props: GetArticlesServerSide
 ) => {
   const router = useRouter();
-  const onChainArticles = props.articles ? props.articles.filter((article) => article.on_chain) : [];
   const { publicKey } = useWallet();
 
   useEffect(() => {
@@ -82,17 +81,17 @@ export const WelcomePage = (
               style={{ marginLeft: '1.5rem' }} width={8} height={8} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
               <circle cx={4} cy={4} r={4} fill="#A2A2A2" />
             </svg>
-            <p className="ml-1-5 subheading light mxs bold">{onChainArticles.length}</p>
+            <p className="ml-1-5 subheading light mxs bold">{props.articles?.length}</p>
           </div>
           <div className={styles.articles}>
-            {onChainArticles.map((article) => (
+            {props.articles && props.articles.map((article) => (
               <VerticalArticlePreview
                 key={article.proof_of_post}
                 article={article}
                 user={props.user}
               />
             ))}
-            {onChainArticles.length === 0 && (
+            {props.articles && props.articles.length === 0 && (
               <div className="flex justify-content-center mt-12">
                 <img className={styles.noArticlesImage} src={noArticles.src} alt="No published articles" />
               </div>

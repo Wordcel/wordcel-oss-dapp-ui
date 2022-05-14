@@ -278,6 +278,17 @@ a {
   height: 100%;
 }
 
+.draft {
+  color: var(--inverse-color);
+  background: var(--gray-text-color);
+  border-radius: 0.4rem;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  width: max-content;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
 .mt-1 {
   margin-top: 1rem;
 }
