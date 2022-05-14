@@ -1,7 +1,7 @@
 import * as anchor from '@project-serum/anchor';
 import toast from 'react-hot-toast';
 import idl from '@/components/config/devnet-idl.json';
-import { PublishArticleRequest } from '@/types/api';
+import { PublishArticleRequest, Subscribe } from '@/types/api';
 import { SystemProgram, PublicKey } from '@solana/web3.js';
 import { ContentPayload } from '@/components/upload';
 import { WalletContextState } from '@solana/wallet-adapter-react';
@@ -168,6 +168,22 @@ async function publishToServer(
   return response;
 }
 
+async function updateSubscriptionServer(
+  data: Subscribe,
+  cancel = false
+) {
+  const request = await fetch(
+    cancel ? '/api/subscription/cancel' : '/api/subscription/new',
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+  const response = await request.json();
+  return response;
+};
 
 export async function initializeSubscriberAccount(
   wallet: anchor.Wallet,
@@ -191,41 +207,20 @@ export async function initializeSubscriberAccount(
 
 export async function getIfSubscribed(
   wallet: anchor.Wallet,
-  publicationOwner: PublicKey
+  publicationOwner: string,
+  returnResponse = false
 ) {
-  try {
-    const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
-    const subscriberSeeds = [Buffer.from("subscriber"), wallet.publicKey.toBuffer()];
-    const [subscriberKey] = await anchor.web3.PublicKey.findProgramAddress(
-      subscriberSeeds,
-      program.programId
-    );
-    console.log(`Subscriber Key: ${subscriberKey}`);
-
-    const subscriberAccount = await program.account.subscriber.fetch(subscriberKey);
-    console.log(subscriberAccount);
-    if (!subscriberAccount) return false;
-    const subcriptionSeeds = [Buffer.from("subscription"), subscriberKey.toBuffer(), new anchor.BN(subscriberAccount.subscriptionNonce).toArrayLike(Buffer)];
-    const [subscriptionKey] = await anchor.web3.PublicKey.findProgramAddress(
-      subcriptionSeeds,
-      program.programId
-    );
-    console.log(`Subscription Key" ${subscriptionKey}`)
-    console.log('it works till here')
-
-    const subscriptionAccount = await program.account.subscription.fetch(subscriptionKey);
-    console.log(subscriptionAccount);
-    if (!subscriptionAccount) return false;
-  } catch (e) {
-    console.log(e)
-    return false;
-  }
+  const request = await fetch(`/api/subscription/get/${wallet.publicKey.toBase58()}/${publicationOwner}`);
+  if (!returnResponse) return request.ok;
+  const response = await request.json();
+  return response;
 }
 
 export async function subscribeToPublication(
   wallet: anchor.Wallet,
   publicationOwner: PublicKey,
-  setSubscribed: (subscribed: boolean) => void
+  setSubscribed: (subscribed: boolean) => void,
+  signature: Uint8Array
 ) {
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
   const subscriberSeeds = [Buffer.from("subscriber"), wallet.publicKey.toBuffer()];
@@ -234,7 +229,6 @@ export async function subscribeToPublication(
     subscriberSeeds,
     program.programId
   );
-
   let subscriberAccount;
   try {
     subscriberAccount = await program.account.subscriber.fetch(subscriberKey);
@@ -256,48 +250,98 @@ export async function subscribeToPublication(
     subcriptionSeeds,
     program.programId
   );
-
-  try {
-    const subscriptionAccount = await program.account.subscription.fetch(subscriptionKey);
-    console.log(subscriptionAccount);
-  } catch {
-    console.log('Subscription account does not exist')
-    const tx = await program.transaction.initializeSubscription(subscriptionBump, {
-      accounts: {
-        subscriber: subscriberKey,
-        subscription: subscriptionKey,
-        authority: wallet.publicKey,
-        publication: publicationKey,
-        systemProgram: SystemProgram.programId
-      }
-    });
-    const { blockhash } = await connection.getRecentBlockhash();
-    tx.recentBlockhash = blockhash;
-    tx.feePayer = wallet.publicKey;
-    const signedTx = await wallet.signTransaction(tx);
-    const txid = await connection.sendRawTransaction(signedTx.serialize());
-    if (!txid) {
-      throw new Error('Transaction creation failed');
-    };
-    const confirmation = connection.confirmTransaction(txid, preflightCommitment);
-    toast.promise(confirmation, {
-      loading: 'Confirming Transaction',
-      success: 'Subscribed',
-      error: 'Transaction Failed'
-    });
-    const verified = await confirmation;
-    if (verified.value.err !== null) {
-      throw new Error('Transaction failed')
-    };
-    // remove the stuff below this once contract is fixed
-    setSubscribed(true);
-    const existingSubscriptionsJSON = localStorage.getItem('subscriptions');
-    if (!existingSubscriptionsJSON) {
-      localStorage.setItem('subscriptions', JSON.stringify([publicationOwner]))
-    } else {
-      const data = JSON.parse(existingSubscriptionsJSON);
-      data.push(publicationOwner);
-      localStorage.setItem('subscriptions', JSON.stringify(data));
+  const tx = await program.transaction.initializeSubscription(subscriptionBump, {
+    accounts: {
+      subscriber: subscriberKey,
+      subscription: subscriptionKey,
+      authority: wallet.publicKey,
+      publication: publicationKey,
+      systemProgram: SystemProgram.programId
     }
+  });
+  const { blockhash } = await connection.getRecentBlockhash();
+  tx.recentBlockhash = blockhash;
+  tx.feePayer = wallet.publicKey;
+  const signedTx = await wallet.signTransaction(tx);
+  const txid = await connection.sendRawTransaction(signedTx.serialize());
+  if (!txid) {
+    throw new Error('Transaction creation failed');
+  };
+  const confirmation = connection.confirmTransaction(txid, preflightCommitment);
+  toast.promise(confirmation, {
+    loading: 'Confirming Transaction',
+    success: 'Transaction Confirmed',
+    error: 'Transaction Failed'
+  });
+  const verified = await confirmation;
+  if (verified.value.err !== null) {
+    throw new Error('Transaction failed')
+  };
+  toast.loading('Saving')
+  const saved = await updateSubscriptionServer({
+    account: subscriptionKey.toBase58(),
+    publication_owner: publicationOwner.toBase58(),
+    public_key: wallet.publicKey.toString(),
+    signature: signature,
+  });
+  toast.dismiss();
+  if (saved.success) {
+    setSubscribed(true);
+    toast.success('Subscribed');
+  }
+}
+
+export async function cancelSubscription(
+  wallet: anchor.Wallet,
+  publicationOwner: PublicKey,
+  subscriptionKey: PublicKey,
+  setSubscribed: (subscribed: boolean) => void,
+  signature: Uint8Array
+) {
+  const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
+  const subscriberSeeds = [Buffer.from("subscriber"), wallet.publicKey.toBuffer()];
+  const [subscriberKey] = await anchor.web3.PublicKey.findProgramAddress(
+    subscriberSeeds,
+    program.programId
+  );
+  const tx = await program.transaction.cancelSubscription({
+    accounts: {
+      subscriber: subscriberKey,
+      subscription: subscriptionKey,
+      authority: wallet.publicKey,
+      systemProgram: SystemProgram.programId
+    }
+  });
+  const { blockhash } = await connection.getRecentBlockhash();
+  tx.recentBlockhash = blockhash;
+  tx.feePayer = wallet.publicKey;
+  const signedTx = await wallet.signTransaction(tx);
+  const txid = await connection.sendRawTransaction(signedTx.serialize());
+  if (!txid) {
+    throw new Error('Transaction creation failed');
+  };
+  const confirmation = connection.confirmTransaction(txid, preflightCommitment);
+  toast.promise(confirmation, {
+    loading: 'Confirming Transaction',
+    success: 'Transaction Confirmed',
+    error: 'Transaction Failed'
+  });
+  const verified = await confirmation;
+  if (verified.value.err !== null) {
+    throw new Error('Transaction failed')
+  };
+  toast.loading('Saving');
+  const saved = await updateSubscriptionServer({
+    account: subscriptionKey.toBase58(),
+    publication_owner: publicationOwner.toBase58(),
+    public_key: wallet.publicKey.toString(),
+    signature: signature,
+  }, true);
+  toast.dismiss();
+  if (saved.success) {
+    setSubscribed(false);
+    toast.success('Unsubscribed');
+  } else {
+    toast.error('Subscription cancellation failed');
   }
 }

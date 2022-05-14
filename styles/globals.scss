@@ -170,6 +170,7 @@ a {
   grid-template-columns: repeat(auto-fit, minmax(1.8rem, 1.8rem));
   grid-gap: 1.8rem;
   padding-right: 1.8rem;
+  min-width: 6rem;
   @media only screen and (max-width: 940px) {
     grid-template-columns: repeat(auto-fit, minmax(1.8rem, 1.8rem));
     grid-gap: 2.5rem;

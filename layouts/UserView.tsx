@@ -7,7 +7,7 @@ import { StaticNavbar } from '@/layouts/Navbar';
 import { GetUserServerSide } from '@/types/props';
 import { ArticlePreview } from './ArticlePreview';
 
-import { subscribeToPublication } from '@/components/contractInteraction';
+import { cancelSubscription, getIfSubscribed, subscribeToPublication } from '@/components/contractInteraction';
 
 // Images
 import defaultBanner from '@/images/gradients/user-default-banner.png';
@@ -15,15 +15,19 @@ import TwitterIcon from '@/images/dynamic/Twitter';
 import DiscordIcon from '@/images/dynamic/Discord';
 
 import { useWallet, useAnchorWallet } from '@solana/wallet-adapter-react';
+import { getUserSignature } from '@/components/signMessage';
 import { PublicKey } from '@solana/web3.js';
 import { ConnectWallet } from './Wallet';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 export const UserView = (props: GetUserServerSide) => {
-  const [clicked, setClicked] = useState(0);
-  const [subscribed, setSubscribed] = useState(false);
-  const { publicKey } = useWallet();
   const wallet = useAnchorWallet();
+  const [clicked, setClicked] = useState(0);
+  const [hideFollow, setHideFollow] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+  const [subscriptionKey, setSubscriptionKey] = useState('');
+  const { publicKey, signMessage } = useWallet();
 
   const Name = props.user?.name;
   const Bio = props.user?.bio;
@@ -43,23 +47,46 @@ export const UserView = (props: GetUserServerSide) => {
   const SEOImage = `https://i0.wp.com/og.up.railway.app/user/${base64Data}`
 
   useEffect(() => {
-    if (publicKey && clicked !== 0 && props.user?.public_key) {
-      if (subscribed) return;
-      subscribeToPublication(
-        wallet as any,
-        new PublicKey(props.user.public_key),
-        setSubscribed
-      )
-    };
-    if (publicKey) {
-      setSubscribed(publicKey.toBase58() === props.user?.public_key)
-      const json = localStorage.getItem('subscriptions');
-      const data = JSON.parse(json || '[]');
-      if (data.includes(props.user?.public_key)) {
-        setSubscribed(true);
-      }
+    if (publicKey?.toBase58() === props.user?.public_key) {
+      setHideFollow(true);
     }
+    (async function () {
+      if (publicKey && clicked !== 0 && props.user?.public_key && signMessage) {
+        const signature = await getUserSignature(signMessage);
+        if (subscribed && subscriptionKey) {
+          cancelSubscription(
+            wallet as any,
+            new PublicKey(props.user.public_key),
+            new PublicKey(subscriptionKey),
+            setSubscribed,
+            signature
+          )
+          return;
+        };
+        subscribeToPublication(
+          wallet as any,
+          new PublicKey(props.user.public_key),
+          setSubscribed,
+          signature
+        )
+      };
+    })();
   }, [clicked, publicKey]);
+
+  useEffect(() => {
+    (async function () {
+      if (wallet && props.user?.public_key) {
+        try {
+          const subscription = await getIfSubscribed(wallet as any, props.user.public_key, true);
+          if (subscription.error) return;
+          setSubscriptionKey(subscription.subscription.account);
+          setSubscribed(true);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    })();
+  }, [wallet, publicKey, subscribed])
 
   return (
     <div className="container-flex">
@@ -85,20 +112,21 @@ export const UserView = (props: GetUserServerSide) => {
                       <p className="light-sub-heading nm mt-1">{TrimmedPublicKey}</p>
                     </div>
                     <div className="mt-2">
-                      <ConnectWallet noFullSize={true} noToast={true}>
-                        <button
-                          onClick={() => setClicked(clicked + 1)}
-                          className="main-btn sm"
-                          style={{
-                            backgroundColor: subscribed ? 'transparent' : '',
-                            border: subscribed ? '0.2rem solid black' : '',
-                            cursor: subscribed ? 'not-allowed' : 'pointer',
-                            color: subscribed ? 'black' : ''
-                          }}
-                        >
-                          {subscribed ? 'SUBSCRIBED' : 'SUBSCRIBE'}
-                        </button>
-                      </ConnectWallet>
+                      {!hideFollow && (
+                        <ConnectWallet noFullSize={true} noToast={true}>
+                          <button
+                            onClick={() => setClicked(clicked + 1)}
+                            className="main-btn sm subscribe-btn"
+                            style={{
+                              backgroundColor: subscribed ? 'transparent' : '',
+                              border: subscribed ? '0.2rem solid black' : '',
+                              color: subscribed ? 'black' : ''
+                            }}
+                          >
+                            {subscribed ? 'UNSUBSCRIBE' : 'SUBSCRIBE'}
+                          </button>
+                        </ConnectWallet>
+                      )}
                       <div className="user-socials">
                         {props.user.twitter && (
                           <a
