@@ -53,6 +53,7 @@ export const UserView = (props: GetUserServerSide) => {
     (async function () {
       if (publicKey && clicked !== 0 && props.user?.public_key && signMessage) {
         const signature = await getUserSignature(signMessage);
+        if (!signature) return;
         if (subscribed && subscriptionKey) {
           cancelSubscription(
             wallet as any,

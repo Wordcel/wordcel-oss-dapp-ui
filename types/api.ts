@@ -12,3 +12,10 @@ export interface Subscribe {
   public_key: string;
   signature: Uint8Array;
 }
+
+export interface UpdateCache {
+  id: string;
+  cache_link: string;
+  public_key: string;
+  signature: Uint8Array;
+}

@@ -11,10 +11,14 @@ import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { getUserSignature } from '@/components/signMessage';
 import { Footer } from './Footer';
+import { uploadNFTStorage } from '@/components/upload';
+import { updateCacheLink } from '@/components/cache';
 
 export const EditArticle = (props: GetArticleServerSide) => {
   const router = useRouter();
   const [blocks] = useState<any>(JSON.parse(props.blocks || ''));
+  const [sigError, setSigError] = useState('');
+  const [signature, setSignature] = useState<Uint8Array>();
   const { publicKey, signMessage } = useWallet();
   const anchorWallet = useAnchorWallet();
   const wallet = useWallet();
@@ -27,6 +31,40 @@ export const EditArticle = (props: GetArticleServerSide) => {
   const handleInitialize = useCallback((instance) => {
     editorInstance.current = instance
   }, []);
+
+  useEffect(() => {
+    (async function () {
+      if (publicKey && signMessage && props.article) {
+        const userSignature = await getUserSignature(signMessage);
+        if (!userSignature) {
+          toast('Please sign the message on your wallet so that we can save your progress');
+          setSigError(`Error: ${Math.random()}`)
+          return;
+        };
+        setSignature(userSignature);
+      }
+    })();
+  }, [editorInstance, sigError])
+
+  useEffect(() => {
+    setInterval(async () => {
+      if (!editorInstance.current || !props.article || !publicKey || !signature) return;
+      const data = await editorInstance.current.save();
+      const payload = {
+        content: { blocks: data.blocks },
+        type: 'blocks'
+      };
+      const cache_link = await uploadNFTStorage(payload);
+      if (!cache_link) return;
+      const update_cache = await updateCacheLink({
+        id: props.article.id.toString(),
+        cache_link: cache_link,
+        signature: signature,
+        public_key: publicKey.toBase58()
+      });
+      console.log(update_cache);
+    }, 30000)
+  }, [signature])
 
   const handlePublish = async () => {
     if (!anchorWallet || !props.article) return;

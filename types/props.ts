@@ -20,8 +20,10 @@ export interface Article {
   image_url: string;
   on_chain: boolean;
   created_at: Date;
-  updated_at: Date;
+  on_chain_version: Date;
+  cached_at: Date;
   user_id: number;
+  cache_link?: string;
   blocks?: string;
   proof_of_post?: string;
   arweave_url?: string;

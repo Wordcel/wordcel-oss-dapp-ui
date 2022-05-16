@@ -1,8 +1,8 @@
 import { MESSAGE_TO_SIGN } from '@/components/config/constants';
 
 export const getUserSignature = async (
-  sign: (message: Uint8Array) => Promise<Uint8Array>
-) => {
+  sign: (message: Uint8Array) => Promise<Uint8Array | undefined>
+): Promise<Uint8Array | undefined> => {
   const localSignature = localStorage.getItem('wordcel_signature');
   if (localSignature) return JSON.parse(localSignature);
   const message = new TextEncoder().encode(MESSAGE_TO_SIGN);
