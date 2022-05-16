@@ -44,7 +44,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
         setSignature(userSignature);
       }
     })();
-  }, [editorInstance, sigError])
+  }, [sigError]);
 
   useEffect(() => {
     setInterval(async () => {
@@ -64,7 +64,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
       });
       console.log(update_cache);
     }, 30000)
-  }, [signature])
+  }, [signature]);
 
   const handlePublish = async () => {
     if (!anchorWallet || !props.article) return;
