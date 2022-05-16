@@ -20,6 +20,7 @@ export interface Article {
   image_url: string;
   on_chain: boolean;
   created_at: Date;
+  updated_at: Date;
   user_id: number;
   blocks?: string;
   proof_of_post?: string;
