@@ -86,7 +86,7 @@ export const WelcomePage = (
           <div className={styles.articles}>
             {props.articles && props.articles.map((article) => (
               <VerticalArticlePreview
-                key={article.proof_of_post}
+                key={article.title}
                 article={article}
                 user={props.user}
               />

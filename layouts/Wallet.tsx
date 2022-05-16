@@ -83,10 +83,7 @@ export const ConnectWallet = ({
       }
       return;
     }
-    if (publicKey) {
-      console.log(`User Public Key: ${publicKey}`);
-      if (!noToast) toast.success('Connected to wallet');
-    }
+    if (publicKey && !noToast) toast.success('Connected to wallet');
   }, [
     wallet,
     visible,

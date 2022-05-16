@@ -19,7 +19,7 @@ import { getUserSignature } from '@/components/signMessage';
 import { PublicKey } from '@solana/web3.js';
 import { ConnectWallet } from './Wallet';
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+
 
 export const UserView = (props: GetUserServerSide) => {
   const wallet = useAnchorWallet();

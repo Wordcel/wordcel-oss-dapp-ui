@@ -34,10 +34,12 @@ model Article {
   image_url String
   on_chain Boolean @default(false)
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt @default(now())
+  on_chain_version DateTime @default(now())
+  cached_at DateTime @default(now())
   blocks Block?
   proof_of_post String?
   arweave_url String?
+  cache_link String?
   slug String
   user_id Int
   owner User @relation(fields: [user_id], references: [id])
