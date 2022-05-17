@@ -1,6 +1,5 @@
 import Output from "editorjs-blocks-react-renderer";
-// @ts-expect-error
-import ImageGallery from '@rodrigoodhin/editorjs-image-gallery';
+// import ImageGallery from '@rodrigoodhin/editorjs-image-gallery';
 // @ts-expect-error
 import { ChecklistOutput } from 'editorjs-react-renderer';
 
@@ -24,10 +23,13 @@ const Reader = ({
     },
     quote: {
       className: "reader-blockquote"
+    },
+    figure: {
+      className: "reader-figure"
     }
   }
   return (
-    <div style={{
+    <div id="reader" style={{
       fontSize: '170%'
     }}>
       <Output data={{
@@ -36,7 +38,8 @@ const Reader = ({
         time: new Date().getTime(),
       }} renderers={{
         // imageGallery: ImageGallery,
-        checklist: ChecklistOutput
+        checklist: ChecklistOutput,
+        // blockquote: QuoteOutput
       }} config={READER_CONFIG} />
     </div>
   )

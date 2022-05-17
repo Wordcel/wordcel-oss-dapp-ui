@@ -1,3 +1,4 @@
+import date from 'date-and-time';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import styles from '@/styles/Reader.module.scss';
@@ -5,10 +6,11 @@ import editorStyles from '@/styles/Editor.module.scss';
 import userStyles from '@/styles/UserView.module.scss';
 import authorBadge from '@/images/elements/author-badge.svg';
 import { GetArticleServerSide } from '@/types/props';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { Footer } from './Footer';
+import { getReadingTime } from '@/components/getReadingTime';
 
 export const AuthorBox = (props: GetArticleServerSide) => {
   const Name = props.user?.name;
@@ -17,6 +19,7 @@ export const AuthorBox = (props: GetArticleServerSide) => {
   const TrimmedPublicKey = props.user?.public_key.substring(0, 4)
     .concat('....')
     .concat(props.user?.public_key.substring(props.user?.public_key.length - 4));
+
   return (
     <div className={styles.authorBox}>
       <img
@@ -59,6 +62,28 @@ export const ViewArticle = (props: GetArticleServerSide) => {
   };
   const base64Data = Buffer.from(JSON.stringify(SEOData)).toString('base64');
   const SEOImage = `https://i0.wp.com/og.up.railway.app/article/${base64Data}`;
+
+  const readingTime = getReadingTime(JSON.parse(props.blocks || ''));
+
+  const insertAfter = (newNode: Node, existingNode: Node) => {
+    existingNode.parentNode?.insertBefore(newNode, existingNode.nextSibling);
+  }
+
+  useEffect(() => {
+    setTimeout(() => {
+      const firstElement = document.getElementById('reader')?.firstElementChild;
+      if (firstElement && props.article) {
+        const created_at = new Date(props.article.created_at);
+        const formatted_date = date.format(created_at, 'DD MMM, YYYY');
+        const details = document.createElement('p');
+        details.className = 'normal-text sm bold mt-1 mb-4';
+        details.textContent = `${formatted_date} • ${readingTime} read`;
+        insertAfter(details, firstElement);
+      }
+    }, 500)
+  }, []);
+
+
   return (
     <div className="container-flex">
       <DefaultHead

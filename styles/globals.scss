@@ -298,6 +298,9 @@ a {
 .mt-2 {
   margin-top: 2rem;
 }
+.mb-4 {
+  margin-bottom: 4rem;
+}
 .mt-12 {
   margin-top: 12rem;
 }
@@ -384,6 +387,13 @@ a {
 .reader-embed {
   width: 100%;
   height: 60rem;
+}
+
+figure {
+  @media only screen and (max-width: 768px) {
+    margin-inline-start: 0rem;
+    margin-inline-end: 0rem;
+  }
 }
 
 .reader-list {

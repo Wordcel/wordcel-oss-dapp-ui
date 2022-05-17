@@ -24,7 +24,6 @@ import Quote from "@editorjs/quote";
 import ImageGallery from '@rodrigoodhin/editorjs-image-gallery';
 // @ts-expect-error
 import SimpleImage from "@editorjs/simple-image";
-import Blockquote from "../external/blockquote";
 import { useEffect } from "react"
 
 interface Editor {
@@ -54,7 +53,7 @@ const CustomEditor = ({
   blocks
 }: Editor) => {
   useEffect(() => {
-    const toAllowLinks = [Paragraph, List, Header, InlineCode, Quote, Blockquote, Embed];
+    const toAllowLinks = [Paragraph, List, Header, InlineCode, Quote, Embed];
     toAllowLinks.forEach((link) => allowLinks(link));
   }, [])
   const EDITOR_JS_TOOLS = {
@@ -75,7 +74,6 @@ const CustomEditor = ({
     code: CodeBox,
     linkTool: LinkTool,
     quote: Quote,
-    blockquote: Blockquote,
     checklist: CheckList,
     delimiter: Delimiter,
     inlineCode: InlineCode,
