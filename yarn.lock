@@ -880,6 +880,11 @@
   dependencies:
     "@randlabs/communication-bridge" "^1.0.0"
 
+"@react-editor-js/core@^2.0.6":
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/@react-editor-js/core/-/core-2.0.6.tgz#3f20c0668d1f8502489ed7e354ff26461b270dce"
+  integrity sha512-mvHM2I+gT3AnvFpFhTZI0EFLKD9pRpgXDf286uwv6n6tngwLfnCCmtCbgiGI9ICph2GJvRZfaQubE+MHQ6YV8g==
+
 "@rodrigoodhin/editorjs-image-gallery@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@rodrigoodhin/editorjs-image-gallery/-/editorjs-image-gallery-0.1.0.tgz#32cb6344221532f4655e06fd183177deb08e8d7e"

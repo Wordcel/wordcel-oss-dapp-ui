@@ -1,5 +1,4 @@
 import Header from "@editorjs/header"
-import { createReactEditorJS } from 'react-editor-js';
 import EditorJS from '@appigram/react-editor-js'
 
 // @ts-expect-error
