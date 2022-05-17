@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@appigram/react-editor-js@^1.0.11":
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/@appigram/react-editor-js/-/react-editor-js-1.0.11.tgz#91d67580bde9aa47519b6a16d928b9bb396e490c"
+  integrity sha512-/X0Hj7X7GHk4rM6wKafMc7i5qBTHAhO4TxTEM/THiuEAO+iRTBTgrvoinr72NvJRPtwRJ9s/+8bOVNew0aSyvw==
+
 "@assemblyscript/loader@^0.9.4":
   version "0.9.4"
   resolved "https://registry.yarnpkg.com/@assemblyscript/loader/-/loader-0.9.4.tgz#a483c54c1253656bb33babd464e3154a173e1577"
@@ -874,25 +879,6 @@
   integrity sha512-iGme4YvAVCtZ6hjaEmltvd/z+Y2aIZ9s0Tw/t2WZRMD8CoWqYiDaj2vjrbtDyOarENQVNlAiY4IMpm0uI9gcUg==
   dependencies:
     "@randlabs/communication-bridge" "^1.0.0"
-
-"@react-editor-js/client@2.0.6":
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/@react-editor-js/client/-/client-2.0.6.tgz#be9a2704b58322bc37dc6d2acb014f0ff28fe43c"
-  integrity sha512-LMMJLAXAwk1kVMy7fxTRFK6OdouvoseqJbmVUygJb2EcfuT84nC9OAtvGEL4vsVLUcnzEV400+F9t5OKa77FGQ==
-  dependencies:
-    "@react-editor-js/core" "2.0.6"
-
-"@react-editor-js/core@2.0.6":
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/@react-editor-js/core/-/core-2.0.6.tgz#3f20c0668d1f8502489ed7e354ff26461b270dce"
-  integrity sha512-mvHM2I+gT3AnvFpFhTZI0EFLKD9pRpgXDf286uwv6n6tngwLfnCCmtCbgiGI9ICph2GJvRZfaQubE+MHQ6YV8g==
-
-"@react-editor-js/server@2.0.6":
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/@react-editor-js/server/-/server-2.0.6.tgz#237f11002b4db9fe754fd9a89ff76f131f8a21fb"
-  integrity sha512-soW/bV5auciYr8gEYISWK4fuIblAcc4bcwPuCKnDBj9W9r/nAxMmNgCG+z9rs9Gnroa0Ko3Hzwzs9d5MdOShzg==
-  dependencies:
-    "@react-editor-js/core" "2.0.6"
 
 "@rodrigoodhin/editorjs-image-gallery@^0.1.0":
   version "0.1.0"
@@ -5109,14 +5095,6 @@ react-dom@17.0.2:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     scheduler "^0.20.2"
-
-react-editor-js@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/react-editor-js/-/react-editor-js-2.0.6.tgz#34771596986d79513e12e5f4990da46b9e0f2430"
-  integrity sha512-8u47IbhExiFB2kGNdJYlsX5iVlSzac38A3oJ7bmnTz3Lp7Slys1xreoYdG71+KiOcfX0dEgOIavV4e6TJeB5eg==
-  dependencies:
-    "@react-editor-js/client" "2.0.6"
-    "@react-editor-js/server" "2.0.6"
 
 react-hot-toast@^2.2.0:
   version "2.2.0"

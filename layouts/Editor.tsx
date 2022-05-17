@@ -1,5 +1,7 @@
 import Header from "@editorjs/header"
-import { createReactEditorJS } from 'react-editor-js'
+import { createReactEditorJS } from 'react-editor-js';
+import EditorJS from '@appigram/react-editor-js'
+
 // @ts-expect-error
 import Paragraph from '@editorjs/paragraph';
 // @ts-expect-error
@@ -28,7 +30,8 @@ import { useEffect } from "react"
 
 interface Editor {
   handleInstance: (instance: any) => void;
-  blocks?: any[]
+  blocks?: any[];
+  onChange?: () => void;
 }
 
 const allowLinks = (
@@ -50,12 +53,15 @@ const allowLinks = (
 
 const CustomEditor = ({
   handleInstance,
-  blocks
+  blocks,
+  onChange
 }: Editor) => {
+
   useEffect(() => {
     const toAllowLinks = [Paragraph, List, Header, InlineCode, Quote, Embed];
     toAllowLinks.forEach((link) => allowLinks(link));
   }, [])
+
   const EDITOR_JS_TOOLS = {
     embed: Embed,
     header: {
@@ -80,14 +86,17 @@ const CustomEditor = ({
     imageGallery: ImageGallery,
     image: SimpleImage
   }
-  const EditorJS = createReactEditorJS();
+
   return (
     <div style={{ fontSize: '170%' }}>
       <EditorJS
-        onInitialize={handleInstance}
+        editorInstance={(instance: any) => handleInstance(instance)}
+        // @ts-expect-error
         tools={EDITOR_JS_TOOLS}
         placeholder={`Write from here...`}
-        defaultValue={{ blocks }}
+        // @ts-expect-error
+        data={{ blocks }}
+        onChange={onChange}
       />
     </div>
   );
