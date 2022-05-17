@@ -89,6 +89,7 @@ const CustomEditor = ({
   return (
     <div style={{ fontSize: '170%' }}>
       <EditorJS
+        holder='editor'
         editorInstance={(instance: any) => handleInstance(instance)}
         // @ts-expect-error
         tools={EDITOR_JS_TOOLS}
@@ -97,6 +98,7 @@ const CustomEditor = ({
         data={{ blocks }}
         onChange={onChange}
       />
+      <div id='editor' />
     </div>
   );
 }

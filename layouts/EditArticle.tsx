@@ -47,8 +47,9 @@ export const EditArticle = (props: GetArticleServerSide) => {
   }, [sigError]);
 
   useEffect(() => {
-    setInterval(async () => {
-      if (!editorInstance.current || !props.article || !publicKey || !signature) return;
+    const interval = setInterval(async () => {
+      if (!editorInstance.current?.save || !props.article || !publicKey || !signature) return;
+      toast('Saving...');
       const data = await editorInstance.current.save();
       const payload = {
         content: { blocks: data.blocks },
@@ -62,8 +63,12 @@ export const EditArticle = (props: GetArticleServerSide) => {
         signature: signature,
         public_key: publicKey.toBase58()
       });
+      toast.success('Saved');
       console.log(update_cache);
     }, 30000)
+    return () => {
+      clearInterval(interval);
+    }
   }, [signature]);
 
   const handlePublish = async () => {
