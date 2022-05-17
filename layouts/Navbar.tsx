@@ -60,7 +60,7 @@ export const StaticNavbar = ({
   return (
     <div
       style={{ justifyContent: (publish || proof_of_post) ? 'space-between' : 'center' }}
-      className={styles.staticContainer}>
+      className={`${styles.staticContainer} ${proof_of_post ? styles.hasPop : ''}`}>
       <Link href="/">
         <a>
           <div className={styles.logoMaxWidth}>
