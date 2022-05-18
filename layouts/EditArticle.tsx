@@ -16,15 +16,15 @@ import { updateCacheLink } from '@/components/cache';
 import { saveToast } from '@/components/saveToast';
 
 export const EditArticle = (props: GetArticleServerSide) => {
+  const wallet = useWallet();
   const router = useRouter();
+  const anchorWallet = useAnchorWallet();
   const [blocks] = useState<any>(JSON.parse(props.blocks || ''));
   const [sigError, setSigError] = useState('');
   const [signature, setSignature] = useState<Uint8Array>();
-  const [publishClicked, setPublishClicked] = useState(false);
   const { publicKey, signMessage } = useWallet();
-  const anchorWallet = useAnchorWallet();
-  const wallet = useWallet();
 
+  let [publishClicked] = useState(false);
   const Editor = dynamic(() => import('@/layouts/Editor'), {
     ssr: false
   });
@@ -90,7 +90,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
 
   const handlePublish = async () => {
     if (!anchorWallet || !props.article || publishClicked) return;
-    setPublishClicked(true);
+    publishClicked = true;
     const savedContent = await editorInstance.current?.save();
     if (!savedContent || !signMessage) return;
     const signature = await getUserSignature(signMessage);
@@ -99,7 +99,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
       content: { blocks: savedContent.blocks },
       type: 'blocks'
     };
-    const postTransaction = publishPost(
+    const response = await publishPost(
       payload,
       anchorWallet as any,
       wallet,
@@ -108,8 +108,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
       true,
       props.article.proof_of_post
     );
-    const response = await postTransaction;
-    if (!response) {
+    if (!response.article) {
       toast.dismiss();
       toast.error('Failed to publish article');
       return;

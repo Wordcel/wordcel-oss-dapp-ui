@@ -1,12 +1,11 @@
 import prisma from '@/lib/prisma';
-import { WHITELIST_URL } from './config/constants';
 import { getBlocks } from '@/components/getArticleBlocks';
 
 const redirect = () => {
   return {
     redirect: {
       permanent: false,
-      destination: WHITELIST_URL
+      destination: '/'
     },
     props: {}
   }

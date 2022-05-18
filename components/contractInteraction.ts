@@ -86,10 +86,15 @@ export async function publishPost(
   const postSeeds = [Buffer.from("post"), publicationKey.toBuffer(), new anchor.BN(mutPublicationAccount.postNonce).toArrayLike(Buffer)];
   const [postAccount, postBump] = await anchor.web3.PublicKey.findProgramAddress(postSeeds, program.programId);
   toast.loading('Uploading');
-  const metadataURI = await uploadBundle(
-    data,
-    adapterWallet
-  );
+  let metadataURI = '';
+  try {
+    metadataURI = await uploadBundle(
+      data,
+      adapterWallet
+    );
+  } catch (e: any) {
+    console.log(e);
+  }
   toast.dismiss();
   if (!metadataURI) {
     toast.error('Upload failed');

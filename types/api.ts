@@ -14,13 +14,6 @@ export interface Subscribe {
 }
 
 export interface UpdateCache {
-  id: string;
-  cache_link: string;
-  public_key: string;
-  signature: Uint8Array;
-}
-
-export interface NewArticleCache {
   id: string | undefined;
   cache_link: string;
   public_key: string;

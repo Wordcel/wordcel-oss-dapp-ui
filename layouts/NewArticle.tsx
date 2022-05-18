@@ -1,6 +1,7 @@
 import toast from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import styles from '@/styles/Editor.module.scss';
+import { saveToast } from '@/components/saveToast';
 import { publishPost } from '@/components/contractInteraction';
 import { EditorCore } from "@react-editor-js/core";
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
@@ -9,13 +10,19 @@ import { useEffect, useCallback, useRef, useState } from 'react';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { getUserSignature } from '@/components/signMessage';
+import { uploadNFTStorage } from '@/components/upload';
 import { Footer } from './Footer';
+import { updateCacheLink } from '@/components/cache';
 
 
 export const NewArticle = () => {
   const router = useRouter();
   const { publicKey, signMessage } = useWallet();
-  const [publishClicked, setPublishClicked] = useState(false);
+  const [sigError, setSigError] = useState('');
+  const [signature, setSignature] = useState<Uint8Array>();
+
+  let [articleID] = useState('');
+  let [publishClicked] = useState(false);
 
   const anchorWallet = useAnchorWallet();
   const wallet = useWallet();
@@ -29,9 +36,64 @@ export const NewArticle = () => {
     editorInstance.current = instance
   }, []);
 
+  useEffect(() => {
+    (async function () {
+      if (publicKey && signMessage) {
+        const userSignature = await getUserSignature(signMessage);
+        if (!userSignature) {
+          toast('Please sign the message on your wallet so that we can save your progress');
+          setSigError(`Error: ${Math.random()}`)
+          return;
+        };
+        setSignature(userSignature);
+      }
+    })();
+  }, [sigError]);
+
+  useEffect(() => {
+    const eventListener = (e: KeyboardEvent) => {
+      if (e.keyCode === 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+        e.preventDefault();
+        saveToast();
+      }
+    }
+    if (typeof window !== 'undefined') {
+      document.addEventListener("keydown", eventListener);
+    }
+    return () => {
+      if (typeof window !== 'undefined') {
+        document.removeEventListener("keydown", eventListener);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      if (!editorInstance.current?.save || !publicKey || !signature) return;
+      const data = await editorInstance.current.save();
+      const payload = {
+        content: { blocks: data.blocks },
+        type: 'blocks'
+      };
+      const cache_link = await uploadNFTStorage(payload);
+      if (!cache_link) return;
+      const new_cache = await updateCacheLink({
+        id: articleID,
+        cache_link: cache_link,
+        signature: signature,
+        public_key: publicKey.toBase58()
+      });
+      console.log(new_cache);
+      articleID = new_cache.article.id;
+    }, 30000)
+    return () => {
+      clearInterval(interval);
+    }
+  }, [signature]);
+
   const handlePublish = async () => {
     if (!anchorWallet || publishClicked) return;
-    setPublishClicked(true);
+    publishClicked = true;
     const savedContent = await editorInstance.current?.save();
     if (!savedContent || !signMessage) return;
     const signature = await getUserSignature(signMessage);
@@ -41,7 +103,7 @@ export const NewArticle = () => {
       type: 'blocks'
     };
     console.log(payload);
-    const postTransaction = publishPost(
+    const response = await publishPost(
       payload,
       anchorWallet as any,
       wallet,
@@ -49,29 +111,23 @@ export const NewArticle = () => {
       undefined,
       true
     );
-    toast.promise(postTransaction, {
-      loading: 'Publishing Article',
-      success: 'Article Published Successfully!',
-      error: 'Publishing Failed!'
-    });
-    const response = await postTransaction;
     if (!response.article) return;
     toast('Redirecting...');
     router.push(`/${response.username}/${response.article.slug}`);
   }
 
-  // useEffect(() => {
-  //   if (publicKey === null) {
-  //     router.push('/');
-  //   } else {
-  //     (async function () {
-  //       const request = await fetch(`/api/user/get/${publicKey}`);
-  //       if (!request.ok) {
-  //         router.push('/');
-  //       }
-  //     })();
-  //   }
-  // }, [publicKey]);
+  useEffect(() => {
+    if (publicKey === null) {
+      router.push('/');
+    } else {
+      (async function () {
+        const request = await fetch(`/api/user/get/${publicKey}`);
+        if (!request.ok) {
+          router.push('/');
+        }
+      })();
+    }
+  }, [publicKey]);
 
   return (
     <div className="container-flex">

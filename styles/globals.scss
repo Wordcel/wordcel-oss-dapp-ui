@@ -361,6 +361,12 @@ a {
 
 // fixes
 
+.cdx-checklist__item-checkbox {
+  border: none !important;
+  outline: 0.1rem solid #388ae5;
+  margin-right: 0.8rem !important;
+}
+
 .codex-editor__redactor {
   padding-bottom: 0rem !important;
 }
@@ -431,6 +437,7 @@ figure {
   font-weight: 500;
   opacity: 0.5;
   padding-left: 2rem;
+  margin: 4rem 0rem;
   border-left: 0.5rem solid var(--text-color);
 }
 

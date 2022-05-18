@@ -53,48 +53,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       slug
     } = getHeaderContent(blocks);
 
-    if (id) {
-      const article = await prisma.article.findFirst({
-        where: {
-          id,
-          owner: { public_key }
-        },
-      });
-
-      if (!article) {
-        res.status(400).json({
-          error: 'Article does not exist'
-        });
-        return;
-      }
-
-      const updated = await prisma.article.update({
-        where: {
-          id: Number(id),
-        },
-        data: {
-          title: sanitizeHtml(title),
-          description: sanitizeHtml(description),
-          image_url,
-          slug,
-          cache_link,
-          on_chain: false,
-          owner: {
-            connect: {
-              id: user.id
-            }
-          }
-        }
-      });
-
-      res.status(200).json({
-        success: 'Article updated',
-        article: updated,
-        username: user.username
-      });
-
-    }
-
     const newArticle = await prisma.article.create({
       data: {
         title: sanitizeHtml(title),
@@ -120,7 +78,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } catch (e) {
     console.error('Request error', e);
     res.status(500).json({
-      error: 'Error publishing article',
+      error: 'Error caching article',
     });
   }
 }
