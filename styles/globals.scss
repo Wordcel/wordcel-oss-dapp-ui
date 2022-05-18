@@ -167,14 +167,10 @@ a {
   align-items: center;
   justify-content: flex-end;
   margin-top: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(1.8rem, 1.8rem));
+  grid-template-columns: repeat(auto-fit, 2.5rem);
   grid-gap: 1.8rem;
-  padding-right: 1.8rem;
+  padding-right: 1rem;
   min-width: 6rem;
-  @media only screen and (max-width: 940px) {
-    grid-template-columns: repeat(auto-fit, minmax(1.8rem, 1.8rem));
-    grid-gap: 2.5rem;
-  }
   & > a {
     display: flex;
   }
