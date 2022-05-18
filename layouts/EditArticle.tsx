@@ -13,6 +13,7 @@ import { getUserSignature } from '@/components/signMessage';
 import { Footer } from './Footer';
 import { uploadNFTStorage } from '@/components/upload';
 import { updateCacheLink } from '@/components/cache';
+import { saveToast } from '@/components/saveToast';
 
 export const EditArticle = (props: GetArticleServerSide) => {
   const router = useRouter();
@@ -45,6 +46,23 @@ export const EditArticle = (props: GetArticleServerSide) => {
       }
     })();
   }, [sigError]);
+
+  useEffect(() => {
+    const eventListener = (e: KeyboardEvent) => {
+      if (e.keyCode === 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+        e.preventDefault();
+        saveToast();
+      }
+    }
+    if (typeof window !== 'undefined') {
+      document.addEventListener("keydown", eventListener);
+    }
+    return () => {
+      if (typeof window !== 'undefined') {
+        document.removeEventListener("keydown", eventListener);
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const interval = setInterval(async () => {
