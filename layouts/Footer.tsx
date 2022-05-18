@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import logo from '@/images/logo.svg';
 import styles from '@/styles/Footer.module.scss';
 import TwitterIcon from '@/images/dynamic/Twitter';
@@ -14,7 +15,11 @@ export const Footer = () => {
       <div className={styles.center}>
         <div className={styles.heroSection}>
           <div className={styles.logoContainer}>
-            <img className={styles.logo} src={logo.src} alt="Wordcel" />
+            <Link href="/">
+              <a>
+                <img className={styles.logo} src={logo.src} alt="Wordcel" />
+              </a>
+            </Link>
             <p className="normal-text mt-2 sm">
               Wordcel enables anyone to publish rich articles on the blockchain that are censorship resistant
             </p>

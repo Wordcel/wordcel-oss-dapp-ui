@@ -7,6 +7,7 @@ import arweaveBadge from '@/images/elements/arweave.svg';
 import pop_image from '@/images/elements/proof-of-post.svg';
 import { ConnectWallet } from '@/layouts/Wallet';
 import { CLUSTER, WHITELIST_URL } from '@/components/config/constants';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 export const Navbar = ({
   whitelisted,
@@ -57,11 +58,12 @@ export const StaticNavbar = ({
   publish?: () => void;
   proof_of_post?: ProofOfPost;
 }) => {
+  const { publicKey } = useWallet();
   return (
     <div
       style={{ justifyContent: (publish || proof_of_post) ? 'space-between' : 'center' }}
       className={`${styles.staticContainer} ${proof_of_post ? styles.hasPop : ''}`}>
-      <Link href="/">
+      <Link href={publicKey ? `/welcome/${publicKey.toBase58()}` : '/'}>
         <a>
           <div className={styles.logoMaxWidth}>
             <Image alt="Wordcel" src={logo} />

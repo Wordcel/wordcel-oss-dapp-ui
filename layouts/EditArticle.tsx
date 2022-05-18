@@ -20,6 +20,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
   const [blocks] = useState<any>(JSON.parse(props.blocks || ''));
   const [sigError, setSigError] = useState('');
   const [signature, setSignature] = useState<Uint8Array>();
+  const [publishClicked, setPublishClicked] = useState(false);
   const { publicKey, signMessage } = useWallet();
   const anchorWallet = useAnchorWallet();
   const wallet = useWallet();
@@ -67,7 +68,6 @@ export const EditArticle = (props: GetArticleServerSide) => {
   useEffect(() => {
     const interval = setInterval(async () => {
       if (!editorInstance.current?.save || !props.article || !publicKey || !signature) return;
-      toast('Saving...');
       const data = await editorInstance.current.save();
       const payload = {
         content: { blocks: data.blocks },
@@ -81,7 +81,6 @@ export const EditArticle = (props: GetArticleServerSide) => {
         signature: signature,
         public_key: publicKey.toBase58()
       });
-      toast.success('Saved');
       console.log(update_cache);
     }, 30000)
     return () => {
@@ -90,7 +89,8 @@ export const EditArticle = (props: GetArticleServerSide) => {
   }, [signature]);
 
   const handlePublish = async () => {
-    if (!anchorWallet || !props.article) return;
+    if (!anchorWallet || !props.article || publishClicked) return;
+    setPublishClicked(true);
     const savedContent = await editorInstance.current?.save();
     if (!savedContent || !signMessage) return;
     const signature = await getUserSignature(signMessage);
