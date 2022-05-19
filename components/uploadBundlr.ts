@@ -23,7 +23,7 @@ export const uploadBundle = async (
   const tags = [{ name: "Content-Type", value: "text/json" }];
   // Counts byte stize of stringData
   const size = new Blob([stringData]).size;
-  const toFundSize = size > 10000 ? size : 10000;
+  const toFundSize = size > 100000 ? size : 100000;
   console.log('Byte Size', toFundSize);
   // Returns the price needed in the chosen currency to pay for storing the required data size on Arweave.
   const price = await bundlr.getPrice(size);
