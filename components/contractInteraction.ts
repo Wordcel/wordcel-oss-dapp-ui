@@ -1,7 +1,8 @@
 import * as anchor from '@project-serum/anchor';
+import randombytes from 'randombytes';
 import toast from 'react-hot-toast';
 import idl from '@/components/config/devnet-idl.json';
-import { PublishArticleRequest, Subscribe } from '@/types/api';
+import { AddPublicationHash, PublishArticleRequest, Subscribe } from '@/types/api';
 import { SystemProgram, PublicKey } from '@solana/web3.js';
 import { ContentPayload } from '@/components/upload';
 import { WalletContextState } from '@solana/wallet-adapter-react';
@@ -30,21 +31,31 @@ export async function getPublicationAccount(
 
 async function createPublicationAccount(
   publicationSeeds: Buffer[],
+  publicationHash: Buffer,
   user: PublicKey,
   program: anchor.Program
 ) {
-  const [publicationAccount, publicationBump] = await anchor.web3.PublicKey.findProgramAddress(
+  const [publicationKey, publicationBump] = await anchor.web3.PublicKey.findProgramAddress(
     publicationSeeds,
     program.programId
   );
-  await program.rpc.initialize(publicationBump, {
+  await program.rpc.initialize(publicationBump, publicationHash, {
     accounts: {
-      publication: publicationAccount,
+      publication: publicationKey,
       user: user,
       systemProgram: SystemProgram.programId,
     }
   });
-  return publicationAccount;
+  return publicationKey;
+}
+
+async function getPublicationHash (
+  public_key: string
+) {
+  const request = await fetch(`/api/user/get/${public_key}`);
+  const response = await request.json();
+  console.log(response);
+  return response.user.publication_hash;
 }
 
 export async function publishPost(
@@ -56,35 +67,49 @@ export async function publishPost(
   getResponse?: boolean,
   published_post = ''
 ) {
+  toast.loading('Loading configurations');
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
-  const publicationSeeds = [Buffer.from("publication"), wallet.publicKey.toBuffer()];
+  const existingHash = await getPublicationHash(wallet.publicKey.toBase58());
+  const publicationHash = existingHash ? Buffer.from(existingHash, 'base64') : randombytes(32);
+
+  const publicationSeeds = [Buffer.from("publication"), publicationHash];
   const existingPublication = await getPublicationAccount(
     publicationSeeds,
     program
   );
   const publicationKey = existingPublication[0];
-  let mutPublicationAccount;
   toast.dismiss();
   try {
     const publicationAccount = await program.account.publication.fetch(publicationKey);
     console.log(publicationAccount);
-    mutPublicationAccount = publicationAccount;
   } catch (e) {
     toast('Publication account does not exist');
     const newPublicationAccount = await createPublicationAccount(
       publicationSeeds,
+      publicationHash,
       wallet.publicKey,
       program
     );
     if (!newPublicationAccount) {
       throw new Error(`Publication account creation failed`);
     };
-    mutPublicationAccount = newPublicationAccount;
+    if (!existingHash) {
+      const publication_hash_req = await addPublicationHash({
+        public_key: wallet.publicKey.toBase58(),
+        signature: signature,
+        publication_hash: publicationHash.toString('base64')
+      });
+      if (!publication_hash_req.user) {
+        throw new Error(`Publication hash save failed`);
+      }
+    }
     console.log(newPublicationAccount);
   }
 
-  const postSeeds = [Buffer.from("post"), publicationKey.toBuffer(), new anchor.BN(mutPublicationAccount.postNonce).toArrayLike(Buffer)];
+  const postHash = randombytes(32);
+  const postSeeds = [Buffer.from("post"), postHash];
   const [postAccount, postBump] = await anchor.web3.PublicKey.findProgramAddress(postSeeds, program.programId);
+
   toast.loading('Uploading');
   let metadataURI = '';
   try {
@@ -114,7 +139,7 @@ export async function publishPost(
     });
     console.log(`update tx: ${txid}`);
   } else {
-    const tx = program.transaction.createPost(postBump, metadataURI, {
+    const tx = program.transaction.createPost(postBump, metadataURI, postHash, {
       accounts: {
         post: postAccount,
         publication: publicationKey,
@@ -155,6 +180,22 @@ export async function publishPost(
     console.log(e);
     return;
   }
+}
+
+async function addPublicationHash (
+  data: AddPublicationHash
+) {
+  const request = await fetch(
+    '/api/user/create/publication',
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+  const response = await request.json();
+  return response;
 }
 
 async function publishToServer(

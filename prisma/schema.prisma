@@ -18,6 +18,7 @@ model User {
   nft_key String
   blog_name String
   import_enabled Boolean @default(false)
+  publication_hash String?
   bio String?
   twitter String?
   discord String?

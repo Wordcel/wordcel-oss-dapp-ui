@@ -6,6 +6,12 @@ export interface PublishArticleRequest {
   proof_of_post: string;
 }
 
+export interface AddPublicationHash {
+  public_key: string;
+  signature: Uint8Array;
+  publication_hash: string;
+}
+
 export interface Subscribe {
   account: string;
   publication_owner: string;
