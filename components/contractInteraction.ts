@@ -83,7 +83,7 @@ export async function publishPost(
     const publicationAccount = await program.account.publication.fetch(publicationKey);
     console.log(publicationAccount);
   } catch (e) {
-    toast('Publication account does not exist');
+    toast('Publication account does not exist, creating one');
     const newPublicationAccount = await createPublicationAccount(
       publicationSeeds,
       publicationHash,
