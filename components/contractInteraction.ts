@@ -70,7 +70,7 @@ export async function publishPost(
     console.log(publicationAccount);
     mutPublicationAccount = publicationAccount;
   } catch (e) {
-    toast('Publication account does not exist');
+    toast('Publication account does not exist, creating one');
     const newPublicationAccount = await createPublicationAccount(
       publicationSeeds,
       wallet.publicKey,
