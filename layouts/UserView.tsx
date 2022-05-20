@@ -7,7 +7,14 @@ import { StaticNavbar } from '@/layouts/Navbar';
 import { GetUserServerSide } from '@/types/props';
 import { ArticlePreview } from './ArticlePreview';
 
-import { cancelSubscription, getIfSubscribed, subscribeToPublication } from '@/components/contractInteraction';
+// @ts-expect-error
+import AnchorifyText from 'react-anchorify-text';
+
+import {
+  cancelSubscription,
+  getIfSubscribed,
+  subscribeToPublication
+} from '@/components/contractInteraction';
 
 // Images
 import defaultBanner from '@/images/gradients/user-default-banner.png';
@@ -151,7 +158,9 @@ export const UserView = (props: GetUserServerSide) => {
                     </div>
                   </div>
                   {Bio && (
-                    <p className="normal-text">{Bio}</p>
+                    <p className="normal-text">
+                      <AnchorifyText text={Bio}></AnchorifyText>
+                    </p>
                   )}
                 </div>
               </div>
