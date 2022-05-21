@@ -90,7 +90,7 @@ export const LandingPage = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="blue-text lg dark ml-2 pointer"
-                >JOIN NOW</a>
+                >REQUEST ACCESS</a>
               </div>
             )}
             {(whitelisted === true || whitelisted === null) && (
