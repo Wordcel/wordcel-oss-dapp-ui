@@ -11,6 +11,7 @@ import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { Footer } from './Footer';
 import { getReadingTime } from '@/components/getReadingTime';
+import { useRouter } from 'next/router';
 
 export const AuthorBox = (props: GetArticleServerSide) => {
   const Name = props.user?.name;
@@ -51,6 +52,7 @@ export const AuthorBox = (props: GetArticleServerSide) => {
 
 
 export const ViewArticle = (props: GetArticleServerSide) => {
+  const { asPath } = useRouter();
   const [blocks] = useState<any>(JSON.parse(props.blocks || ''));
   const Reader = dynamic(() => import('@/layouts/Reader'), {
     ssr: false
@@ -89,6 +91,9 @@ export const ViewArticle = (props: GetArticleServerSide) => {
       <DefaultHead
         title={props.article?.title}
         description={props.article?.description}
+        author={props.user?.name}
+        blog_name={props.user?.blog_name}
+        url={`https://wordcel.club/${asPath}`}
         image={SEOImage}
       />
       <StaticNavbar
