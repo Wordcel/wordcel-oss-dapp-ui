@@ -71,7 +71,6 @@ export const ConnectWallet = ({
   const { wallet, connect, publicKey } = useWallet();
   const { visible, setVisible } = useWalletModal();
   const [clicked, setClicked] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     const req = !publicKey && wallet && wallet.readyState === 'Installed' && clicked;

@@ -12,9 +12,9 @@ import AnchorifyText from 'react-anchorify-text';
 
 import {
   cancelSubscription,
-  getIfSubscribed,
   subscribeToPublication
 } from '@/components/contractInteraction';
+import { getIfSubscribed } from '@/components/networkRequests';
 
 // Images
 import defaultBanner from '@/images/gradients/user-default-banner.png';
