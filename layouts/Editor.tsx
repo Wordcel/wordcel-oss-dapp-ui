@@ -21,8 +21,9 @@ import LinkTool from "@editorjs/link";
 import List from "@editorjs/list";
 // @ts-expect-error
 import Quote from "@editorjs/quote";
-// @ts-expect-error
-import ImageGallery from '@rodrigoodhin/editorjs-image-gallery';
+
+// import ImageGallery from '@rodrigoodhin/editorjs-image-gallery';
+
 // @ts-expect-error
 import SimpleImage from "@editorjs/simple-image";
 import { useEffect } from "react"
@@ -82,7 +83,7 @@ const CustomEditor = ({
     checklist: CheckList,
     delimiter: Delimiter,
     inlineCode: InlineCode,
-    imageGallery: ImageGallery,
+    // imageGallery: ImageGallery,
     image: SimpleImage
   }
 

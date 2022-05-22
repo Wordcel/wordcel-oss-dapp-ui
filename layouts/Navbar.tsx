@@ -37,7 +37,7 @@ export const Navbar = ({
             }
           }} className="dark-text pointer">
             {whitelisted === null ? 'Connect Wallet' : ''}
-            {whitelisted === false ? 'Join Whitelist' : ''}
+            {whitelisted === false ? 'Request Access' : ''}
             {whitelisted === true ? 'Dashboard' : ''}
           </p>
         </ConnectWallet>
