@@ -18,7 +18,7 @@ import InlineCode from "@editorjs/inline-code";
 // @ts-expect-error
 import LinkTool from "@editorjs/link";
 // @ts-expect-error
-import List from "@editorjs/list";
+import NestedList from '@editorjs/nested-list';
 // @ts-expect-error
 import Quote from "@editorjs/quote";
 
@@ -58,7 +58,7 @@ const CustomEditor = ({
 }: Editor) => {
 
   useEffect(() => {
-    const toAllowLinks = [Paragraph, List, Header, InlineCode, Quote, Embed];
+    const toAllowLinks = [Paragraph, NestedList, Header, InlineCode, Quote, Embed];
     toAllowLinks.forEach((link) => allowLinks(link));
   }, [])
 
@@ -69,7 +69,7 @@ const CustomEditor = ({
       inlineToolbar: ['link', 'bold', 'italic'],
     },
     list: {
-      class: List,
+      class: NestedList,
       inlineToolbar: ['link', 'bold', 'italic'],
     },
     raw: Raw,
