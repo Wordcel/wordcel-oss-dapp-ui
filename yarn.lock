@@ -150,11 +150,6 @@
   resolved "https://registry.yarnpkg.com/@editorjs/list/-/list-1.7.0.tgz#986c55026bdeee2ec7ef74fe09bd4b285e12bd1e"
   integrity sha512-0k0RKbQqfV32u24UYHHz5mrmSu4wr246qqXBT7xQiS533Bfd4hzki6UGzvy4f275ULzi+egbjI3BXLkpoTh9iQ==
 
-"@editorjs/nested-list@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@editorjs/nested-list/-/nested-list-1.0.2.tgz#4eaacfddb0802d0cd612bdd3269d6daa58bf7fab"
-  integrity sha512-NumQfEivI29lOAuDMyVhn+VXUDGvWUPJMkjgKlUYRbnwgnPL4tK007+UzoVPLxv/f6lPOqeKcApvCj/MfskPNw==
-
 "@editorjs/paragraph@^2.8.0":
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/@editorjs/paragraph/-/paragraph-2.8.0.tgz#11cc381fcafaf8b9160517ce65d59eee93fc4af9"
