@@ -2,6 +2,9 @@ import Image from "next/image";
 import styles from "@/styles/Import.module.scss";
 import tickIcon from '@/images/icons/tick.svg';
 import alreadyOnChain from '@/images/elements/already-on-chain.svg';
+import {
+  getDefaultArticleImage
+} from '@/components/getDefaultArticleImage';
 import { DefaultHead } from "./DefaultHead";
 import { StaticNavbar } from "./Navbar";
 import { Article, GetArticlesServerSide } from "@/types/props";
@@ -70,7 +73,7 @@ export const ImportArticles = ({
               >
                 <img
                   className={styles.articleImage}
-                  src={article.image_url}
+                  src={article.image_url || getDefaultArticleImage(article, user)}
                   alt=""
                 />
                 <div

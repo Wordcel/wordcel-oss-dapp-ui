@@ -1,3 +1,4 @@
+import { DEFAULT_OG_IMAGE } from '@/components/config/constants';
 import Head from 'next/head';
 
 interface SEO {
@@ -29,13 +30,13 @@ export const DefaultHead = (config: SEO) => {
       <meta property='og:url' content={config.url || 'https://wordcel.club'} />
       <meta property='og:title' content={config.title || 'Wordcel - Read, Write, Own'} />
       <meta property='og:description' content={config.description || 'Wordcel - Read, Write, Own'} />
-      <meta property='og:image' content={config.image || 'https://bafkreielxpcbzu7nmn7dctpyxwfshjwfgx7f3357k4jvz77gbvxk3oasim.ipfs.nftstorage.link/'} />
+      <meta property='og:image' content={config.image || DEFAULT_OG_IMAGE} />
 
       <meta property='twitter:card' content='summary_large_image' />
       <meta property='twitter:url' content={config.url || 'https://wordcel.club'} />
       <meta property='twitter:title' content={config.title || 'Wordcel - Read, Write, Own'} />
       <meta property='twitter:description' content={config.description || 'Wordcel - Read, Write, Own'} />
-      <meta property='twitter:image' content={config.image || 'https://bafkreielxpcbzu7nmn7dctpyxwfshjwfgx7f3357k4jvz77gbvxk3oasim.ipfs.nftstorage.link/'} />
+      <meta property='twitter:image' content={config.image || DEFAULT_OG_IMAGE} />
     </Head>
   );
-}
+};
