@@ -6,6 +6,7 @@ export interface User {
   nft_key: string;
   blog_name: string;
   import_enabled: boolean;
+  subscriber_count?: number;
   bio?: string;
   twitter?: string;
   discord?: string;

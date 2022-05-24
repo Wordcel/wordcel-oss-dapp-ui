@@ -4,7 +4,7 @@ import tickIcon from '@/images/icons/tick.svg';
 import alreadyOnChain from '@/images/elements/already-on-chain.svg';
 import {
   getDefaultArticleImage
-} from '@/components/getDefaultArticleImage';
+} from '@/components/getDefaultPreviewImage';
 import { DefaultHead } from "./DefaultHead";
 import { StaticNavbar } from "./Navbar";
 import { Article, GetArticlesServerSide } from "@/types/props";

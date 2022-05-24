@@ -26,32 +26,31 @@ import { getUserSignature } from '@/components/signMessage';
 import { PublicKey } from '@solana/web3.js';
 import { ConnectWallet } from './Wallet';
 import { useEffect, useState } from 'react';
+import { getDefaultUserImage } from '@/components/getDefaultPreviewImage';
+import { useRouter } from 'next/router';
 
 
 export const UserView = (props: GetUserServerSide) => {
+  const router = useRouter();
   const wallet = useAnchorWallet();
-  const [clicked, setClicked] = useState(0);
+  const { publicKey, signMessage } = useWallet();
+
   const [hideFollow, setHideFollow] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
   const [subscriptionKey, setSubscriptionKey] = useState('');
-  const { publicKey, signMessage } = useWallet();
+  const [clicked, setClicked] = useState(0);
 
   const Name = props.user?.name;
   const Bio = props.user?.bio;
   const SEOTitle = props.user?.blog_name ? `${props.user?.blog_name} by ${props.user?.name}` : '';
   const Banner = props.user?.banner_url || defaultBanner.src;
   const Avatar = props.user?.image_url || `https://avatars.wagmi.bio/${props.user?.name}`;
-  const TrimmedPublicKey = props.user?.public_key.substring(0, 4)
-    .concat('....')
-    .concat(props.user?.public_key.substring(props.user?.public_key.length - 4));
-  const SEOData = {
-    name: props.user?.name,
-    image: props.user?.image_url,
-    bio: props.user?.bio,
-    username: props.user?.username
-  }
-  const base64Data = Buffer.from(JSON.stringify(SEOData)).toString('base64');
-  const SEOImage = `https://i0.wp.com/og.up.railway.app/user/${base64Data}`
+  const FollowersCount = props.user?.subscriber_count;
+  const SEOImage = getDefaultUserImage(props.user);
+
+  const refreshData = () => {
+    router.replace(router.asPath);
+  };
 
   useEffect(() => {
     if (publicKey?.toBase58() === props.user?.public_key) {
@@ -62,21 +61,23 @@ export const UserView = (props: GetUserServerSide) => {
         const signature = await getUserSignature(signMessage);
         if (!signature) return;
         if (subscribed && subscriptionKey) {
-          cancelSubscription(
+          const req = await cancelSubscription(
             wallet as any,
             new PublicKey(props.user.public_key),
             new PublicKey(subscriptionKey),
             setSubscribed,
             signature
-          )
+          );
+          refreshData();
           return;
         };
-        subscribeToPublication(
+        const req = await subscribeToPublication(
           wallet as any,
           new PublicKey(props.user.public_key),
           setSubscribed,
           signature
-        )
+        );
+        refreshData();
       };
     })();
   }, [clicked, publicKey]);
@@ -117,7 +118,7 @@ export const UserView = (props: GetUserServerSide) => {
                   <div className="flex align-items-center justify-space-between">
                     <div>
                       <p className="heading sm nm-bottom">{Name}</p>
-                      <p className="light-sub-heading nm mt-1">{TrimmedPublicKey}</p>
+                      <p className="light-sub-heading nm mt-1">@{props.user.username}</p>
                     </div>
                     <div className="mt-2">
                       {!hideFollow && (
@@ -131,7 +132,7 @@ export const UserView = (props: GetUserServerSide) => {
                               color: subscribed ? 'black' : ''
                             }}
                           >
-                            {subscribed ? 'UNSUBSCRIBE' : 'SUBSCRIBE'}
+                            {subscribed ? 'UNFOLLOW' : 'FOLLOW'}
                           </button>
                         </ConnectWallet>
                       )}
@@ -160,6 +161,13 @@ export const UserView = (props: GetUserServerSide) => {
                   {Bio && (
                     <p className="normal-text">
                       <AnchorifyText text={Bio}></AnchorifyText>
+                    </p>
+                  )}
+                  {typeof FollowersCount !== 'undefined' && (
+                    <p className="subheading xs">
+                      {FollowersCount} <span className='subheading xs ml-0-5 light'>
+                      {FollowersCount === 1 ? 'Follower' : 'Followers'}
+                      </span>
                     </p>
                   )}
                 </div>
