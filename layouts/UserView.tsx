@@ -80,7 +80,7 @@ export const UserView = (props: GetUserServerSide) => {
         refreshData();
       };
     })();
-  }, [clicked, publicKey]);
+  }, [clicked, publicKey, signMessage]);
 
   useEffect(() => {
     (async function () {
