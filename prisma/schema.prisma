@@ -24,7 +24,6 @@ model User {
   image_url String?
   banner_url String?
   articles Article[]
-  subscriptions Subscription[]
 }
 
 model Article {
@@ -48,9 +47,8 @@ model Article {
 model Subscription {
   id Int @id @default(autoincrement())
   account String
+  subscriber String
   publication_owner String
-  user_id Int
-  owner User @relation(fields: [user_id], references: [id])
 }
 
 model Block {

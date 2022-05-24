@@ -24,43 +24,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       account
     } = req.body;
 
-    const user = await prisma.user.findFirst({
-      where: {
-        public_key,
-      }
-    });
-
-    if (!user) {
-      res.status(400).json({
-        error: 'User does not exist'
-      });
-      return;
-    }
-
     const authenticated = authenticate(public_key, signature, res);
     if (!authenticated) return;
 
     const exists = await prisma.subscription.findFirst({
       where: {
         publication_owner,
-        user_id: user.id,
+        subscriber: public_key
       }
-    })
+    });
 
     if (exists) {
       res.status(400).json({
         error: 'Subscription already exists'
       });
       return;
-    }
+    };
 
     const newSubscription = await prisma.subscription.create({
       data: {
-        user_id: user.id,
         publication_owner: publication_owner,
         account: account,
+        subscriber: public_key
       }
-    })
+    });
 
     res.status(200).json({
       success: 'Subscription created',
