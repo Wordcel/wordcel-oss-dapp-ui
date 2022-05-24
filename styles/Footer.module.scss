@@ -23,7 +23,6 @@
 }
 
 .heroSection {
-  min-height: 24rem;
   max-width: 112rem;
   width: 100%;
   display: grid;
@@ -31,6 +30,11 @@
   justify-content: space-between;
   grid-template-columns: 1fr 1fr;
   padding: 0rem 3.5rem;
+  & > div {
+    @media only screen and (min-width: 940px) {
+      min-height: 24rem;
+    }
+  }
   @media only screen and (max-width: 940px) {
     grid-template-columns: 1fr;
     min-height: 32rem;
@@ -62,6 +66,10 @@
 }
 
 .socialContainer {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
   @media only screen and (min-width: 940px) {
     justify-self: flex-end;
   }
