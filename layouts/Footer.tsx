@@ -40,7 +40,7 @@ export const Footer = () => {
           </div>
         </div>
         <div className={styles.bottomSection}>
-          <p className="normal-text sm txt-left">
+          <p className="normal-text sm">
             Copyright © {new Date().getFullYear()}. Coffee to Code Technologies Pte Ltd.
           </p>
         </div>
