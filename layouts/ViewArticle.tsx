@@ -17,9 +17,6 @@ export const AuthorBox = (props: GetArticleServerSide) => {
   const Name = props.user?.name;
   const Bio = props.user?.bio;
   const Avatar = props.user?.image_url || `https://avatars.wagmi.bio/${props.user?.name}`;
-  const TrimmedPublicKey = props.user?.public_key.substring(0, 4)
-    .concat('....')
-    .concat(props.user?.public_key.substring(props.user?.public_key.length - 4));
 
   return (
     <div className={styles.authorBox}>
@@ -40,7 +37,7 @@ export const AuthorBox = (props: GetArticleServerSide) => {
               <p className="heading sm nm-bottom nm-top">{Name}</p>
             </a>
           </Link>
-          <p className="light-sub-heading nm">{TrimmedPublicKey}</p>
+          <p className="light-sub-heading nm">@{props.user?.username}</p>
           {Bio && (
             <p className="normal-text sm nm-bottom mt-1">{Bio}</p>
           )}

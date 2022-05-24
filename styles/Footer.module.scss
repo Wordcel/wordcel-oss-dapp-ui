@@ -1,6 +1,5 @@
 .container {
   width: 100%;
-  min-height: 36rem;
   margin-top: auto;
   border-top: 0.1rem solid rgba(30, 40, 51, 0.07);
 }
@@ -45,10 +44,8 @@
   border-top: 0.1rem solid rgba(30, 40, 51, 0.07);
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 0rem 3.5rem;
-  @media only screen and (min-width: 940px) {
-    align-items: flex-end;
-  }
 }
 
 .logoContainer {
