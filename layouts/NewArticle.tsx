@@ -27,7 +27,7 @@ export const NewArticle = () => {
   const anchorWallet = useAnchorWallet();
   const wallet = useWallet();
 
-  const Editor = dynamic(() => import('@/layouts/Editor'), {
+  const Editor: any = dynamic(() => import('@/layouts/Editor'), {
     ssr: false
   });
   const editorInstance = useRef<EditorCore | null>(null);
