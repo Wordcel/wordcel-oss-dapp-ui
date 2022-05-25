@@ -1,8 +1,7 @@
 import styles from '@/styles/Elements.module.scss';
-import { NextComponentType } from 'next';
 
-export const DefaultBox: NextComponentType = (
-  {children}
+export const DefaultBox = (
+  {children}: { children: any }
 ) => {
   return (
     <div className={styles.squareBox}>

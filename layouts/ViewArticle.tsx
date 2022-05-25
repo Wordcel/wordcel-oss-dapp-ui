@@ -51,7 +51,7 @@ export const AuthorBox = (props: GetArticleServerSide) => {
 export const ViewArticle = (props: GetArticleServerSide) => {
   const { asPath } = useRouter();
   const [blocks] = useState<any>(JSON.parse(props.blocks || ''));
-  const Reader = dynamic(() => import('@/layouts/Reader'), {
+  const Reader: any = dynamic(() => import('@/layouts/Reader'), {
     ssr: false
   });
   const SEOData = {
