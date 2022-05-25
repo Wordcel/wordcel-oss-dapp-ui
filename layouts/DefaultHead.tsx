@@ -16,6 +16,7 @@ export const DefaultHead = (config: SEO) => {
       <title>{config.title || 'Wordcel - Read, Write, Own'}</title>
       <meta name='description' content={config.description || 'Wordcel - Read, Write, Own'} />
       <meta name='viewport' content='width=device-width, initial-scale=1' />
+      <meta name="theme-color" content="white" />
       <link rel='icon' href='/favicon.png' />
 
       {config.author && (
