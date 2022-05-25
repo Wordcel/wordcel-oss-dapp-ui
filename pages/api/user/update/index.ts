@@ -55,8 +55,8 @@ export default async function handler(
         bio: bio || user.bio,
         blog_name: blog_name || user.blog_name,
         image_url: image_url || user.image_url,
-        twitter: twitter || user.twitter,
-        discord: discord || user.discord
+        twitter: twitter,
+        discord: discord
       }
     });
 

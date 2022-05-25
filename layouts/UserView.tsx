@@ -28,6 +28,7 @@ import { ConnectWallet } from './Wallet';
 import { useEffect, useState } from 'react';
 import { getDefaultUserImage } from '@/components/getDefaultPreviewImage';
 import { useRouter } from 'next/router';
+import { EditProfile } from '@/elements/EditProfile';
 
 
 export const UserView = (props: GetUserServerSide) => {
@@ -37,6 +38,7 @@ export const UserView = (props: GetUserServerSide) => {
 
   const [hideFollow, setHideFollow] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [subscriptionKey, setSubscriptionKey] = useState('');
   const [clicked, setClicked] = useState(0);
 
@@ -50,6 +52,19 @@ export const UserView = (props: GetUserServerSide) => {
 
   const refreshData = () => {
     router.replace(router.asPath);
+  };
+
+  const editProfile = () => {
+    setModalIsOpen(true);
+  };
+
+  const defaultEditValues = {
+    name: props.user?.name,
+    bio: props.user?.bio,
+    image_url: props.user?.image_url,
+    blog_name: props.user?.blog_name,
+    twitter: props.user?.twitter,
+    discord: props.user?.discord
   };
 
   useEffect(() => {
@@ -100,7 +115,12 @@ export const UserView = (props: GetUserServerSide) => {
   return (
     <div className="container-flex">
       <DefaultHead title={SEOTitle} description={Bio} image={SEOImage} />
-      <StaticNavbar />
+      <StaticNavbar editProfile={editProfile} />
+      <EditProfile
+        defaultData={defaultEditValues}
+        isOpen={modalIsOpen}
+        setIsOpen={setModalIsOpen}
+      />
       {props.user && (
         <>
           <div>

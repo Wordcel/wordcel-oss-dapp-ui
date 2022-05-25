@@ -3,6 +3,7 @@ import Image from 'next/image';
 import logo from '@/images/logo.svg';
 import styles from '@/styles/Navbar.module.scss';
 import publishButton from '@/images/elements/publish.svg';
+import editButton from '@/images/elements/edit-profile.svg';
 import arweaveBadge from '@/images/elements/arweave.svg';
 import pop_image from '@/images/elements/proof-of-post.svg';
 import { ConnectWallet } from '@/layouts/Wallet';
@@ -53,15 +54,18 @@ interface ProofOfPost {
 
 export const StaticNavbar = ({
   publish,
-  proof_of_post
+  proof_of_post,
+  editProfile
 }: {
   publish?: () => void;
   proof_of_post?: ProofOfPost;
+  editProfile?: () => void;
 }) => {
   const { publicKey } = useWallet();
+  const spaceBetweenContent = publish || proof_of_post || editProfile;
   return (
     <div
-      style={{ justifyContent: (publish || proof_of_post) ? 'space-between' : 'center' }}
+      style={{ justifyContent: spaceBetweenContent ? 'space-between' : 'center' }}
       className={`${styles.staticContainer} ${proof_of_post ? styles.hasPop : ''}`}>
       <Link href={publicKey ? `/welcome/${publicKey.toBase58()}` : '/'}>
         <a>
@@ -94,6 +98,18 @@ export const StaticNavbar = ({
               className={styles.arweaveBadge}
               src={arweaveBadge.src} alt="Arweave Badge" />
           </a>
+        </div>
+      )}
+      {editProfile && !publicKey && (
+        <ConnectWallet>
+          <p className="blue-text txt-right pointer">CONNECT WALLET</p>
+        </ConnectWallet>
+      )}
+      {editProfile && publicKey && (
+        <div
+          onClick={editProfile}
+          className="pointer">
+          <Image src={editButton} alt="Edit Profile" />
         </div>
       )}
     </div>

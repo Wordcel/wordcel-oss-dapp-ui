@@ -19,3 +19,17 @@ export interface UpdateCache {
   public_key: string;
   signature: Uint8Array;
 }
+
+export interface UpdatableUserDetails {
+  name?: string;
+  bio?: string;
+  blog_name?: string;
+  image_url?: string;
+  twitter?: string;
+  discord?: string;
+}
+
+export interface UpdateUser extends UpdatableUserDetails {
+  public_key: string;
+  signature: Uint8Array;
+}

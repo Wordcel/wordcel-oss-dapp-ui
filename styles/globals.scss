@@ -1,19 +1,25 @@
 :root {
   --text-color: hsl(0, 0%, 0%);
   --blue-text-color: hsl(209, 45%, 52%);
+  --light-blue-color: hsla(191, 18%, 63%, 1);
+  --navy-text-color: hsla(191, 19%, 24%, 1);
   --dark-blue-color: hsl(226, 64%, 63%);
   --inverse-color: hsl(0, 0%, 100%);
+
   --btn-color: hsl(0, 0%, 7%);
+
   --nav-border: hsl(0, 0%, 91%);
+
   --gray-text-color: hsl(0, 0%, 75%);
   --gray-button-text: hsla(0, 0%, 7%, 0.51);
   --gray-button-bg: hsla(0, 0%, 7%, 0.07);
+
   --author-box: hsl(0, 0%, 96%);
   --author-text-bg: hsl(0, 0%, 80%);
+
   --input-text: hsl(0, 0%, 88%);
   --input-border: hsl(0, 0%, 91%);
   --input-background: hsla(0, 0%, 96%, 0.02);
-
 }
 
 body {
@@ -144,7 +150,6 @@ a {
   & > span > a {
     color: var(--text-color);
     opacity: 0.75;
-    text-decoration: underline;
     transition: all 0.15s ease-in-out;
     &:hover {
       opacity: 0.95;
@@ -271,6 +276,10 @@ a {
 }
 .txt-right {
   text-align: right;
+}
+
+.navy {
+  color: var(--navy-text-color);
 }
 
 .flex-inline {
@@ -489,5 +498,29 @@ figure {
   }
   &:disabled {
     cursor: default;
+  }
+}
+
+.input-label {
+  font-weight: 500;
+  font-size: 1.9rem;
+  color: var(--light-blue-color);
+  margin: 1rem 0rem;
+  opacity: 0.61;
+}
+
+.input-field {
+  font-family: inherit;
+  height: 6.8rem;
+  width: 100%;
+  outline: none;
+  border: 0.1rem solid rgba(145, 172, 179, 0.35);
+  border-radius: 0.4rem;
+  padding: 2.2rem;
+  color: var(--light-blue-color);
+  font-size: 2rem;
+  &::placeholder {
+    color: var(--light-blue-color);
+    opacity: 0.61;
   }
 }
