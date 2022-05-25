@@ -25,7 +25,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
   const { publicKey, signMessage } = useWallet();
 
   let [publishClicked] = useState(false);
-  const Editor = dynamic(() => import('@/layouts/Editor'), {
+  const Editor: any = dynamic(() => import('@/layouts/Editor'), {
     ssr: false
   });
   const editorInstance = useRef<EditorCore | null>(null);
