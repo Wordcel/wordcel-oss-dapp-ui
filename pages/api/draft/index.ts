@@ -48,6 +48,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       image_url
     } = getHeaderContent(blocks.content.blocks);
 
+    if (id) {
+      const existing = await prisma.draft.findFirst({
+        where: { id: Number(id) }
+      });
+
+      if (!existing) {
+        res.status(400).json({
+          error: 'Draft does not exist'
+        });
+        return;
+      }
+
+      const updated = await prisma.draft.update({
+        where: { id },
+        data: {
+          title: sanitizeHtml(title),
+          description: sanitizeHtml(description),
+          image_url: sanitizeHtml(image_url),
+          blocks: JSON.stringify(blocks),
+        }
+      });
+
+      res.status(200).json({
+        success: 'Draft updated',
+        draft: updated,
+        username: user.username
+      });
+      return
+    }
+
     const newDraft = await prisma.draft.create({
       data: {
         title: sanitizeHtml(title),
@@ -63,7 +93,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     res.status(200).json({
-      success: id ? 'Draft updated' : 'Draft created',
+      success: 'Draft created',
       draft: newDraft,
       username: user.username
     });
