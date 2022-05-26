@@ -23,7 +23,7 @@ const modalStyles = {
     left: '50%',
     right: 'auto',
     bottom: 'auto',
-    maxWidth: '50rem',
+    maxWidth: '60rem',
     width: '100%',
     marginRight: '-50%',
     padding: '0rem',
@@ -112,37 +112,39 @@ export const EditProfile = ({
               <p className="subheading sm navy nm">Edit your profile</p>
             </div>
             <div className={styles.form}>
-              <SecondaryInput
-                placeHolder="Name"
-                label="Name"
-                value={updateData.name}
-                onChange={(e: any) => setUpdateData({ ...updateData, name: e.target.value })}
-              />
-              <SecondaryInput
-                textArea={true}
-                placeHolder="Bio"
-                label="Bio"
-                value={updateData.bio}
-                onChange={(e: any) => setUpdateData({ ...updateData, bio: e.target.value })}
-              />
-              <SecondaryInput
-                placeHolder="Blog Name"
-                label="Blog Name"
-                value={updateData.blog_name}
-                onChange={(e: any) => setUpdateData({ ...updateData, blog_name: e.target.value })}
-              />
-              <SecondaryInput
-                placeHolder="Twitter Username"
-                label="Twitter Username"
-                value={updateData.twitter}
-                onChange={(e: any) => setUpdateData({ ...updateData, twitter: e.target.value })}
-              />
-              <SecondaryInput
-                placeHolder="Discord Invite"
-                label="Discord Invite"
-                value={updateData.discord}
-                onChange={(e: any) => setUpdateData({ ...updateData, discord: e.target.value })}
-              />
+              <div className={styles.formHeight}>
+                <SecondaryInput
+                  placeHolder="Name"
+                  label="Name"
+                  value={updateData.name}
+                  onChange={(e: any) => setUpdateData({ ...updateData, name: e.target.value })}
+                />
+                <SecondaryInput
+                  textArea={true}
+                  placeHolder="Bio"
+                  label="Bio"
+                  value={updateData.bio}
+                  onChange={(e: any) => setUpdateData({ ...updateData, bio: e.target.value })}
+                />
+                <SecondaryInput
+                  placeHolder="Blog Name"
+                  label="Blog Name"
+                  value={updateData.blog_name}
+                  onChange={(e: any) => setUpdateData({ ...updateData, blog_name: e.target.value })}
+                />
+                <SecondaryInput
+                  placeHolder="Twitter Username"
+                  label="Twitter Username"
+                  value={updateData.twitter}
+                  onChange={(e: any) => setUpdateData({ ...updateData, twitter: e.target.value })}
+                />
+                <SecondaryInput
+                  placeHolder="Discord Invite"
+                  label="Discord Invite"
+                  value={updateData.discord}
+                  onChange={(e: any) => setUpdateData({ ...updateData, discord: e.target.value })}
+                />
+              </div>
               <button
                 onClick={handlePublish}
                 className="main-btn mt-2"

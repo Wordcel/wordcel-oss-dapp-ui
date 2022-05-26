@@ -13,7 +13,7 @@ export const SecondaryInput = ({
 }) => {
   return (
     <div className="width-100">
-      <p className="input-label">{label}</p>
+      <p className="input-label nm">{label}</p>
       <input
         type="text"
         className="input-field"
