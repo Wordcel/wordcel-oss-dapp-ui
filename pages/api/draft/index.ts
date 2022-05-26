@@ -46,14 +46,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       title,
       description,
       image_url
-    } = getHeaderContent(blocks);
+    } = getHeaderContent(blocks.content.blocks);
 
     const newDraft = await prisma.draft.create({
       data: {
         title: sanitizeHtml(title),
         description: sanitizeHtml(description),
         image_url,
-        blocks,
+        blocks: JSON.stringify(blocks),
         owner: {
           connect: {
             id: user.id

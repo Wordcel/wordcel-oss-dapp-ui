@@ -9,11 +9,10 @@ import { useRouter } from 'next/router';
 import { useEffect, useCallback, useRef, useState } from 'react';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
-import { getUserSignature } from '@/components/signMessage';
-import { Footer } from './Footer';
-import { uploadNFTStorage } from '@/components/upload';
-import { updateCacheLink } from '@/components/cache';
 import { saveToast } from '@/components/saveToast';
+import { getUserSignature } from '@/components/signMessage';
+import { updateDraft } from '@/components/draft';
+import { Footer } from './Footer';
 
 export const EditArticle = (props: GetArticleServerSide) => {
   const wallet = useWallet();
@@ -24,6 +23,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
   const [signature, setSignature] = useState<Uint8Array>();
   const { publicKey, signMessage } = useWallet();
 
+  let [draft_id] = useState('');
   let [publishClicked] = useState(false);
   const Editor: any = dynamic(() => import('@/layouts/Editor'), {
     ssr: false
@@ -36,7 +36,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
 
   useEffect(() => {
     (async function () {
-      if (publicKey && signMessage && props.article) {
+      if (publicKey && signMessage) {
         const userSignature = await getUserSignature(signMessage);
         if (!userSignature) {
           toast('Please sign the message on your wallet so that we can save your progress');
@@ -67,22 +67,21 @@ export const EditArticle = (props: GetArticleServerSide) => {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      if (!editorInstance.current?.save || !props.article || !publicKey || !signature) return;
+      if (!editorInstance.current?.save || !publicKey || !signature) return;
       const data = await editorInstance.current.save();
       const payload = {
         content: { blocks: data.blocks },
         type: 'blocks'
       };
-      const cache_link = await uploadNFTStorage(payload);
-      if (!cache_link) return;
-      const update_cache = await updateCacheLink({
-        id: props.article.id.toString(),
-        cache_link: cache_link,
+      const response = await updateDraft({
+        id: draft_id,
+        blocks: payload,
         signature: signature,
         public_key: publicKey.toBase58()
       });
-      console.log(update_cache);
-    }, 30000)
+      console.log(response);
+      draft_id = response.draft.id;
+    }, 15000)
     return () => {
       clearInterval(interval);
     }

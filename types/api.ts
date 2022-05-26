@@ -13,9 +13,9 @@ export interface Subscribe {
   signature: Uint8Array;
 }
 
-export interface UpdateCache {
+export interface Draft {
   id: string | undefined;
-  cache_link: string;
+  blocks: any;
   public_key: string;
   signature: Uint8Array;
 }

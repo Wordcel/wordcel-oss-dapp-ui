@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from "@/styles/Import.module.scss";
 import tickIcon from '@/images/icons/tick.svg';
-import alreadyOnChain from '@/images/elements/already-on-chain.svg';
+import noArticles from '@/images/elements/no-articles.svg';
 import {
   getDefaultArticleImage
 } from '@/components/getDefaultPreviewImage';
@@ -93,7 +93,7 @@ export const ImportArticles = ({
           </div>
           {offChainArticles.length === 0 && (
             <div className="m-0-auto">
-              <img src={alreadyOnChain.src} alt="" />
+              <img src={noArticles.src} alt="" />
             </div>
           )}
         </div>

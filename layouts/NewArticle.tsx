@@ -10,9 +10,8 @@ import { useEffect, useCallback, useRef, useState } from 'react';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { getUserSignature } from '@/components/signMessage';
-import { uploadNFTStorage } from '@/components/upload';
+import { updateDraft } from '@/components/draft';
 import { Footer } from './Footer';
-import { updateCacheLink } from '@/components/cache';
 
 
 export const NewArticle = () => {
@@ -21,7 +20,7 @@ export const NewArticle = () => {
   const [sigError, setSigError] = useState('');
   const [signature, setSignature] = useState<Uint8Array>();
 
-  let [articleID] = useState('');
+  let [draft_id] = useState('');
   let [publishClicked] = useState(false);
 
   const anchorWallet = useAnchorWallet();
@@ -75,17 +74,15 @@ export const NewArticle = () => {
         content: { blocks: data.blocks },
         type: 'blocks'
       };
-      const cache_link = await uploadNFTStorage(payload);
-      if (!cache_link) return;
-      const new_cache = await updateCacheLink({
-        id: articleID,
-        cache_link: cache_link,
+      const response = await updateDraft({
+        id: draft_id,
+        blocks: payload,
         signature: signature,
         public_key: publicKey.toBase58()
       });
-      console.log(new_cache);
-      articleID = new_cache.article.id;
-    }, 30000)
+      console.log(response);
+      draft_id = response.draft.id;
+    }, 15000)
     return () => {
       clearInterval(interval);
     }

@@ -1,10 +1,11 @@
-import { UpdateCache } from '@/types/api';
+import { Draft } from '@/types/api';
 
-export const updateCacheLink = async (
-  data: UpdateCache
+export const updateDraft = async (
+  data: Draft
 ) => {
+  console.log(data);
   const request = await fetch(
-    data.id ? '/api/cache/update' : '/api/cache/new',
+    '/api/draft',
   {
     method: 'POST',
     headers: {
