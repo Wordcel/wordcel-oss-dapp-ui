@@ -52,6 +52,11 @@ interface ProofOfPost {
   account: string | undefined;
 }
 
+interface EditProfile {
+  owner: string | undefined;
+  edit: () => void;
+}
+
 export const StaticNavbar = ({
   publish,
   proof_of_post,
@@ -59,10 +64,12 @@ export const StaticNavbar = ({
 }: {
   publish?: () => void;
   proof_of_post?: ProofOfPost;
-  editProfile?: () => void;
+  editProfile?: EditProfile;
 }) => {
   const { publicKey } = useWallet();
-  const spaceBetweenContent = publish || proof_of_post || editProfile;
+  const showEditProfile = editProfile && publicKey && editProfile.owner === publicKey.toBase58();
+  const spaceBetweenContent = publish || proof_of_post || ((editProfile && !publicKey) || showEditProfile);
+
   return (
     <div
       style={{ justifyContent: spaceBetweenContent ? 'space-between' : 'center' }}
@@ -105,9 +112,9 @@ export const StaticNavbar = ({
           <p className="blue-text txt-right pointer">CONNECT WALLET</p>
         </ConnectWallet>
       )}
-      {editProfile && publicKey && (
+      {showEditProfile && (
         <div
-          onClick={editProfile}
+          onClick={editProfile.edit}
           className="pointer">
           <Image src={editButton} alt="Edit Profile" />
         </div>

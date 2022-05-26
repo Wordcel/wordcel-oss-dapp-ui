@@ -49,7 +49,6 @@ export const UserView = (props: GetUserServerSide) => {
   const Avatar = props.user?.image_url || `https://avatars.wagmi.bio/${props.user?.name}`;
   const FollowersCount = props.user?.subscriber_count;
   const SEOImage = getDefaultUserImage(props.user);
-  const IsSameUser = publicKey && (props.user?.public_key === publicKey.toBase58());
 
   const refreshData = () => {
     router.replace(router.asPath);
@@ -117,7 +116,10 @@ export const UserView = (props: GetUserServerSide) => {
     <div className="container-flex">
       <DefaultHead title={SEOTitle} description={Bio} image={SEOImage} />
       <StaticNavbar
-        editProfile={IsSameUser ? editProfile : undefined}
+        editProfile={{
+          edit: editProfile,
+          owner: props.user?.public_key
+        }}
       />
       <EditProfile
         defaultData={defaultEditValues}
