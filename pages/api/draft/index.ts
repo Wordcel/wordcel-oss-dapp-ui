@@ -10,20 +10,19 @@ import {
 } from '@/lib/server';
 import { getHeaderContent } from '@/components/getHeaderContent';
 import { sanitizeHtml } from '@/lib/sanitize';
-import { getBlocks } from '@/components/getArticleBlocks';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const allowed = verifyMethod(req, res, 'POST');
   if (!allowed) return;
   try {
-    const requiredKeys = ['public_key', 'cache_link', 'signature'];
+    const requiredKeys = ['public_key', 'signature', 'blocks'];
     const allKeysPresent = verifyKeys(req, res, requiredKeys);
     if (!allKeysPresent) return;
 
     const {
       public_key,
-      cache_link,
       signature,
+      blocks,
       id
     } = req.body;
 
@@ -43,24 +42,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const authenticated = authenticate(public_key, signature, res);
     if (!authenticated) return;
 
-    const blocks = await getBlocks(cache_link);
-    if (!blocks) return;
-
     const {
       title,
       description,
-      image_url,
-      slug
+      image_url
     } = getHeaderContent(blocks);
 
-    const newArticle = await prisma.article.create({
+    const newDraft = await prisma.draft.create({
       data: {
         title: sanitizeHtml(title),
         description: sanitizeHtml(description),
         image_url,
-        slug,
-        cache_link,
-        on_chain: false,
+        blocks,
         owner: {
           connect: {
             id: user.id
@@ -70,15 +63,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     res.status(200).json({
-      success: 'Article created',
-      article: newArticle,
+      success: id ? 'Draft updated' : 'Draft created',
+      draft: newDraft,
       username: user.username
     });
 
   } catch (e) {
     console.error('Request error', e);
     res.status(500).json({
-      error: 'Error caching article',
+      error: 'Error updating/creating draft',
     });
   }
 }

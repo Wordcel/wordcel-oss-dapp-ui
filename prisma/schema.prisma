@@ -24,6 +24,7 @@ model User {
   image_url String?
   banner_url String?
   articles Article[]
+  drafts Draft[]
 }
 
 model Article {
@@ -33,12 +34,9 @@ model Article {
   image_url String
   on_chain Boolean @default(false)
   created_at DateTime @default(now())
-  on_chain_version DateTime @default(now())
-  cached_at DateTime @default(now())
   blocks Block?
   proof_of_post String?
   arweave_url String?
-  cache_link String?
   slug String
   user_id Int
   owner User @relation(fields: [user_id], references: [id])
@@ -56,4 +54,14 @@ model Block {
   data String
   article_id Int
   article Article @relation(fields: [article_id], references: [id])
+}
+
+model Draft {
+  id Int @id @default(autoincrement())
+  title String
+  description String
+  image_url String
+  blocks String
+  user_id Int
+  owner User @relation(fields: [user_id], references: [id])
 }
