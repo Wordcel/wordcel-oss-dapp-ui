@@ -80,7 +80,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
       data: {
         arweave_url,
-        on_chain_version: new Date(),
         on_chain: true,
         proof_of_post,
         title,
