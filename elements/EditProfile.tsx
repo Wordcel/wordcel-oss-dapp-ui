@@ -23,7 +23,7 @@ const modalStyles = {
     left: '50%',
     right: 'auto',
     bottom: 'auto',
-    maxWidth: '72rem',
+    maxWidth: '50rem',
     width: '100%',
     marginRight: '-50%',
     padding: '0rem',

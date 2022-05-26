@@ -1,16 +1,16 @@
 .container {
   display: flex;
   flex-direction: column;
-  min-height: 90rem;
 }
 
 .heroSection {
-  padding: 2.3rem 4.5rem;
+  padding: 2.3rem 3rem;
   border-bottom: 0.15rem solid rgba(186, 186, 186, 0.22);
 }
 
 .form {
-  padding: 2.5rem 4.5rem;
+  max-height: 72rem;
+  padding: 2.5rem 3rem;
   & > div {
     padding: 1rem 0rem;
   }
