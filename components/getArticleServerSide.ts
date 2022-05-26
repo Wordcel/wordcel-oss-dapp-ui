@@ -12,8 +12,7 @@ const redirect = () => {
 }
 
 export const getArticleServerSide = async (
-  context: any,
-  getCache = false
+  context: any
 ) => {
   const slug = context.query.slug;
   const username = context.query.username;
@@ -34,20 +33,7 @@ export const getArticleServerSide = async (
   if (!user) return redirect();
   let blocks = '';
 
-  if (getCache && article.cache_link && !article.on_chain) {
-    const cached_blocks = await getBlocks(article.cache_link);
-    blocks = JSON.stringify(cached_blocks);
-  } else if (getCache && article.cache_link && article.on_chain && article.arweave_url) {
-    const on_chain_date = new Date(article.on_chain_version);
-    const cached_date = new Date(article.cached_at);
-    if (on_chain_date > cached_date) {
-      const on_chain_blocks = await getBlocks(article.arweave_url);
-      blocks = JSON.stringify(on_chain_blocks);
-    } else {
-      const cached_blocks = await getBlocks(article.cache_link);
-      blocks = JSON.stringify(cached_blocks);
-    }
-  } else if (article.on_chain && article.arweave_url) {
+  if (article.on_chain && article.arweave_url) {
     const on_chain_blocks = await getBlocks(article.arweave_url);
     if (!on_chain_blocks) return redirect();
     blocks = JSON.stringify(on_chain_blocks);
