@@ -32,10 +32,10 @@ model Article {
   title String
   description String
   image_url String
-  on_chain Boolean @default(false)
+  on_chain Boolean @default(true)
   created_at DateTime @default(now())
-  proof_of_post String?
-  arweave_url String?
+  proof_of_post String
+  arweave_url String
   slug String
   user_id Int
   owner User @relation(fields: [user_id], references: [id])

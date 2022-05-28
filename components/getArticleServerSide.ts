@@ -44,21 +44,9 @@ export const getArticleServerSide = async (
     }
   });
   if (!user) return redirect();
-  let blocks = '';
-
-  if (article.on_chain && article.arweave_url) {
-    const on_chain_blocks = await getBlocks(article.arweave_url);
-    if (!on_chain_blocks) return redirect();
-    blocks = JSON.stringify(on_chain_blocks);
-  } else {
-    const off_chain_blocks = await prisma.block.findFirst({
-      where: {
-        article_id: article.id
-      }
-    });
-    if (!off_chain_blocks) return redirect();
-    blocks = off_chain_blocks.data;
-  }
+  const on_chain_blocks = await getBlocks(article.arweave_url);
+  if (!on_chain_blocks) return redirect();
+  const blocks = JSON.stringify(on_chain_blocks);
   if (!blocks) return redirect();
 
   return {
