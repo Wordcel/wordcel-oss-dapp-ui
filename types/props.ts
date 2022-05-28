@@ -21,6 +21,7 @@ export interface Article {
   image_url: string;
   created_at: Date;
   user_id: number;
+  on_chain: boolean;
   blocks?: string;
   proof_of_post?: string;
   arweave_url?: string;

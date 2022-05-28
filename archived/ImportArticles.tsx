@@ -20,9 +20,6 @@ export const ImportArticles = ({
 }: GetArticlesServerSide) => {
   const router = useRouter();
   const [selected, setSelectedArticle] = useState<Article>();
-  const [offChainArticles] = useState<Article[]>(
-    articles ? articles.filter((article) => !article.on_chain) : []
-  );
   const { publicKey } = useWallet();
 
   useEffect(() => {
@@ -62,7 +59,7 @@ export const ImportArticles = ({
             </div>
           </div>
           <div className={styles.articleGrid}>
-            {offChainArticles && offChainArticles?.map((article) => (
+            {articles && articles?.map((article) => (
               <div
                 key={article.title}
                 className={styles.article}
@@ -91,7 +88,7 @@ export const ImportArticles = ({
               </div>
             ))}
           </div>
-          {offChainArticles.length === 0 && (
+          {articles && articles.length === 0 && (
             <div className="m-0-auto">
               <img src={noArticles.src} alt="" />
             </div>
