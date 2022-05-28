@@ -23,19 +23,25 @@ export const uploadBundle = async (
   const tags = [{ name: "Content-Type", value: "text/json" }];
   // Counts byte stize of stringData
   const size = new Blob([stringData]).size;
-  const toFundSize = size > 100000 ? size : 100000;
-  console.log('Byte Size', toFundSize);
-  // Returns the price needed in the chosen currency to pay for storing the required data size on Arweave.
+  console.log('Byte Size', size);
+
   const price = await bundlr.getPrice(size);
-  // Fund the bundlr with the fund to pay for storage.
-  // TODO: Funding every upload is gonna be a very bad user experience. We could ask the user to top up a decent amount so that it never runs out.
-  // Our workflow should ideally check if there is enough in the bundlr wallet to pay
-  // See https://github.com/metaplex-foundation/metaplex/blob/731953104a199541fd781f415bbe6d95fd59f113/js/packages/cli/src/helpers/upload/arweave-bundle.ts#L546-L561
-  await bundlr.fund(price);
-  const transaction = bundlr.createTransaction(
-    stringData,
-    { tags }
-  );
+  console.log('Price', price);
+
+  const minimumFunds = price.multipliedBy(3);
+  console.log('Minimum Funds', minimumFunds);
+
+  // Bug: This shows 0
+  const currentBalance = await bundlr.getLoadedBalance();
+  console.log(`Current Balance: ${currentBalance}`);
+
+  if (currentBalance.lt(minimumFunds)) {
+    const toFundAmount = price.multipliedBy(10);
+    console.log(`Funding: ${toFundAmount}`);
+    await bundlr.fund(toFundAmount);
+  }
+
+  const transaction = bundlr.createTransaction(stringData, { tags });
   await transaction.sign();
   await transaction.upload();
   const id = transaction.id;
