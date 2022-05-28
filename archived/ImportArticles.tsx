@@ -5,14 +5,14 @@ import noArticles from '@/images/elements/no-articles.svg';
 import {
   getDefaultArticleImage
 } from '@/components/getDefaultPreviewImage';
-import { DefaultHead } from "./DefaultHead";
-import { StaticNavbar } from "./Navbar";
+import { DefaultHead } from "../layouts/DefaultHead";
+import { StaticNavbar } from "../layouts/Navbar";
 import { Article, GetArticlesServerSide } from "@/types/props";
 import { useState, useEffect } from "react";
 import { shortenSentence } from "@/lib/sanitize";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
-import { Footer } from "./Footer";
+import { Footer } from "../layouts/Footer";
 
 export const ImportArticles = ({
   articles,
