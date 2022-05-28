@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 export const getBlocks = async (
   arweave_url: string
 ) => {

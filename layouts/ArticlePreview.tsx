@@ -1,7 +1,7 @@
 import date from 'date-and-time';
 import styles from '@/styles/UserView.module.scss';
 import editArticle from '@/images/elements/edit-article.svg';
-import { Article, User } from '@/types/props';
+import { Article, Draft, User } from '@/types/props';
 import { shortenSentence } from '@/lib/sanitize';
 import { useRouter } from 'next/router';
 
@@ -46,7 +46,7 @@ export const VerticalArticlePreview = ({
   article,
   user
 }: {
-  article: Article;
+  article: Article | Draft;
   user: User | undefined;
 }) => {
   const router = useRouter();
@@ -59,6 +59,7 @@ export const VerticalArticlePreview = ({
   };
   const base64Data = Buffer.from(JSON.stringify(SEOData)).toString('base64');
   const DefaultImage = `https://i0.wp.com/og.up.railway.app/article/${base64Data}`;
+  const isNotDraft = 'slug' in article;
 
   return (
     <div className={styles.verticalContainer}>
@@ -66,8 +67,12 @@ export const VerticalArticlePreview = ({
         <img src={article.image_url || DefaultImage} className={styles.verticalImage} />
         <div className={styles.verticalArticleText}>
           <p
-            onClick={() => router.push(`/${user?.username}/${article.slug}`)}
-            className="subheading sm nm pointer">{shortenSentence(article.title, 75)}</p>
+            onClick={() => {
+              if (isNotDraft) {
+                router.push(`/${user?.username}/${article.slug}`)
+              }
+            }}
+            className={`subheading sm nm ${isNotDraft ? 'pointer' : ''}`}>{shortenSentence(article.title, 75)}</p>
           <p className="normal-text cs nm mt-1">
             {shortenSentence(article.description, 112)}
           </p>
@@ -76,14 +81,17 @@ export const VerticalArticlePreview = ({
       <div className={styles.verticalArticleAdditional}>
         <div className="width-100">
           <p className="normal-text sm nm">{formatted_date}</p>
-          {!article.on_chain && (
-            <p className="draft">DRAFT</p>
-          )}
         </div>
         <img
-          onClick={() => router.push(`/edit/${user?.username}/${article.slug}`)}
+          onClick={() => {
+            if (isNotDraft) {
+              router.push(`/edit/${user?.username}/${article.slug}`)
+            } else {
+              router.push(`/edit/draft/${article.id}`)
+            }
+          }}
           className={styles.editArticle} src={editArticle.src} alt="Edit Article" />
       </div>
     </div>
-  )
-}
+  );
+};

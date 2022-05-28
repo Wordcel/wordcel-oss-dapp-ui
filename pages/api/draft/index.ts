@@ -61,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       const updated = await prisma.draft.update({
-        where: { id },
+        where: { id: Number(id) },
         data: {
           title: sanitizeHtml(title),
           description: sanitizeHtml(description),

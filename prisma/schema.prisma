@@ -34,7 +34,6 @@ model Article {
   image_url String
   on_chain Boolean @default(false)
   created_at DateTime @default(now())
-  blocks Block?
   proof_of_post String?
   arweave_url String?
   slug String
@@ -49,18 +48,12 @@ model Subscription {
   publication_owner String
 }
 
-model Block {
-  id Int @id @default(autoincrement())
-  data String
-  article_id Int
-  article Article @relation(fields: [article_id], references: [id])
-}
-
 model Draft {
   id Int @id @default(autoincrement())
   title String
   description String
   image_url String
+  created_at DateTime @default(now())
   blocks String
   user_id Int
   owner User @relation(fields: [user_id], references: [id])

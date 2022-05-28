@@ -41,6 +41,9 @@ export const getUserServerSide = async (
     const articles = await prisma.article.findMany({
       where: {
         owner: { id: user.id }
+      },
+      orderBy: {
+        created_at: 'desc',
       }
     });
     return {
