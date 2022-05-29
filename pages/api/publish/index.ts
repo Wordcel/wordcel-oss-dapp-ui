@@ -70,8 +70,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const {
       title,
       description,
-      image_url,
-      slug
+      image_url
     } = getHeaderContent(blocks);
 
     const updated = await prisma.article.update({
@@ -84,8 +83,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         proof_of_post,
         title,
         description,
-        image_url,
-        slug
+        image_url
       }
     });
 
