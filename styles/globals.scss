@@ -418,14 +418,31 @@ a {
 
 .reader-embed {
   width: 100%;
-  height: 60rem;
 }
 
+.embed-block-service-youtube {
+  margin: 4rem 0rem;
+  width: 100% !important;
+}
+
+.embed-block-service-twitter {
+  min-height: 35rem;
+}
+
+
 figure {
-  @media only screen and (max-width: 768px) {
-    margin-inline-start: 0rem;
-    margin-inline-end: 0rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  & > figcaption {
+    width: 100%;
+    text-align: left !important;
   }
+  margin-block-start: 0rem;
+  margin-block-end: 0rem;
+  margin-inline-start: 0rem;
+  margin-inline-end: 0rem;
 }
 
 .reader-list {
@@ -458,7 +475,6 @@ figure {
   margin: 0rem;
   font-family: 'Spectral', 'Inter', sans-serif, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
   Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue;
-  font-style: italic;
   font-size: 2.1rem;
   font-weight: 500;
   opacity: 0.5;
