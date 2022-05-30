@@ -46,7 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       title,
       description,
       image_url
-    } = getHeaderContent(blocks.content.blocks);
+    } = getHeaderContent(blocks);
 
     if (id) {
       const existing_draft = await prisma.draft.findFirst({

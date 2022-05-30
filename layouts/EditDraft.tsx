@@ -70,13 +70,9 @@ export const EditDraft = (props: GetDraftServerSide) => {
     const interval = setInterval(async () => {
       if (!editorInstance.current?.save || !publicKey || !signature || publishClicked) return;
       const data = await editorInstance.current.save();
-      const payload = {
-        content: { blocks: data.blocks },
-        type: 'blocks'
-      };
       const response = await updateDraft({
         id: draft_id?.toString(),
-        blocks: payload,
+        blocks: data.blocks,
         signature: signature,
         public_key: publicKey.toBase58()
       });
@@ -141,7 +137,7 @@ export const EditDraft = (props: GetDraftServerSide) => {
           {typeof window !== 'undefined' && (
             <div className="mb-main">
               <Editor
-                blocks={blocks.content.blocks}
+                blocks={blocks}
                 handleInstance={handleInitialize}
               />
             </div>

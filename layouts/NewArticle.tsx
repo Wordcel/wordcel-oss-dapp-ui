@@ -70,13 +70,9 @@ export const NewArticle = () => {
     const interval = setInterval(async () => {
       if (!editorInstance.current?.save || !publicKey || !signature || publishClicked) return;
       const data = await editorInstance.current.save();
-      const payload = {
-        content: { blocks: data.blocks },
-        type: 'blocks'
-      };
       const response = await updateDraft({
         id: draft_id,
-        blocks: payload,
+        blocks: data.blocks,
         signature: signature,
         public_key: publicKey.toBase58()
       });
