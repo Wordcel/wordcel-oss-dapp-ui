@@ -50,7 +50,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (id) {
       const existing = await prisma.draft.findFirst({
-        where: { id: Number(id) }
+        where: {
+          id: Number(id),
+          owner: {
+            id: user.id
+          }
+        }
       });
 
       if (!existing) {

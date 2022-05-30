@@ -74,7 +74,7 @@ export const StaticNavbar = ({
     <div
       style={{ justifyContent: spaceBetweenContent ? 'space-between' : 'center' }}
       className={`${styles.staticContainer} ${proof_of_post ? styles.hasPop : ''}`}>
-      <Link href={publicKey ? `/welcome/${publicKey.toBase58()}` : '/'}>
+      <Link href={publicKey ? `/dashboard/${publicKey.toBase58()}/drafts` : '/'}>
         <a>
           <div className={styles.logoMaxWidth}>
             <Image alt="Wordcel" src={logo} />

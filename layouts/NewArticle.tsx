@@ -10,7 +10,7 @@ import { useEffect, useCallback, useRef, useState } from 'react';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { getUserSignature } from '@/components/signMessage';
-import { updateDraft } from '@/components/draft';
+import { deleteDraft, updateDraft } from '@/components/draft';
 import { Footer } from './Footer';
 
 
@@ -68,7 +68,7 @@ export const NewArticle = () => {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      if (!editorInstance.current?.save || !publicKey || !signature) return;
+      if (!editorInstance.current?.save || !publicKey || !signature || publishClicked) return;
       const data = await editorInstance.current.save();
       const payload = {
         content: { blocks: data.blocks },
@@ -108,6 +108,11 @@ export const NewArticle = () => {
       undefined,
       true
     );
+    deleteDraft({
+      id: draft_id?.toString(),
+      signature: signature,
+      public_key: wallet.publicKey?.toBase58()
+    });
     if (!response.article) return;
     toast('Redirecting...');
     router.push(`/${response.username}/${response.article.slug}`);
