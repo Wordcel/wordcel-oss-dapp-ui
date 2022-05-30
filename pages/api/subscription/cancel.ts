@@ -24,25 +24,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       account
     } = req.body;
 
-    const user = await prisma.user.findFirst({
-      where: {
-        public_key,
-      }
-    });
-
-    if (!user) {
-      res.status(400).json({
-        error: 'User does not exist'
-      });
-      return;
-    }
-
     const authenticated = authenticate(public_key, signature, res);
     if (!authenticated) return;
 
     const subscription = await prisma.subscription.findFirst({
       where: {
-        user_id: user.id,
+        subscriber: public_key,
         publication_owner: publication_owner,
         account: account,
       }
@@ -51,12 +38,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!subscription) {
       res.status(400).json({
         error: 'Subscription does not exist'
-      })
+      });
+      return;
     }
 
     const deleted = await prisma.subscription.delete({
       where: {
-        id: subscription?.id
+        id: subscription.id
       }
     })
 

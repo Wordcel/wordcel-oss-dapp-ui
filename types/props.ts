@@ -6,6 +6,7 @@ export interface User {
   nft_key: string;
   blog_name: string;
   import_enabled: boolean;
+  subscriber_count?: number;
   bio?: string;
   twitter?: string;
   discord?: string;
@@ -18,16 +19,22 @@ export interface Article {
   title: string;
   description: string;
   image_url: string;
-  on_chain: boolean;
   created_at: Date;
-  on_chain_version: Date;
-  cached_at: Date;
   user_id: number;
-  cache_link?: string;
+  on_chain: boolean;
   blocks?: string;
   proof_of_post?: string;
   arweave_url?: string;
   slug?: string
+}
+
+export interface Draft {
+  id: number;
+  title: string;
+  description: string;
+  image_url: string;
+  created_at: Date;
+  blocks?: string;
 }
 
 export interface GetUserServerSide {
@@ -40,10 +47,27 @@ export interface GetArticlesServerSide {
   user?: User;
 }
 
+export interface GetDraftsServerSide {
+  drafts?: Draft[];
+  user?: User;
+}
+
+export interface DashboardSSR {
+  user?: User;
+  articles?: Article[];
+  drafts?: Draft[];
+}
+
 export interface GetArticleServerSide {
   article?: Article;
   user_public_key?: string;
   username: string;
+  blocks?: string;
+  user?: User;
+}
+
+export interface GetDraftServerSide {
+  draft?: Draft;
   blocks?: string;
   user?: User;
 }

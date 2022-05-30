@@ -10,6 +10,6 @@ const EditArticlePage = (props: GetArticleServerSide) => {
 export default EditArticlePage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const props = await getArticleServerSide(context, true);
+  const props = await getArticleServerSide(context);
   return props;
 }

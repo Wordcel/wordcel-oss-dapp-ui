@@ -6,13 +6,12 @@ import '@fontsource/spectral';
 import '@/styles/globals.scss';
 import { Toaster } from 'react-hot-toast';
 import { Wallet } from '@/layouts/Wallet';
-import type { AppProps } from 'next/app'
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
-function Worcel({ Component, pageProps }: AppProps) {
+function Worcel({ Component, pageProps }: any) {
   return (
     <Wallet>
       <div style={{ fontSize: '170%' }}>

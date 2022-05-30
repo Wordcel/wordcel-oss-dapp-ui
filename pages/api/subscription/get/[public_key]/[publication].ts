@@ -12,9 +12,7 @@ export default async function handler(
   const subscription = await prisma.subscription.findFirst({
     where: {
       publication_owner: publication as string,
-      owner: {
-        public_key: public_key as string,
-      }
+      subscriber: public_key as string,
     }
   });
 

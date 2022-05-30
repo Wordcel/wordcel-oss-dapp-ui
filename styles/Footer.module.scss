@@ -1,6 +1,5 @@
 .container {
   width: 100%;
-  min-height: 36rem;
   margin-top: auto;
   border-top: 0.1rem solid rgba(30, 40, 51, 0.07);
 }
@@ -24,18 +23,29 @@
 }
 
 .heroSection {
-  min-height: 24rem;
   max-width: 112rem;
   width: 100%;
-  display: grid;
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  grid-template-columns: 1fr 1fr;
   padding: 0rem 3.5rem;
   @media only screen and (max-width: 940px) {
-    grid-template-columns: 1fr;
     min-height: 32rem;
   }
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-evenly;
+  }
+  & > div {
+    @media only screen and (min-width: 768px) {
+      width: 50%;
+    }
+    @media only screen and (min-width: 940px) {
+      min-height: 24rem;
+    }
+  }
+
 }
 
 .bottomSection {
@@ -45,10 +55,8 @@
   border-top: 0.1rem solid rgba(30, 40, 51, 0.07);
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 0rem 3.5rem;
-  @media only screen and (min-width: 940px) {
-    align-items: flex-end;
-  }
 }
 
 .logoContainer {
@@ -65,19 +73,24 @@
 }
 
 .socialContainer {
-  @media only screen and (min-width: 940px) {
-    justify-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  @media only screen and (min-width: 768px) {
+    align-items: flex-end;
   }
 }
 
 .socials {
-  display: grid;
+  display: flex;
   margin-top: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(1.8rem, 1fr));
-  grid-gap: 1rem;
-  @media only screen and (max-width: 940px) {
-    grid-template-columns: repeat(auto-fit, minmax(1.8rem, 1.8rem));
-    grid-gap: 2.5rem;
+  & > a {
+    @media only screen and (min-width: 768px) {
+      margin-left: 2rem;
+    }
+    @media only screen and (max-width: 768px) {
+      margin-right: 2rem;
+    }
   }
   & > a > svg {
     transition: all 0.15s ease-in-out;

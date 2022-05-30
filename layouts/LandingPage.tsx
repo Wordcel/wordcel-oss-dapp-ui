@@ -46,7 +46,7 @@ export const LandingPage = () => {
     (async function () {
       if (!publicKey) return;
       if (whitelisted && clicked !== 0) {
-        router.push(`/welcome/${publicKey.toBase58()}`)
+        router.push(`/dashboard/${publicKey.toBase58()}/drafts`)
         return;
       }
       toast.loading('Loading')
@@ -99,7 +99,7 @@ export const LandingPage = () => {
                   style={{ maxWidth: '26.5rem' }}
                   className="main-btn"
                   onClick={() => setClicked(clicked + 1)}>
-                  {whitelisted === true ? 'Dashboard' : 'Connect Wallet'}
+                  {whitelisted === true ? 'Go to Dashboard' : 'Connect Wallet'}
                 </button>
               </ConnectWallet>
             )}

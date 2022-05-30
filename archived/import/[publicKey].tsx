@@ -1,5 +1,5 @@
 import { getArticlesServerSide } from "@/components/getArticlesServerSide";
-import { ImportArticles } from "@/layouts/ImportArticles";
+import { ImportArticles } from "archived/ImportArticles";
 import { GetArticlesServerSide } from "@/types/props";
 import { GetServerSideProps } from "next";
 

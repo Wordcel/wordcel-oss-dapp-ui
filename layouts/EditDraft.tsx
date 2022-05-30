@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import styles from '@/styles/Editor.module.scss';
 import { publishPost } from '@/components/contractInteraction';
 import { EditorCore } from "@react-editor-js/core";
-import { GetArticleServerSide } from '@/types/props';
+import { GetDraftServerSide } from '@/types/props';
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { useRouter } from 'next/router';
 import { useEffect, useCallback, useRef, useState } from 'react';
@@ -14,16 +14,17 @@ import { getUserSignature } from '@/components/signMessage';
 import { deleteDraft, updateDraft } from '@/components/draft';
 import { Footer } from './Footer';
 
-export const EditArticle = (props: GetArticleServerSide) => {
+export const EditDraft = (props: GetDraftServerSide) => {
+  console.log(props);
   const wallet = useWallet();
   const router = useRouter();
   const anchorWallet = useAnchorWallet();
-  const [blocks] = useState<any>(JSON.parse(props.blocks || ''));
+  const [blocks] = useState<any>(JSON.parse(props.draft?.blocks || ''));
   const [sigError, setSigError] = useState('');
   const [signature, setSignature] = useState<Uint8Array>();
   const { publicKey, signMessage } = useWallet();
 
-  let [draft_id] = useState('');
+  let [draft_id] = useState(props.draft?.id);
   let [publishClicked] = useState(false);
   const Editor: any = dynamic(() => import('@/layouts/Editor'), {
     ssr: false
@@ -70,7 +71,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
       if (!editorInstance.current?.save || !publicKey || !signature || publishClicked) return;
       const data = await editorInstance.current.save();
       const response = await updateDraft({
-        id: draft_id,
+        id: draft_id?.toString(),
         blocks: data.blocks,
         signature: signature,
         public_key: publicKey.toBase58()
@@ -84,7 +85,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
   }, [signature]);
 
   const handlePublish = async () => {
-    if (!anchorWallet || !props.article || publishClicked) return;
+    if (!anchorWallet || publishClicked) return;
     publishClicked = true;
     const savedContent = await editorInstance.current?.save();
     if (!savedContent || !signMessage) return;
@@ -99,9 +100,9 @@ export const EditArticle = (props: GetArticleServerSide) => {
       anchorWallet as any,
       wallet,
       signature,
-      props.article?.id,
+      undefined,
       true,
-      props.article.proof_of_post
+      undefined
     );
     if (!response.article) {
       toast.dismiss();
@@ -118,7 +119,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
   }
 
   useEffect(() => {
-    if (!publicKey || publicKey.toString() !== props.user_public_key) {
+    if (!publicKey || publicKey.toString() !== props.user?.public_key) {
       router.push('/');
     }
   }, [publicKey, props]);
@@ -126,9 +127,9 @@ export const EditArticle = (props: GetArticleServerSide) => {
   return (
     <div className="container-flex">
       <DefaultHead
-        title={`Edit - ${props.article?.title}`}
-        description={props.article?.description}
-        image={props.article?.image_url}
+        title={`Edit - ${props.draft?.title}`}
+        description={props.draft?.description}
+        image={props.draft?.image_url}
       />
       <StaticNavbar publish={handlePublish} />
       <div className={styles.container}>

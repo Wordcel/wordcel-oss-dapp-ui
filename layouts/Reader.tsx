@@ -1,7 +1,7 @@
 import Output from "editorjs-blocks-react-renderer";
 // import ImageGallery from '@rodrigoodhin/editorjs-image-gallery';
 // @ts-expect-error
-import { ChecklistOutput } from 'editorjs-react-renderer';
+import { ChecklistOutput, CodeBoxOutput } from 'editorjs-react-renderer';
 
 const Reader = ({
   blocks
@@ -37,9 +37,8 @@ const Reader = ({
         version: '1',
         time: new Date().getTime(),
       }} renderers={{
-        // imageGallery: ImageGallery,
         checklist: ChecklistOutput,
-        // blockquote: QuoteOutput
+        code: CodeBoxOutput,
       }} config={READER_CONFIG} />
     </div>
   )

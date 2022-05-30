@@ -25,7 +25,7 @@ model User {
   image_url String?
   banner_url String?
   articles Article[]
-  subscriptions Subscription[]
+  drafts Draft[]
 }
 
 model Article {
@@ -33,14 +33,10 @@ model Article {
   title String
   description String
   image_url String
-  on_chain Boolean @default(false)
+  on_chain Boolean @default(true)
   created_at DateTime @default(now())
-  on_chain_version DateTime @default(now())
-  cached_at DateTime @default(now())
-  blocks Block?
-  proof_of_post String?
-  arweave_url String?
-  cache_link String?
+  proof_of_post String
+  arweave_url String
   slug String
   user_id Int
   owner User @relation(fields: [user_id], references: [id])
@@ -49,14 +45,24 @@ model Article {
 model Subscription {
   id Int @id @default(autoincrement())
   account String
+  subscriber String
   publication_owner String
+}
+
+model Draft {
+  id Int @id @default(autoincrement())
+  title String
+  description String
+  image_url String
+  created_at DateTime @default(now())
   user_id Int
+  blocks Block?
   owner User @relation(fields: [user_id], references: [id])
 }
 
 model Block {
   id Int @id @default(autoincrement())
   data String
-  article_id Int
-  article Article @relation(fields: [article_id], references: [id])
+  draft_id Int
+  draft Draft @relation(fields: [draft_id], references: [id])
 }

@@ -16,7 +16,10 @@ export const getUserServerSide = async (
     user = user_;
   } else {
     const user_ = await prisma.user.findFirst({ where: {
-      username
+      username: {
+        equals: username,
+        mode: 'insensitive'
+      }
     }});
     user = user_;
   }
@@ -30,22 +33,32 @@ export const getUserServerSide = async (
       props: {}
     }
   };
+  const subscriber_count = await prisma.subscription.count({
+    where: { publication_owner: user.public_key }
+  });
+  const userData = {
+    ...user,
+    subscriber_count
+  };
   if (articles) {
     const articles = await prisma.article.findMany({
       where: {
         owner: { id: user.id }
+      },
+      orderBy: {
+        created_at: 'desc',
       }
     });
     return {
       props: {
-        user,
+        user: userData,
         articles: JSON.parse(JSON.stringify(articles))
       }
     }
   }
   return {
     props: {
-      user
+      user: userData
     }
   }
 };

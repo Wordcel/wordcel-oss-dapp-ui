@@ -70,8 +70,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const {
       title,
       description,
-      image_url,
-      slug
+      image_url
     } = getHeaderContent(blocks);
 
     const updated = await prisma.article.update({
@@ -80,13 +79,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
       data: {
         arweave_url,
-        on_chain_version: new Date(),
         on_chain: true,
         proof_of_post,
         title,
         description,
-        image_url,
-        slug
+        image_url
       }
     });
 

@@ -25,7 +25,7 @@ export const Footer = () => {
             </p>
           </div>
           <div className={styles.socialContainer}>
-            <p className="normal-text op-1 bold mt-2 sm nm">Follow Us</p>
+            <p className="normal-text op-1 bold sm nm">Follow Us</p>
             <div className={styles.socials}>
               {socials.map((social) => (
                 <a
@@ -40,7 +40,7 @@ export const Footer = () => {
           </div>
         </div>
         <div className={styles.bottomSection}>
-          <p className="normal-text mt-2 sm txt-left">
+          <p className="normal-text sm">
             Copyright © {new Date().getFullYear()}. Coffee to Code Technologies Pte Ltd.
           </p>
         </div>

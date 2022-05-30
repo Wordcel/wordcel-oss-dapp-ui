@@ -8,21 +8,17 @@ import {
   verifyMethod,
   authenticate
 } from '@/lib/server';
-import { getHeaderContent } from '@/components/getHeaderContent';
-import { sanitizeHtml } from '@/lib/sanitize';
-import { getBlocks } from '@/components/getArticleBlocks';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const allowed = verifyMethod(req, res, 'POST');
+  const allowed = verifyMethod(req, res, 'DELETE');
   if (!allowed) return;
   try {
-    const requiredKeys = ['public_key', 'cache_link', 'signature'];
+    const requiredKeys = ['public_key', 'signature', 'id'];
     const allKeysPresent = verifyKeys(req, res, requiredKeys);
     if (!allKeysPresent) return;
 
     const {
       public_key,
-      cache_link,
       signature,
       id
     } = req.body;
@@ -43,42 +39,48 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const authenticated = authenticate(public_key, signature, res);
     if (!authenticated) return;
 
-    const blocks = await getBlocks(cache_link);
-    if (!blocks) return;
-
-    const {
-      title,
-      description,
-      image_url,
-      slug
-    } = getHeaderContent(blocks);
-
-    const newArticle = await prisma.article.create({
-      data: {
-        title: sanitizeHtml(title),
-        description: sanitizeHtml(description),
-        image_url,
-        slug,
-        cache_link,
-        on_chain: false,
+    const existing = await prisma.draft.findFirst({
+      where: {
+        id: Number(id),
         owner: {
-          connect: {
-            id: user.id
-          }
+          id: user.id
         }
       }
     });
 
+    if (!existing) {
+      res.status(400).json({
+        error: 'Draft does not exist'
+      });
+      return;
+    }
+
+    const block = await prisma.block.findFirst({
+      where: {
+        draft: {
+          id: existing.id
+        }
+      }
+    });
+
+    if (block) {
+      const block_deleted = await prisma.block.delete({
+        where: { id: block.id }
+      })
+    }
+
+    const updated = await prisma.draft.delete({
+      where: { id: Number(id) }
+    });
+
     res.status(200).json({
-      success: 'Article created',
-      article: newArticle,
-      username: user.username
+      success: 'Draft deleted successfully'
     });
 
   } catch (e) {
     console.error('Request error', e);
     res.status(500).json({
-      error: 'Error caching article',
+      error: 'Error deleting draft',
     });
   }
 }

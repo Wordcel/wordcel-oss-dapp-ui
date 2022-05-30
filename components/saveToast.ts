@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
 
 const emojis = ['🤠', '😃', '😇', '🙃'];
-const text = 'We automatically save your work every 30 seconds';
+const text = 'We automatically save your work every 15 seconds';
 const positions = ['bottom-left', 'bottom-right', 'top-left', 'top-right'];
 
 const getRandom = (arr: any[]) => {
@@ -20,4 +20,4 @@ export const saveToast = () => {
       position: getRandom(positions)
     }
   );
-}
+};

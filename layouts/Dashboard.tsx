@@ -1,7 +1,6 @@
 import noArticles from '@/images/elements/no-articles.svg';
 import publishNew from '@/images/elements/publish-new-article.svg';
-import importArticles from '@/images/elements/import-articles.svg';
-import styles from '@/styles/Welcome.module.scss';
+import styles from '@/styles/Dashboard.module.scss';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -10,14 +9,29 @@ import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { DefaultBox } from '@/elements/Box';
 import { getTrimmedPublicKey } from '@/components/getTrimmedPublicKey';
-import { GetArticlesServerSide } from '@/types/props';
+import { DashboardSSR } from '@/types/props';
 import { VerticalArticlePreview } from './ArticlePreview';
 
-export const WelcomePage = (
-  props: GetArticlesServerSide
+export const NoArticles = () => (
+  <div className="flex justify-content-center mt-12">
+    <img className={styles.noArticlesImage} src={noArticles.src} alt="No published articles" />
+  </div>
+);
+
+export const DashboardPage = (
+  props: DashboardSSR
 ) => {
   const router = useRouter();
   const { publicKey } = useWallet();
+
+  const replaceTab = (tab: string) => {
+    router.replace(`/dashboard/${publicKey?.toString()}/${tab}`);
+  }
+
+  const getActiveTabClassname = (tab: string) => {
+    const activeTab = router.asPath.includes(tab);
+    return activeTab ? 'subheading' : 'light-sub-heading';
+  }
 
   useEffect(() => {
     if (!publicKey || publicKey.toString() !== router.query.publicKey) {
@@ -39,20 +53,6 @@ export const WelcomePage = (
                 <img className={styles.publishImage} src={publishNew.src} alt="Publish New Article" />
               </div>
             </DefaultBox>
-            {props.user?.import_enabled && (
-              <DefaultBox>
-                <div className="flex column align-items-start justify-space-between height-100">
-                  <img src={importArticles.src} alt="Import Articles" />
-                  <input type="text" disabled={true} placeholder={props.user?.blog_name} className="gray-input" />
-                  <button
-                    onClick={() => router.push(`/import/${props.user?.public_key}`)}
-                    style={{
-                      height: '4.2rem',
-                      fontSize: '1.6rem'
-                    }} className="main-btn">Import</button>
-                </div>
-              </DefaultBox>
-            )}
             <DefaultBox>
               <div className="flex column align-items-start justify-space-between height-100">
                 <div className="flex">
@@ -74,26 +74,36 @@ export const WelcomePage = (
             </DefaultBox>
           </div>
           <div className={styles.heading}>
-            <p className="subheading mxs bold">
-              Your Articles
-            </p>
-            <svg
-              style={{ marginLeft: '1.5rem' }} width={8} height={8} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-              <circle cx={4} cy={4} r={4} fill="#A2A2A2" />
-            </svg>
-            <p className="ml-1-5 subheading light mxs bold">{props.articles?.length}</p>
+            <p onClick={() => replaceTab('drafts')} className={`${getActiveTabClassname('drafts')} mxs bold pointer`}>Drafts</p>
+            <p onClick={() => replaceTab('published')} className={`${getActiveTabClassname('published')} ml-3 mxs bold pointer`}>Published</p>
           </div>
           <div className={styles.articles}>
-            {props.articles && props.articles.map((article) => (
-              <VerticalArticlePreview
-                key={article.title}
-                article={article}
-                user={props.user}
-              />
-            ))}
-            {props.articles && props.articles.length === 0 && (
-              <div className="flex justify-content-center mt-12">
-                <img className={styles.noArticlesImage} src={noArticles.src} alt="No published articles" />
+            {props.drafts && (
+              <div>
+                {props.drafts.map((draft) => (
+                  <VerticalArticlePreview
+                    key={draft.title}
+                    article={draft}
+                    user={props.user}
+                  />
+                ))}
+                {props.drafts.length === 0 && (
+                  <NoArticles />
+                )}
+              </div>
+            )}
+            {props.articles && (
+              <div>
+                {props.articles.map((article) => (
+                  <VerticalArticlePreview
+                    key={article.title}
+                    article={article}
+                    user={props.user}
+                  />
+                ))}
+                {props.articles.length === 0 && (
+                  <NoArticles />
+                )}
               </div>
             )}
           </div>

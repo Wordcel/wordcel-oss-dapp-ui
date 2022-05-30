@@ -18,8 +18,13 @@
   width: 100%;
   margin: 0 auto;
   padding-top: 5rem;
-  padding-bottom: 1.5rem;
   border-bottom: 0.1rem solid rgba(186, 186, 186, 0.22);
+  & > p {
+    transition: 0.15s all ease-in-out;
+    &:hover {
+      color: var(--text-color);
+    }
+  }
   @media only screen and (max-width: 940px) {
     justify-content: center;
   }
@@ -33,6 +38,6 @@
 }
 
 .noArticlesImage {
-  max-width: 35.8rem;
+  max-width: 14rem;
   width: 100%;
 }

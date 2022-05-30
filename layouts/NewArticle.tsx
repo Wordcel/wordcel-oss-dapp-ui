@@ -10,9 +10,8 @@ import { useEffect, useCallback, useRef, useState } from 'react';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { getUserSignature } from '@/components/signMessage';
-import { uploadNFTStorage } from '@/components/upload';
+import { deleteDraft, updateDraft } from '@/components/draft';
 import { Footer } from './Footer';
-import { updateCacheLink } from '@/components/cache';
 
 
 export const NewArticle = () => {
@@ -21,13 +20,13 @@ export const NewArticle = () => {
   const [sigError, setSigError] = useState('');
   const [signature, setSignature] = useState<Uint8Array>();
 
-  let [articleID] = useState('');
+  let [draft_id] = useState('');
   let [publishClicked] = useState(false);
 
   const anchorWallet = useAnchorWallet();
   const wallet = useWallet();
 
-  const Editor = dynamic(() => import('@/layouts/Editor'), {
+  const Editor: any = dynamic(() => import('@/layouts/Editor'), {
     ssr: false
   });
   const editorInstance = useRef<EditorCore | null>(null);
@@ -69,23 +68,17 @@ export const NewArticle = () => {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      if (!editorInstance.current?.save || !publicKey || !signature) return;
+      if (!editorInstance.current?.save || !publicKey || !signature || publishClicked) return;
       const data = await editorInstance.current.save();
-      const payload = {
-        content: { blocks: data.blocks },
-        type: 'blocks'
-      };
-      const cache_link = await uploadNFTStorage(payload);
-      if (!cache_link) return;
-      const new_cache = await updateCacheLink({
-        id: articleID,
-        cache_link: cache_link,
+      const response = await updateDraft({
+        id: draft_id,
+        blocks: data.blocks,
         signature: signature,
         public_key: publicKey.toBase58()
       });
-      console.log(new_cache);
-      articleID = new_cache.article.id;
-    }, 30000)
+      console.log(response);
+      draft_id = response.draft.id;
+    }, 15000)
     return () => {
       clearInterval(interval);
     }
@@ -111,6 +104,11 @@ export const NewArticle = () => {
       undefined,
       true
     );
+    deleteDraft({
+      id: draft_id?.toString(),
+      signature: signature,
+      public_key: wallet.publicKey?.toBase58()
+    });
     if (!response.article) return;
     toast('Redirecting...');
     router.push(`/${response.username}/${response.article.slug}`);

@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.heroSection {
+  padding: 2.3rem;
+  border-bottom: 0.15rem solid rgba(186, 186, 186, 0.22);
+}
+
+.form {
+  max-height: 60rem;
+  padding: 2.3rem;
+}
+
+.formHeight {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  max-height: 40rem;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  & > div {
+    padding: 1rem 0rem;
+  }
+}

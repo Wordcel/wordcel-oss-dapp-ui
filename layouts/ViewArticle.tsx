@@ -11,14 +11,12 @@ import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { Footer } from './Footer';
 import { getReadingTime } from '@/components/getReadingTime';
+import { useRouter } from 'next/router';
 
 export const AuthorBox = (props: GetArticleServerSide) => {
   const Name = props.user?.name;
   const Bio = props.user?.bio;
   const Avatar = props.user?.image_url || `https://avatars.wagmi.bio/${props.user?.name}`;
-  const TrimmedPublicKey = props.user?.public_key.substring(0, 4)
-    .concat('....')
-    .concat(props.user?.public_key.substring(props.user?.public_key.length - 4));
 
   return (
     <div className={styles.authorBox}>
@@ -39,7 +37,7 @@ export const AuthorBox = (props: GetArticleServerSide) => {
               <p className="heading sm nm-bottom nm-top">{Name}</p>
             </a>
           </Link>
-          <p className="light-sub-heading nm">{TrimmedPublicKey}</p>
+          <p className="light-sub-heading nm">@{props.user?.username}</p>
           {Bio && (
             <p className="normal-text sm nm-bottom mt-1">{Bio}</p>
           )}
@@ -51,8 +49,9 @@ export const AuthorBox = (props: GetArticleServerSide) => {
 
 
 export const ViewArticle = (props: GetArticleServerSide) => {
+  const { asPath } = useRouter();
   const [blocks] = useState<any>(JSON.parse(props.blocks || ''));
-  const Reader = dynamic(() => import('@/layouts/Reader'), {
+  const Reader: any = dynamic(() => import('@/layouts/Reader'), {
     ssr: false
   });
   const SEOData = {
@@ -89,6 +88,9 @@ export const ViewArticle = (props: GetArticleServerSide) => {
       <DefaultHead
         title={props.article?.title}
         description={props.article?.description}
+        author={props.user?.name}
+        blog_name={props.user?.blog_name}
+        url={`https://wordcel.club/${asPath}`}
         image={SEOImage}
       />
       <StaticNavbar

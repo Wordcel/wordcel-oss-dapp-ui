@@ -1,15 +1,18 @@
 import Image from "next/image";
 import styles from "@/styles/Import.module.scss";
 import tickIcon from '@/images/icons/tick.svg';
-import alreadyOnChain from '@/images/elements/already-on-chain.svg';
-import { DefaultHead } from "./DefaultHead";
-import { StaticNavbar } from "./Navbar";
+import noArticles from '@/images/elements/no-articles.svg';
+import {
+  getDefaultArticleImage
+} from '@/components/getDefaultPreviewImage';
+import { DefaultHead } from "../layouts/DefaultHead";
+import { StaticNavbar } from "../layouts/Navbar";
 import { Article, GetArticlesServerSide } from "@/types/props";
 import { useState, useEffect } from "react";
 import { shortenSentence } from "@/lib/sanitize";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
-import { Footer } from "./Footer";
+import { Footer } from "../layouts/Footer";
 
 export const ImportArticles = ({
   articles,
@@ -17,9 +20,6 @@ export const ImportArticles = ({
 }: GetArticlesServerSide) => {
   const router = useRouter();
   const [selected, setSelectedArticle] = useState<Article>();
-  const [offChainArticles] = useState<Article[]>(
-    articles ? articles.filter((article) => !article.on_chain) : []
-  );
   const { publicKey } = useWallet();
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export const ImportArticles = ({
             </div>
           </div>
           <div className={styles.articleGrid}>
-            {offChainArticles && offChainArticles?.map((article) => (
+            {articles && articles?.map((article) => (
               <div
                 key={article.title}
                 className={styles.article}
@@ -70,7 +70,7 @@ export const ImportArticles = ({
               >
                 <img
                   className={styles.articleImage}
-                  src={article.image_url}
+                  src={article.image_url || getDefaultArticleImage(article, user)}
                   alt=""
                 />
                 <div
@@ -88,9 +88,9 @@ export const ImportArticles = ({
               </div>
             ))}
           </div>
-          {offChainArticles.length === 0 && (
+          {articles && articles.length === 0 && (
             <div className="m-0-auto">
-              <img src={alreadyOnChain.src} alt="" />
+              <img src={noArticles.src} alt="" />
             </div>
           )}
         </div>
