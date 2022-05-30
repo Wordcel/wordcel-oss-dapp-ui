@@ -54,7 +54,14 @@ model Draft {
   description String
   image_url String
   created_at DateTime @default(now())
-  blocks String
   user_id Int
+  blocks Block?
   owner User @relation(fields: [user_id], references: [id])
+}
+
+model Block {
+  id Int @id @default(autoincrement())
+  data String
+  draft_id Int
+  draft Draft @relation(fields: [draft_id], references: [id])
 }

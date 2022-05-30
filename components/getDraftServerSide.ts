@@ -19,8 +19,14 @@ export const getDraftServerSide = async (
       id: Number(id)
     }
   });
-
   if (!draft) return redirect();
+  const blocks = await prisma.block.findFirst({
+    where: {
+      draft: {
+        id: draft.id
+      }
+    }
+  });
   const user = await prisma.user.findFirst({
     where: {
       id: draft.user_id
@@ -30,7 +36,10 @@ export const getDraftServerSide = async (
 
   return {
     props: {
-      draft: JSON.parse(JSON.stringify(draft)),
+      draft: {
+        ...JSON.parse(JSON.stringify(draft)),
+        blocks: blocks?.data
+      },
       user
     }
   }

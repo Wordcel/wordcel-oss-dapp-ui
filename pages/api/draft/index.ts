@@ -49,7 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } = getHeaderContent(blocks.content.blocks);
 
     if (id) {
-      const existing = await prisma.draft.findFirst({
+      const existing_draft = await prisma.draft.findFirst({
         where: {
           id: Number(id),
           owner: {
@@ -58,11 +58,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
       });
 
-      if (!existing) {
+      if (!existing_draft) {
         res.status(400).json({
           error: 'Draft does not exist'
         });
         return;
+      }
+
+      let blocks_id;
+
+      const existing_blocks = await prisma.block.findFirst({
+        where: {
+          draft_id: existing_draft.id
+        }
+      });
+
+      if (existing_blocks) {
+        blocks_id = existing_blocks?.id;
+      }
+
+      if (!existing_blocks) {
+        const new_blocks = await prisma.block.create({
+          data: {
+            data: JSON.stringify(blocks),
+            draft_id: existing_draft.id
+          }
+        });
+        blocks_id = new_blocks.id;
       }
 
       const updated = await prisma.draft.update({
@@ -71,7 +93,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           title: sanitizeHtml(title),
           description: sanitizeHtml(description),
           image_url: sanitizeHtml(image_url),
-          blocks: JSON.stringify(blocks),
+        }
+      });
+
+      const updated_blocks = await prisma.block.update({
+        where: { id: blocks_id },
+        data: {
+          data: JSON.stringify(blocks),
         }
       });
 
@@ -88,12 +116,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         title: sanitizeHtml(title),
         description: sanitizeHtml(description),
         image_url,
-        blocks: JSON.stringify(blocks),
         owner: {
           connect: {
             id: user.id
           }
         }
+      }
+    });
+
+    const newBlocks = await prisma.block.create({
+      data: {
+        data: JSON.stringify(blocks),
+        draft_id: newDraft.id
       }
     });
 

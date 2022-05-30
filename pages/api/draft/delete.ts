@@ -55,14 +55,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return;
     }
 
+    const block = await prisma.block.findFirst({
+      where: {
+        draft: {
+          id: existing.id
+        }
+      }
+    });
+
+    if (block) {
+      const block_deleted = await prisma.block.delete({
+        where: { id: block.id }
+      })
+    }
+
     const updated = await prisma.draft.delete({
       where: { id: Number(id) }
     });
 
     res.status(200).json({
-      success: 'Draft deleted successfully',
-      draft: updated,
-      username: user.username
+      success: 'Draft deleted successfully'
     });
 
   } catch (e) {
