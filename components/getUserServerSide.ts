@@ -16,7 +16,10 @@ export const getUserServerSide = async (
     user = user_;
   } else {
     const user_ = await prisma.user.findFirst({ where: {
-      username
+      username: {
+        equals: username,
+        mode: 'insensitive'
+      }
     }});
     user = user_;
   }

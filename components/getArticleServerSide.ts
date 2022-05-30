@@ -25,7 +25,10 @@ export const getArticleServerSide = async (
       where: {
         slug,
         owner: {
-          username
+          username: {
+            equals: username,
+            mode: 'insensitive'
+          }
         }
       }
     });
