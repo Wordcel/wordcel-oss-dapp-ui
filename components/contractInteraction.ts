@@ -40,11 +40,11 @@ async function createProfileAccount(
   user: PublicKey,
   program: anchor.Program
 ) {
-  const [profileKey, profileBump] = await anchor.web3.PublicKey.findProgramAddress(
+  const [profileKey] = await anchor.web3.PublicKey.findProgramAddress(
     profileSeeds,
     program.programId
   );
-  await program.rpc.initialize(profileBump, profileHash, {
+  await program.rpc.initialize(profileHash, {
     accounts: {
       profile: profileKey,
       user: user,
@@ -105,7 +105,7 @@ export async function publishPost(
 
   const postHash = randombytes(32);
   const postSeeds = [Buffer.from("post"), postHash];
-  const [postAccount, postBump] = await anchor.web3.PublicKey.findProgramAddress(postSeeds, program.programId);
+  const [postAccount] = await anchor.web3.PublicKey.findProgramAddress(postSeeds, program.programId);
 
   toast.loading('Uploading');
   let metadataURI = '';
@@ -136,7 +136,7 @@ export async function publishPost(
     });
     console.log(`update tx: ${txid}`);
   } else {
-    txid = await program.rpc.createPost(postBump, metadataURI, postHash, {
+    txid = await program.rpc.createPost(metadataURI, postHash, {
       accounts: {
         post: postAccount,
         profile: profileKey,
@@ -181,11 +181,11 @@ export async function initializeSubscriberAccount(
 ) {
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
   const subscriberSeeds = [Buffer.from("subscriber"), wallet.publicKey.toBuffer()];
-  const [subscriberKey, subscriptionBump] = await anchor.web3.PublicKey.findProgramAddress(
+  const [subscriberKey] = await anchor.web3.PublicKey.findProgramAddress(
     subscriberSeeds,
     program.programId
   );
-  const txid = await program.rpc.initializeSubscriber(subscriptionBump, {
+  const txid = await program.rpc.initializeSubscriber({
     accounts: {
       subscriber: subscriberKey,
       user: wallet.publicKey,
@@ -235,11 +235,11 @@ export async function subscribeToProfile (
     program.programId
   );
   const subcriptionSeeds = [Buffer.from("subscription"), subscriberKey.toBuffer(), new anchor.BN(subscriberAccount.subscriptionNonce).toArrayLike(Buffer)];
-  const [subscriptionKey, subscriptionBump] = await anchor.web3.PublicKey.findProgramAddress(
+  const [subscriptionKey] = await anchor.web3.PublicKey.findProgramAddress(
     subcriptionSeeds,
     program.programId
   );
-  const tx = await program.transaction.initializeSubscription(subscriptionBump, {
+  const tx = await program.transaction.initializeSubscription({
     accounts: {
       subscriber: subscriberKey,
       subscription: subscriptionKey,
@@ -293,7 +293,7 @@ export async function cancelSubscription(
     subscriberSeeds,
     program.programId
   );
-  const tx = await program.transaction.cancelSubscription({
+  const txid = await program.rpc.cancelSubscription({
     accounts: {
       subscriber: subscriberKey,
       subscription: subscriptionKey,
@@ -301,11 +301,6 @@ export async function cancelSubscription(
       systemProgram: SystemProgram.programId
     }
   });
-  const { blockhash } = await connection.getRecentBlockhash();
-  tx.recentBlockhash = blockhash;
-  tx.feePayer = wallet.publicKey;
-  const signedTx = await wallet.signTransaction(tx);
-  const txid = await connection.sendRawTransaction(signedTx.serialize());
   if (!txid) {
     throw new Error('Transaction creation failed');
   };
