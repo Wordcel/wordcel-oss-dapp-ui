@@ -18,7 +18,7 @@ model User {
   nft_key String
   blog_name String
   import_enabled Boolean @default(false)
-  publication_hash String?
+  profile_hash String?
   bio String?
   twitter String?
   discord String?
@@ -46,7 +46,7 @@ model Subscription {
   id Int @id @default(autoincrement())
   account String
   subscriber String
-  publication_owner String
+  profile_owner String
 }
 
 model Draft {

@@ -15,10 +15,10 @@ import {
   WalletModalProvider,
   useWalletModal
 } from '@solana/wallet-adapter-react-ui';
-import { useRouter } from 'next/router';
 
 // Default styles that can be overridden by your app
 require('@solana/wallet-adapter-react-ui/styles.css');
+
 
 export const clusterApiUrl = (cluster: 'devnet' | 'mainnet-beta') => (
   cluster === 'devnet'

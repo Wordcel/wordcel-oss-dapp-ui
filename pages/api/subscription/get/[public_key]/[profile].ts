@@ -8,10 +8,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { public_key, publication } = req.query;
+  const { public_key, profile } = req.query;
   const subscription = await prisma.subscription.findFirst({
     where: {
-      publication_owner: publication as string,
+      profile_owner: profile as string,
       subscriber: public_key as string,
     }
   });

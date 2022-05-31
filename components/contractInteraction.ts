@@ -8,10 +8,10 @@ import { WalletContextState } from '@solana/wallet-adapter-react';
 import { uploadBundle } from '@/components/uploadBundlr';
 import { ENDPOINT } from './config/constants';
 import {
-  addPublicationHash,
+  addProfileHash,
   publishToServer,
   updateSubscriptionServer,
-  getPublicationHash
+  getProfileHash
 } from '@/components/networkRequests';
 
 const preflightCommitment = "processed";
@@ -24,34 +24,34 @@ const provider = (wallet: anchor.Wallet) => new anchor.Provider(
   { preflightCommitment }
 );
 
-export async function getPublicationKeyAndBump(
-  publicationSeeds: Buffer[],
+export async function getProfileKeyAndBump(
+  profileSeeds: Buffer[],
   program: anchor.Program
 ) {
   return await anchor.web3.PublicKey.findProgramAddress(
-    publicationSeeds,
+    profileSeeds,
     program.programId
   );
 }
 
-async function createPublicationAccount(
-  publicationSeeds: Buffer[],
-  publicationHash: Buffer,
+async function createProfileAccount(
+  profileSeeds: Buffer[],
+  profileHash: Buffer,
   user: PublicKey,
   program: anchor.Program
 ) {
-  const [publicationKey, publicationBump] = await anchor.web3.PublicKey.findProgramAddress(
-    publicationSeeds,
+  const [profileKey, profileBump] = await anchor.web3.PublicKey.findProgramAddress(
+    profileSeeds,
     program.programId
   );
-  await program.rpc.initialize(publicationBump, publicationHash, {
+  await program.rpc.initialize(profileBump, profileHash, {
     accounts: {
-      publication: publicationKey,
+      profile: profileKey,
       user: user,
       systemProgram: SystemProgram.programId,
     }
   });
-  return publicationKey;
+  return profileKey;
 }
 
 export async function publishPost(
@@ -65,41 +65,42 @@ export async function publishPost(
 ) {
   toast.loading('Loading configurations');
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
-  const existingHash = await getPublicationHash(wallet.publicKey.toBase58());
-  const publicationHash = existingHash ? Buffer.from(existingHash, 'base64') : randombytes(32);
+  const existingHash = await getProfileHash(wallet.publicKey.toBase58());
+  const profileHash = existingHash ? Buffer.from(existingHash, 'base64') : randombytes(32);
 
-  const publicationSeeds = [Buffer.from("publication"), publicationHash];
-  const existingPublication = await getPublicationKeyAndBump(
-    publicationSeeds,
+  const profileSeeds = [Buffer.from("profile"), profileHash];
+  const profileKeyAndBump = await getProfileKeyAndBump(
+    profileSeeds,
     program
   );
-  const publicationKey = existingPublication[0];
+  const profileKey = profileKeyAndBump[0];
   toast.dismiss();
+
   try {
-    const publicationAccount = await program.account.publication.fetch(publicationKey);
-    console.log(publicationAccount);
+    const profileAccount = await program.account.profile.fetch(profileKey);
+    console.log(profileAccount);
   } catch (e) {
-    toast('Publication account does not exist, creating one');
-    const newPublicationAccount = await createPublicationAccount(
-      publicationSeeds,
-      publicationHash,
+    toast('Profile does not exist, creating one');
+    const newProfileAccount = await createProfileAccount(
+      profileSeeds,
+      profileHash,
       wallet.publicKey,
       program
     );
-    if (!newPublicationAccount) {
-      throw new Error(`Publication account creation failed`);
+    if (!newProfileAccount) {
+      throw new Error(`Profile creation failed`);
     };
     if (!existingHash) {
-      const publication_hash_req = await addPublicationHash({
+      const profile_hash_req = await addProfileHash({
         public_key: wallet.publicKey.toBase58(),
         signature: signature,
-        publication_hash: publicationHash.toString('base64')
+        profile_hash: profileHash.toString('base64')
       });
-      if (!publication_hash_req.user) {
-        throw new Error(`Publication hash save failed`);
+      if (!profile_hash_req.user) {
+        throw new Error(`Profile hash save failed`);
       }
     }
-    console.log(newPublicationAccount);
+    console.log(newProfileAccount);
   }
 
   const postHash = randombytes(32);
@@ -128,7 +129,7 @@ export async function publishPost(
     txid = await program.rpc.updatePost(metadataURI, {
       accounts: {
         post: new PublicKey(published_post),
-        publication: publicationKey,
+        profile: profileKey,
         authority: wallet.publicKey,
         systemProgram: SystemProgram.programId,
       }
@@ -138,7 +139,7 @@ export async function publishPost(
     txid = await program.rpc.createPost(postBump, metadataURI, postHash, {
       accounts: {
         post: postAccount,
-        publication: publicationKey,
+        profile: profileKey,
         authority: wallet.publicKey,
         systemProgram: SystemProgram.programId
       },
@@ -155,7 +156,9 @@ export async function publishPost(
       error: 'Transaction Failed'
     });
     const verified = await confirmation;
-    if (verified.value.err !== null) return;
+    if (verified.value.err !== null) {
+      throw new Error('Transaction confirmation failed');
+    };
     toast.loading('Saving');
     const saved = await publishToServer({
       id: id?.toString(),
@@ -193,22 +196,22 @@ export async function initializeSubscriberAccount(
   return subscriberKey;
 };
 
-export async function subscribeToPublication(
+export async function subscribeToProfile (
   wallet: anchor.Wallet,
-  publicationOwner: PublicKey,
+  profileOwner: PublicKey,
   setSubscribed: (subscribed: boolean) => void,
   signature: Uint8Array
 ) {
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
   const subscriberSeeds = [Buffer.from("subscriber"), wallet.publicKey.toBuffer()];
-  const existingHash = await getPublicationHash(publicationOwner.toBase58());
+  const existingHash = await getProfileHash(profileOwner.toBase58());
 
   if (!existingHash) {
-    toast.error('Publication hash not found');
+    toast.error('Profile hash not found');
     return;
   }
 
-  const publicationSeeds = [Buffer.from("publication"), existingHash];
+  const profileSeeds = [Buffer.from("profile"), existingHash];
   const [subscriberKey] = await anchor.web3.PublicKey.findProgramAddress(
     subscriberSeeds,
     program.programId
@@ -227,8 +230,8 @@ export async function subscribeToPublication(
     subscriberAccount = newSubscriberAccount;
   }
 
-  const [publicationKey] = await anchor.web3.PublicKey.findProgramAddress(
-    publicationSeeds,
+  const [profileKey] = await anchor.web3.PublicKey.findProgramAddress(
+    profileSeeds,
     program.programId
   );
   const subcriptionSeeds = [Buffer.from("subscription"), subscriberKey.toBuffer(), new anchor.BN(subscriberAccount.subscriptionNonce).toArrayLike(Buffer)];
@@ -241,7 +244,7 @@ export async function subscribeToPublication(
       subscriber: subscriberKey,
       subscription: subscriptionKey,
       authority: wallet.publicKey,
-      publication: publicationKey,
+      profile: profileKey,
       systemProgram: SystemProgram.programId
     }
   });
@@ -266,7 +269,7 @@ export async function subscribeToPublication(
   toast.loading('Saving')
   const saved = await updateSubscriptionServer({
     account: subscriptionKey.toBase58(),
-    publication_owner: publicationOwner.toBase58(),
+    profile_owner: profileOwner.toBase58(),
     public_key: wallet.publicKey.toString(),
     signature: signature,
   });
@@ -279,7 +282,7 @@ export async function subscribeToPublication(
 
 export async function cancelSubscription(
   wallet: anchor.Wallet,
-  publicationOwner: PublicKey,
+  profileOwner: PublicKey,
   subscriptionKey: PublicKey,
   setSubscribed: (subscribed: boolean) => void,
   signature: Uint8Array
@@ -319,7 +322,7 @@ export async function cancelSubscription(
   toast.loading('Saving');
   const saved = await updateSubscriptionServer({
     account: subscriptionKey.toBase58(),
-    publication_owner: publicationOwner.toBase58(),
+    profile_owner: profileOwner.toBase58(),
     public_key: wallet.publicKey.toString(),
     signature: signature,
   }, true);

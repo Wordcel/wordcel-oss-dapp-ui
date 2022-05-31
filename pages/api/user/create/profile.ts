@@ -13,13 +13,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const allowed = verifyMethod(req, res, 'POST');
   if (!allowed) return;
   try {
-    const requiredKeys = ['public_key', 'publication_hash', 'signature'];
+    const requiredKeys = ['public_key', 'profile_hash', 'signature'];
     const allKeysPresent = verifyKeys(req, res, requiredKeys);
     if (!allKeysPresent) return;
 
     const {
       public_key,
-      publication_hash,
+      profile_hash,
       signature
     } = req.body;
 
@@ -42,19 +42,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const updated = await prisma.user.update({
       where: { id: user.id },
       data: {
-        publication_hash
+        profile_hash
       }
     });
 
     res.status(200).json({
-      success: 'Publication hash added',
+      success: 'Profile hash added',
       user: updated
     });
 
   } catch (e) {
     console.error('Request error', e);
     res.status(500).json({
-      error: 'Error adding publication hash',
+      error: 'Error adding profile hash',
     });
   }
 };

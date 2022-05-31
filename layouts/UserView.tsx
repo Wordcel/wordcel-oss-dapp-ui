@@ -12,7 +12,7 @@ import AnchorifyText from 'react-anchorify-text';
 
 import {
   cancelSubscription,
-  subscribeToPublication
+  subscribeToProfile
 } from '@/components/contractInteraction';
 import { getIfSubscribed } from '@/components/networkRequests';
 
@@ -86,7 +86,7 @@ export const UserView = (props: GetUserServerSide) => {
           refreshData();
           return;
         };
-        const req = await subscribeToPublication(
+        const req = await subscribeToProfile(
           wallet as any,
           new PublicKey(props.user.public_key),
           setSubscribed,

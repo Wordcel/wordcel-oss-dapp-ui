@@ -6,15 +6,15 @@ export interface PublishArticleRequest {
   proof_of_post: string;
 }
 
-export interface AddPublicationHash {
+export interface addProfileHash {
   public_key: string;
   signature: Uint8Array;
-  publication_hash: string;
+  profile_hash: string;
 }
 
 export interface Subscribe {
   account: string;
-  publication_owner: string;
+  profile_owner: string;
   public_key: string;
   signature: Uint8Array;
 }

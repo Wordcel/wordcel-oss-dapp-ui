@@ -1,15 +1,15 @@
 import {
-  AddPublicationHash,
+  addProfileHash,
   PublishArticleRequest,
   Subscribe
 } from '@/types/api';
 import * as anchor from '@project-serum/anchor';
 
-export async function addPublicationHash (
-  data: AddPublicationHash
+export async function addProfileHash (
+  data: addProfileHash
 ) {
   const request = await fetch(
-    '/api/user/create/publication',
+    '/api/user/create/profile',
   {
     method: 'POST',
     headers: {
@@ -21,7 +21,7 @@ export async function addPublicationHash (
   return response;
 };
 
-export async function publishToServer(
+export async function publishToServer (
   data: PublishArticleRequest
 ) {
   const request = await fetch(
@@ -37,7 +37,7 @@ export async function publishToServer(
   return response;
 };
 
-export async function updateSubscriptionServer(
+export async function updateSubscriptionServer (
   data: Subscribe,
   cancel = false
 ) {
@@ -54,21 +54,21 @@ export async function updateSubscriptionServer(
   return response;
 };
 
-export async function getPublicationHash(
+export async function getProfileHash (
   public_key: string
 ) {
   const request = await fetch(`/api/user/get/${public_key}`);
   const response = await request.json();
   console.log(response);
-  return response.user.publication_hash;
+  return response.user.profile_hash;
 };
 
 export async function getIfSubscribed(
   wallet: anchor.Wallet,
-  publicationOwner: string,
+  profileOwner: string,
   returnResponse = false
 ) {
-  const request = await fetch(`/api/subscription/get/${wallet.publicKey.toBase58()}/${publicationOwner}`);
+  const request = await fetch(`/api/subscription/get/${wallet.publicKey.toBase58()}/${profileOwner}`);
   if (!returnResponse) return request.ok;
   const response = await request.json();
   return response;

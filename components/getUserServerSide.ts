@@ -34,7 +34,7 @@ export const getUserServerSide = async (
     }
   };
   const subscriber_count = await prisma.subscription.count({
-    where: { publication_owner: user.public_key }
+    where: { profile_owner: user.public_key }
   });
   const userData = {
     ...user,

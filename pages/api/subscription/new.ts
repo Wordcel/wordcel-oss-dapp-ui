@@ -13,13 +13,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const allowed = verifyMethod(req, res, 'POST');
   if (!allowed) return;
   try {
-    const requiredKeys = ['public_key', 'publication_owner', 'signature', 'account'];
+    const requiredKeys = ['public_key', 'profile_owner', 'signature', 'account'];
     const allKeysPresent = verifyKeys(req, res, requiredKeys);
     if (!allKeysPresent) return;
 
     const {
       public_key,
-      publication_owner,
+      profile_owner,
       signature,
       account
     } = req.body;
@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const exists = await prisma.subscription.findFirst({
       where: {
-        publication_owner,
+        profile_owner,
         subscriber: public_key
       }
     });
@@ -43,7 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const newSubscription = await prisma.subscription.create({
       data: {
-        publication_owner: publication_owner,
+        profile_owner: profile_owner,
         account: account,
         subscriber: public_key
       }
