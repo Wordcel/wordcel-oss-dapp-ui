@@ -211,7 +211,7 @@ export async function subscribeToProfile (
     return;
   }
 
-  const profileSeeds = [Buffer.from("profile"), existingHash];
+  const profileSeeds = [Buffer.from("profile"), Buffer.from(existingHash, 'base64')];
   const [subscriberKey] = await anchor.web3.PublicKey.findProgramAddress(
     subscriberSeeds,
     program.programId
@@ -239,7 +239,7 @@ export async function subscribeToProfile (
     subcriptionSeeds,
     program.programId
   );
-  const tx = await program.transaction.initializeSubscription({
+  const txid = await program.rpc.initializeSubscription({
     accounts: {
       subscriber: subscriberKey,
       subscription: subscriptionKey,
@@ -248,11 +248,6 @@ export async function subscribeToProfile (
       systemProgram: SystemProgram.programId
     }
   });
-  const { blockhash } = await connection.getRecentBlockhash();
-  tx.recentBlockhash = blockhash;
-  tx.feePayer = wallet.publicKey;
-  const signedTx = await wallet.signTransaction(tx);
-  const txid = await connection.sendRawTransaction(signedTx.serialize());
   if (!txid) {
     throw new Error('Transaction creation failed');
   };
