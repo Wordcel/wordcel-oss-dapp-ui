@@ -1,12 +1,12 @@
 import {
-  addProfileHash,
+  AddProfileHash,
   PublishArticleRequest,
   Subscribe
 } from '@/types/api';
 import * as anchor from '@project-serum/anchor';
 
 export async function addProfileHash (
-  data: addProfileHash
+  data: AddProfileHash
 ) {
   const request = await fetch(
     '/api/user/create/profile',

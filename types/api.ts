@@ -6,7 +6,7 @@ export interface PublishArticleRequest {
   proof_of_post: string;
 }
 
-export interface addProfileHash {
+export interface AddProfileHash {
   public_key: string;
   signature: Uint8Array;
   profile_hash: string;
