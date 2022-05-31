@@ -11,7 +11,7 @@ import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { saveToast } from '@/components/saveToast';
 import { getUserSignature } from '@/components/signMessage';
-import { deleteDraft, updateDraft } from '@/components/draft';
+import { deleteDraft, updateDraft } from '@/components/networkRequests';
 import { Footer } from './Footer';
 
 export const EditDraft = (props: GetDraftServerSide) => {

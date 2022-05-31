@@ -1,6 +1,6 @@
 import { UserView } from '@/layouts/UserView';
 import { GetServerSideProps } from 'next';
-import { getUserServerSide } from '@/components/getUserServerSide';
+import { getUserServerSide } from '@/components/ssr/getUserServerSide';
 import { GetUserServerSide } from '@/types/props';
 
 const UserViewPage = (props: GetUserServerSide) => {

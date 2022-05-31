@@ -1,4 +1,4 @@
-import { getArticlesServerSide } from "@/components/getArticlesServerSide";
+import { getArticlesServerSide } from "@/components/ssr/getArticlesServerSide";
 import { ImportArticles } from "archived/ImportArticles";
 import { GetArticlesServerSide } from "@/types/props";
 import { GetServerSideProps } from "next";

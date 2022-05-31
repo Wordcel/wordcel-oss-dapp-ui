@@ -1,6 +1,6 @@
 import { EditArticle } from '@/layouts/EditArticle';
 import { GetArticleServerSide } from '@/types/props';
-import { getArticleServerSide } from '@/components/getArticleServerSide';
+import { getArticleServerSide } from '@/components/ssr/getArticleServerSide';
 import { GetServerSideProps } from 'next';
 
 const EditArticlePage = (props: GetArticleServerSide) => {

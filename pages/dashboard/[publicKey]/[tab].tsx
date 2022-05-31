@@ -1,8 +1,8 @@
 import { DashboardPage } from '@/layouts/Dashboard';
 import { GetServerSideProps } from 'next';
 import { DashboardSSR } from '@/types/props';
-import { getDraftsServerSide } from '@/components/getDraftsServerSide';
-import { getArticlesServerSide } from '@/components/getArticlesServerSide';
+import { getDraftsServerSide } from '@/components/ssr/getDraftsServerSide';
+import { getArticlesServerSide } from '@/components/ssr/getArticlesServerSide';
 
 const Dashboard = (props: DashboardSSR) => {
   return <DashboardPage {...props} />;
