@@ -8,7 +8,7 @@ import { Footer } from './Footer';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { DefaultBox } from '@/elements/Box';
-import { getTrimmedPublicKey } from '@/components/getTrimmedPublicKey';
+import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 import { DashboardSSR } from '@/types/props';
 import { VerticalArticlePreview } from './ArticlePreview';
 

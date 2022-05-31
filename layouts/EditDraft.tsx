@@ -10,7 +10,7 @@ import { useEffect, useCallback, useRef, useState } from 'react';
 import { DefaultHead } from './DefaultHead';
 import { StaticNavbar } from './Navbar';
 import { saveToast } from '@/components/saveToast';
-import { getUserSignature } from '@/components/signMessage';
+import { getUserSignature } from '@/lib/signMessage';
 import { deleteDraft, updateDraft } from '@/components/networkRequests';
 import { Footer } from './Footer';
 

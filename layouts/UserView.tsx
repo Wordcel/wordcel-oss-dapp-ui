@@ -22,7 +22,7 @@ import TwitterIcon from '@/images/dynamic/Twitter';
 import DiscordIcon from '@/images/dynamic/Discord';
 
 import { useWallet, useAnchorWallet } from '@solana/wallet-adapter-react';
-import { getUserSignature } from '@/components/signMessage';
+import { getUserSignature } from '@/lib/signMessage';
 import { PublicKey } from '@solana/web3.js';
 import { ConnectWallet } from './Wallet';
 import { useEffect, useState } from 'react';

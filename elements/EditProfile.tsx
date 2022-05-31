@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 import ClickAwayListener from 'react-click-away-listener';
 
 import { useEffect, useState } from 'react';
-import { toasterPromise } from '@/components/toasterNetworkRequest';
+import { toasterPromise } from '@/lib/toasterNetworkRequest';
 
 // Style Imports
 import styles from '@/styles/EditProfile.module.scss';
@@ -12,7 +12,7 @@ import styles from '@/styles/EditProfile.module.scss';
 // Type Imports
 import { UpdatableUserDetails, UpdateUser } from '@/types/api';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { getUserSignature } from '@/components/signMessage';
+import { getUserSignature } from '@/lib/signMessage';
 import { useRouter } from 'next/router';
 import { SecondaryInput } from './Inputs';
 
