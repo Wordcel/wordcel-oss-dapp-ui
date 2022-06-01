@@ -201,10 +201,10 @@ export async function createConnection (
   signature: Uint8Array
 ) {
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
-  const connectionSeeds = [Buffer.from("connection"), wallet.publicKey.toBuffer(), profileOwner.toBuffer()];
   const profileKey = await getProfileKey(profileOwner, wallet);
   if (!profileKey) return;
 
+  const connectionSeeds = [Buffer.from("connection"), wallet.publicKey.toBuffer(), profileKey.toBuffer()];
   const [connectionKey] = await anchor.web3.PublicKey.findProgramAddress(
     connectionSeeds,
     program.programId
@@ -213,8 +213,8 @@ export async function createConnection (
   const txid = await program.rpc.initializeConnection({
     accounts: {
       connection: connectionKey,
-      authority: wallet.publicKey,
       profile: profileKey,
+      authority: wallet.publicKey,
       systemProgram: SystemProgram.programId
     }
   });
@@ -252,10 +252,10 @@ export async function closeConnection (
   signature: Uint8Array
 ) {
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
-  const connectionSeeds = [Buffer.from("connection"), wallet.publicKey.toBuffer(), profileOwner.toBuffer()];
   const profileKey = await getProfileKey(profileOwner, wallet);
   if (!profileKey) return;
 
+  const connectionSeeds = [Buffer.from("connection"), wallet.publicKey.toBuffer(), profileKey.toBuffer()];
   const [connectionKey] = await anchor.web3.PublicKey.findProgramAddress(
     connectionSeeds,
     program.programId
