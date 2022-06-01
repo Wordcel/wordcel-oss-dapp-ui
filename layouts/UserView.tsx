@@ -92,9 +92,7 @@ export const UserView = (props: GetUserServerSide) => {
           signature
         );
         refreshData();
-      } else {
-        setClicked(0);
-      };
+      }
     })();
   }, [clicked, publicKey, signMessage]);
 
