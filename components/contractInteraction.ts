@@ -10,7 +10,7 @@ import { ENDPOINT } from './config/constants';
 import {
   addProfileHash,
   publishToServer,
-  updateSubscriptionServer,
+  updateConnectionServer,
   getProfileHash
 } from '@/components/networkRequests';
 
@@ -176,73 +176,43 @@ export async function publishPost(
   }
 }
 
-export async function initializeSubscriberAccount(
-  wallet: anchor.Wallet,
-) {
-  const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
-  const subscriberSeeds = [Buffer.from("subscriber"), wallet.publicKey.toBuffer()];
-  const [subscriberKey] = await anchor.web3.PublicKey.findProgramAddress(
-    subscriberSeeds,
-    program.programId
-  );
-  const txid = await program.rpc.initializeSubscriber({
-    accounts: {
-      subscriber: subscriberKey,
-      user: wallet.publicKey,
-      systemProgram: SystemProgram.programId
-    }
-  });
-  console.log(`Subscriber Account Creation: ${txid}`);
-  return subscriberKey;
-};
-
-export async function subscribeToProfile (
-  wallet: anchor.Wallet,
+export async function getProfileKey (
   profileOwner: PublicKey,
-  setSubscribed: (subscribed: boolean) => void,
-  signature: Uint8Array
+  wallet: anchor.Wallet
 ) {
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
-  const subscriberSeeds = [Buffer.from("subscriber"), wallet.publicKey.toBuffer()];
   const existingHash = await getProfileHash(profileOwner.toBase58());
-
   if (!existingHash) {
     toast.error('Profile hash not found');
     return;
   }
-
   const profileSeeds = [Buffer.from("profile"), Buffer.from(existingHash, 'base64')];
-  const [subscriberKey] = await anchor.web3.PublicKey.findProgramAddress(
-    subscriberSeeds,
-    program.programId
-  );
-  let subscriberAccount;
-
-  try {
-    subscriberAccount = await program.account.subscriber.fetch(subscriberKey);
-  } catch (e) {
-    console.log('Subscriber account does not exist');
-    const newSubscriberAccount = await initializeSubscriberAccount(wallet);
-    if (!newSubscriberAccount) {
-      toast.error('Subscriber account creation failed');
-      throw new Error(`Subscriber account creation failed`);
-    }
-    subscriberAccount = newSubscriberAccount;
-  }
-
   const [profileKey] = await anchor.web3.PublicKey.findProgramAddress(
     profileSeeds,
     program.programId
   );
-  const subcriptionSeeds = [Buffer.from("subscription"), subscriberKey.toBuffer(), new anchor.BN(subscriberAccount.subscriptionNonce).toArrayLike(Buffer)];
-  const [subscriptionKey] = await anchor.web3.PublicKey.findProgramAddress(
-    subcriptionSeeds,
+  return profileKey;
+}
+
+export async function createConnection (
+  wallet: anchor.Wallet,
+  profileOwner: PublicKey,
+  setConnected: (connected: boolean) => void,
+  signature: Uint8Array
+) {
+  const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
+  const connectionSeeds = [Buffer.from("connection"), wallet.publicKey.toBuffer(), profileOwner.toBuffer()];
+  const profileKey = await getProfileKey(profileOwner, wallet);
+  if (!profileKey) return;
+
+  const [connectionKey] = await anchor.web3.PublicKey.findProgramAddress(
+    connectionSeeds,
     program.programId
   );
-  const txid = await program.rpc.initializeSubscription({
+
+  const txid = await program.rpc.initializeConnection({
     accounts: {
-      subscriber: subscriberKey,
-      subscription: subscriptionKey,
+      connection: connectionKey,
       authority: wallet.publicKey,
       profile: profileKey,
       systemProgram: SystemProgram.programId
@@ -262,37 +232,39 @@ export async function subscribeToProfile (
     throw new Error('Transaction failed')
   };
   toast.loading('Saving')
-  const saved = await updateSubscriptionServer({
-    account: subscriptionKey.toBase58(),
+  const saved = await updateConnectionServer({
+    account: connectionKey.toBase58(),
     profile_owner: profileOwner.toBase58(),
     public_key: wallet.publicKey.toString(),
     signature: signature,
   });
   toast.dismiss();
   if (saved.success) {
-    setSubscribed(true);
-    toast.success('Subscribed');
+    setConnected(true);
+    toast.success('Connection created');
   }
 }
 
-export async function cancelSubscription(
+export async function closeConnection (
   wallet: anchor.Wallet,
   profileOwner: PublicKey,
-  subscriptionKey: PublicKey,
-  setSubscribed: (subscribed: boolean) => void,
+  setConnected: (connected: boolean) => void,
   signature: Uint8Array
 ) {
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
-  const subscriberSeeds = [Buffer.from("subscriber"), wallet.publicKey.toBuffer()];
-  const [subscriberKey] = await anchor.web3.PublicKey.findProgramAddress(
-    subscriberSeeds,
+  const connectionSeeds = [Buffer.from("connection"), wallet.publicKey.toBuffer(), profileOwner.toBuffer()];
+  const profileKey = await getProfileKey(profileOwner, wallet);
+  if (!profileKey) return;
+
+  const [connectionKey] = await anchor.web3.PublicKey.findProgramAddress(
+    connectionSeeds,
     program.programId
   );
-  const txid = await program.rpc.cancelSubscription({
+  const txid = await program.rpc.closeConnection({
     accounts: {
-      subscriber: subscriberKey,
-      subscription: subscriptionKey,
+      connection: connectionKey,
       authority: wallet.publicKey,
+      profile: profileKey,
       systemProgram: SystemProgram.programId
     }
   });
@@ -310,17 +282,17 @@ export async function cancelSubscription(
     throw new Error('Transaction failed')
   };
   toast.loading('Saving');
-  const saved = await updateSubscriptionServer({
-    account: subscriptionKey.toBase58(),
+  const saved = await updateConnectionServer({
+    account: connectionKey.toBase58(),
     profile_owner: profileOwner.toBase58(),
     public_key: wallet.publicKey.toString(),
     signature: signature,
   }, true);
   toast.dismiss();
   if (saved.success) {
-    setSubscribed(false);
-    toast.success('Unsubscribed');
+    setConnected(false);
+    toast.success('Connection cancelled');
   } else {
-    toast.error('Subscription cancellation failed');
+    toast.error('Connection cancellation failed');
   }
 }

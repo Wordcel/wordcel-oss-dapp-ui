@@ -12,7 +12,7 @@ export interface AddProfileHash {
   profile_hash: string;
 }
 
-export interface Subscribe {
+export interface Connect {
   account: string;
   profile_owner: string;
   public_key: string;

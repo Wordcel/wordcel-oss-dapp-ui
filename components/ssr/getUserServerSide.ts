@@ -33,12 +33,12 @@ export const getUserServerSide = async (
       props: {}
     }
   };
-  const subscriber_count = await prisma.subscription.count({
+  const connection_count = await prisma.connection.count({
     where: { profile_owner: user.public_key }
   });
   const userData = {
     ...user,
-    subscriber_count
+    connection_count
   };
   if (articles) {
     const articles = await prisma.article.findMany({

@@ -9,21 +9,21 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { public_key, profile } = req.query;
-  const subscription = await prisma.subscription.findFirst({
+  const connection = await prisma.connection.findFirst({
     where: {
       profile_owner: profile as string,
-      subscriber: public_key as string,
+      connector: public_key as string,
     }
   });
 
-  if (!subscription) {
+  if (!connection) {
     res.status(404).json({
-      error: 'Subscription does not exist'
+      error: 'Connection does not exist'
     });
     return;
   }
 
   res.status(200).json({
-    subscription: subscription
+    connection: connection
   });
 };

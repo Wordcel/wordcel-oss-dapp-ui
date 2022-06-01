@@ -27,37 +27,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const authenticated = authenticate(public_key, signature, res);
     if (!authenticated) return;
 
-    const exists = await prisma.subscription.findFirst({
+    const exists = await prisma.connection.findFirst({
       where: {
         profile_owner,
-        subscriber: public_key
+        connector: public_key
       }
     });
 
     if (exists) {
       res.status(400).json({
-        error: 'Subscription already exists'
+        error: 'Connection already exists'
       });
       return;
     };
 
-    const newSubscription = await prisma.subscription.create({
+    const newConnection = await prisma.connection.create({
       data: {
         profile_owner: profile_owner,
         account: account,
-        subscriber: public_key
+        connector: public_key
       }
     });
 
     res.status(200).json({
-      success: 'Subscription created',
-      subscription: newSubscription
+      success: 'Connection created',
+      connection: newConnection
     });
 
   } catch (e) {
     console.error('Request error', e);
     res.status(500).json({
-      error: 'Error creating subscription',
+      error: 'Error creating connection',
     });
   }
 }

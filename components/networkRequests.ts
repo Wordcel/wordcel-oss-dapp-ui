@@ -1,7 +1,7 @@
 import {
   AddProfileHash,
   PublishArticleRequest,
-  Subscribe,
+  Connect,
   Draft
 } from '@/types/api';
 import * as anchor from '@project-serum/anchor';
@@ -38,12 +38,12 @@ export async function publishToServer (
   return response;
 };
 
-export async function updateSubscriptionServer (
-  data: Subscribe,
+export async function updateConnectionServer (
+  data: Connect,
   cancel = false
 ) {
   const request = await fetch(
-    cancel ? '/api/subscription/cancel' : '/api/subscription/new',
+    cancel ? '/api/connection/cancel' : '/api/connection/new',
   {
     method: 'POST',
     headers: {
@@ -64,12 +64,12 @@ export async function getProfileHash (
   return response.user.profile_hash;
 };
 
-export async function getIfSubscribed(
+export async function getIfConnected(
   wallet: anchor.Wallet,
   profileOwner: string,
   returnResponse = false
 ) {
-  const request = await fetch(`/api/subscription/get/${wallet.publicKey.toBase58()}/${profileOwner}`);
+  const request = await fetch(`/api/connection/get/${wallet.publicKey.toBase58()}/${profileOwner}`);
   if (!returnResponse) return request.ok;
   const response = await request.json();
   return response;

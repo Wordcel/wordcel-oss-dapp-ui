@@ -11,10 +11,10 @@ import { ArticlePreview } from './ArticlePreview';
 import AnchorifyText from 'react-anchorify-text';
 
 import {
-  cancelSubscription,
-  subscribeToProfile
+  closeConnection,
+  createConnection
 } from '@/components/contractInteraction';
-import { getIfSubscribed } from '@/components/networkRequests';
+import { getIfConnected } from '@/components/networkRequests';
 
 // Images
 import defaultBanner from '@/images/gradients/user-default-banner.png';
@@ -37,9 +37,9 @@ export const UserView = (props: GetUserServerSide) => {
   const { publicKey, signMessage } = useWallet();
 
   const [hideFollow, setHideFollow] = useState(false);
-  const [subscribed, setSubscribed] = useState(false);
+  const [connected, setConnected] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [subscriptionKey, setSubscriptionKey] = useState('');
+  const [connectionKey, setConnectionKey] = useState('');
   const [clicked, setClicked] = useState(0);
 
   const Name = props.user?.name;
@@ -47,7 +47,7 @@ export const UserView = (props: GetUserServerSide) => {
   const SEOTitle = props.user?.blog_name ? `${props.user?.blog_name} by ${props.user?.name}` : '';
   const Banner = props.user?.banner_url || defaultBanner.src;
   const Avatar = props.user?.image_url || `https://avatars.wagmi.bio/${props.user?.name}`;
-  const FollowersCount = props.user?.subscriber_count;
+  const FollowersCount = props.user?.connection_count;
   const SEOImage = getDefaultUserImage(props.user);
 
   const refreshData = () => {
@@ -75,24 +75,25 @@ export const UserView = (props: GetUserServerSide) => {
       if (publicKey && clicked !== 0 && props.user?.public_key && signMessage) {
         const signature = await getUserSignature(signMessage);
         if (!signature) return;
-        if (subscribed && subscriptionKey) {
-          const req = await cancelSubscription(
+        if (connected && connectionKey) {
+          const req = await closeConnection(
             wallet as any,
             new PublicKey(props.user.public_key),
-            new PublicKey(subscriptionKey),
-            setSubscribed,
+            setConnected,
             signature
           );
           refreshData();
           return;
         };
-        const req = await subscribeToProfile(
+        const req = await createConnection(
           wallet as any,
           new PublicKey(props.user.public_key),
-          setSubscribed,
+          setConnected,
           signature
         );
         refreshData();
+      } else {
+        setClicked(0);
       };
     })();
   }, [clicked, publicKey, signMessage]);
@@ -101,16 +102,16 @@ export const UserView = (props: GetUserServerSide) => {
     (async function () {
       if (wallet && props.user?.public_key) {
         try {
-          const subscription = await getIfSubscribed(wallet as any, props.user.public_key, true);
-          if (subscription.error) return;
-          setSubscriptionKey(subscription.subscription.account);
-          setSubscribed(true);
+          const res = await getIfConnected(wallet as any, props.user.public_key, true);
+          if (res.error) return;
+          setConnectionKey(res.connection.account);
+          setConnected(true);
         } catch (e) {
           console.log(e);
         }
       }
     })();
-  }, [wallet, publicKey, subscribed])
+  }, [wallet, publicKey, connected])
 
   return (
     <div className="container-flex">
@@ -152,12 +153,12 @@ export const UserView = (props: GetUserServerSide) => {
                             onClick={() => setClicked(clicked + 1)}
                             className="main-btn sm subscribe-btn"
                             style={{
-                              backgroundColor: subscribed ? 'transparent' : '',
-                              border: subscribed ? '0.2rem solid black' : '',
-                              color: subscribed ? 'black' : ''
+                              backgroundColor: connected ? 'transparent' : '',
+                              border: connected ? '0.2rem solid black' : '',
+                              color: connected ? 'black' : ''
                             }}
                           >
-                            {subscribed ? 'UNFOLLOW' : 'FOLLOW'}
+                            {connected ? 'UNFOLLOW' : 'FOLLOW'}
                           </button>
                         </ConnectWallet>
                       )}

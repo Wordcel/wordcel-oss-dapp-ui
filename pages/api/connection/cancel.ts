@@ -27,35 +27,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const authenticated = authenticate(public_key, signature, res);
     if (!authenticated) return;
 
-    const subscription = await prisma.subscription.findFirst({
+    const connection = await prisma.connection.findFirst({
       where: {
-        subscriber: public_key,
+        connector: public_key,
         profile_owner: profile_owner,
         account: account,
       }
     })
 
-    if (!subscription) {
+    if (!connection) {
       res.status(400).json({
-        error: 'Subscription does not exist'
+        error: 'Connection does not exist'
       });
       return;
     }
 
-    const deleted = await prisma.subscription.delete({
+    const deleted = await prisma.connection.delete({
       where: {
-        id: subscription.id
+        id: connection.id
       }
     })
 
     res.status(200).json({
-      success: 'Subscription cancelled'
+      success: 'Connection cancelled'
     });
 
   } catch (e) {
     console.error('Request error', e);
     res.status(500).json({
-      error: 'Error cancelling subscription',
+      error: 'Error cancelling connection',
     });
   }
 }

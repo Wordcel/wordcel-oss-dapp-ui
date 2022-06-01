@@ -42,10 +42,10 @@ model Article {
   owner User @relation(fields: [user_id], references: [id])
 }
 
-model Subscription {
+model Connection {
   id Int @id @default(autoincrement())
   account String
-  subscriber String
+  connector String
   profile_owner String
 }
 
