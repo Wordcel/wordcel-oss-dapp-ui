@@ -1,321 +1,296 @@
 {
-  "version": "0.1.1",
-  "name": "wordcel",
-  "instructions": [{
-      "name": "initialize",
-      "accounts": [{
-          "name": "profile",
-          "isMut": true,
-          "isSigner": false
-        },
+    "version": "0.1.1",
+    "name": "wordcel",
+    "instructions": [
         {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [{
-        "name": "randomHash",
-        "type": {
-          "array": [
-            "u8",
-            32
-          ]
-        }
-      }]
-    },
-    {
-      "name": "createPost",
-      "accounts": [{
-          "name": "profile",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "post",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "authority",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [{
-          "name": "metadataUri",
-          "type": "string"
-        },
-        {
-          "name": "randomHash",
-          "type": {
-            "array": [
-              "u8",
-              32
+            "name": "initialize",
+            "accounts": [
+                {
+                    "name": "profile",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "user",
+                    "isMut": true,
+                    "isSigner": true
+                },
+                {
+                    "name": "systemProgram",
+                    "isMut": false,
+                    "isSigner": false
+                }
+            ],
+            "args": [
+                {
+                    "name": "randomHash",
+                    "type": {
+                        "array": [
+                            "u8",
+                            32
+                        ]
+                    }
+                }
             ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "updatePost",
-      "accounts": [{
-          "name": "profile",
-          "isMut": true,
-          "isSigner": false
         },
         {
-          "name": "post",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "authority",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [{
-        "name": "metadataUri",
-        "type": "string"
-      }]
-    },
-    {
-      "name": "comment",
-      "accounts": [{
-          "name": "profile",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "post",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "replyTo",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "authority",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [{
-          "name": "metadataUri",
-          "type": "string"
-        },
-        {
-          "name": "randomHash",
-          "type": {
-            "array": [
-              "u8",
-              32
+            "name": "createPost",
+            "accounts": [
+                {
+                    "name": "profile",
+                    "isMut": false,
+                    "isSigner": false
+                },
+                {
+                    "name": "post",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "authority",
+                    "isMut": true,
+                    "isSigner": true
+                },
+                {
+                    "name": "systemProgram",
+                    "isMut": false,
+                    "isSigner": false
+                }
+            ],
+            "args": [
+                {
+                    "name": "metadataUri",
+                    "type": "string"
+                },
+                {
+                    "name": "randomHash",
+                    "type": {
+                        "array": [
+                            "u8",
+                            32
+                        ]
+                    }
+                }
             ]
-          }
+        },
+        {
+            "name": "updatePost",
+            "accounts": [
+                {
+                    "name": "profile",
+                    "isMut": false,
+                    "isSigner": false
+                },
+                {
+                    "name": "post",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "authority",
+                    "isMut": true,
+                    "isSigner": true
+                },
+                {
+                    "name": "systemProgram",
+                    "isMut": false,
+                    "isSigner": false
+                }
+            ],
+            "args": [
+                {
+                    "name": "metadataUri",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "comment",
+            "accounts": [
+                {
+                    "name": "profile",
+                    "isMut": false,
+                    "isSigner": false
+                },
+                {
+                    "name": "post",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "replyTo",
+                    "isMut": false,
+                    "isSigner": false
+                },
+                {
+                    "name": "authority",
+                    "isMut": true,
+                    "isSigner": true
+                },
+                {
+                    "name": "systemProgram",
+                    "isMut": false,
+                    "isSigner": false
+                }
+            ],
+            "args": [
+                {
+                    "name": "metadataUri",
+                    "type": "string"
+                },
+                {
+                    "name": "randomHash",
+                    "type": {
+                        "array": [
+                            "u8",
+                            32
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "initializeConnection",
+            "accounts": [
+                {
+                    "name": "connection",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "profile",
+                    "isMut": false,
+                    "isSigner": false
+                },
+                {
+                    "name": "authority",
+                    "isMut": true,
+                    "isSigner": true
+                },
+                {
+                    "name": "systemProgram",
+                    "isMut": false,
+                    "isSigner": false
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "closeConnection",
+            "accounts": [
+                {
+                    "name": "connection",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "profile",
+                    "isMut": false,
+                    "isSigner": false
+                },
+                {
+                    "name": "authority",
+                    "isMut": true,
+                    "isSigner": true
+                },
+                {
+                    "name": "systemProgram",
+                    "isMut": false,
+                    "isSigner": false
+                }
+            ],
+            "args": []
         }
-      ]
-    },
-    {
-      "name": "initializeSubscriber",
-      "accounts": [{
-          "name": "subscriber",
-          "isMut": true,
-          "isSigner": false
+    ],
+    "accounts": [
+        {
+            "name": "Profile",
+            "type": {
+                "kind": "struct",
+                "fields": [
+                    {
+                        "name": "authority",
+                        "type": "publicKey"
+                    },
+                    {
+                        "name": "bump",
+                        "type": "u8"
+                    },
+                    {
+                        "name": "randomHash",
+                        "type": {
+                            "array": [
+                                "u8",
+                                32
+                            ]
+                        }
+                    }
+                ]
+            }
         },
         {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
+            "name": "Post",
+            "type": {
+                "kind": "struct",
+                "fields": [
+                    {
+                        "name": "profile",
+                        "type": "publicKey"
+                    },
+                    {
+                        "name": "metadataUri",
+                        "type": "string"
+                    },
+                    {
+                        "name": "bump",
+                        "type": "u8"
+                    },
+                    {
+                        "name": "randomHash",
+                        "type": {
+                            "array": [
+                                "u8",
+                                32
+                            ]
+                        }
+                    },
+                    {
+                        "name": "replyTo",
+                        "type": {
+                            "option": "publicKey"
+                        }
+                    }
+                ]
+            }
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+            "name": "Connection",
+            "type": {
+                "kind": "struct",
+                "fields": [
+                    {
+                        "name": "profile",
+                        "type": "publicKey"
+                    },
+                    {
+                        "name": "authority",
+                        "type": "publicKey"
+                    },
+                    {
+                        "name": "bump",
+                        "type": "u8"
+                    }
+                ]
+            }
         }
-      ],
-      "args": []
-    },
-    {
-      "name": "initializeSubscription",
-      "accounts": [{
-          "name": "subscriber",
-          "isMut": true,
-          "isSigner": false
-        },
+    ],
+    "errors": [
         {
-          "name": "subscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "profile",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "authority",
-          "isMut": true,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+            "code": 6000,
+            "name": "URITooLarge"
         }
-      ],
-      "args": []
-    },
-    {
-      "name": "cancelSubscription",
-      "accounts": [{
-          "name": "subscriber",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "subscription",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "authority",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": []
+    ],
+    "metadata": {
+        "address": "D9JJgeRf2rKq5LNMHLBMb92g4ZpeMgCyvZkd7QKwSCzg"
     }
-  ],
-  "accounts": [{
-      "name": "Profile",
-      "type": {
-        "kind": "struct",
-        "fields": [{
-            "name": "authority",
-            "type": "publicKey"
-          },
-          {
-            "name": "bump",
-            "type": "u8"
-          },
-          {
-            "name": "randomHash",
-            "type": {
-              "array": [
-                "u8",
-                32
-              ]
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "Post",
-      "type": {
-        "kind": "struct",
-        "fields": [{
-            "name": "profile",
-            "type": "publicKey"
-          },
-          {
-            "name": "metadataUri",
-            "type": "string"
-          },
-          {
-            "name": "bump",
-            "type": "u8"
-          },
-          {
-            "name": "randomHash",
-            "type": {
-              "array": [
-                "u8",
-                32
-              ]
-            }
-          },
-          {
-            "name": "replyTo",
-            "type": {
-              "option": "publicKey"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "Subscriber",
-      "type": {
-        "kind": "struct",
-        "fields": [{
-            "name": "authority",
-            "type": "publicKey"
-          },
-          {
-            "name": "subscriptionNonce",
-            "type": "u8"
-          },
-          {
-            "name": "bump",
-            "type": "u8"
-          }
-        ]
-      }
-    },
-    {
-      "name": "Subscription",
-      "type": {
-        "kind": "struct",
-        "fields": [{
-            "name": "profile",
-            "type": "publicKey"
-          },
-          {
-            "name": "subscriber",
-            "type": "publicKey"
-          },
-          {
-            "name": "bump",
-            "type": "u8"
-          }
-        ]
-      }
-    }
-  ],
-  "errors": [{
-    "code": 6000,
-    "name": "URITooLarge"
-  }],
-  "metadata": {
-    "address": "D9JJgeRf2rKq5LNMHLBMb92g4ZpeMgCyvZkd7QKwSCzg"
-  }
 }
