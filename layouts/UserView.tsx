@@ -76,7 +76,7 @@ export const UserView = (props: GetUserServerSide) => {
         const signature = await getUserSignature(signMessage);
         if (!signature) return;
         if (connected && connectionKey) {
-          const req = await closeConnection(
+          await closeConnection(
             wallet as any,
             new PublicKey(props.user.public_key),
             setConnected,
@@ -85,7 +85,7 @@ export const UserView = (props: GetUserServerSide) => {
           refreshData();
           return;
         };
-        const req = await createConnection(
+        await createConnection(
           wallet as any,
           new PublicKey(props.user.public_key),
           setConnected,
