@@ -1,11 +1,18 @@
 {
   "version": "0.1.1",
   "name": "wordcel",
-  "instructions": [{
+  "instructions": [
+    {
       "name": "initialize",
-      "accounts": [{
+      "accounts": [
+        {
           "name": "profile",
           "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "invitation",
+          "isMut": false,
           "isSigner": false
         },
         {
@@ -17,21 +24,29 @@
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
+        },
+        {
+          "name": "invitationProgram",
+          "isMut": false,
+          "isSigner": false
         }
       ],
-      "args": [{
-        "name": "randomHash",
-        "type": {
-          "array": [
-            "u8",
-            32
-          ]
+      "args": [
+        {
+          "name": "randomHash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
         }
-      }]
+      ]
     },
     {
       "name": "createPost",
-      "accounts": [{
+      "accounts": [
+        {
           "name": "profile",
           "isMut": false,
           "isSigner": false
@@ -52,7 +67,8 @@
           "isSigner": false
         }
       ],
-      "args": [{
+      "args": [
+        {
           "name": "metadataUri",
           "type": "string"
         },
@@ -69,7 +85,8 @@
     },
     {
       "name": "updatePost",
-      "accounts": [{
+      "accounts": [
+        {
           "name": "profile",
           "isMut": false,
           "isSigner": false
@@ -90,14 +107,17 @@
           "isSigner": false
         }
       ],
-      "args": [{
-        "name": "metadataUri",
-        "type": "string"
-      }]
+      "args": [
+        {
+          "name": "metadataUri",
+          "type": "string"
+        }
+      ]
     },
     {
       "name": "comment",
-      "accounts": [{
+      "accounts": [
+        {
           "name": "profile",
           "isMut": false,
           "isSigner": false
@@ -123,7 +143,8 @@
           "isSigner": false
         }
       ],
-      "args": [{
+      "args": [
+        {
           "name": "metadataUri",
           "type": "string"
         },
@@ -140,7 +161,8 @@
     },
     {
       "name": "initializeConnection",
-      "accounts": [{
+      "accounts": [
+        {
           "name": "connection",
           "isMut": true,
           "isSigner": false
@@ -165,7 +187,8 @@
     },
     {
       "name": "closeConnection",
-      "accounts": [{
+      "accounts": [
+        {
           "name": "connection",
           "isMut": true,
           "isSigner": false
@@ -189,11 +212,13 @@
       "args": []
     }
   ],
-  "accounts": [{
+  "accounts": [
+    {
       "name": "Profile",
       "type": {
         "kind": "struct",
-        "fields": [{
+        "fields": [
+          {
             "name": "authority",
             "type": "publicKey"
           },
@@ -217,7 +242,8 @@
       "name": "Post",
       "type": {
         "kind": "struct",
-        "fields": [{
+        "fields": [
+          {
             "name": "profile",
             "type": "publicKey"
           },
@@ -251,7 +277,8 @@
       "name": "Connection",
       "type": {
         "kind": "struct",
-        "fields": [{
+        "fields": [
+          {
             "name": "profile",
             "type": "publicKey"
           },
@@ -267,11 +294,10 @@
       }
     }
   ],
-  "errors": [{
-    "code": 6000,
-    "name": "URITooLarge"
-  }],
-  "metadata": {
-    "address": "D9JJgeRf2rKq5LNMHLBMb92g4ZpeMgCyvZkd7QKwSCzg"
-  }
+  "errors": [
+    {
+      "code": 6000,
+      "name": "URITooLarge"
+    }
+  ]
 }
