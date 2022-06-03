@@ -15,15 +15,14 @@ model User {
   name String
   username String
   public_key String
-  nft_key String
   blog_name String
-  import_enabled Boolean @default(false)
   profile_hash String?
   bio String?
   twitter String?
   discord String?
   image_url String?
   banner_url String?
+  invites Invite[]
   articles Article[]
   drafts Draft[]
 }
@@ -65,4 +64,12 @@ model Block {
   data String
   draft_id Int
   draft Draft @relation(fields: [draft_id], references: [id])
+}
+
+model Invite {
+  id Int @id @default(autoincrement())
+  account_key String
+  receiver String
+  user_id Int
+  sender User @relation(fields: [user_id], references: [id])
 }

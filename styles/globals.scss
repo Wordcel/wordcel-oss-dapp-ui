@@ -20,6 +20,10 @@
   --input-text: hsl(0, 0%, 88%);
   --input-border: hsl(0, 0%, 91%);
   --input-background: hsla(0, 0%, 96%, 0.02);
+
+  --secondary-input-background: hsl(0, 0%, 96%);
+  --secondary-input-text: hsla(0, 0%, 0%, 0.35);
+
 }
 
 body {
@@ -119,11 +123,21 @@ a {
   color: var(--text-color);
 }
 
+.subheading.lg {
+  font-size: 3.6rem;
+}
+
 .light-sub-heading {
   font-weight: 600;
   font-size: 2rem;
   line-height: 2.4rem;
   color: var(--gray-text-color);
+}
+.light-sub-heading.thin {
+  font-weight: 500;
+}
+.light-sub-heading.center {
+  text-align: center;
 }
 
 .subheading.sm {
@@ -137,6 +151,9 @@ a {
 }
 .subheading.bold {
   font-weight: 700;
+}
+.subheading.thin {
+  font-weight: 500;
 }
 .subheading.light {
   opacity: 0.29;
@@ -227,6 +244,29 @@ a {
   font-family: inherit;
   &:hover {
     opacity: 0.85;
+  }
+}
+
+.secondary-btn {
+  background: var(--text-color);
+  color: var(--inverse-color);
+  box-sizing: border-box;
+  border-radius: 0.3rem;
+  width: 100%;
+  height: 5rem;
+  outline: none;
+  border: none;
+  font-weight: 600;
+  font-size: 1.6rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: .2s ease-in-out all;
+  &:enabled:hover {
+    opacity: 0.85;
+  }
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
   }
 }
 
@@ -517,6 +557,30 @@ figure {
   &:placeholder {
     text-align: center;
     color: var(--input-text);
+  }
+  &:disabled {
+    cursor: default;
+  }
+}
+
+
+.secondary-input {
+  background: var(--secondary-input-background);
+  box-sizing: border-box;
+  border-radius: 0.3rem;
+  width: 100%;
+  height: 5rem;
+  outline: none;
+  border: none;
+  font-weight: 600;
+  font-size: 1.6rem;
+  font-family: inherit;
+  padding-left: 2rem;
+  &::placeholder {
+    color: var(--secondary-input-text);
+  }
+  &:placeholder {
+    color: var(--secondary-input-text);
   }
   &:disabled {
     cursor: default;

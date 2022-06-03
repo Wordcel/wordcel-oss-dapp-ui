@@ -1,11 +1,9 @@
 {
   "version": "0.1.0",
   "name": "invite",
-  "instructions": [
-    {
+  "instructions": [{
       "name": "initialize",
-      "accounts": [
-        {
+      "accounts": [{
           "name": "inviteAccount",
           "isMut": true,
           "isSigner": false
@@ -30,8 +28,7 @@
     },
     {
       "name": "sendInvite",
-      "accounts": [
-        {
+      "accounts": [{
           "name": "inviteAccount",
           "isMut": true,
           "isSigner": false
@@ -60,37 +57,32 @@
       "args": []
     }
   ],
-  "accounts": [
-    {
-      "name": "Invite",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "authority",
-            "type": "publicKey"
-          },
-          {
-            "name": "bump",
-            "type": "u8"
-          },
-          {
-            "name": "referred",
-            "type": {
-              "vec": "publicKey"
-            }
+  "accounts": [{
+    "name": "Invite",
+    "type": {
+      "kind": "struct",
+      "fields": [{
+          "name": "authority",
+          "type": "publicKey"
+        },
+        {
+          "name": "bump",
+          "type": "u8"
+        },
+        {
+          "name": "referred",
+          "type": {
+            "vec": "publicKey"
           }
-        ]
-      }
+        }
+      ]
     }
-  ],
+  }],
   "metadata": {
-      "address": "6G5x4Es2YZYB5e4QkFJN88TrfLABkYEQpkUH5Gob9Cut"
+    "address": "6G5x4Es2YZYB5e4QkFJN88TrfLABkYEQpkUH5Gob9Cut"
   },
-  "errors": [
-    {
-      "code": 6000,
-      "name": "NoInvitesLeft"
-    }
-  ]
+  "errors": [{
+    "code": 6000,
+    "name": "NoInvitesLeft"
+  }]
 }
