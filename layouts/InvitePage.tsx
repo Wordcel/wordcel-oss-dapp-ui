@@ -4,8 +4,12 @@ import styles from '@/styles/Invite.module.scss';
 // Component Imports
 import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
-import { sendInvite } from '@/components/invitationIntegration';
 import { PublicKey } from '@solana/web3.js';
+import {
+  getInviteAccount,
+  isAdmin,
+  sendInvite
+} from '@/components/invitationIntegration';
 import {
   useAnchorWallet,
   useWallet
@@ -19,11 +23,14 @@ import { DefaultHead } from "./DefaultHead";
 import { Loading } from './Loading';
 import { StaticNavbar } from "./Navbar";
 import { ConnectWallet } from './Wallet';
+import { Footer } from './Footer';
+import { useRouter } from 'next/router';
 
 
 export const InvitePage = () => {
-  const [clicked, setClicked] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
   const [invitesLeft, setInvitesLeft] = useState(2);
   const [inviteAddress, setInviteAddress] = useState('');
 
@@ -31,30 +38,45 @@ export const InvitePage = () => {
   const anchorWallet = useAnchorWallet();
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-  }, []);
+    if (publicKey) {
+      setLoading(true);
+      if (isAdmin(publicKey)) {
+        setInvitesLeft(Infinity);
+        setLoading(false);
+        return;
+      }
+      (async function () {
+        const user_account = await getInviteAccount(anchorWallet as any);
+        console.log(user_account);
+        if (!user_account) {
+          router.push('/');
+          return;
+        }
+        // Bug: user_account.invitesLeft shows 0 invites left
+        setInvitesLeft(user_account.invitesLeft);
+        setLoading(false);
+      })();
+    }
+  }, [publicKey]);
 
   const getInviteText = (invitesLeft: number): string => {
     if (invitesLeft === 1) return 'invite';
     return 'invites';
   }
 
-  useEffect(() => {
-    (async function () {
-      if (!anchorWallet || clicked === 0) return;
-      if (invitesLeft === 0) {
-        toast('Sorry, you don\'t have any invites left');
-        return;
-      };
-      const invite = await sendInvite(
-        anchorWallet as any,
-        new PublicKey(inviteAddress)
-      );
-      // Todo: save this invite address to the db
-    })();
-  }, [publicKey, clicked]);
+  const handleSendInvite = async () => {
+    if (!anchorWallet) return;
+    if (invitesLeft === 0) {
+      toast('Sorry, you don\'t have any invites left');
+      return;
+    };
+    const invite = await sendInvite(
+      anchorWallet as any,
+      new PublicKey(inviteAddress)
+    );
+    if (!invite) return;
+    setInvitesLeft(invitesLeft - 1);
+  }
 
   return (
     <div className="container-flex">
@@ -67,28 +89,44 @@ export const InvitePage = () => {
           )}
           {!loading && (
             <div className="width-100">
-              <div className={styles.header}>
-                <img src={quill.src} alt="" />
-                <h1 className="heading center nm mt-2">You have {invitesLeft} {getInviteText(invitesLeft)}</h1>
-                <p className="light-sub-heading thin center">You can invite {invitesLeft} more friends to use the DApp</p>
-              </div>
-              <div className={styles.form}>
-                <input
-                  onChange={(e) => setInviteAddress(e.target.value)}
-                  placeholder='Enter wallet address'
-                  className="secondary-input"
-                />
-                <ConnectWallet>
-                  <button
-                    onClick={() => setClicked(clicked + 1)}
-                    disabled={inviteAddress.length !== 44}
-                    className="secondary-btn mt-2">{publicKey ? 'Send Invite' : 'Connect Wallet'}</button>
-                </ConnectWallet>
-              </div>
+              {publicKey && (
+                <>
+                  <div className={styles.header}>
+                    <img src={quill.src} alt="" />
+                    <h1 className="heading center nm mt-2">You have {invitesLeft} {getInviteText(invitesLeft)}</h1>
+                    <p className="light-sub-heading thin center">You can invite {invitesLeft} more friends to use the DApp</p>
+                  </div>
+                  <div className={styles.form}>
+                    <input
+                      onChange={(e) => setInviteAddress(e.target.value)}
+                      placeholder='Enter wallet address'
+                      className="secondary-input"
+                    />
+                    <button
+                      onClick={handleSendInvite}
+                      disabled={inviteAddress.length !== 44}
+                      className="secondary-btn mt-2">Send Invite</button>
+                  </div>
+                </>
+              )}
+              {!publicKey && (
+                <>
+                  <div className={styles.header}>
+                    <img src={quill.src} alt="" />
+                    <h1 className="heading center nm mt-2">Please connect your wallet to continue</h1>
+                  </div>
+                  <div className={styles.form}>
+                    <ConnectWallet>
+                      <button className="secondary-btn mt-2">Connect Wallet</button>
+                    </ConnectWallet>
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
