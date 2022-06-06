@@ -22,7 +22,6 @@ model User {
   discord String?
   image_url String?
   banner_url String?
-  invites Invite[]
   articles Article[]
   drafts Draft[]
 }
@@ -66,10 +65,3 @@ model Block {
   draft Draft @relation(fields: [draft_id], references: [id])
 }
 
-model Invite {
-  id Int @id @default(autoincrement())
-  account_key String
-  receiver String
-  user_id Int
-  sender User @relation(fields: [user_id], references: [id])
-}
