@@ -31,6 +31,22 @@ export async function sendInvite(
   const fromInviteKey = await getInviteKey(from_user.publicKey);
   const toInviteKey = await getInviteKey(to);
   toast.dismiss();
+
+  // Should initialize
+  // const initTXID = await program.methods.initialize()
+  //   .accounts({
+  //     inviteAccount: fromInviteKey,
+  //     authority: from_user.publicKey,
+  //     payer: from_user.publicKey,
+  //     systemProgram: SystemProgram.programId
+  //   })
+  //   .rpc();
+  // const initConfirmed = await connection.confirmTransaction(initTXID);
+  // if (initConfirmed.value.err !== null) {
+  //   throw new Error('Transaction Failed');
+  // }
+
+  // Should send invites
   const tx = await program.methods.sendInvite()
     .accounts({
       inviteAccount: fromInviteKey,
