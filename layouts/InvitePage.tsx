@@ -1,5 +1,5 @@
 // Style Imports
-import styles from '@/styles/Invite.module.scss';
+import styles from '@/styles/Static.module.scss';
 
 // Component Imports
 import toast from 'react-hot-toast';
@@ -83,7 +83,7 @@ export const InvitePage = () => {
   }
 
   return (
-    <div className="container-flex">
+    <div className="container-flex gray">
       <DefaultHead title="Send Invites" />
       <StaticNavbar />
       <div className={styles.container}>
