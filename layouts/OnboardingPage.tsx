@@ -10,13 +10,17 @@ import { RequestConnect } from '@/elements/RequestConnect';
 import { OnboardingBox } from '@/elements/OnboardingBox';
 
 // Component Imports
+import toast from 'react-hot-toast';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { getUserExists } from '@/components/networkRequests';
+import { getInviteAccount } from '@/components/invitationIntegration';
+import { getAllUserDomains } from '@/lib/getAllUserDomains';
 
 
 export const OnboardingPage = () => {
+  const wallet = useAnchorWallet();
   const router = useRouter();
   const { publicKey } = useWallet();
 
@@ -24,7 +28,18 @@ export const OnboardingPage = () => {
     (async function () {
       if (!publicKey) return;
       const user_exists = await getUserExists(publicKey.toBase58());
-      if (user_exists) router.push('/dashboard/' + publicKey.toBase58() + '/drafts');
+      if (user_exists) {
+        router.push('/dashboard/' + publicKey.toBase58() + '/drafts')
+        return;
+      };
+      try {
+        await getInviteAccount(wallet as any);
+        const sns_domains = await getAllUserDomains(publicKey);
+        console.log(sns_domains);
+      } catch {
+        toast('Sorry, you\'re not whitelisted');
+        router.push('/');
+      }
     })();
   }, [publicKey]);
 
