@@ -45,17 +45,21 @@ export const InvitePage = () => {
         setLoading(false);
         return;
       }
-      (async function () {
-        const user_account = await getInviteAccount(anchorWallet as any);
-        console.log(user_account);
-        if (!user_account) {
-          router.push('/');
-          return;
-        }
-        // Bug: user_account.invitesLeft shows 0 invites left
-        setInvitesLeft(user_account.invitesLeft);
-        setLoading(false);
-      })();
+
+      // Temporarily disabling new invitations from normal users
+      router.push('/');
+
+      // (async function () {
+      //   let user_account;
+      //   try {
+      //     user_account = await getInviteAccount(anchorWallet as any);
+      //   } catch {
+      //     router.push('/');
+      //     return;
+      //   }
+      //   setInvitesLeft(user_account.invitesLeft);
+      //   setLoading(false);
+      // })();
     }
   }, [publicKey]);
 
