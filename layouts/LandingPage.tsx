@@ -4,7 +4,7 @@ import { ConnectWallet } from './Wallet';
 import { DefaultHead } from './DefaultHead';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { getIfWhitelisted } from '@/lib/getIfUserIsWhitelisted';
 import { useRouter } from 'next/router';
 import { WHITELIST_URL } from '@/components/config/constants';
@@ -38,6 +38,8 @@ const details = [
 
 export const LandingPage = () => {
   const router = useRouter();
+  const wallet = useAnchorWallet();
+
   const { publicKey } = useWallet();
   const [clicked, setClicked] = useState(0);
   const [whitelisted, setWhitelisted] = useState<null | boolean>(null);
@@ -50,7 +52,7 @@ export const LandingPage = () => {
         return;
       }
       toast.loading('Loading')
-      const fWhitelisted = await getIfWhitelisted(publicKey.toBase58());
+      const fWhitelisted = await getIfWhitelisted(wallet as any);
       toast.dismiss();
       setWhitelisted(fWhitelisted);
     })();

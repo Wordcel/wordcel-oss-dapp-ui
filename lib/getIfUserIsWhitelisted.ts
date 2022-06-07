@@ -1,6 +1,13 @@
+import * as anchor from '@project-serum/anchor';
+import { getInviteAccount } from '@/components/invitationIntegration';
+
 export async function getIfWhitelisted(
-  public_key: string
+  user_wallet: anchor.Wallet
 ) {
-  const request = await fetch(`/api/user/get/${public_key}`);
-  return request.ok;
-}
+  try {
+    await getInviteAccount(user_wallet);
+    return true;
+  } catch {
+    return false;
+  }
+};

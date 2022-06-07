@@ -36,7 +36,6 @@ export const getInviteAccount = async (user_wallet: anchor.Wallet) => {
   return await program.account.invite.fetch(invite_key);
 }
 
-
 async function adminInvite(
   from_admin: anchor.Wallet,
   to_user: PublicKey,
