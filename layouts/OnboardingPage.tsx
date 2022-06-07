@@ -34,12 +34,12 @@ export const OnboardingPage = () => {
       };
       try {
         await getInviteAccount(wallet as any);
-        const sns_domains = await getAllUserDomains(publicKey);
-        console.log(sns_domains);
       } catch {
         toast('Sorry, you\'re not whitelisted');
         router.push('/');
       }
+      const sns_domains = await getAllUserDomains(publicKey);
+      console.log(sns_domains);
     })();
   }, [publicKey]);
 
