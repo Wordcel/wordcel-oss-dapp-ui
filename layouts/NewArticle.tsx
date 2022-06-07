@@ -77,7 +77,7 @@ export const NewArticle = () => {
         public_key: publicKey.toBase58()
       });
       console.log(response);
-      draft_id = response.draft.id;
+      draft_id = response?.draft?.id;
     }, 15000)
     return () => {
       clearInterval(interval);

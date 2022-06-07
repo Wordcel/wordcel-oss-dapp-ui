@@ -22,9 +22,9 @@ import quill from '@/images/elements/quill.svg';
 import { DefaultHead } from "./DefaultHead";
 import { Loading } from './Loading';
 import { StaticNavbar } from "./Navbar";
-import { ConnectWallet } from './Wallet';
 import { Footer } from './Footer';
 import { useRouter } from 'next/router';
+import { RequestConnect } from '@/elements/RequestConnect';
 
 
 export const InvitePage = () => {
@@ -83,7 +83,7 @@ export const InvitePage = () => {
   }
 
   return (
-    <div className="container-flex gray">
+    <div className="container-flex">
       <DefaultHead title="Send Invites" />
       <StaticNavbar />
       <div className={styles.container}>
@@ -114,17 +114,7 @@ export const InvitePage = () => {
                 </>
               )}
               {!publicKey && (
-                <>
-                  <div className={styles.header}>
-                    <img src={quill.src} alt="" />
-                    <h1 className="heading center nm mt-2">Please connect your wallet to continue</h1>
-                  </div>
-                  <div className={styles.form}>
-                    <ConnectWallet>
-                      <button className="secondary-btn mt-2">Connect Wallet</button>
-                    </ConnectWallet>
-                  </div>
-                </>
+                <RequestConnect />
               )}
             </div>
           )}
