@@ -118,3 +118,15 @@ export const deleteDraft = async ({
   const response = await request.json();
   return response;
 };
+
+export async function getUserExists (
+  public_key: string
+) {
+  try {
+    const request = await fetch('/api/user/get/' + public_key);
+    return request.ok;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};

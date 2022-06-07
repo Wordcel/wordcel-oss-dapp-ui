@@ -52,7 +52,11 @@ export const LandingPage = () => {
         return;
       }
       toast.loading('Loading')
-      const fWhitelisted = await getIfWhitelisted(wallet as any);
+      const fWhitelisted = await getIfWhitelisted(
+        wallet as any,
+        router
+      );
+      console.log(fWhitelisted)
       toast.dismiss();
       setWhitelisted(fWhitelisted);
     })();
