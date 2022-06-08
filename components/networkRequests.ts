@@ -150,6 +150,5 @@ export async function verifyTwitterRequest (
     })
   });
   if (request.ok) return true;
-  Promise.reject(request);
-  return false;
+  throw new Error('Invalid request');
 };
