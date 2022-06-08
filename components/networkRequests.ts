@@ -130,3 +130,26 @@ export async function getUserExists (
     return false;
   }
 };
+
+export async function verifyTwitterRequest (
+  public_key: string,
+  username: string,
+  signature: Uint8Array
+) {
+  const request = await fetch(
+    '/api/twitter/verify',
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      public_key,
+      username,
+      signature
+    })
+  });
+  if (request.ok) return true;
+  Promise.reject(request);
+  return false;
+};

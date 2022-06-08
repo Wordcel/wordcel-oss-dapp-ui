@@ -1,9 +1,13 @@
 import toast from 'react-hot-toast';
 import styles from '@/styles/Static.module.scss';
 import tweetToVerify from '@/images/elements/tweet-to-verify.svg';
+
 import { useState } from 'react';
-import { Done, Step } from '@/images/dynamic/Step';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { getUserSignature } from '@/lib/signMessage';
+import { verifyTwitterRequest } from '@/components/networkRequests';
+import { Done, Step } from '@/images/dynamic/Step';
+
 
 export const OnboardingBox = () => {
   let [name] = useState('');
@@ -11,7 +15,7 @@ export const OnboardingBox = () => {
   let [username] = useState('');
   let [blog_name] = useState('');
 
-  const { publicKey } = useWallet();
+  const { publicKey, signMessage } = useWallet();
 
   const [step, setStep] = useState(1);
   const [twitterVerified, setTwitterVerified] = useState(false);
@@ -41,6 +45,34 @@ export const OnboardingBox = () => {
 
   // Replace this with user's domains
   const name_service_domains = ['kunal.sol', 'shek.sol', 'paarug.sol']
+
+  const handleTweetedButton = async () => {
+    if (twitter.replace('@', '').length === 0) {
+      toast('Please enter a twitter username');
+      return;
+    };
+    if (!publicKey || !signMessage) return;
+    const signature = await getUserSignature(signMessage);
+    if (!signature) {
+      toast('Please sign the message to authenticate your wallet');
+      return;
+    }
+    const request = verifyTwitterRequest(
+      publicKey.toBase58(),
+      twitter.replace('@', ''),
+      signature
+    );
+    toast.promise(request, {
+      success: 'Successfully verified your twitter account',
+      error: 'Failed to verify your twitter account',
+      loading: 'Verifying your twitter account',
+    });
+    const verified = await request;
+    if (verified) {
+      setTwitterVerified(true);
+      setStep(2);
+    }
+  }
 
   const Header = () => {
     return (
@@ -78,7 +110,10 @@ export const OnboardingBox = () => {
           >
             <img src={tweetToVerify.src} alt="Tweet to Verify" />
           </button>
-          <button className={styles.tweetedButton}>
+          <button
+            onClick={handleTweetedButton}
+            className={styles.tweetedButton}
+          >
             I've Tweeted
           </button>
         </div>
