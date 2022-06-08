@@ -65,3 +65,8 @@ model Block {
   draft Draft @relation(fields: [draft_id], references: [id])
 }
 
+model VerifiedTwitter {
+  id Int @id @default(autoincrement())
+  public_key String
+  username String
+}
