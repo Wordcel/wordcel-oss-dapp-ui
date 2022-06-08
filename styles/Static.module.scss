@@ -86,8 +86,12 @@
   background: var(--text-color);
   cursor: pointer;
   transition: .2s all ease-in-out;
-  &:hover {
+  &:enabled:hover {
     opacity: 0.65;
+  }
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
   }
 }
 
@@ -108,8 +112,12 @@
   font-weight: 500;
   font-size: 1.6rem;
   font-family: inherit;
-  &:hover {
+  &:enabled:hover {
     opacity: 0.65;
+  }
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
   }
 }
 

@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import styles from '@/styles/Static.module.scss';
 import tweetToVerify from '@/images/elements/tweet-to-verify.svg';
 import { useState } from 'react';
@@ -27,6 +28,16 @@ export const OnboardingBox = () => {
     username = domain;
     setStep(2);
   };
+
+  const handleTweetButton = () => {
+    if (!publicKey) return;
+    if (twitter.replace('@', '').length === 0) {
+      toast('Please enter a twitter username');
+      return;
+    };
+    const encoded_tweet = `I'm%20verifying%20my%20wallet%20address%20for%20@Wordcel_Club%0A%0A${publicKey.toBase58()}%0A%0Ahttps://wordcel.club`;
+    window.open(`https://twitter.com/intent/tweet?text=${encoded_tweet}`, '_blank');
+  }
 
   // Replace this with user's domains
   const name_service_domains = ['kunal.sol', 'shek.sol', 'paarug.sol']
@@ -61,7 +72,10 @@ export const OnboardingBox = () => {
           placeholder="@wordcel_club"
         />
         <div className={styles.tweetButtons}>
-          <button className={styles.tweetButton}>
+          <button
+            onClick={handleTweetButton}
+            className={styles.tweetButton}
+          >
             <img src={tweetToVerify.src} alt="Tweet to Verify" />
           </button>
           <button className={styles.tweetedButton}>
@@ -75,6 +89,7 @@ export const OnboardingBox = () => {
             <div className={styles.domainGrid}>
               {name_service_domains.map((domain) => (
                 <div
+                  key={domain}
                   onClick={() => handleNameServiceDomain(domain)}
                   className={styles.domain}
                 >
