@@ -1,6 +1,7 @@
 import Arweave from 'arweave';
 import { NFTStorage } from 'nft.storage';
 import { OutputData } from "@editorjs/editorjs";
+import toast from 'react-hot-toast';
 
 export interface ContentPayload {
   content: OutputData,
@@ -41,4 +42,24 @@ export const uploadNFTStorage = async (
     console.error(e);
     return undefined;
   }
+};
+
+
+export const uploadFile = async (image: File) => {
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDk3NmI0N0ZlQUNlRDEzOTIyMTZBMzkwZmE4Yjg0RWI0MzYxN2M1NzAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1MDQ3NTk4MjAyNiwibmFtZSI6IndvcmRjZWwifQ.j0uYNFmg0N3ujJtTEYmw320m32xWzdKcGoTVidMtqNA";
+  const client = new NFTStorage({ token });
+  const request = client.store({
+    name: 'My Profile Picture',
+    description: 'Just try to funge it. You can\'t do it.',
+    image,
+  });
+  toast.promise(request, {
+    loading: 'Uploading Image',
+    success: 'Image Uploaded',
+    error: 'Image Upload Failed'
+  })
+  const metadata = await request;
+  const url = metadata.embed().image.toString();
+  console.log(url);
+  return url;
 };

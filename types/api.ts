@@ -39,3 +39,14 @@ export interface UpdateUser extends UpdatableUserDetails {
   public_key: string;
   signature: Uint8Array;
 }
+
+export interface NewProfile {
+  name: string;
+  public_key: string;
+  username: string;
+  blog_name: string;
+  image_url: string;
+  profile_hash: string;
+  signature: Uint8Array;
+  twitter?: string;
+}

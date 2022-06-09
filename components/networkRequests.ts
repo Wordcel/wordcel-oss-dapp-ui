@@ -2,7 +2,8 @@ import {
   AddProfileHash,
   PublishArticleRequest,
   Connect,
-  Draft
+  Draft,
+  NewProfile
 } from '@/types/api';
 import * as anchor from '@project-serum/anchor';
 
@@ -148,6 +149,22 @@ export async function verifyTwitterRequest (
       username,
       signature
     })
+  });
+  if (request.ok) return true;
+  throw new Error('Invalid request');
+};
+
+export async function createNewProfile (
+  data: NewProfile
+) {
+  const request = await fetch(
+    '/api/user/new',
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
   });
   if (request.ok) return true;
   throw new Error('Invalid request');

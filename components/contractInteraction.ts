@@ -2,6 +2,7 @@ import * as anchor from '@project-serum/anchor';
 import randombytes from 'randombytes';
 import toast from 'react-hot-toast';
 import idl from '@/components/config/devnet-idl.json';
+import inviteIdl from '@/components/config/invite-idl.json';
 import { SystemProgram, PublicKey } from '@solana/web3.js';
 import { ContentPayload } from '@/components/upload';
 import { WalletContextState } from '@solana/wallet-adapter-react';
@@ -16,6 +17,7 @@ import {
 
 const preflightCommitment = "processed";
 const programID = new anchor.web3.PublicKey(idl.metadata.address);
+const invitationProgramID = new anchor.web3.PublicKey(inviteIdl.metadata.address);
 const connection = new anchor.web3.Connection(ENDPOINT, preflightCommitment);
 
 const provider = (wallet: anchor.Wallet) => new anchor.Provider(
@@ -32,27 +34,42 @@ export async function getProfileKeyAndBump(
     profileSeeds,
     program.programId
   );
-}
+};
 
-async function createProfileAccount(
-  profileSeeds: Buffer[],
-  profileHash: Buffer,
-  user: PublicKey,
-  program: anchor.Program
+export async function createFreshProfile (
+  wallet: anchor.Wallet
 ) {
+  const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
+  const profileHash = randombytes(32);
+  const profileSeeds = [Buffer.from("profile"), profileHash];
+  const inviteSeeds = [Buffer.from("invite"), wallet.publicKey.toBuffer()];
   const [profileKey] = await anchor.web3.PublicKey.findProgramAddress(
     profileSeeds,
     program.programId
   );
-  await program.rpc.initialize(profileHash, {
+  const [inviteKey] = await anchor.web3.PublicKey.findProgramAddress(
+    inviteSeeds,
+    invitationProgramID
+  );
+  const txid = await program.rpc.initialize(profileHash, {
     accounts: {
       profile: profileKey,
-      user: user,
+      invitation: inviteKey,
+      user: wallet.publicKey,
       systemProgram: SystemProgram.programId,
+      invitationProgram: invitationProgramID
     }
   });
-  return profileKey;
-}
+  const confirmation = connection.confirmTransaction(txid);
+  toast.promise(confirmation, {
+    loading: 'Confirming Transaction',
+    success: 'Transaction Confirmed',
+    error: 'Transaction Failed'
+  });
+  const confirmed = await confirmation;
+  if (confirmed.value.err !== null) return;
+  return profileHash.toString('base64');
+};
 
 export async function publishPost(
   data: ContentPayload,
@@ -66,7 +83,7 @@ export async function publishPost(
   toast.loading('Loading configurations');
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
   const existingHash = await getProfileHash(wallet.publicKey.toBase58());
-  const profileHash = existingHash ? Buffer.from(existingHash, 'base64') : randombytes(32);
+  const profileHash = Buffer.from(existingHash, 'base64');
 
   const profileSeeds = [Buffer.from("profile"), profileHash];
   const profileKeyAndBump = await getProfileKeyAndBump(
@@ -80,27 +97,8 @@ export async function publishPost(
     const profileAccount = await program.account.profile.fetch(profileKey);
     console.log(profileAccount);
   } catch (e) {
-    toast('Profile does not exist, creating one');
-    const newProfileAccount = await createProfileAccount(
-      profileSeeds,
-      profileHash,
-      wallet.publicKey,
-      program
-    );
-    if (!newProfileAccount) {
-      throw new Error(`Profile creation failed`);
-    };
-    if (!existingHash) {
-      const profile_hash_req = await addProfileHash({
-        public_key: wallet.publicKey.toBase58(),
-        signature: signature,
-        profile_hash: profileHash.toString('base64')
-      });
-      if (!profile_hash_req.user) {
-        throw new Error(`Profile hash save failed`);
-      }
-    }
-    console.log(newProfileAccount);
+    toast('Profile does not exist');
+    return;
   }
 
   const postHash = randombytes(32);

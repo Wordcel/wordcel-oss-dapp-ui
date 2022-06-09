@@ -3,13 +3,16 @@ import styles from '@/styles/Static.module.scss';
 import tweetToVerify from '@/images/elements/tweet-to-verify.svg';
 import uploadImagePreview from '@/images/elements/upload.svg';
 
-import { useWallet } from '@solana/wallet-adapter-react';
 import { Done, Step } from '@/images/dynamic/Step';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getUserSignature } from '@/lib/signMessage';
 import { getAllUserDomains } from '@/lib/getAllUserDomains';
-import { verifyTwitterRequest } from '@/components/networkRequests';
+import { createNewProfile, verifyTwitterRequest } from '@/components/networkRequests';
+import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
+import { createFreshProfile } from '@/components/contractInteraction';
 import { getUserNFTs } from '@/lib/getAllUserNFTs';
+import { useRouter } from 'next/router';
+import { uploadFile } from '@/components/upload';
 
 
 export const OnboardingBox = () => {
@@ -20,11 +23,13 @@ export const OnboardingBox = () => {
   const [blog_name, setBlogName] = useState('');
   const [username, setUsername] = useState('');
 
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const [nfts, setNFTs] = useState<string[]>([]);
   const [domains, setDomains] = useState<string[]>([]);
-  const [twitterVerified, setTwitterVerified] = useState(false);
 
+  const router = useRouter();
+  const wallet = useAnchorWallet();
+  const fileInputRef = useRef(null);
   const { publicKey, signMessage } = useWallet();
 
   useEffect(() => {
@@ -45,6 +50,10 @@ export const OnboardingBox = () => {
     })();
   }, [publicKey]);
 
+  useEffect(() => {
+    setUsername(twitter.replace('@', ''))
+  }, [twitter]);
+
   const tabIsActive = (tab: number) => step === tab;
   const getTabClassName = (tab: number) => {
     if (tabIsActive(tab)) return styles.activeTab;
@@ -53,6 +62,7 @@ export const OnboardingBox = () => {
 
   const handleTweetButton = () => {
     if (!publicKey) return;
+    setTwitter(twitter.replace('@', ''));
     if (twitter.replace('@', '').length === 0) {
       toast('Please enter a twitter username');
       return;
@@ -62,6 +72,7 @@ export const OnboardingBox = () => {
   }
 
   const handleTweetedButton = async () => {
+    setTwitter(twitter.replace('@', ''));
     if (twitter.replace('@', '').length === 0) {
       toast('Please enter a twitter username');
       return;
@@ -79,23 +90,62 @@ export const OnboardingBox = () => {
     );
     toast.promise(request, {
       success: 'Successfully verified your twitter account',
-      error: 'Failed to verify your twitter account',
+      error: 'Failed to verify your twitter account, please try again',
       loading: 'Verifying your twitter account',
     });
     const verified = await request;
     if (verified) {
-      setTwitterVerified(true);
       setStep(2);
     }
   };
 
   const handleDomainChange = (domain: string) => {
     if (username === domain) {
-      setUsername('');
+      setUsername(twitter.replace('@', ''));
       return;
     }
     setUsername(domain);
+  };
+
+  const handleUploadButton = () => {
+    // @ts-expect-error
+    fileInputRef?.current?.click();
   }
+
+  const handleSubmit = async () => {
+    if (!publicKey || !signMessage) return;
+    const signature = await getUserSignature(signMessage);
+    if (!signature) {
+      toast('Please sign the message to authenticate your wallet');
+      return;
+    }
+    if (!name || !blog_name || !image) {
+      toast('Please enter your name, blog name and select an image');
+      return;
+    }
+    const profile_hash = await createFreshProfile(wallet as any);
+    if (!profile_hash) return;
+    const request = createNewProfile({
+      name: name,
+      public_key: publicKey.toBase58(),
+      username: username,
+      twitter: twitter,
+      blog_name: blog_name,
+      image_url: image,
+      profile_hash: profile_hash,
+      signature: signature,
+    });
+    toast.promise(request, {
+      success: 'Successfully created profile',
+      error: 'Failed to create profile',
+      loading: 'Creating your new profile',
+    });
+    const verified = await request;
+    if (verified) {
+      console.log('New profile created successfully');
+      router.push('/dashboard/' + publicKey.toBase58() + '/drafts')
+    }
+  };
 
   const Header = () => {
     return (
@@ -163,12 +213,27 @@ export const OnboardingBox = () => {
           <div className="mt-2 mb-2">
             <p className="normal-text sm nm">Upload Profile Photo</p>
             <div className={styles.uploadImageDiv}>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/png, image/jpeg"
+                className="hidden"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const url = await uploadFile(file);
+                  setImage(url);
+                }}
+              />
               <img
                 className={styles.uploadPreview}
                 src={image ? image : uploadImagePreview.src}
                 alt=""
               />
-              <button className={styles.uploadButton}>Upload</button>
+              <button
+                onClick={handleUploadButton}
+                className={styles.uploadButton}
+              >Upload</button>
             </div>
           </div>
 
@@ -207,6 +272,11 @@ export const OnboardingBox = () => {
               </div>
             </div>
           )}
+
+          <button
+            onClick={handleSubmit}
+            className="secondary-btn mt-2"
+          >Continue</button>
 
         </div>
       )}

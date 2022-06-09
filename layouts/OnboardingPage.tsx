@@ -27,10 +27,10 @@ export const OnboardingPage = () => {
     (async function () {
       if (!publicKey) return;
       const user_exists = await getUserExists(publicKey.toBase58());
-      // if (user_exists) {
-      //   router.push('/dashboard/' + publicKey.toBase58() + '/drafts')
-      //   return;
-      // };
+      if (user_exists) {
+        router.push('/dashboard/' + publicKey.toBase58() + '/drafts')
+        return;
+      };
       try {
         await getInviteAccount(wallet as any);
       } catch {
@@ -63,4 +63,4 @@ export const OnboardingPage = () => {
       <Footer />
     </div>
   );
-}
+};
