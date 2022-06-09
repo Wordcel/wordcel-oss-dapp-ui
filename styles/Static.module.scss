@@ -93,6 +93,9 @@
     opacity: 0.65;
     cursor: not-allowed;
   }
+  & > img {
+    width: 13.3rem;
+  }
 }
 
 .tweetedButton {

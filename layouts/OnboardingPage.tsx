@@ -16,7 +16,6 @@ import { useRouter } from 'next/router';
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { getUserExists } from '@/components/networkRequests';
 import { getInviteAccount } from '@/components/invitationIntegration';
-import { getAllUserDomains } from '@/lib/getAllUserDomains';
 
 
 export const OnboardingPage = () => {
@@ -28,18 +27,16 @@ export const OnboardingPage = () => {
     (async function () {
       if (!publicKey) return;
       const user_exists = await getUserExists(publicKey.toBase58());
-      if (user_exists) {
-        router.push('/dashboard/' + publicKey.toBase58() + '/drafts')
-        return;
-      };
+      // if (user_exists) {
+      //   router.push('/dashboard/' + publicKey.toBase58() + '/drafts')
+      //   return;
+      // };
       try {
         await getInviteAccount(wallet as any);
       } catch {
         toast('Sorry, you\'re not whitelisted');
         router.push('/');
       }
-      const sns_domains = await getAllUserDomains(publicKey);
-      console.log(sns_domains);
     })();
   }, [publicKey]);
 

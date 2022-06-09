@@ -2,11 +2,12 @@ import toast from 'react-hot-toast';
 import styles from '@/styles/Static.module.scss';
 import tweetToVerify from '@/images/elements/tweet-to-verify.svg';
 
-import { useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { getUserSignature } from '@/lib/signMessage';
-import { verifyTwitterRequest } from '@/components/networkRequests';
 import { Done, Step } from '@/images/dynamic/Step';
+import { useEffect, useState } from 'react';
+import { getUserSignature } from '@/lib/signMessage';
+import { getAllUserDomains } from '@/lib/getAllUserDomains';
+import { verifyTwitterRequest } from '@/components/networkRequests';
 
 
 export const OnboardingBox = () => {
@@ -18,7 +19,16 @@ export const OnboardingBox = () => {
   const { publicKey, signMessage } = useWallet();
 
   const [step, setStep] = useState(1);
+  const [domains, setDomains] = useState<string[]>([]);
   const [twitterVerified, setTwitterVerified] = useState(false);
+
+  useEffect(() => {
+    (async function () {
+      if (!publicKey) return;
+      const sns_domains = await getAllUserDomains(publicKey);
+      setDomains(sns_domains);
+    })();
+  }, [publicKey]);
 
   const tabIsActive = (tab: number) => step === tab;
   const getTabClassName = (tab: number) => {
@@ -42,9 +52,6 @@ export const OnboardingBox = () => {
     const encoded_tweet = `I'm%20verifying%20my%20wallet%20address%20for%20@Wordcel_Club%0A%0A${publicKey.toBase58()}%0A%0Ahttps://wordcel.club`;
     window.open(`https://twitter.com/intent/tweet?text=${encoded_tweet}`, '_blank');
   }
-
-  // Replace this with user's domains
-  const name_service_domains = ['kunal.sol', 'shek.sol', 'paarug.sol']
 
   const handleTweetedButton = async () => {
     if (twitter.replace('@', '').length === 0) {
@@ -117,12 +124,12 @@ export const OnboardingBox = () => {
             I've Tweeted
           </button>
         </div>
-        {name_service_domains.length > 0 && (
+        {domains.length > 0 && (
           <div>
             <p className="normal-text mt-2 sm dark op-1">OR</p>
             <p className="normal-text mt-1 sm">Select a name service domain</p>
             <div className={styles.domainGrid}>
-              {name_service_domains.map((domain) => (
+              {domains.map((domain) => (
                 <div
                   key={domain}
                   onClick={() => handleNameServiceDomain(domain)}
