@@ -125,6 +125,13 @@
   }
 }
 
+.uploadPreview {
+  width: 7.7rem;
+  height: 7.7rem;
+  border-radius: 7.7rem;
+  object-fit: cover;
+}
+
 .uploadButton {
   max-width: 10rem;
   width: 100%;
@@ -187,4 +194,11 @@
   height: 9rem;
   width: 9rem;
   object-fit: cover;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition: .2s all ease-in-out;
+  opacity: 0.55;
+  &:hover {
+    opacity: 0.85;
+  }
 }

@@ -163,14 +163,18 @@ export const OnboardingBox = () => {
           <div className="mt-2 mb-2">
             <p className="normal-text sm nm">Upload Profile Photo</p>
             <div className={styles.uploadImageDiv}>
-              <img src={uploadImagePreview.src} alt="" />
+              <img
+                className={styles.uploadPreview}
+                src={image ? image : uploadImagePreview.src}
+                alt=""
+              />
               <button className={styles.uploadButton}>Upload</button>
             </div>
           </div>
 
           {domains.length > 0 && (
             <div className="mt-2 mb-2">
-              <p className="normal-text sm nm">{"Choose a domain as your username (Optional)"}</p>
+              <p className="normal-text sm nm">{"Choose a domain as your username"}</p>
               <div className={styles.domainGrid}>
                 {domains.map((domain) => (
                   <div
@@ -190,10 +194,15 @@ export const OnboardingBox = () => {
 
           {nfts.length > 0 && (
             <div>
-              <p className="normal-text sm">{"Select NFT as Profile Photo (Optional)"}</p>
+              <p className="normal-text sm">{"Select NFT as Profile Photo"}</p>
               <div className={styles.nftGrid}>
-                {nfts.map((nft) => (
-                  <img className={styles.nftImage} key={nft} src={nft} alt="" />
+                {nfts.map((nft, index) => (
+                  <img
+                    className={styles.nftImage} key={index}
+                    src={nft} alt=""
+                    onClick={() => setImage(nft)}
+                    style={{ opacity: nft === image ? '1' : '' }}
+                  />
                 ))}
               </div>
             </div>
