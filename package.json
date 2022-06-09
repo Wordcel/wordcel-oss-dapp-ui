@@ -27,6 +27,7 @@
     "@editorjs/simple-image": "^1.4.1",
     "@editorjs/table": "^2.0.1",
     "@fontsource/spectral": "^4.5.5",
+    "@nfteyez/sol-rayz": "^0.10.2",
     "@prisma/client": "^3.14.0",
     "@project-serum/anchor": "^0.23.0",
     "@react-editor-js/core": "^2.0.6",

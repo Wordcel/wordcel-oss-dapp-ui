@@ -1,6 +1,7 @@
 import toast from 'react-hot-toast';
 import styles from '@/styles/Static.module.scss';
 import tweetToVerify from '@/images/elements/tweet-to-verify.svg';
+import uploadImagePreview from '@/images/elements/upload.svg';
 
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Done, Step } from '@/images/dynamic/Step';
@@ -8,19 +9,23 @@ import { useEffect, useState } from 'react';
 import { getUserSignature } from '@/lib/signMessage';
 import { getAllUserDomains } from '@/lib/getAllUserDomains';
 import { verifyTwitterRequest } from '@/components/networkRequests';
+import { getUserNFTs } from '@/lib/getAllUserNFTs';
 
 
 export const OnboardingBox = () => {
-  let [name] = useState('');
-  let [twitter] = useState('');
-  let [username] = useState('');
-  let [blog_name] = useState('');
 
-  const { publicKey, signMessage } = useWallet();
+  const [name, setName] = useState('');
+  const [image, setImage] = useState('');
+  const [twitter, setTwitter] = useState('');
+  const [blog_name, setBlogName] = useState('');
+  const [username, setUsername] = useState('');
 
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
+  const [nfts, setNFTs] = useState<string[]>([]);
   const [domains, setDomains] = useState<string[]>([]);
   const [twitterVerified, setTwitterVerified] = useState(false);
+
+  const { publicKey, signMessage } = useWallet();
 
   useEffect(() => {
     (async function () {
@@ -30,18 +35,21 @@ export const OnboardingBox = () => {
     })();
   }, [publicKey]);
 
+  useEffect(() => {
+    (async function () {
+      if (!publicKey) return;
+      const nfts = await getUserNFTs(publicKey.toBase58());
+      console.log(nfts);
+      if (!nfts || nfts.length === 0) return;
+      setNFTs(nfts);
+    })();
+  }, [publicKey]);
+
   const tabIsActive = (tab: number) => step === tab;
   const getTabClassName = (tab: number) => {
     if (tabIsActive(tab)) return styles.activeTab;
     return styles.tab;
   }
-
-  const handleNameServiceDomain = (
-    domain: string
-  ) => {
-    username = domain;
-    setStep(2);
-  };
 
   const handleTweetButton = () => {
     if (!publicKey) return;
@@ -79,6 +87,14 @@ export const OnboardingBox = () => {
       setTwitterVerified(true);
       setStep(2);
     }
+  };
+
+  const handleDomainChange = (domain: string) => {
+    if (username === domain) {
+      setUsername('');
+      return;
+    }
+    setUsername(domain);
   }
 
   const Header = () => {
@@ -101,79 +117,89 @@ export const OnboardingBox = () => {
     );
   };
 
-  const StepOne = () => {
-    return (
-      <div className={styles.obContent}>
-        <p className="normal-text sm">What's your Twitter username?</p>
-        <input
-          onChange={(e) => twitter = e.target.value}
-          className="onboarding-input"
-          placeholder="@wordcel_club"
-        />
-        <div className={styles.tweetButtons}>
-          <button
-            onClick={handleTweetButton}
-            className={styles.tweetButton}
-          >
-            <img src={tweetToVerify.src} alt="Tweet to Verify" />
-          </button>
-          <button
-            onClick={handleTweetedButton}
-            className={styles.tweetedButton}
-          >
-            I've Tweeted
-          </button>
-        </div>
-        {/* {domains.length > 0 && (
-          <div>
-            <p className="normal-text mt-2 sm dark op-1">OR</p>
-            <p className="normal-text mt-1 sm">Select a name service domain</p>
-            <div className={styles.domainGrid}>
-              {domains.map((domain) => (
-                <div
-                  key={domain}
-                  onClick={() => handleNameServiceDomain(domain)}
-                  className={styles.domain}
-                >
-                  <p className="nm">{
-                    domain.length > 10 ? `...${domain.slice(domain.length-8, domain.length)}` : domain
-                  }</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )} */}
-      </div>
-    )
-  };
-
-  const StepTwo = () => {
-    return (
-      <div className={styles.obContent}>
-        <p className="normal-text sm">What's your display name?</p>
-        <input
-          onChange={(e) => name = e.target.value}
-          className="onboarding-input"
-          placeholder="Elon Musk"
-        />
-        <p className="normal-text sm">What's your blog name?</p>
-        <input
-          onChange={(e) => blog_name = e.target.value}
-          className="onboarding-input"
-          placeholder="SpaceX Blog"
-        />
-      </div>
-    )
-  };
-
   return (
     <div className={styles.obBox}>
       <Header />
       {step === 1 && (
-        <StepOne />
+        <div className={styles.obContent}>
+          <p className="normal-text sm">What's your Twitter username?</p>
+          <input
+            onChange={(e) => setTwitter(e.target.value)}
+            className="onboarding-input"
+            placeholder="@wordcel_club"
+          />
+          <div className={styles.tweetButtons}>
+            <button
+              onClick={handleTweetButton}
+              className={styles.tweetButton}
+            >
+              <img src={tweetToVerify.src} alt="Tweet to Verify" />
+            </button>
+            <button
+              onClick={handleTweetedButton}
+              className={styles.tweetedButton}
+            >
+              I've Tweeted
+            </button>
+          </div>
+        </div>
       )}
       {step === 2 && (
-        <StepTwo />
+        <div className={styles.obContent}>
+          <p className="normal-text sm">What's your display name?</p>
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="onboarding-input"
+            placeholder="Elon Musk"
+          />
+          <p className="normal-text sm">What's your blog name?</p>
+          <input
+            onChange={(e) => setBlogName(e.target.value)}
+            className="onboarding-input"
+            placeholder="SpaceX Blog"
+          />
+
+          <div className="mt-2 mb-2">
+            <p className="normal-text sm nm">Upload Profile Photo</p>
+            <div className={styles.uploadImageDiv}>
+              <img src={uploadImagePreview.src} alt="" />
+              <button className={styles.uploadButton}>Upload</button>
+            </div>
+          </div>
+
+          {domains.length > 0 && (
+            <div className="mt-2 mb-2">
+              <p className="normal-text sm nm">{"Choose a domain as your username (Optional)"}</p>
+              <div className={styles.domainGrid}>
+                {domains.map((domain) => (
+                  <div
+                    key={domain}
+                    onClick={() => handleDomainChange(domain)}
+                    className={styles.domain}
+                    style={{ border: username === domain ? '0.12rem solid black' : '0.12rem solid #D8D8D8' }}
+                  >
+                    <p className="nm">{
+                      domain.length > 20 ? `...${domain.slice(domain.length-18, domain.length)}` : domain
+                    }</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {nfts.length > 0 && (
+            <div>
+              <p className="normal-text sm">{"Select NFT as Profile Photo (Optional)"}</p>
+              <div className={styles.nftGrid}>
+                {nfts.map((nft) => (
+                  <img className={styles.nftImage} key={nft} src={nft} alt="" />
+                ))}
+              </div>
+            </div>
+          )}
+
+        </div>
       )}
     </div>
   );
