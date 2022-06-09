@@ -124,7 +124,7 @@ export const OnboardingBox = () => {
             I've Tweeted
           </button>
         </div>
-        {domains.length > 0 && (
+        {/* {domains.length > 0 && (
           <div>
             <p className="normal-text mt-2 sm dark op-1">OR</p>
             <p className="normal-text mt-1 sm">Select a name service domain</p>
@@ -142,7 +142,7 @@ export const OnboardingBox = () => {
               ))}
             </div>
           </div>
-        )}
+        )} */}
       </div>
     )
   };

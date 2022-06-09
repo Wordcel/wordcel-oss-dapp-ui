@@ -5639,7 +5639,7 @@ prelude-ls@^1.2.1:
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
-prisma@^3.15.0:
+prisma@3.15.0:
   version "3.15.0"
   resolved "https://registry.yarnpkg.com/prisma/-/prisma-3.15.0.tgz#3c80e8ca0814f1e90668b883ceb0c9ce3f8c5538"
   integrity sha512-HL1kGDuFi9PdhbVLYsQO9vAH9uRFAHk7ifUOQxSrzUDs7R4VfLtg45VvXz8VHwcgLY5h0OrDVe1TdEX7a4o9tg==
