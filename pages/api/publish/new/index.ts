@@ -11,6 +11,7 @@ import {
 import { getHeaderContent } from '@/components/getHeaderContent';
 import { sanitizeHtml } from '@/lib/sanitize';
 import { getBlocks } from '@/components/getArticleBlocks';
+import slugify from 'slugify';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const allowed = verifyMethod(req, res, 'POST');
@@ -53,12 +54,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       slug
     } = getHeaderContent(blocks);
 
+    let mut_slug = slug;
+
+    const already_exists = await prisma.article.findFirst({
+      where: {
+        slug,
+        owner: {
+          public_key
+        }
+      }
+    });
+
+    if (already_exists) {
+      mut_slug = `${slug}-${Date.now()}`
+    }
+
     const newArticle = await prisma.article.create({
       data: {
         title: sanitizeHtml(title),
         description: sanitizeHtml(description),
         image_url,
-        slug,
+        slug: slugify(mut_slug),
         arweave_url,
         proof_of_post,
         on_chain: true,
