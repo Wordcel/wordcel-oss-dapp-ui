@@ -44,7 +44,7 @@ export const verifyTwitterUsername = async (
 ) => {
   const basicData = await getUserIdAndGuestToken(username);
   if (!basicData || !basicData.id || !basicData.guest_token) return false;
-  const tweets = await fetch(`https://twitter.com/i/api/graphql/tGkeXL2a9dD7xb0V-Dj90w/UserTweets?variables=%7B%22userId%22%3A%22${basicData.id}%22%2C%22count%22%3A40%2C%22includePromotedContent%22%3Atrue%2C%22withQuickPromoteEligibilityTweetFields%22%3Atrue%2C%22withSuperFollowsUserFields%22%3Atrue%2C%22withDownvotePerspective%22%3Afalse%2C%22withReactionsMetadata%22%3Afalse%2C%22withReactionsPerspective%22%3Afalse%2C%22withSuperFollowsTweetFields%22%3Atrue%2C%22withVoice%22%3Atrue%2C%22withV2Timeline%22%3Atrue%7D&features=%7B%22dont_mention_me_view_api_enabled%22%3Atrue%2C%22interactive_text_enabled%22%3Atrue%2C%22responsive_web_uc_gql_enabled%22%3Afalse%2C%22vibe_tweet_context_enabled%22%3Afalse%2C%22responsive_web_edit_tweet_api_enabled%22%3Afalse%2C%22standardized_nudges_for_misinfo_nudges_enabled%22%3Afalse%7D`, {
+  const request = await fetch(`https://twitter.com/i/api/graphql/AKPZtpVOPulWtyo5wSzrjA/UserTweetsAndReplies?variables=%7B%22userId%22%3A%22${basicData.id}%22%2C%22count%22%3A40%2C%22includePromotedContent%22%3Atrue%2C%22withCommunity%22%3Atrue%2C%22withSuperFollowsUserFields%22%3Atrue%2C%22withDownvotePerspective%22%3Afalse%2C%22withReactionsMetadata%22%3Afalse%2C%22withReactionsPerspective%22%3Afalse%2C%22withSuperFollowsTweetFields%22%3Atrue%2C%22withVoice%22%3Atrue%2C%22withV2Timeline%22%3Atrue%7D&features=%7B%22dont_mention_me_view_api_enabled%22%3Atrue%2C%22interactive_text_enabled%22%3Atrue%2C%22responsive_web_uc_gql_enabled%22%3Afalse%2C%22vibe_tweet_context_enabled%22%3Afalse%2C%22responsive_web_edit_tweet_api_enabled%22%3Afalse%2C%22standardized_nudges_for_misinfo_nudges_enabled%22%3Afalse%7D`, {
     "headers": {
       "accept": "*/*",
       "accept-language": "en-US,en;q=0.9",
@@ -54,17 +54,30 @@ export const verifyTwitterUsername = async (
       "sec-fetch-mode": "cors",
       "sec-fetch-site": "same-origin",
       "sec-gpc": "1",
-      "x-csrf-token": "b6ad3d25349832695c20b6501afb0ac6",
+      "x-csrf-token": "a21922f3907c91924bfc9de59cb45d3e",
       "x-guest-token": basicData.guest_token,
       "x-twitter-active-user": "yes",
       "x-twitter-client-language": "en",
-      "cookie": "guest_id_marketing=v1%3A165471698181717269; guest_id_ads=v1%3A165471698181717269; personalization_id=\"v1_T83L3yebWDPXc2YdQWZFGw==\"; guest_id=v1%3A165471698181717269; ct0=b6ad3d25349832695c20b6501afb0ac6; gt=1534620372876038145",
+      "cookie": "guest_id_marketing=v1%3A165488297347927646; guest_id_ads=v1%3A165488297347927646; personalization_id=\"v1_qE91js++8ns7cSNILb5/Gw==\"; guest_id=v1%3A165488297347927646; ct0=a21922f3907c91924bfc9de59cb45d3e; gt=1535316592145612800",
       "Referer": "https://twitter.com/wordcel_club",
       "Referrer-Policy": "strict-origin-when-cross-origin"
     },
     "body": null,
     "method": "GET"
   });
-  // console.log(tweets);
-  return true;
-}
+  const response = await request.json();
+  const timeline = response?.data?.user?.result?.timeline_v2?.timeline?.instructions?.filter((f: any) => f.type === 'TimelineAddEntries')[0];
+  if (!timeline) return false;
+  const tweets = timeline.entries.filter((f: any) => f?.content?.itemContent?.itemType === 'TimelineTweet');
+  if (!tweets || tweets.length === 0) return false;
+  const text_content = tweets?.map((tweet: any) => tweet.content?.itemContent?.tweet_results?.result?.legacy?.full_text);
+  if (!text_content || text_content.length === 0) return false;
+  let verified = false;
+  for (const text of text_content) {
+    if (text.includes(public_key)) {
+      verified = true;
+      break;
+    }
+  }
+  return verified;
+};

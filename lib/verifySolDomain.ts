@@ -26,7 +26,6 @@ export const verifySolDomain = async (
     connection,
     domain_key
   );
-  console.log(registry.owner?.toBase58());
   if (!registry?.owner) return false;
   return registry.owner.toBase58() === public_key;
 };
