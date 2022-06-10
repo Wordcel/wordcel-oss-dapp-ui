@@ -2,6 +2,8 @@ import toast from 'react-hot-toast';
 import styles from '@/styles/Static.module.scss';
 import tweetToVerify from '@/images/elements/tweet-to-verify.svg';
 import uploadImagePreview from '@/images/elements/upload.svg';
+import greenCheck from '@/images/elements/green-check.svg';
+import twitterIcon from '@/images/icons/twitter.svg';
 
 import { Done, Step } from '@/images/dynamic/Step';
 import { useEffect, useRef, useState } from 'react';
@@ -11,11 +13,13 @@ import { createNewProfile, verifyTwitterRequest } from '@/components/networkRequ
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { createFreshProfile } from '@/components/contractInteraction';
 import { getUserNFTs } from '@/lib/getAllUserNFTs';
-import { useRouter } from 'next/router';
 import { uploadFile } from '@/components/upload';
+import Link from 'next/link';
 
 
-export const OnboardingBox = () => {
+export const OnboardingBox = ({
+  setDone
+}: { setDone: (done: boolean) => void }) => {
 
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
@@ -27,7 +31,6 @@ export const OnboardingBox = () => {
   const [nfts, setNFTs] = useState<string[]>([]);
   const [domains, setDomains] = useState<string[]>([]);
 
-  const router = useRouter();
   const wallet = useAnchorWallet();
   const fileInputRef = useRef(null);
   const { publicKey, signMessage } = useWallet();
@@ -70,6 +73,8 @@ export const OnboardingBox = () => {
     const encoded_tweet = `I'm%20verifying%20my%20wallet%20address%20for%20@Wordcel_Club%0A%0A${publicKey.toBase58()}%0A%0Ahttps://wordcel.club`;
     window.open(`https://twitter.com/intent/tweet?text=${encoded_tweet}`, '_blank');
   }
+
+  const shareTweetEncodedURL = `https://twitter.com/intent/tweet?text=Hey!%20I%20just%20set%20up%20my%20@wordcel_club%20profile,%20check%20it%20out%20here:%0Ahttps://wordcel.club/${username}`;
 
   const handleTweetedButton = async () => {
     setTwitter(twitter.replace('@', ''));
@@ -142,8 +147,9 @@ export const OnboardingBox = () => {
     });
     const verified = await request;
     if (verified) {
+      setDone(true);
+      setStep(3);
       console.log('New profile created successfully');
-      router.push('/dashboard/' + publicKey.toBase58() + '/drafts')
     }
   };
 
@@ -169,7 +175,9 @@ export const OnboardingBox = () => {
 
   return (
     <div className={styles.obBox}>
-      <Header />
+      {(step === 1 || step === 2) && (
+        <Header />
+      )}
       {step === 1 && (
         <div className={styles.obContent}>
           <p className="normal-text sm">What's your Twitter username?</p>
@@ -278,6 +286,27 @@ export const OnboardingBox = () => {
             className="secondary-btn mt-2"
           >Continue</button>
 
+        </div>
+      )}
+
+      {step === 3 && (
+        <div className={styles.stepThree}>
+          <img src={greenCheck.src} />
+          <h1 className="subheading lg bold center nm mt-2">You're all set, {name.split(' ')[0]}.</h1>
+          <p className="light-sub-heading thin center">Welcome to Wordcel. The future of decentralised publishing is now.</p>
+          <div className={styles.stepThreeButtons}>
+            <a href={shareTweetEncodedURL} target="_blank" rel="noopener noreferrer">
+              <button className={styles.shareProfileBtn}>
+                <img src={twitterIcon.src} alt="" />
+                Share your Profile
+              </button>
+            </a>
+            <Link href={'/dashboard/' + publicKey?.toBase58() + '/drafts'}>
+              <a>
+                <button className="gray-btn sm mt-1">Continue to Dashboard</button>
+              </a>
+            </Link>
+          </div>
         </div>
       )}
     </div>

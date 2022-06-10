@@ -202,3 +202,45 @@
     opacity: 0.85;
   }
 }
+
+.stepThree {
+  min-height: 45rem;
+  padding-top: 9.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & > p {
+    max-width: 40rem;
+  }
+}
+
+.stepThreeButtons {
+  width: 100%;
+  margin-top: 2rem;
+  padding: 0rem 2.2rem;
+}
+
+.shareProfileBtn {
+  position: relative;
+  width: 100%;
+  height: 5rem;
+  background: none;
+  color: hsla(240, 17%, 38%, 0.65);
+  font-weight: 600;
+  cursor: pointer;
+  border: 0.12rem solid #CACACA;
+  font-family: inherit;
+  font-size: 1.7rem;
+  border-radius: 0.5rem;
+  transition: .2s all ease-in-out;
+  &:hover {
+    opacity: 0.85;
+  }
+  & > img {
+    position: absolute;
+    width: auto;
+    height: auto;
+    top: 1.5rem;
+    left: 1.5rem;
+  }
+}

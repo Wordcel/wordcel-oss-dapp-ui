@@ -258,6 +258,13 @@ a {
   }
 }
 
+.gray-btn.sm {
+  height: 5rem;
+  font-size: 1.7rem;
+  border-radius: 0.5rem;
+  transition: .2s all ease-in-out;
+}
+
 .secondary-btn {
   background: var(--text-color);
   color: var(--inverse-color);
