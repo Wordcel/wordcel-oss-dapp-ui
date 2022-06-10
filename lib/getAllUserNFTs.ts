@@ -24,7 +24,6 @@ export const getUserNFTs = async (
 ) => {
   const metadatas = await getUserNFTsMetadata(public_key);
   if (!metadatas || metadatas.length === 0) return;
-  const nft_images = [];
   return Promise.all(metadatas.map(async (metadata) => {
     try {
       const request = await fetch(metadata);

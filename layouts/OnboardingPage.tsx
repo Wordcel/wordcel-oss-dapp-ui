@@ -11,8 +11,8 @@ import { OnboardingBox } from '@/elements/OnboardingBox';
 
 // Component Imports
 import toast from 'react-hot-toast';
-import Confetti from 'react-confetti'
-import useWindowSize from 'react-use/lib/useWindowSize'
+import Confetti from 'react-confetti';
+import useWindowSize from 'react-use/lib/useWindowSize';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
