@@ -1,24 +1,26 @@
 import * as anchor from '@project-serum/anchor';
 import randombytes from 'randombytes';
 import toast from 'react-hot-toast';
-import idl from '@/components/config/devnet-idl.json';
-import inviteIdl from '@/components/config/invite-idl.json';
+import idl from '@/components/config/wordcel-idl.json';
 import { SystemProgram, PublicKey } from '@solana/web3.js';
 import { ContentPayload } from '@/components/upload';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { uploadBundle } from '@/components/uploadBundlr';
-import { ENDPOINT } from './config/constants';
 import {
-  addProfileHash,
+  MAINNET_ENDPOINT,
+  WORDCEL_MAINNET_PROGRAM_ID,
+  INVITATION_MAINNET_PROGRAM_ID
+} from './config/constants';
+import {
   publishToServer,
   updateConnectionServer,
   getProfileHash
 } from '@/components/networkRequests';
 
 const preflightCommitment = "processed";
-const programID = new anchor.web3.PublicKey(idl.metadata.address);
-const invitationProgramID = new anchor.web3.PublicKey(inviteIdl.metadata.address);
-const connection = new anchor.web3.Connection(ENDPOINT, preflightCommitment);
+const programID = new anchor.web3.PublicKey(WORDCEL_MAINNET_PROGRAM_ID);
+const invitationProgramID = new anchor.web3.PublicKey(INVITATION_MAINNET_PROGRAM_ID);
+const connection = new anchor.web3.Connection(MAINNET_ENDPOINT, preflightCommitment);
 
 const provider = (wallet: anchor.Wallet) => new anchor.Provider(
   connection,

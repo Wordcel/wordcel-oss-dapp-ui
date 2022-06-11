@@ -1,14 +1,17 @@
 import toast from 'react-hot-toast';
 import * as anchor from '@project-serum/anchor';
 import idl from '@/components/config/invite-idl.json';
-import { ENDPOINT } from './config/constants';
+import {
+  MAINNET_ENDPOINT,
+  INVITATION_MAINNET_PROGRAM_ID
+} from './config/constants';
 import { SystemProgram, PublicKey } from '@solana/web3.js';
 
 const invitationPrefix = Buffer.from("invite");
 
 const preflightCommitment = "processed";
-const programID = new anchor.web3.PublicKey(idl.metadata.address);
-const connection = new anchor.web3.Connection(ENDPOINT, preflightCommitment);
+const programID = new anchor.web3.PublicKey(INVITATION_MAINNET_PROGRAM_ID);
+const connection = new anchor.web3.Connection(MAINNET_ENDPOINT, preflightCommitment);
 
 const provider = (wallet: anchor.Wallet) => new anchor.Provider(
   connection,

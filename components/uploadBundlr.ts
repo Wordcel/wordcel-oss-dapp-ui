@@ -1,7 +1,7 @@
 import Bundlr from '@bundlr-network/client';
 import {
-  ENDPOINT,
-  BUNDLR_DEVNET_ENDPOINT
+  MAINNET_ENDPOINT,
+  BUNDLR_MAINNET_ENDPOINT
 } from '@/components/config/constants';
 import { ContentPayload } from '@/components/upload';
 import { WalletContextState } from '@solana/wallet-adapter-react';
@@ -11,12 +11,12 @@ export const uploadBundle = async (
   wallet: WalletContextState
 ) => {
   const bundlr = new Bundlr(
-    BUNDLR_DEVNET_ENDPOINT,
+    BUNDLR_MAINNET_ENDPOINT,
     'solana',
     wallet,
     {
       timeout: 60000,
-      providerUrl: ENDPOINT,
+      providerUrl: MAINNET_ENDPOINT,
     },
   );
   const stringData = JSON.stringify(data);
