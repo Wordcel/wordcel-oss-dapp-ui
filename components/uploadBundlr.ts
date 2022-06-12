@@ -10,6 +10,7 @@ export const uploadBundle = async (
   data: ContentPayload,
   wallet: WalletContextState
 ) => {
+
   const bundlr = new Bundlr(
     BUNDLR_MAINNET_ENDPOINT,
     'solana',
@@ -21,6 +22,7 @@ export const uploadBundle = async (
   );
   const stringData = JSON.stringify(data);
   const tags = [{ name: "Content-Type", value: "text/json" }];
+
   // Counts byte stize of stringData
   const size = new Blob([stringData]).size;
   console.log('Byte Size', size);

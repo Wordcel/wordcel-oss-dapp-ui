@@ -93,7 +93,6 @@ export async function publishPost(
     program
   );
   const profileKey = profileKeyAndBump[0];
-  toast.dismiss();
 
   try {
     const profileAccount = await program.account.profile.fetch(profileKey);
@@ -102,10 +101,10 @@ export async function publishPost(
     toast('Profile does not exist');
     return;
   }
-
   const postHash = randombytes(32);
   const postSeeds = [Buffer.from("post"), postHash];
   const [postAccount] = await anchor.web3.PublicKey.findProgramAddress(postSeeds, program.programId);
+  toast.dismiss();
 
   toast.loading('Uploading');
   let metadataURI = '';
