@@ -18,8 +18,8 @@ import {
 } from '@/components/networkRequests';
 
 const preflightCommitment = "processed";
-const programID = new anchor.web3.PublicKey(WORDCEL_MAINNET_PROGRAM_ID);
-const invitationProgramID = new anchor.web3.PublicKey(INVITATION_MAINNET_PROGRAM_ID);
+const programID = WORDCEL_MAINNET_PROGRAM_ID;
+const invitationProgramID = INVITATION_MAINNET_PROGRAM_ID;
 const connection = new anchor.web3.Connection(MAINNET_ENDPOINT, preflightCommitment);
 
 const provider = (wallet: anchor.Wallet) => new anchor.Provider(

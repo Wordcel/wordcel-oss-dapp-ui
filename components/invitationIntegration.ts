@@ -10,7 +10,7 @@ import { SystemProgram, PublicKey } from '@solana/web3.js';
 const invitationPrefix = Buffer.from("invite");
 
 const preflightCommitment = "processed";
-const programID = new anchor.web3.PublicKey(INVITATION_MAINNET_PROGRAM_ID);
+const programID = INVITATION_MAINNET_PROGRAM_ID;
 const connection = new anchor.web3.Connection(MAINNET_ENDPOINT, preflightCommitment);
 
 const provider = (wallet: anchor.Wallet) => new anchor.Provider(
