@@ -19,9 +19,7 @@ export async function confirmTransaction (
     };
     return true;
   } catch {
-    toast.error(`
-      Transaction was not confirmed in 60 seconds, you will be able to re-publish the article from the dashboard.
-    `);
+    toast.error('Transaction was not confirmed in 60 seconds');
     return false;
   }
 };
