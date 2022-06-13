@@ -27,7 +27,7 @@ export const OnboardingBox = ({
   const [blog_name, setBlogName] = useState('');
   const [username, setUsername] = useState('');
 
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const [refresher, setRefresher] = useState(0);
   const [nfts, setNFTs] = useState<Set<string>>(new Set());
   const [domains, setDomains] = useState<string[]>([]);
