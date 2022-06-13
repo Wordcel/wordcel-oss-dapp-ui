@@ -21,7 +21,10 @@ import { confirmTransaction } from './txConfirmation';
 const preflightCommitment = "processed";
 const programID = WORDCEL_MAINNET_PROGRAM_ID;
 const invitationProgramID = INVITATION_MAINNET_PROGRAM_ID;
-const connection = new anchor.web3.Connection(MAINNET_ENDPOINT, preflightCommitment);
+const connection = new anchor.web3.Connection(MAINNET_ENDPOINT, {
+  commitment: preflightCommitment,
+  confirmTransactionInitialTimeout: 60000,
+});
 
 const provider = (wallet: anchor.Wallet) => new anchor.Provider(
   connection,

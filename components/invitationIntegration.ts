@@ -12,7 +12,10 @@ const invitationPrefix = Buffer.from("invite");
 
 const preflightCommitment = "processed";
 const programID = INVITATION_MAINNET_PROGRAM_ID;
-const connection = new anchor.web3.Connection(MAINNET_ENDPOINT, preflightCommitment);
+const connection = new anchor.web3.Connection(MAINNET_ENDPOINT, {
+  commitment: preflightCommitment,
+  confirmTransactionInitialTimeout: 60000,
+});
 
 const provider = (wallet: anchor.Wallet) => new anchor.Provider(
   connection,
