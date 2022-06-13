@@ -27,13 +27,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const authenticated = authenticate(public_key, signature, res);
     if (!authenticated) return;
 
-    // const twitter_verified = await verifyTwitterUsername(username, public_key);
-    // if (!twitter_verified) {
-    //   res.status(400).json({
-    //     error: 'Tweet not found'
-    //   });
-    //   return;
-    // }
+    const twitter_verified = await verifyTwitterUsername(username, public_key);
+    if (!twitter_verified) {
+      res.status(400).json({
+        error: 'Tweet not found'
+      });
+      return;
+    }
 
     const new_twitter_value = await prisma.verifiedTwitter.create({
       data: {
