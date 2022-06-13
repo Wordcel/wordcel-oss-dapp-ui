@@ -35,6 +35,11 @@ export const NewArticle = () => {
     editorInstance.current = instance
   }, []);
 
+  const defaultBlocks = [
+    { type: 'header', data: { text: 'Enter a heading', level: 1 } },
+    { type: 'paragraph', data: { text: 'Enter a sub heading' } },
+  ];
+
   useEffect(() => {
     (async function () {
       if (publicKey && signMessage) {
@@ -135,7 +140,10 @@ export const NewArticle = () => {
         <div className={styles.editorMaxWidth}>
           {typeof window !== 'undefined' && (
             <div className="mb-main">
-              <Editor handleInstance={handleInitialize} />
+              <Editor
+                blocks={defaultBlocks}
+                handleInstance={handleInitialize}
+              />
             </div>
           )}
         </div>
