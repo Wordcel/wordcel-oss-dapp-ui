@@ -6,6 +6,7 @@ import {
   INVITATION_MAINNET_PROGRAM_ID
 } from './config/constants';
 import { SystemProgram, PublicKey } from '@solana/web3.js';
+import { confirmTransaction } from './txConfirmation';
 
 const invitationPrefix = Buffer.from("invite");
 
@@ -48,6 +49,7 @@ async function adminInvite(
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(from_admin));
   const toInviteKey = await getInviteKey(to_user);
   toast.dismiss();
+  toast.loading('Sending Transaction');
   const tx = await program.methods.initialize()
     .accounts({
       inviteAccount: toInviteKey,
@@ -56,16 +58,9 @@ async function adminInvite(
       systemProgram: SystemProgram.programId
     })
     .rpc();
-  const confirmation = connection.confirmTransaction(tx);
-  toast.promise(confirmation, {
-    loading: 'Confirming Transaction',
-    success: 'Invite Sent',
-    error: 'Transaction Failed'
-  });
-  const confirmed = await confirmation;
-  if (confirmed.value.err !== null) {
-    throw new Error('Transaction Failed');
-  }
+  toast.dismiss();
+  const confirmed = await confirmTransaction(connection, tx);
+  if (!confirmed) throw new Error('Transaction Failed');
   return toInviteKey;
 }
 
@@ -90,6 +85,7 @@ export async function sendInvite(
     return await adminInvite(from_user, to);
   }
 
+  toast.loading('Sending Transaction');
   // Should send invites
   const tx = await program.methods.sendInvite()
     .accounts({
@@ -99,15 +95,8 @@ export async function sendInvite(
       authority: from_user.publicKey,
       systemProgram: SystemProgram.programId
     }).rpc();
-  const confirmation = connection.confirmTransaction(tx);
-  toast.promise(confirmation, {
-    loading: 'Confirming Transaction',
-    success: 'Invite Sent',
-    error: 'Transaction Failed'
-  });
-  const confirmed = await confirmation;
-  if (confirmed.value.err !== null) {
-    throw new Error('Transaction Failed');
-  }
+  toast.dismiss();
+  const confirmed = await confirmTransaction(connection, tx);
+  if (!confirmed) throw new Error('Transaction Failed');
   return toInviteKey;
 };
