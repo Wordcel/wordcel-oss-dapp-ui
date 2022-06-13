@@ -124,8 +124,18 @@ export async function publishPost(
   toast.success('Uploaded');
   console.log(`Arweave URI: ${metadataURI}`);
   let txid;
-  toast.loading('Sending Transaction');
 
+  toast.loading('Saving');
+  const saved = await publishToServer({
+    id: id?.toString(),
+    arweave_url: metadataURI,
+    public_key: wallet.publicKey.toString(),
+    signature: signature,
+    proof_of_post: published_post || postAccount.toBase58(),
+  });
+  toast.dismiss();
+
+  toast.loading('Sending Transaction');
   if (published_post) {
     txid = await program.rpc.updatePost(metadataURI, {
       accounts: {
@@ -147,19 +157,11 @@ export async function publishPost(
     });
   }
   toast.dismiss();
+
   try {
     if (!txid) throw new Error('Transaction creation failed');
     const confirmed = await confirmTransaction(connection, txid);
     if (!confirmed) throw new Error('Transaction confirmation failed');
-    toast.loading('Saving');
-    const saved = await publishToServer({
-      id: id?.toString(),
-      arweave_url: metadataURI,
-      public_key: wallet.publicKey.toString(),
-      signature: signature,
-      proof_of_post: published_post || postAccount.toBase58(),
-    });
-    toast.dismiss();
     if (saved && !getResponse) return txid;
     if (saved && getResponse) return saved;
   } catch (e) {
