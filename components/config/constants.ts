@@ -3,7 +3,7 @@ import { PublicKey } from "@solana/web3.js";
 
 export const MESSAGE_TO_SIGN = 'WORDCEL';
 
-// export const ENDPOINT = 'https://psytrbhymqlkfrhudd.dev.genesysgo.net:8899/';
+// export const ENDPOINT = 'https://devnet.genesysgo.net/';
 // Dedicated RPC Node
 export const ENDPOINT = 'https://wild-shy-sea.solana-devnet.quiknode.pro/';
 

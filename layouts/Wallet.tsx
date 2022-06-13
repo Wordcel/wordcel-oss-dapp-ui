@@ -22,18 +22,14 @@ require('@solana/wallet-adapter-react-ui/styles.css');
 
 export const clusterApiUrl = (cluster: 'devnet' | 'mainnet-beta') => (
   cluster === 'devnet'
-    ? 'https://psytrbhymqlkfrhudd.dev.genesysgo.net:8899/'
+    ? 'https://devnet.genesysgo.net/'
     : 'https://ssc-dao.genesysgo.net/'
 );
 
 export const Wallet: FC = ({
   children
 }) => {
-  // If window exists and is on localhost, choose devnet, else choose mainnet
-  const network =
-    (typeof window !== 'undefined'
-    && window.location.host.includes('localhost'))
-    ? WalletAdapterNetwork.Devnet : WalletAdapterNetwork.Mainnet;
+  const network = WalletAdapterNetwork.Mainnet;
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
   const wallets = useMemo(
     () => [
