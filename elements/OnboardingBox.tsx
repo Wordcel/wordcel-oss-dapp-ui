@@ -27,8 +27,9 @@ export const OnboardingBox = ({
   const [blog_name, setBlogName] = useState('');
   const [username, setUsername] = useState('');
 
-  const [step, setStep] = useState(1);
-  const [nfts, setNFTs] = useState<string[]>([]);
+  const [step, setStep] = useState(2);
+  const [refresher, setRefresher] = useState(0);
+  const [nfts, setNFTs] = useState<Set<string>>(new Set());
   const [domains, setDomains] = useState<string[]>([]);
 
   const wallet = useAnchorWallet();
@@ -44,13 +45,12 @@ export const OnboardingBox = ({
   }, [publicKey]);
 
   useEffect(() => {
-    (async function () {
-      if (!publicKey) return;
-      const nfts = await getUserNFTs(publicKey.toBase58());
-      console.log(nfts);
-      if (!nfts || nfts.length === 0) return;
-      setNFTs(nfts);
-    })();
+    if (!publicKey) return;
+    getUserNFTs(
+      publicKey.toBase58(),
+      (nft: string) => nfts.add(nft)
+    );
+    setInterval(() => setRefresher(refresher + 1), 1000);
   }, [publicKey]);
 
   useEffect(() => {
@@ -265,11 +265,11 @@ export const OnboardingBox = ({
             </div>
           )}
 
-          {nfts.length > 0 && (
+          {Array.from(nfts).length > 0 && (
             <div>
               <p className="normal-text sm">{"Select NFT as Profile Photo"}</p>
               <div className={styles.nftGrid}>
-                {nfts.map((nft, index) => (
+                {Array.from(nfts).map((nft, index) => (
                   <img
                     className={styles.nftImage} key={index}
                     src={nft} alt=""

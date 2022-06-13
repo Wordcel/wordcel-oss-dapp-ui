@@ -20,7 +20,8 @@ export const getUserNFTsMetadata = async (
 }
 
 export const getUserNFTs = async (
-  public_key: string
+  public_key: string,
+  pushNFT: (nft: string) => void
 ) => {
   const metadatas = await getUserNFTsMetadata(public_key);
   if (!metadatas || metadatas.length === 0) return;
@@ -28,6 +29,7 @@ export const getUserNFTs = async (
     try {
       const request = await fetch(metadata);
       const response = await request.json();
+      pushNFT(response.image);
       return response.image;
     }
     catch {

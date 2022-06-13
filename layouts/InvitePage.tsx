@@ -47,7 +47,9 @@ export const InvitePage = () => {
       }
 
       // Temporarily disabling new invitations from normal users
-      router.push('/');
+      router.push('/'); // Remove this
+
+      // Uncomment the following code
 
       // (async function () {
       //   let user_account;
