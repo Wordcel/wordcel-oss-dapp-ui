@@ -91,7 +91,7 @@ export const StaticNavbar = ({
       {proof_of_post?.arweave_url && (
         <div className={styles.proofOfPost}>
           <a
-            href={`https://solscan.io/account/${proof_of_post.account}?cluster=${CLUSTER}`}
+            href={`https://explorer.solana.com/account/${proof_of_post.account}?cluster=${CLUSTER}`}
             target="_blank"
             rel="noopener noreferrer">
               <img
