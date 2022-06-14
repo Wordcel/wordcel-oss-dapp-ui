@@ -37,7 +37,7 @@ model Article {
   arweave_url String
   slug String
   user_id Int
-  owner User @relation(fields: [user_id], references: [id])
+  owner User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Connection {
@@ -55,14 +55,14 @@ model Draft {
   created_at DateTime @default(now())
   user_id Int
   blocks Block?
-  owner User @relation(fields: [user_id], references: [id])
+  owner User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Block {
   id Int @id @default(autoincrement())
   data String
   draft_id Int
-  draft Draft @relation(fields: [draft_id], references: [id])
+  draft Draft @relation(fields: [draft_id], references: [id], onDelete: Cascade)
 }
 
 model VerifiedTwitter {
