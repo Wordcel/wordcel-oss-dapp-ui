@@ -16,7 +16,7 @@ yarn
 
 3. Generate the Prisma client
 ```
-yarn prisma generate
+yarn prisma db push
 ```
 
 4. Run the development server
