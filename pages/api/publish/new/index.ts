@@ -11,9 +11,10 @@ import {
 import { getHeaderContent } from '@/components/getHeaderContent';
 import { sanitizeHtml } from '@/lib/sanitize';
 import { getBlocks } from '@/components/getArticleBlocks';
+import { withSentry } from '@sentry/nextjs';
 import slugify from 'slugify';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const allowed = verifyMethod(req, res, 'POST');
   if (!allowed) return;
   try {
@@ -99,3 +100,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
   }
 }
+
+export default withSentry(handler);

@@ -9,8 +9,9 @@ import {
   authenticate
 } from '@/lib/server';
 import { verifyTwitterUsername } from '@/lib/verifyTwitter';
+import { withSentry } from '@sentry/nextjs';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const allowed = verifyMethod(req, res, 'POST');
   if (!allowed) return;
   try {
@@ -55,3 +56,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
   }
 }
+
+export default withSentry(handler);

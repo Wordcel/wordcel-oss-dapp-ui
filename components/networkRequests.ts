@@ -1,27 +1,10 @@
 import {
-  AddProfileHash,
   PublishArticleRequest,
   Connect,
   Draft,
   NewProfile
 } from '@/types/api';
 import * as anchor from '@project-serum/anchor';
-
-export async function addProfileHash (
-  data: AddProfileHash
-) {
-  const request = await fetch(
-    '/api/user/create/profile',
-  {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  });
-  const response = await request.json();
-  return response;
-};
 
 export async function publishToServer (
   data: PublishArticleRequest

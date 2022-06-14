@@ -8,8 +8,9 @@ import {
   verifyMethod,
   authenticate
 } from '@/lib/server';
+import { withSentry } from '@sentry/nextjs';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   const allowed = verifyMethod(req, res, 'POST');
   if (!allowed) return;
   try {
@@ -58,4 +59,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       error: 'Error cancelling connection',
     });
   }
-}
+};
+
+export default withSentry(handler);

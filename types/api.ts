@@ -6,12 +6,6 @@ export interface PublishArticleRequest {
   proof_of_post: string;
 }
 
-export interface AddProfileHash {
-  public_key: string;
-  signature: Uint8Array;
-  profile_hash: string;
-}
-
 export interface Connect {
   account: string;
   profile_owner: string;
