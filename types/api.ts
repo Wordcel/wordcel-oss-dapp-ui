@@ -44,3 +44,10 @@ export interface NewProfile {
   signature: Uint8Array;
   twitter?: string;
 }
+
+export interface NewInvite {
+  account: string;
+  receiver: string;
+  public_key: string;
+  signature: Uint8Array;
+};

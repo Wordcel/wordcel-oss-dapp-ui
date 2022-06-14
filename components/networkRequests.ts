@@ -2,7 +2,8 @@ import {
   PublishArticleRequest,
   Connect,
   Draft,
-  NewProfile
+  NewProfile,
+  NewInvite
 } from '@/types/api';
 import * as anchor from '@project-serum/anchor';
 
@@ -142,6 +143,22 @@ export async function createNewProfile (
 ) {
   const request = await fetch(
     '/api/user/new',
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+  if (request.ok) return true;
+  throw new Error('Invalid request');
+};
+
+export async function createNewInvite (
+  data: NewInvite
+) {
+  const request = await fetch(
+    '/api/invite/create',
   {
     method: 'POST',
     headers: {

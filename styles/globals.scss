@@ -379,6 +379,12 @@ a {
 .mt-2 {
   margin-top: 2rem;
 }
+.mt-3 {
+  margin-top: 3rem;
+}
+.mt-4 {
+  margin-top: 4rem;
+}
 .mb-4 {
   margin-bottom: 4rem;
 }
@@ -657,4 +663,17 @@ figure {
 
 .hidden {
   display: none;
+}
+
+.status-text {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: #0E8869;
+  margin: 0rem;
+  padding: 0.5rem 3rem;
+}
+
+.status {
+  background: rgba(16, 172, 132, 0.22);
+  border-radius: 0.6rem;
 }

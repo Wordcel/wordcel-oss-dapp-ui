@@ -25,6 +25,9 @@ import { StaticNavbar } from "./Navbar";
 import { Footer } from './Footer';
 import { useRouter } from 'next/router';
 import { RequestConnect } from '@/elements/RequestConnect';
+import { createNewInvite } from '@/components/networkRequests';
+import { getUserSignature } from '@/lib/signMessage';
+import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 
 
 export const InvitePage = () => {
@@ -33,9 +36,10 @@ export const InvitePage = () => {
   const [loading, setLoading] = useState(false);
   const [invitesLeft, setInvitesLeft] = useState(2);
   const [inviteAddress, setInviteAddress] = useState('');
+  const [userInvites, setUserInvites] = useState<string[]>([]);
 
-  const { publicKey } = useWallet();
   const anchorWallet = useAnchorWallet();
+  const { publicKey, signMessage } = useWallet();
 
   useEffect(() => {
     if (publicKey) {
@@ -47,7 +51,8 @@ export const InvitePage = () => {
       }
 
       // Temporarily disabling new invitations from normal users
-      router.push('/'); // Remove this
+      // Remove this
+      router.push('/');
 
       // Uncomment the following code
 
@@ -65,24 +70,49 @@ export const InvitePage = () => {
     }
   }, [publicKey]);
 
+  useEffect(() => {
+    (async function () {
+      if (!publicKey) return;
+      const request = await fetch('/api/invite/get/' + publicKey.toBase58());
+      const response = await request.json();
+      setUserInvites(response?.invites?.map(
+        (invite: any) => invite.account
+      ));
+    })();
+  }, [invitesLeft, publicKey])
+
   const getInviteText = (invitesLeft: number): string => {
     if (invitesLeft === 1) return 'invite';
     return 'invites';
   }
 
   const handleSendInvite = async () => {
-    if (!anchorWallet) return;
+    if (!anchorWallet || !signMessage || !publicKey) return;
     if (invitesLeft === 0) {
       toast('Sorry, you don\'t have any invites left');
       return;
     };
+    const signature = await getUserSignature(signMessage);
+    if (!signature) return;
     const invite = await sendInvite(
       anchorWallet as any,
       new PublicKey(inviteAddress)
     );
     if (!invite) return;
+    const account = invite.toBase58();
+    const saved = await createNewInvite({
+      account: account,
+      public_key: publicKey.toBase58(),
+      signature: signature,
+      receiver: inviteAddress
+    });
     setInvitesLeft(invitesLeft - 1);
-  }
+  };
+
+  const copyLink = (account: string) => {
+    navigator.clipboard.writeText('https://wordcel.club/invitation/' + account);
+    toast.success('Invitation link copied');
+  };
 
   return (
     <div className="container-flex">
@@ -96,7 +126,7 @@ export const InvitePage = () => {
           {!loading && (
             <div className="width-100">
               {publicKey && (
-                <>
+                <div>
                   <div className={styles.header}>
                     <img src={quill.src} alt="" />
                     <h1 className="heading center nm mt-2">You have {invitesLeft} {getInviteText(invitesLeft)}</h1>
@@ -111,9 +141,26 @@ export const InvitePage = () => {
                     <button
                       onClick={handleSendInvite}
                       disabled={inviteAddress.length !== 44}
-                      className="secondary-btn mt-2">Send Invite</button>
+                      className="secondary-btn mt-2">
+                        Send Invite
+                    </button>
+                    {userInvites.length > 0 && (
+                      <div className="mt-2 width-100">
+                        {userInvites.map((invite) => (
+                          <div
+                            onClick={() => copyLink(invite)}
+                            className={styles.sentInvite}
+                          >
+                            <p className="light-sub-heading thin">{getTrimmedPublicKey(invite, 6)}</p>
+                            <div className="status">
+                              <p className="status-text">Sent</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </>
+                </div>
               )}
               {!publicKey && (
                 <RequestConnect />
