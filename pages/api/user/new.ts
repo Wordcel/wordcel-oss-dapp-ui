@@ -48,29 +48,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const authenticated = authenticate(public_key, signature, res);
     if (!authenticated) return;
 
-    if (username.includes('.sol')) {
-      const verified = await verifySolDomain(public_key, username);
-      if (!verified) {
-        res.status(400).json({
-          error: 'Invalid SOL Domain'
-        });
-        return;
-      };
-    } else {
-      // verify twitter username is verified
-      const twitter_exists = await prisma.verifiedTwitter.findFirst({
-        where: {
-          public_key,
-          username
-        }
+    if (!username.toLowerCase().includes('.sol')) {
+      res.status(400).json({
+        error: 'You must have a .SOL domain to continue'
       });
-      if (!twitter_exists) {
-        res.status(400).json({
-          error: 'Twitter not verified'
-        });
-        return;
-      }
+      return;
     }
+
+    const verified = await verifySolDomain(public_key, username);
+    if (!verified) {
+      res.status(400).json({
+        error: 'Invalid SOL Domain'
+      });
+      return;
+    };
+
+    // verify twitter username is verified
+    // const twitter_exists = await prisma.verifiedTwitter.findFirst({
+    //   where: {
+    //     public_key,
+    //     username
+    //   }
+    // });
+    // if (!twitter_exists) {
+    //   res.status(400).json({
+    //     error: 'Twitter not verified'
+    //   });
+    //   return;
+    // }
 
     const new_profile = await prisma.user.create({
       data: {

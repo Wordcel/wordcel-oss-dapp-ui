@@ -53,9 +53,9 @@ export const OnboardingBox = ({
     setInterval(() => setRefresher(refresher + 1), 1000);
   }, [publicKey]);
 
-  useEffect(() => {
-    setUsername(twitter.replace('@', ''))
-  }, [twitter]);
+  // useEffect(() => {
+  //   setUsername(twitter.replace('@', ''))
+  // }, [twitter]);
 
   const tabIsActive = (tab: number) => step === tab;
   const getTabClassName = (tab: number) => {
@@ -106,7 +106,7 @@ export const OnboardingBox = ({
 
   const handleDomainChange = (domain: string) => {
     if (username === domain) {
-      setUsername(twitter.replace('@', ''));
+      setUsername('');
       return;
     }
     setUsername(domain);
@@ -124,8 +124,8 @@ export const OnboardingBox = ({
       toast('Please sign the message to authenticate your wallet');
       return;
     }
-    if (!name || !blog_name || !image) {
-      toast('Please enter your name, blog name and select an image');
+    if (!name || !blog_name || !image || !username) {
+      toast('Please enter your name, username, blog name and select an image');
       return;
     }
     const profile_hash = await createFreshProfile(wallet as any);
@@ -245,9 +245,9 @@ export const OnboardingBox = ({
             </div>
           </div>
 
-          {domains.length > 0 && (
-            <div className="mt-2 mb-2">
-              <p className="normal-text sm nm">{"Choose a domain as your username"}</p>
+          <div className="mt-2 mb-2">
+            <p className="normal-text sm nm">{"Choose a domain as your username"}</p>
+            {domains.length > 0 && (
               <div className={styles.domainGrid}>
                 {domains.map((domain) => (
                   <div
@@ -262,8 +262,11 @@ export const OnboardingBox = ({
                   </div>
                 ))}
               </div>
-            </div>
-          )}
+            )}
+            {domains.length === 0 && (
+              <p className="normal-text sm">It seems like you don't have any domains, you need a .SOL domain to sign up</p>
+            )}
+          </div>
 
           {Array.from(nfts).length > 0 && (
             <div>
