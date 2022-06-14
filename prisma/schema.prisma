@@ -22,6 +22,7 @@ model User {
   discord String?
   image_url String?
   banner_url String?
+  invites Invite[]
   articles Article[]
   drafts Draft[]
 }
@@ -69,4 +70,12 @@ model VerifiedTwitter {
   id Int @id @default(autoincrement())
   public_key String
   username String
+}
+
+model Invite {
+  id Int @id @default(autoincrement())
+  account String
+  user_id Int
+  sender User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  receiver String
 }
