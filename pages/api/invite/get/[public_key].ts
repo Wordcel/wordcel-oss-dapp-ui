@@ -15,10 +15,13 @@ async function handler(
       sender: {
         public_key: public_key as string
       }
+    },
+    orderBy: {
+      created_at: 'desc',
     }
   });
   res.status(200).json({
-    invites: invites
+    invites: JSON.parse(JSON.stringify(invites)),
   });
 };
 

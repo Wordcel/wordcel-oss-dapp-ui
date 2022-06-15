@@ -73,13 +73,15 @@ export const InvitePage = () => {
   useEffect(() => {
     (async function () {
       if (!publicKey) return;
+      toast.loading('Fetching Invites');
       const request = await fetch('/api/invite/get/' + publicKey.toBase58());
       const response = await request.json();
       setUserInvites(response?.invites?.map(
         (invite: any) => invite.account
       ));
+      toast.dismiss();
     })();
-  }, [invitesLeft, publicKey])
+  }, [publicKey])
 
   const getInviteText = (invitesLeft: number): string => {
     if (invitesLeft === 1) return 'invite';
@@ -146,8 +148,9 @@ export const InvitePage = () => {
                     </button>
                     {userInvites.length > 0 && (
                       <div className="mt-2 width-100">
-                        {userInvites.map((invite) => (
+                        {userInvites.map((invite, index) => (
                           <div
+                            key={index}
                             onClick={() => copyLink(invite)}
                             className={styles.sentInvite}
                           >
