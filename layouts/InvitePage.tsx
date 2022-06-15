@@ -151,7 +151,7 @@ export const InvitePage = () => {
                             onClick={() => copyLink(invite)}
                             className={styles.sentInvite}
                           >
-                            <p className="light-sub-heading thin">{getTrimmedPublicKey(invite, 6)}</p>
+                            <p className="light-sub-heading thin nm">{getTrimmedPublicKey(invite, 6)}</p>
                             <div className="status">
                               <p className="status-text">Sent</p>
                             </div>
