@@ -54,6 +54,10 @@ export const OnboardingBox = ({
     return () => clearInterval(interval);
   }, [publicKey]);
 
+  useEffect(() => {
+    if (domains.length === 1) setUsername(domains[0]);
+  }, [domains])
+
   const tabIsActive = (tab: number) => step === tab;
   const getTabClassName = (tab: number) => {
     if (tabIsActive(tab)) return styles.activeTab;
