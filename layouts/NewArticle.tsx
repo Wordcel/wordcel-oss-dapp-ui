@@ -43,7 +43,7 @@ export const NewArticle = () => {
   useEffect(() => {
     (async function () {
       if (publicKey && signMessage) {
-        const userSignature = await getUserSignature(signMessage);
+        const userSignature = await getUserSignature(signMessage, publicKey.toBase58());
         if (!userSignature) {
           toast('Please sign the message on your wallet so that we can save your progress');
           setSigError(`Error: ${Math.random()}`)
@@ -93,8 +93,8 @@ export const NewArticle = () => {
     if (!anchorWallet || publishClicked) return;
     publishClicked = true;
     const savedContent = await editorInstance.current?.save();
-    if (!savedContent || !signMessage) return;
-    const signature = await getUserSignature(signMessage);
+    if (!savedContent || !signMessage || !publicKey) return;
+    const signature = await getUserSignature(signMessage, publicKey.toBase58());
     if (!signature) return;
     const payload = {
       content: { blocks: savedContent.blocks },

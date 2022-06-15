@@ -92,7 +92,7 @@ export const InvitePage = () => {
       toast('Sorry, you don\'t have any invites left');
       return;
     };
-    const signature = await getUserSignature(signMessage);
+    const signature = await getUserSignature(signMessage, publicKey.toBase58());
     if (!signature) return;
     const invite = await sendInvite(
       anchorWallet as any,

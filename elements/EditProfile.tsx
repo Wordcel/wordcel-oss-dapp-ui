@@ -86,7 +86,7 @@ export const EditProfile = ({
     }
     setIsOpen(false);
     if (!signMessage || !publicKey) return;
-    const signature = await getUserSignature(signMessage);
+    const signature = await getUserSignature(signMessage, publicKey.toBase58());
     if (!signature) return;
     const data = await publish({
       ...updateData,

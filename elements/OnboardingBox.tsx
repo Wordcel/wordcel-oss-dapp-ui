@@ -50,12 +50,9 @@ export const OnboardingBox = ({
       publicKey.toBase58(),
       (nft: string) => nfts.add(nft)
     );
-    setInterval(() => setRefresher(refresher + 1), 1000);
+    const interval = setInterval(() => setRefresher(refresher + 1), 1000);
+    return () => clearInterval(interval);
   }, [publicKey]);
-
-  // useEffect(() => {
-  //   setUsername(twitter.replace('@', ''))
-  // }, [twitter]);
 
   const tabIsActive = (tab: number) => step === tab;
   const getTabClassName = (tab: number) => {
@@ -83,7 +80,7 @@ export const OnboardingBox = ({
       return;
     };
     if (!publicKey || !signMessage) return;
-    const signature = await getUserSignature(signMessage);
+    const signature = await getUserSignature(signMessage, publicKey.toBase58());
     if (!signature) {
       toast('Please sign the message to authenticate your wallet');
       return;
@@ -119,7 +116,7 @@ export const OnboardingBox = ({
 
   const handleSubmit = async () => {
     if (!publicKey || !signMessage) return;
-    const signature = await getUserSignature(signMessage);
+    const signature = await getUserSignature(signMessage, publicKey.toBase58());
     if (!signature) {
       toast('Please sign the message to authenticate your wallet');
       return;

@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState, useRef } from 'react';
 import { ConnectionProvider, WalletProvider, useWallet } from '@solana/wallet-adapter-react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import {
@@ -26,6 +26,34 @@ export const clusterApiUrl = (cluster: 'devnet' | 'mainnet-beta') => (
     : 'https://ssc-dao.genesysgo.net/'
 );
 
+export const AutoClear = () => {
+  const { wallet, publicKey } = useWallet();
+
+  const walletRef = useRef(wallet);
+  const publicKeyRef = useRef(publicKey);
+
+  publicKeyRef.current = publicKey;
+  walletRef.current = wallet;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (walletRef.current && publicKeyRef.current) {
+        let currentKey = '';
+        if ((walletRef.current.adapter as any)?._wallet?.publicKey) {
+          currentKey = (walletRef.current.adapter as any)._wallet.publicKey.toBase58();
+        }
+        if (currentKey && currentKey !== publicKeyRef?.current.toBase58()) {
+          localStorage.clear();
+          window.location.reload();
+        }
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return <></>;
+}
+
 export const Wallet: FC = ({
   children
 }) => {
@@ -48,6 +76,7 @@ export const Wallet: FC = ({
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect={false}>
         <WalletModalProvider>
+          <AutoClear />
           {children}
         </WalletModalProvider>
       </WalletProvider>
