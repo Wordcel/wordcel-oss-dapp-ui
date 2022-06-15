@@ -6,7 +6,7 @@ import {
   INVITATION_MAINNET_PROGRAM_ID
 } from './config/constants';
 import { SystemProgram, PublicKey } from '@solana/web3.js';
-import { confirmTransaction } from './txConfirmation';
+import { sendAndConfirmTransaction } from './txConfirmation';
 
 const invitationPrefix = Buffer.from("invite");
 
@@ -14,7 +14,7 @@ const preflightCommitment = "processed";
 const programID = INVITATION_MAINNET_PROGRAM_ID;
 const connection = new anchor.web3.Connection(MAINNET_ENDPOINT, {
   commitment: preflightCommitment,
-  confirmTransactionInitialTimeout: 60000,
+  confirmTransactionInitialTimeout: 120000,
 });
 
 const provider = (wallet: anchor.Wallet) => new anchor.Provider(
@@ -52,17 +52,18 @@ async function adminInvite(
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(from_admin));
   const toInviteKey = await getInviteKey(to_user);
   toast.dismiss();
-  toast.loading('Sending Transaction');
   const tx = await program.methods.initialize()
     .accounts({
       inviteAccount: toInviteKey,
       authority: to_user,
       payer: from_admin.publicKey,
       systemProgram: SystemProgram.programId
-    })
-    .rpc();
-  toast.dismiss();
-  const confirmed = await confirmTransaction(connection, tx);
+    }).transaction();
+  const confirmed = await sendAndConfirmTransaction(
+    connection,
+    tx,
+    from_admin
+  );
   if (!confirmed) throw new Error('Transaction Failed');
   return toInviteKey;
 }
@@ -88,7 +89,6 @@ export async function sendInvite(
     return await adminInvite(from_user, to);
   }
 
-  toast.loading('Sending Transaction');
   // Should send invites
   const tx = await program.methods.sendInvite()
     .accounts({
@@ -97,9 +97,13 @@ export async function sendInvite(
       to: to,
       authority: from_user.publicKey,
       systemProgram: SystemProgram.programId
-    }).rpc();
-  toast.dismiss();
-  const confirmed = await confirmTransaction(connection, tx);
+    }).transaction();
+
+  const confirmed = await sendAndConfirmTransaction(
+    connection,
+    tx,
+    from_user
+  );
   if (!confirmed) throw new Error('Transaction Failed');
   return toInviteKey;
 };

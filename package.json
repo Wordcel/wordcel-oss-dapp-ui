@@ -29,7 +29,7 @@
     "@fontsource/spectral": "^4.5.5",
     "@nfteyez/sol-rayz": "^0.10.2",
     "@prisma/client": "^3.15.1",
-    "@project-serum/anchor": "^0.23.0",
+    "@project-serum/anchor": "^0.24.2",
     "@react-editor-js/core": "^2.0.6",
     "@rodrigoodhin/editorjs-image-gallery": "^0.1.0",
     "@sentry/nextjs": "^7.1.1",

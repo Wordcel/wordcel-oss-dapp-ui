@@ -16,14 +16,14 @@ import {
   updateConnectionServer,
   getProfileHash
 } from '@/components/networkRequests';
-import { confirmTransaction } from './txConfirmation';
+import { sendAndConfirmTransaction } from './txConfirmation';
 
 const preflightCommitment = "processed";
 const programID = WORDCEL_MAINNET_PROGRAM_ID;
 const invitationProgramID = INVITATION_MAINNET_PROGRAM_ID;
 const connection = new anchor.web3.Connection(MAINNET_ENDPOINT, {
   commitment: preflightCommitment,
-  confirmTransactionInitialTimeout: 60000,
+  confirmTransactionInitialTimeout: 120000,
 });
 
 const provider = (wallet: anchor.Wallet) => new anchor.Provider(
@@ -57,8 +57,7 @@ export async function createFreshProfile (
     inviteSeeds,
     invitationProgramID
   );
-  toast.loading('Sending Transaction');
-  const txid = await program.rpc.initialize(profileHash, {
+  const transaction = await program.methods.initialize(profileHash).accounts({
     accounts: {
       profile: profileKey,
       invitation: inviteKey,
@@ -66,9 +65,12 @@ export async function createFreshProfile (
       systemProgram: SystemProgram.programId,
       invitationProgram: invitationProgramID
     }
-  });
-  toast.dismiss();
-  const confirmed = await confirmTransaction(connection, txid);
+  }).transaction();
+  const confirmed = await sendAndConfirmTransaction(
+    connection,
+    transaction,
+    wallet
+  );
   if (!confirmed) return;
   return profileHash.toString('base64');
 };
@@ -101,6 +103,7 @@ export async function publishPost(
     toast('Profile does not exist');
     return;
   }
+
   const postHash = randombytes(32);
   const postSeeds = [Buffer.from("post"), postHash];
   const [postAccount] = await anchor.web3.PublicKey.findProgramAddress(postSeeds, program.programId);
@@ -123,7 +126,38 @@ export async function publishPost(
   };
   toast.success('Uploaded');
   console.log(`Arweave URI: ${metadataURI}`);
-  let txid;
+
+  let transaction;
+  if (published_post) {
+    transaction = await program.methods.updatePost(metadataURI).accounts({
+      accounts: {
+        post: new PublicKey(published_post),
+        profile: profileKey,
+        authority: wallet.publicKey,
+        systemProgram: SystemProgram.programId,
+      }
+    }).transaction();
+  } else {
+    transaction = await program.methods.createPost(metadataURI, postHash).accounts({
+      accounts: {
+        post: postAccount,
+        profile: profileKey,
+        authority: wallet.publicKey,
+        systemProgram: SystemProgram.programId
+      },
+    }).transaction();
+  }
+
+  const txid = await sendAndConfirmTransaction(
+    connection,
+    transaction,
+    wallet,
+    false
+  );
+
+  if (!txid) {
+    throw new Error('Transaction creation failed');
+  }
 
   toast.loading('Saving');
   const saved = await publishToServer({
@@ -135,39 +169,8 @@ export async function publishPost(
   });
   toast.dismiss();
 
-  toast.loading('Sending Transaction');
-  if (published_post) {
-    txid = await program.rpc.updatePost(metadataURI, {
-      accounts: {
-        post: new PublicKey(published_post),
-        profile: profileKey,
-        authority: wallet.publicKey,
-        systemProgram: SystemProgram.programId,
-      }
-    });
-    console.log(`update tx: ${txid}`);
-  } else {
-    txid = await program.rpc.createPost(metadataURI, postHash, {
-      accounts: {
-        post: postAccount,
-        profile: profileKey,
-        authority: wallet.publicKey,
-        systemProgram: SystemProgram.programId
-      },
-    });
-  }
-  toast.dismiss();
-
-  try {
-    if (!txid) throw new Error('Transaction creation failed');
-    const confirmed = await confirmTransaction(connection, txid);
-    if (!confirmed) throw new Error('Transaction confirmation failed');
-    if (saved && !getResponse) return txid;
-    if (saved && getResponse) return saved;
-  } catch (e) {
-    console.log(e);
-    return;
-  }
+  if (saved && !getResponse) return txid;
+  if (saved && getResponse) return saved;
 }
 
 export async function getProfileKey (
@@ -198,26 +201,29 @@ export async function createConnection (
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
   const profileKey = await getProfileKey(profileOwner, wallet);
   if (!profileKey) return;
-
   const connectionSeeds = [Buffer.from("connection"), wallet.publicKey.toBuffer(), profileKey.toBuffer()];
   const [connectionKey] = await anchor.web3.PublicKey.findProgramAddress(
     connectionSeeds,
     program.programId
   );
   toast.dismiss();
-  toast.loading('Sending Transaction');
-  const txid = await program.rpc.initializeConnection({
+
+  const transaction = await program.methods.initializeConnection({
     accounts: {
       connection: connectionKey,
       profile: profileKey,
       authority: wallet.publicKey,
       systemProgram: SystemProgram.programId
     }
-  });
-  toast.dismiss();
+  }).transaction();
+  const txid = await sendAndConfirmTransaction(
+    connection,
+    transaction,
+    wallet,
+    false
+  );
   if (!txid) throw new Error('Transaction creation failed');
-  const confirmed = await confirmTransaction(connection, txid);
-  if (!confirmed) throw new Error('Transaction failed');
+
   toast.loading('Saving')
   const saved = await updateConnectionServer({
     account: connectionKey.toBase58(),
@@ -230,6 +236,7 @@ export async function createConnection (
     setConnected(true);
     toast.success('Connection created');
   }
+
 }
 
 export async function closeConnection (
@@ -249,21 +256,22 @@ export async function closeConnection (
     program.programId
   );
   toast.dismiss();
-  toast.loading('Sending Transaction');
 
-  const txid = await program.rpc.closeConnection({
+  const transaction = await program.methods.closeConnection({
     accounts: {
       connection: connectionKey,
       authority: wallet.publicKey,
       profile: profileKey,
       systemProgram: SystemProgram.programId
     }
-  });
-  toast.dismiss();
-
+  }).transaction();
+  const txid = await sendAndConfirmTransaction(
+    connection,
+    transaction,
+    wallet,
+    false
+  );
   if (!txid) throw new Error('Transaction creation failed');
-  const confirmed = await confirmTransaction(connection, txid);
-  if (!confirmed) throw new Error('Transaction failed');
 
   toast.loading('Saving');
   const saved = await updateConnectionServer({

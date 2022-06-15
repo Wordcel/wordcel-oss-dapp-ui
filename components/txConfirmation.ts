@@ -1,11 +1,33 @@
 import toast from 'react-hot-toast';
-import { Connection } from '@solana/web3.js';
+import * as anchor from '@project-serum/anchor';
+import { Transaction, Connection } from '@solana/web3.js';
 
-export async function confirmTransaction (
+export async function sendAndConfirmTransaction (
   connection: Connection,
-  txid: string
+  transaction: Transaction,
+  wallet: anchor.Wallet,
+  confirmTransaction = true
 ) {
   try {
+
+    // Configure the Transaction
+    toast.loading('Sending Transaction');
+    const tx = transaction;
+    tx.feePayer = wallet.publicKey;
+    tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+    const signedTx = await wallet.signTransaction(tx);
+    if (!signedTx) return;
+
+    // Send Transaction and wait for Transaction ID
+    const txid = await connection.sendTransaction(signedTx, []);
+    toast.dismiss();
+    if (!confirmTransaction && txid) {
+      toast.success('Transaction sent');
+      return txid;
+    };
+    if (!txid || !confirmTransaction) return;
+
+    // Confirm Transaction
     const confirmation = connection.confirmTransaction(txid);
     toast.promise(confirmation, {
       loading: 'Confirming Transaction',
@@ -19,7 +41,7 @@ export async function confirmTransaction (
     };
     return true;
   } catch {
-    toast.error('Transaction was not confirmed in 60 seconds');
+    toast.error('Transaction was not confirmed in 120 seconds');
     return false;
   }
 };
