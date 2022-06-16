@@ -21,6 +21,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const {
       account,
       receiver,
+      receiver_name,
       public_key,
       signature
     } = req.body;
@@ -45,6 +46,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       data: {
         account,
         receiver,
+        receiver_name: receiver_name,
         user_id: user.id
       }
     });

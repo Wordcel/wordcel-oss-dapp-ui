@@ -48,6 +48,7 @@ export interface NewProfile {
 export interface NewInvite {
   account: string;
   receiver: string;
+  receiver_name?: string;
   public_key: string;
   signature: Uint8Array;
 };

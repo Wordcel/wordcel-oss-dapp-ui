@@ -79,4 +79,5 @@ model Invite {
   user_id Int
   sender User @relation(fields: [user_id], references: [id], onDelete: Cascade)
   receiver String
+  receiver_name String?
 }

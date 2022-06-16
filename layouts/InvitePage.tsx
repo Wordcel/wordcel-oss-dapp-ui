@@ -37,7 +37,8 @@ export const InvitePage = () => {
   const [domain, setDomain] = useState('');
   const [loading, setLoading] = useState(false);
   const [invitesLeft, setInvitesLeft] = useState(2);
-  const [userInvites, setUserInvites] = useState<string[]>([]);
+  const [receiverName, setReceiverName] = useState('');
+  const [userInvites, setUserInvites] = useState<any[]>([]);
 
   const anchorWallet = useAnchorWallet();
   const { publicKey, signMessage } = useWallet();
@@ -77,9 +78,7 @@ export const InvitePage = () => {
       toast.loading('Fetching Invites');
       const request = await fetch('/api/invite/get/' + publicKey.toBase58());
       const response = await request.json();
-      setUserInvites(response?.invites?.map(
-        (invite: any) => invite.account
-      ));
+      setUserInvites(response?.invites);
       toast.dismiss();
     })();
   }, [publicKey])
@@ -114,9 +113,11 @@ export const InvitePage = () => {
       account: account,
       public_key: publicKey.toBase58(),
       signature: signature,
-      receiver: toInviteAddress.toBase58()
+      receiver: toInviteAddress.toBase58(),
+      receiver_name: receiverName
     });
     setInvitesLeft(invitesLeft - 1);
+    router.replace(router.asPath);
   };
 
   const copyLink = (account: string) => {
@@ -144,9 +145,14 @@ export const InvitePage = () => {
                   </div>
                   <div className={styles.form}>
                     <input
+                      onChange={(e) => setReceiverName(e.target.value)}
+                      placeholder="Enter Invitee's name"
+                      className="secondary-input"
+                    />
+                    <input
                       onChange={(e) => setDomain(e.target.value)}
                       placeholder='Enter SOL Domain'
-                      className="secondary-input"
+                      className="secondary-input mt-2"
                     />
                     <button
                       onClick={handleSendInvite}
@@ -163,7 +169,9 @@ export const InvitePage = () => {
                             onClick={() => copyLink(invite)}
                             className={styles.sentInvite}
                           >
-                            <p className="light-sub-heading thin nm">{getTrimmedPublicKey(invite, 6)}</p>
+                            <p className="light-sub-heading thin nm">{
+                              invite.receiver_name ? invite.receiver_name : getTrimmedPublicKey(invite.account, 6)
+                            }</p>
                             <div className="status">
                               <p className="status-text">Sent</p>
                             </div>
