@@ -17,7 +17,7 @@ const connection = new anchor.web3.Connection(MAINNET_ENDPOINT, {
   confirmTransactionInitialTimeout: 120000,
 });
 
-const provider = (wallet: anchor.Wallet) => new anchor.Provider(
+const provider = (wallet: anchor.Wallet) => new anchor.AnchorProvider(
   connection,
   wallet,
   { preflightCommitment }

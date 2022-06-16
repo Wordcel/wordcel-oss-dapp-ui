@@ -5,7 +5,9 @@ import {
   NewProfile,
   NewInvite
 } from '@/types/api';
+import BigNumber from 'bignumber.js';
 import * as anchor from '@project-serum/anchor';
+import { BUNDLR_MAINNET_ENDPOINT } from './config/constants';
 
 export async function publishToServer (
   data: PublishArticleRequest
@@ -168,4 +170,18 @@ export async function createNewInvite (
   });
   if (request.ok) return true;
   throw new Error('Invalid request');
+};
+
+export async function getBundlrBalance (
+  public_key: string
+) {
+  try {
+    const request = await fetch(BUNDLR_MAINNET_ENDPOINT + '/account/balance/solana?address=' + public_key);
+    const response = await request.json();
+    const balance = new BigNumber(response.balance);
+    return balance;
+  } catch (e) {
+    console.error(e);
+    return new BigNumber(0);
+  }
 };

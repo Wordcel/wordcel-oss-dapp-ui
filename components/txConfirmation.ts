@@ -19,7 +19,8 @@ export async function sendAndConfirmTransaction (
     if (!signedTx) return;
 
     // Send Transaction and wait for Transaction ID
-    const txid = await connection.sendTransaction(signedTx, []);
+    const txid = await connection.sendRawTransaction(signedTx.serialize());
+    console.log('Transaction ID:', txid);
     toast.dismiss();
     if (!confirmTransaction && txid) {
       toast.success('Transaction sent');

@@ -26,7 +26,7 @@ const connection = new anchor.web3.Connection(MAINNET_ENDPOINT, {
   confirmTransactionInitialTimeout: 120000,
 });
 
-const provider = (wallet: anchor.Wallet) => new anchor.Provider(
+const provider = (wallet: anchor.Wallet) => new anchor.AnchorProvider(
   connection,
   wallet,
   { preflightCommitment }
@@ -58,13 +58,11 @@ export async function createFreshProfile (
     invitationProgramID
   );
   const transaction = await program.methods.initialize(profileHash).accounts({
-    accounts: {
-      profile: profileKey,
-      invitation: inviteKey,
-      user: wallet.publicKey,
-      systemProgram: SystemProgram.programId,
-      invitationProgram: invitationProgramID
-    }
+    profile: profileKey,
+    invitation: inviteKey,
+    user: wallet.publicKey,
+    systemProgram: SystemProgram.programId,
+    invitationProgram: invitationProgramID
   }).transaction();
   const confirmed = await sendAndConfirmTransaction(
     connection,
@@ -130,21 +128,17 @@ export async function publishPost(
   let transaction;
   if (published_post) {
     transaction = await program.methods.updatePost(metadataURI).accounts({
-      accounts: {
-        post: new PublicKey(published_post),
-        profile: profileKey,
-        authority: wallet.publicKey,
-        systemProgram: SystemProgram.programId,
-      }
+      post: new PublicKey(published_post),
+      profile: profileKey,
+      authority: wallet.publicKey,
+      systemProgram: SystemProgram.programId,
     }).transaction();
   } else {
     transaction = await program.methods.createPost(metadataURI, postHash).accounts({
-      accounts: {
-        post: postAccount,
-        profile: profileKey,
-        authority: wallet.publicKey,
-        systemProgram: SystemProgram.programId
-      },
+      post: postAccount,
+      profile: profileKey,
+      authority: wallet.publicKey,
+      systemProgram: SystemProgram.programId
     }).transaction();
   }
 
@@ -208,13 +202,11 @@ export async function createConnection (
   );
   toast.dismiss();
 
-  const transaction = await program.methods.initializeConnection({
-    accounts: {
-      connection: connectionKey,
-      profile: profileKey,
-      authority: wallet.publicKey,
-      systemProgram: SystemProgram.programId
-    }
+  const transaction = await program.methods.initializeConnection().accounts({
+    connection: connectionKey,
+    profile: profileKey,
+    authority: wallet.publicKey,
+    systemProgram: SystemProgram.programId
   }).transaction();
   const txid = await sendAndConfirmTransaction(
     connection,
@@ -257,13 +249,11 @@ export async function closeConnection (
   );
   toast.dismiss();
 
-  const transaction = await program.methods.closeConnection({
-    accounts: {
-      connection: connectionKey,
-      authority: wallet.publicKey,
-      profile: profileKey,
-      systemProgram: SystemProgram.programId
-    }
+  const transaction = await program.methods.closeConnection().accounts({
+    connection: connectionKey,
+    authority: wallet.publicKey,
+    profile: profileKey,
+    systemProgram: SystemProgram.programId
   }).transaction();
   const txid = await sendAndConfirmTransaction(
     connection,

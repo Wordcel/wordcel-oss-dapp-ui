@@ -5,12 +5,12 @@ import {
 } from '@/components/config/constants';
 import { ContentPayload } from '@/components/upload';
 import { WalletContextState } from '@solana/wallet-adapter-react';
+import { getBundlrBalance } from './networkRequests';
 
 export const uploadBundle = async (
   data: ContentPayload,
   wallet: WalletContextState
 ) => {
-
   const bundlr = new Bundlr(
     BUNDLR_MAINNET_ENDPOINT,
     'solana',
@@ -20,6 +20,7 @@ export const uploadBundle = async (
       providerUrl: MAINNET_ENDPOINT,
     },
   );
+
   const stringData = JSON.stringify(data);
   const tags = [{ name: "Content-Type", value: "text/json" }];
 
@@ -33,12 +34,16 @@ export const uploadBundle = async (
   const minimumFunds = price.multipliedBy(3);
   console.log('Minimum Funds', minimumFunds);
 
-  // Bug: This shows 0
-  const currentBalance = await bundlr.getLoadedBalance();
-  console.log(`Current Balance: ${currentBalance}`);
+  let skipFund = false;
 
-  if (currentBalance.lt(minimumFunds)) {
-    const toFundAmount = price.multipliedBy(10);
+  if (wallet.publicKey) {
+    const currentBalance = await getBundlrBalance(wallet.publicKey.toBase58());
+    console.log('Current Balance', currentBalance);
+    if (!currentBalance.lt(minimumFunds)) skipFund = true;
+  }
+
+  if (!skipFund) {
+    const toFundAmount = price.multipliedBy(20);
     console.log(`Funding: ${toFundAmount}`);
     await bundlr.fund(toFundAmount);
   }
