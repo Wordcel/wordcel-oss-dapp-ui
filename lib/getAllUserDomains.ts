@@ -20,14 +20,7 @@ export async function findOwnedNameAccountsForUser(
   return accounts.map((a) => a.pubkey);
 };
 
-export async function getAllUserDomains (
-  publicKey: PublicKey,
-  getFromStorage = true
-): Promise<string[]> {
-  if (getFromStorage) {
-    const local_domains = localStorage.getItem('domains');
-    if (local_domains) return JSON.parse(local_domains);
-  }
+export async function getAllUserDomains (publicKey: PublicKey): Promise<string[]> {
   const domains: string[] = [];
   const connection = new Connection(MAINNET_ENDPOINT);
   const domainKeys = await findOwnedNameAccountsForUser(publicKey);
@@ -36,7 +29,6 @@ export async function getAllUserDomains (
       const domain = await performReverseLookup(connection, key);
       domains.push(domain + '.sol');
       if (index === domainKeys.length - 1) {
-        localStorage.setItem('domains', JSON.stringify(domains));
         resolve(domains);
       }
     })
