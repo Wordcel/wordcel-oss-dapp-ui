@@ -10,10 +10,7 @@ export const SOL_TLD_AUTHORITY = new PublicKey(
   "58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx"
 );
 
-export const verifySolDomain = async (
-  public_key: string,
-  domain: string
-) => {
+export const getDomainOwner = async (domain: string) => {
   const connection = new Connection(MAINNET_ENDPOINT);
   const domain_name = domain.replace('.sol', '');
   const hashed_name = await getHashedName(domain_name);
@@ -26,6 +23,14 @@ export const verifySolDomain = async (
     connection,
     domain_key
   );
-  if (!registry?.owner) return false;
-  return registry.owner.toBase58() === public_key;
+  return registry.owner;
+};
+
+export const verifySolDomain = async (
+  public_key: string,
+  domain: string
+) => {
+  const owner = await getDomainOwner(domain);
+  if (!owner) return false;
+  return owner.toBase58() === public_key;
 };

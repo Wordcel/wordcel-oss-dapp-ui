@@ -28,14 +28,15 @@ import { RequestConnect } from '@/elements/RequestConnect';
 import { createNewInvite } from '@/components/networkRequests';
 import { getUserSignature } from '@/lib/signMessage';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
+import { getDomainOwner } from '@/lib/verifySolDomain';
 
 
 export const InvitePage = () => {
   const router = useRouter();
 
+  const [domain, setDomain] = useState('');
   const [loading, setLoading] = useState(false);
   const [invitesLeft, setInvitesLeft] = useState(2);
-  const [inviteAddress, setInviteAddress] = useState('');
   const [userInvites, setUserInvites] = useState<string[]>([]);
 
   const anchorWallet = useAnchorWallet();
@@ -96,9 +97,16 @@ export const InvitePage = () => {
     };
     const signature = await getUserSignature(signMessage, publicKey.toBase58());
     if (!signature) return;
+    toast.loading('Fetching wallet address from domain');
+    const toInviteAddress = await getDomainOwner(domain);
+    if (!toInviteAddress) {
+      toast.error('Invalid domain');
+      return;
+    }
+    toast.dismiss();
     const invite = await sendInvite(
       anchorWallet as any,
-      new PublicKey(inviteAddress)
+      toInviteAddress
     );
     if (!invite) return;
     const account = invite.toBase58();
@@ -106,7 +114,7 @@ export const InvitePage = () => {
       account: account,
       public_key: publicKey.toBase58(),
       signature: signature,
-      receiver: inviteAddress
+      receiver: toInviteAddress.toBase58()
     });
     setInvitesLeft(invitesLeft - 1);
   };
@@ -136,15 +144,16 @@ export const InvitePage = () => {
                   </div>
                   <div className={styles.form}>
                     <input
-                      onChange={(e) => setInviteAddress(e.target.value)}
-                      placeholder='Enter wallet address'
+                      onChange={(e) => setDomain(e.target.value)}
+                      placeholder='Enter SOL Domain'
                       className="secondary-input"
                     />
                     <button
                       onClick={handleSendInvite}
-                      disabled={inviteAddress.length !== 44}
-                      className="secondary-btn mt-2">
-                        Send Invite
+                      disabled={!domain.toLowerCase().includes('.sol')}
+                      className="secondary-btn mt-2"
+                    >
+                      Send Invite
                     </button>
                     {userInvites.length > 0 && (
                       <div className="mt-2 width-100">
