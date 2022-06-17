@@ -60,7 +60,7 @@ export const ViewArticle = (props: GetArticleServerSide) => {
     image: props.user?.image_url
   };
   const base64Data = Buffer.from(JSON.stringify(SEOData)).toString('base64');
-  const SEOImage = `https://i0.wp.com/og.up.railway.app/article/${base64Data}`;
+  const SEOImage = `https://i0.wp.com/og.up.railway.app/article/${encodeURIComponent(base64Data)}`;
 
   const readingTime = getReadingTime(JSON.parse(props.blocks || ''));
 
