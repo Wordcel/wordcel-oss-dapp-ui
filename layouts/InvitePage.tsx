@@ -166,7 +166,7 @@ export const InvitePage = () => {
                         {userInvites.map((invite, index) => (
                           <div
                             key={index}
-                            onClick={() => copyLink(invite)}
+                            onClick={() => copyLink(invite.account)}
                             className={styles.sentInvite}
                           >
                             <p className="light-sub-heading thin nm">{
