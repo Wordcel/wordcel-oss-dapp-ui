@@ -1,14 +1,16 @@
 const removeFromWord = (word: string) => {
-  let editedWord = word.replace('<br />', '');
-  editedWord = editedWord.replace('<b>', '');
-  editedWord = editedWord.replace('</b>', '');
-  editedWord = editedWord.replace('<i>', '');
-  editedWord = editedWord.replace('</i>', '');
-  editedWord = editedWord.replace('<br>', '');
-  editedWord = editedWord.replace('<br/>', '');
-  editedWord = editedWord.replace('</br>', '');
-  editedWord = editedWord.replace('&nbsp;', '');
-  editedWord = editedWord.replace('&gt;', '');
+  let editedWord = word.replaceAll('<br />', '');
+  editedWord = editedWord.replaceAll('<b>', '');
+  editedWord = editedWord.replaceAll('</b>', '');
+  editedWord = editedWord.replaceAll('<i>', '');
+  editedWord = editedWord.replaceAll('</i>', '');
+  editedWord = editedWord.replaceAll('<br>', '');
+  editedWord = editedWord.replaceAll('<br/>', '');
+  editedWord = editedWord.replaceAll('</br>', '');
+  editedWord = editedWord.replaceAll('&nbsp;', '');
+  editedWord = editedWord.replaceAll('&gt;', '');
+  editedWord = editedWord.replaceAll('<a>', '');
+  editedWord = editedWord.replaceAll('</a>', '');
   return editedWord;
 }
 
