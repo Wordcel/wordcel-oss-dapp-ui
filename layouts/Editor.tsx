@@ -6,8 +6,6 @@ import Paragraph from '@editorjs/paragraph';
 // @ts-expect-error
 import CheckList from "@editorjs/checklist";
 // @ts-expect-error
-import Raw from "@editorjs/raw";
-// @ts-expect-error
 import CodeBox from "@bomdi/codebox";
 // @ts-expect-error
 import Delimiter from "@editorjs/delimiter";
@@ -72,7 +70,6 @@ const CustomEditor = ({
       class: List,
       inlineToolbar: ['link', 'bold', 'italic'],
     },
-    raw: Raw,
     paragraph: {
       class: Paragraph,
       inlineToolbar: ['link', 'bold', 'italic'],
