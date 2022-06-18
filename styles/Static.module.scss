@@ -169,12 +169,17 @@
 
 .domain {
   cursor: pointer;
-  padding: 1rem 2rem;
+  padding: 1rem 1rem;
   border-radius: 0.5rem;
   font-weight: 400;
   font-size: 1.4rem;
   line-height: 1.6rem;
   color: #A4A4A4;
+  display: flex;
+  align-items: center;
+  & > p {
+    margin-left: 1rem;
+  }
 }
 
 .uploadImageDiv {
@@ -255,4 +260,12 @@
   & > p {
     text-align: left;
   }
+}
+
+.radioBox {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 1rem;
+  border: 0.1rem solid black;
+  margin-left: 0.5rem;
 }

@@ -29,7 +29,7 @@ export const OnboardingBox = ({
 
   const [step, setStep] = useState(1);
   const [refresher, setRefresher] = useState(0);
-  const [nfts, setNFTs] = useState<Set<string>>(new Set());
+  const [nfts] = useState<Set<string>>(new Set());
   const [domains, setDomains] = useState<string[]>([]);
 
   const wallet = useAnchorWallet();
@@ -258,6 +258,10 @@ export const OnboardingBox = ({
                     className={styles.domain}
                     style={{ border: username === domain ? '0.12rem solid black' : '0.12rem solid #D8D8D8' }}
                   >
+                    <div
+                      style={{ backgroundColor: username === domain ? 'black' : 'transparent' }}
+                      className={styles.radioBox}
+                    />
                     <p className="nm">{
                       domain.length > 20 ? `...${domain.slice(domain.length-18, domain.length)}` : domain
                     }</p>
