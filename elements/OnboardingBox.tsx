@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import toast from 'react-hot-toast';
 import styles from '@/styles/Static.module.scss';
 import tweetToVerify from '@/images/elements/tweet-to-verify.svg';
@@ -13,8 +14,7 @@ import { createNewProfile, verifyTwitterRequest } from '@/components/networkRequ
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { createFreshProfile } from '@/components/contractInteraction';
 import { getUserNFTs } from '@/lib/getAllUserNFTs';
-import { uploadFile } from '@/components/upload';
-import Link from 'next/link';
+import { uploadImageBundlr } from '@/components/uploadBundlr';
 
 
 export const OnboardingBox = ({
@@ -33,6 +33,7 @@ export const OnboardingBox = ({
   const [domains, setDomains] = useState<string[]>([]);
 
   const wallet = useAnchorWallet();
+  const walletContext = useWallet();
   const fileInputRef = useRef(null);
   const { publicKey, signMessage } = useWallet();
 
@@ -225,13 +226,13 @@ export const OnboardingBox = ({
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="image/png, image/jpeg"
+                accept="image/png, image/jpeg, image/gif"
                 className="hidden"
                 onChange={async (e) => {
                   const file = e.target.files?.[0];
                   if (!file) return;
-                  const url = await uploadFile(file);
-                  setImage(url);
+                  const url = await uploadImageBundlr(file, walletContext);
+                  if (url) setImage(url);
                 }}
               />
               <img
