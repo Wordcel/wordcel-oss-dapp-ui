@@ -3,14 +3,20 @@ import Modal from 'react-modal';
 import toast from 'react-hot-toast'
 import ClickAwayListener from 'react-click-away-listener';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { toasterPromise } from '@/lib/toasterNetworkRequest';
+
+// Image Imports
+import uploadImagePreview from '@/images/elements/upload.svg';
 
 // Style Imports
 import styles from '@/styles/EditProfile.module.scss';
 
 // Type Imports
 import { UpdatableUserDetails, UpdateUser } from '@/types/api';
+
+// Component Imports
+import { uploadImageBundlr } from '@/components/uploadBundlr';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { getUserSignature } from '@/lib/signMessage';
 import { useRouter } from 'next/router';
@@ -75,9 +81,12 @@ export const EditProfile = ({
   defaultData: UpdatableUserDetails
 }) => {
   const router = useRouter();
+  const fileInputRef = useRef(null);
   const [updateData, setUpdateData] = useState<UpdatableUserDetails>(defaultData);
 
   const { publicKey, signMessage } = useWallet();
+  const walletContext = useWallet();
+
   const handlePublish = async () => {
     const errored = validate(updateData);
     if (errored) {
@@ -98,7 +107,13 @@ export const EditProfile = ({
 
   useEffect(() => {
     Modal.setAppElement('#__next');
-  }, [])
+  }, []);
+
+  const handleUploadButton = () => {
+    // @ts-expect-error
+    fileInputRef?.current?.click();
+  }
+
   return (
     <div>
       <Modal
@@ -113,6 +128,32 @@ export const EditProfile = ({
             </div>
             <div className={styles.form}>
               <div className={styles.formHeight}>
+                <div>
+                  <p className="input-label nm">Upload Profile Photo</p>
+                  <div className={styles.uploadImageDiv}>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/png, image/jpeg, image/gif"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const url = await uploadImageBundlr(file, walletContext);
+                        if (url) setUpdateData({ ...updateData, image_url: url });
+                      }}
+                    />
+                    <img
+                      className={styles.uploadPreview}
+                      src={updateData.image_url ? updateData.image_url : uploadImagePreview.src}
+                      alt=""
+                    />
+                    <button
+                      onClick={handleUploadButton}
+                      className={styles.uploadButton}
+                    >Upload</button>
+                  </div>
+                </div>
                 <SecondaryInput
                   placeHolder="Name"
                   label="Name"
