@@ -283,6 +283,7 @@ export const OnboardingBox = ({
                     className={styles.nftImage} key={index}
                     src={nft} alt=""
                     onClick={() => setImage(nft)}
+                    onError={() => nfts.delete(nft)}
                     style={{ opacity: nft === image ? '1' : '' }}
                   />
                 ))}
