@@ -15,6 +15,7 @@ import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { createFreshProfile } from '@/components/contractInteraction';
 import { getUserNFTs } from '@/lib/getAllUserNFTs';
 import { uploadImageBundlr } from '@/components/uploadBundlr';
+import { messageToSign } from '@/lib/verifyTwitter';
 
 
 export const OnboardingBox = ({
@@ -66,23 +67,30 @@ export const OnboardingBox = ({
     return styles.tab;
   }
 
-  const handleTweetButton = () => {
-    if (!publicKey) return;
-    setTwitter(twitter.replace('@', ''));
-    if (twitter.replace('@', '').length === 0) {
-      toast('Please enter a twitter username');
+  const handleTweetButton = async () => {
+    if (!publicKey || !signMessage) return;
+    const sanitizedTwitterHandle = twitter.replaceAll('@', '');
+    setTwitter(sanitizedTwitterHandle);
+    if (sanitizedTwitterHandle.length === 0) {
+      toast('Please enter a Twitter username');
       return;
     };
-    const encoded_tweet = `I'm%20verifying%20my%20wallet%20address%20for%20@Wordcel_Club%0A%0A${publicKey.toBase58()}%0A%0Ahttps://wordcel.club`;
-    window.open(`https://twitter.com/intent/tweet?text=${encoded_tweet}`, '_blank');
+    const signature = await signMessage(
+      new TextEncoder().encode(messageToSign(sanitizedTwitterHandle))
+    );
+    if (!signature) return;
+    const tweet = `I'm verifying my wallet address for @Wordcel_Club\n\nhttps://wordcel.club/\n\n${Buffer.from(signature).toString('base64')}`
+    const encodedTweet = encodeURIComponent(tweet);
+    window.open(`https://twitter.com/intent/tweet?text=${encodedTweet}`, '_blank');
   }
 
   const shareTweetEncodedURL = `https://twitter.com/intent/tweet?text=Hey!%20I%20just%20set%20up%20my%20@wordcel_club%20profile,%20check%20it%20out%20here:%0Ahttps://wordcel.club/${username}`;
 
   const handleTweetedButton = async () => {
-    setTwitter(twitter.replace('@', ''));
-    if (twitter.replace('@', '').length === 0) {
-      toast('Please enter a twitter username');
+    const sanitizedTwitterHandle = twitter.replaceAll('@', '');
+    setTwitter(sanitizedTwitterHandle);
+    if (sanitizedTwitterHandle.length === 0) {
+      toast('Please enter a Twitter username');
       return;
     };
     if (!publicKey || !signMessage) return;
@@ -93,13 +101,13 @@ export const OnboardingBox = ({
     }
     const request = verifyTwitterRequest(
       publicKey.toBase58(),
-      twitter.replace('@', ''),
+      sanitizedTwitterHandle,
       signature
     );
     toast.promise(request, {
-      success: 'Successfully verified your twitter account',
-      error: 'Failed to verify your twitter account, please try again',
-      loading: 'Verifying your twitter account',
+      success: 'Successfully verified your Twitter account',
+      error: 'Failed to verify your Twitter account, please try again',
+      loading: 'Verifying your Twitter account',
     });
     const verified = await request;
     if (verified) {
