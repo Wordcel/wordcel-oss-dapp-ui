@@ -41,6 +41,7 @@ export const OnboardingBox = ({
     (async function () {
       if (!publicKey) return;
       const sns_domains = await getAllUserDomains(publicKey);
+      console.log('Domains:', sns_domains);
       setDomains(sns_domains);
     })();
   }, [publicKey]);

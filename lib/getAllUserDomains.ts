@@ -2,6 +2,10 @@ import { Connection, PublicKey } from "@solana/web3.js";
 import { NAME_PROGRAM_ID, performReverseLookup } from "@bonfida/spl-name-service";
 import { MAINNET_ENDPOINT } from "@/components/config/constants";
 
+const SOL_TLD_AUTHORITY = new PublicKey(
+  "58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx"
+);
+
 export async function findOwnedNameAccountsForUser(
   userAccount: PublicKey
 ): Promise<PublicKey[]> {
@@ -13,6 +17,12 @@ export async function findOwnedNameAccountsForUser(
         bytes: userAccount.toBase58(),
       },
     },
+    {
+      memcmp: {
+        offset: 0,
+        bytes: SOL_TLD_AUTHORITY.toBase58(),
+      },
+    }
   ];
   const accounts = await connection.getProgramAccounts(NAME_PROGRAM_ID, {
     filters,
@@ -26,10 +36,15 @@ export async function getAllUserDomains (publicKey: PublicKey): Promise<string[]
   const domainKeys = await findOwnedNameAccountsForUser(publicKey);
   return new Promise((resolve, reject) => {
     domainKeys.forEach(async (key, index) => {
-      const domain = await performReverseLookup(connection, key);
-      domains.push(domain + '.sol');
-      if (index === domainKeys.length - 1) {
-        resolve(domains);
+      try {
+        const domain = await performReverseLookup(connection, key);
+        domains.push(domain + '.sol');
+        if (index === domainKeys.length - 1) {
+          resolve(domains);
+        }
+      }
+      catch (e) {
+        console.log(e)
       }
     })
   })
