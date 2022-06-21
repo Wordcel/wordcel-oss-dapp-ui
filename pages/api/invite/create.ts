@@ -9,6 +9,7 @@ import {
   authenticate
 } from '@/lib/server';
 import { withSentry } from '@sentry/nextjs';
+import { newInviteAlert } from '@/lib/sendUserActivity';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const allowed = verifyMethod(req, res, 'POST');
@@ -50,6 +51,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         user_id: user.id
       }
     });
+
+    newInviteAlert(invite);
 
     res.status(200).json({
       success: true,

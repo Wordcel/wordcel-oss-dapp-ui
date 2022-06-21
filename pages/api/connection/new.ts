@@ -9,6 +9,7 @@ import {
   authenticate
 } from '@/lib/server';
 import { withSentry } from '@sentry/nextjs';
+import { newConnectionAlert } from '@/lib/sendUserActivity';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const allowed = verifyMethod(req, res, 'POST');
@@ -49,6 +50,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         connector: public_key
       }
     });
+
+    newConnectionAlert(newConnection);
 
     res.status(200).json({
       success: 'Connection created',

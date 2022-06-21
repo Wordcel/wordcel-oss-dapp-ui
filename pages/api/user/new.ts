@@ -10,6 +10,7 @@ import {
 } from '@/lib/server';
 import { verifySolDomain } from '@/lib/verifySolDomain';
 import { withSentry } from '@sentry/nextjs';
+import { newUserAlert } from '@/lib/sendUserActivity';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const allowed = verifyMethod(req, res, 'POST');
@@ -89,6 +90,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         twitter: twitter || ''
       }
     });
+
+    newUserAlert(new_profile);
 
     res.status(200).json({
       success: 'Profile created',

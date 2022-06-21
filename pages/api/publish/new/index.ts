@@ -13,6 +13,7 @@ import { sanitizeHtml } from '@/lib/sanitize';
 import { getBlocks } from '@/components/getArticleBlocks';
 import { withSentry } from '@sentry/nextjs';
 import slugify from 'slugify';
+import { newPostAlert } from '@/lib/sendUserActivity';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const allowed = verifyMethod(req, res, 'POST');
@@ -86,6 +87,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         }
       }
     });
+
+    newPostAlert(newArticle);
 
     res.status(200).json({
       success: 'Article created',
