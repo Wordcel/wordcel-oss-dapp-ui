@@ -78,10 +78,12 @@ export const verifyTwitterUsername = async (
   if (!tweets || tweets.length === 0) return false;
   const text_content = tweets?.map((tweet: any) => tweet.content?.itemContent?.tweet_results?.result?.legacy?.full_text);
   if (!text_content || text_content.length === 0) return false;
+  const base64_regex = new RegExp('^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$');
   let signature_base_64 = '';
   for (const text of text_content) {
-    if (text.includes("I'm verifying my wallet address for @Wordcel_Club")) {
-      signature_base_64 = text.split('\n').pop();
+    const last_line = text.split('\n\n').pop();
+    if (last_line.match(base64_regex)) {
+      signature_base_64 = last_line;
       break;
     }
   }
