@@ -20,7 +20,7 @@ export const getDefaultUserImage = (
   const data = {
     name: user?.name,
     image: user?.image_url,
-    bio: user?.bio,
+    bio: user?.bio ? user?.bio : `Hi, I'm ${user?.name}, this is my Wordcel profile.`,
     username: user?.username
   }
   const base64Data = Buffer.from(JSON.stringify(data)).toString('base64');
