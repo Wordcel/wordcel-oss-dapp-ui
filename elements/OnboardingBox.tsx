@@ -79,7 +79,7 @@ export const OnboardingBox = ({
       new TextEncoder().encode(messageToSign(sanitizedTwitterHandle))
     );
     if (!signature) return;
-    const tweet = `I'm verifying my wallet address for @Wordcel_Club\n\nhttps://wordcel.club/\n\n${Buffer.from(signature).toString('base64')}`
+    const tweet = `I'm verifying my Twitter account for @Wordcel_Club\n\nhttps://wordcel.club/\n\n${Buffer.from(signature).toString('base64')}`
     const encodedTweet = encodeURIComponent(tweet);
     window.open(`https://twitter.com/intent/tweet?text=${encodedTweet}`, '_blank');
   }
