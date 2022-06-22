@@ -25,6 +25,21 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       signature
     } = req.body;
 
+    const alreadyExists = await prisma.verifiedTwitter.findFirst({
+      where: {
+        public_key,
+        username
+      }
+    });
+
+    if (alreadyExists) {
+      res.status(200).json({
+        success: true,
+        message: 'Already verified'
+      });
+      return;
+    }
+
     const authenticated = authenticate(public_key, signature, res);
     if (!authenticated) return;
 
