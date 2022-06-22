@@ -1,3 +1,9 @@
+import * as nacl from 'tweetnacl';
+import { PublicKey } from "@solana/web3.js";
+
+export const messageToSign = (twitter: string) =>
+  `I'm verifying my Twitter handle for Wordcel Club: ${twitter}`
+
 export const getUserIdAndGuestToken = async (
   username: string
 ) => {
@@ -72,12 +78,19 @@ export const verifyTwitterUsername = async (
   if (!tweets || tweets.length === 0) return false;
   const text_content = tweets?.map((tweet: any) => tweet.content?.itemContent?.tweet_results?.result?.legacy?.full_text);
   if (!text_content || text_content.length === 0) return false;
-  let verified = false;
+  const base64_regex = new RegExp('^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$');
+  let signature_base_64 = '';
   for (const text of text_content) {
-    if (text.includes(public_key)) {
-      verified = true;
+    const last_line = text.split('\n\n').pop();
+    if (last_line.match(base64_regex)) {
+      signature_base_64 = last_line;
       break;
     }
   }
+  if (!signature_base_64) return false;
+  const signature = Buffer.from(signature_base_64, 'base64');
+  const message = new TextEncoder().encode(messageToSign(username));
+  const public_key_bytes = new PublicKey(public_key).toBytes();
+  const verified = nacl.sign.detached.verify(message, signature, public_key_bytes);
   return verified;
 };
