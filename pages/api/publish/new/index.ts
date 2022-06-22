@@ -71,12 +71,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       mut_slug = `${slug}-${Date.now()}`
     }
 
+    const sanitizedSlug = slugify(mut_slug, {
+      lower: true,
+      remove: /[*+~.()'"!:@]/g
+    });
+
     const newArticle = await prisma.article.create({
       data: {
         title: sanitizeHtml(title),
         description: sanitizeHtml(description),
         image_url,
-        slug: slugify(mut_slug),
+        slug: slugify(sanitizedSlug),
         arweave_url,
         proof_of_post,
         on_chain: true,

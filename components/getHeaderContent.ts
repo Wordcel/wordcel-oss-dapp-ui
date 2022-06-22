@@ -17,11 +17,14 @@ export const getHeaderContent = (
   const title = headings[0]?.data.text || text_content[0]?.data.text|| 'Untitled Article';
   const description = text_content[0]?.data.text || 'No description';
   const image_url = image_content[0]?.data.url || '';
-  const slug = slugify(title, { lower: true });
+  const sanitizedSlug = slugify(title, {
+    lower: true,
+    remove: /[*+~.()'"!:@]/g
+  });
   return {
     title: sanitizeHtml(title),
     description: sanitizeHtml(description),
     image_url,
-    slug
+    slug: sanitizedSlug
   }
 };
