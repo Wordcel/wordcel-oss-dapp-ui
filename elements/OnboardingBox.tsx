@@ -10,7 +10,7 @@ import { Done, Step } from '@/images/dynamic/Step';
 import { useEffect, useRef, useState } from 'react';
 import { getUserSignature } from '@/lib/signMessage';
 import { getAllUserDomains } from '@/lib/getAllUserDomains';
-import { createNewProfile, verifyTwitterRequest } from '@/components/networkRequests';
+import { createNewProfile, getUserTwitter, verifyTwitterRequest } from '@/components/networkRequests';
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { createFreshProfile } from '@/components/contractInteraction';
 import { getUserNFTs } from '@/lib/getAllUserNFTs';
@@ -58,8 +58,19 @@ export const OnboardingBox = ({
   }, [publicKey]);
 
   useEffect(() => {
+    if (!publicKey) return;
+    (async function () {
+      const verified_twitter = await getUserTwitter(publicKey.toBase58());
+      if (!verified_twitter) return;
+      setUsername(verified_twitter);
+      setTwitter(verified_twitter);
+      setStep(2);
+    })();
+  }, [publicKey]);
+
+  useEffect(() => {
     if (domains.length === 1) setUsername(domains[0]);
-  }, [domains])
+  }, [domains]);
 
   const tabIsActive = (tab: number) => step === tab;
   const getTabClassName = (tab: number) => {

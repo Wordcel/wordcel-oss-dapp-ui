@@ -185,3 +185,16 @@ export async function getBundlrBalance (
     return new BigNumber(0);
   }
 };
+
+export async function getUserTwitter (
+  public_key: string
+) {
+  try {
+    const request = await fetch('/api/twitter/' + public_key);
+    const response = await request.json();
+    return response.username;
+  }
+  catch {
+    return undefined
+  }
+};
