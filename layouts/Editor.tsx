@@ -20,11 +20,13 @@ import List from "@editorjs/list";
 // @ts-expect-error
 import Quote from "@editorjs/quote";
 
+import { useWallet } from "@solana/wallet-adapter-react";
 // import ImageGallery from '@rodrigoodhin/editorjs-image-gallery';
 
 // @ts-expect-error
-import SimpleImage from "@editorjs/simple-image";
+import Image from "@editorjs/image";
 import { useEffect } from "react"
+import { uploadImageBundlr } from "@/components/uploadBundlr";
 
 interface Editor {
   handleInstance: (instance: any) => void;
@@ -55,6 +57,8 @@ const CustomEditor = ({
   onChange
 }: Editor) => {
 
+  const wallet = useWallet();
+
   useEffect(() => {
     const toAllowLinks = [Paragraph, List, Header, InlineCode, Quote, Embed];
     toAllowLinks.forEach((link) => allowLinks(link));
@@ -62,6 +66,37 @@ const CustomEditor = ({
 
   const EDITOR_JS_TOOLS = {
     embed: Embed,
+    image: {
+      class: Image,
+      config: {
+        uploader: {
+          uploadByFile(file: File) {
+            let uploadedURL = '';
+            return new Promise (async (resolve, reject) => {
+              const url = await uploadImageBundlr(file, wallet);
+              if (url) {
+                uploadedURL = url;
+                resolve(uploadedURL);
+              } else reject(new Error('Upload failed'));
+            }).then(() => {
+              if (uploadedURL) {
+                return {
+                  success: 1,
+                  file: {
+                    url: uploadedURL
+                  }
+                }
+              } else {
+                return {
+                  success: 0,
+                  error: 'Error uploading image'
+                }
+              }
+            })
+          }
+        }
+      }
+    },
     header: {
       class: Header,
       inlineToolbar: ['link', 'bold', 'italic'],
@@ -81,7 +116,6 @@ const CustomEditor = ({
     delimiter: Delimiter,
     inlineCode: InlineCode,
     // imageGallery: ImageGallery,
-    image: SimpleImage
   }
 
   return (
