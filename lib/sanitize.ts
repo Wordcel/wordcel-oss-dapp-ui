@@ -1,16 +1,9 @@
+import sanitize from 'sanitize-html';
+
 const removeFromWord = (word: string) => {
   let editedWord = word.replace('<br />', '');
-  editedWord = editedWord.replace('<b>', '');
-  editedWord = editedWord.replace('</b>', '');
-  editedWord = editedWord.replace('<i>', '');
-  editedWord = editedWord.replace('</i>', '');
-  editedWord = editedWord.replace('<br>', '');
-  editedWord = editedWord.replace('<br/>', '');
-  editedWord = editedWord.replace('</br>', '');
   editedWord = editedWord.replace('&nbsp;', '');
   editedWord = editedWord.replace('&gt;', '');
-  editedWord = editedWord.replace('<a>', '');
-  editedWord = editedWord.replace('</a>', '');
   return editedWord;
 }
 
@@ -22,7 +15,11 @@ export const sanitizeHtml = (
     return removeFromWord(word);
   });
   const clean = cleanArray.filter((word) => word !== '');
-  return clean.join(' ');
+  const final = sanitize(clean.join(' '), {
+    allowedTags: [],
+    allowedAttributes: {}
+  });
+  return final
 };
 
 export const shortenSentence = (
