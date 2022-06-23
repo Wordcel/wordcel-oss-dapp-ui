@@ -27,7 +27,7 @@ export const ArticlePreview = ({
         className="heading md nm pointer">{article.title}</p>
       <div>
         <p>
-          <span className="normal-text cs">
+          <span className="normal-text cursive-text">
             {shortenSentence(article.description)}
           </span>
           <span
@@ -73,7 +73,7 @@ export const VerticalArticlePreview = ({
               }
             }}
             className={`subheading sm nm ${isNotDraft ? 'pointer' : ''}`}>{shortenSentence(article.title, 75)}</p>
-          <p className="normal-text cs nm mt-1">
+          <p className="normal-text cursive-text nm mt-1">
             {shortenSentence(article.description, 112)}
           </p>
         </div>
