@@ -80,7 +80,8 @@ export async function publishPost(
   signature: Uint8Array,
   id?: string | number,
   getResponse?: boolean,
-  published_post = ''
+  published_post = '',
+  parentDigest?: string
 ) {
   toast.loading('Loading configurations');
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
@@ -114,7 +115,8 @@ export async function publishPost(
       data,
       adapterWallet,
       postAccount.toBase58(),
-      profileKey.toBase58()
+      profileKey.toBase58(),
+      parentDigest
     );
   } catch (e: any) {
     console.log(e);

@@ -47,9 +47,9 @@ export const getArticleServerSide = async (
     }
   });
   if (!user) return redirect();
-  const on_chain_blocks = await getBlocks(article.arweave_url);
-  if (!on_chain_blocks) return redirect();
-  const blocks = JSON.stringify(on_chain_blocks);
+  const arweave_data = await getBlocks(article.arweave_url, true);
+  if (!arweave_data) return redirect();
+  const blocks = JSON.stringify(arweave_data.content.blocks);
   if (!blocks) return redirect();
 
   return {
@@ -58,7 +58,8 @@ export const getArticleServerSide = async (
       user_public_key: user.public_key,
       username: user.username,
       blocks,
-      user
+      user,
+      contentDigest: arweave_data.contentDigest,
     }
   }
-}
+};

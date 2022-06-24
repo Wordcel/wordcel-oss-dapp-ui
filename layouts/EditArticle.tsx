@@ -101,7 +101,8 @@ export const EditArticle = (props: GetArticleServerSide) => {
       signature,
       props.article?.id,
       true,
-      props.article.proof_of_post
+      props.article.proof_of_post,
+      props.contentDigest
     );
     if (!response.article) {
       toast.dismiss();

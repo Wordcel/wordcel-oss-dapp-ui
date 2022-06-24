@@ -64,6 +64,7 @@ export interface GetArticleServerSide {
   username: string;
   blocks?: string;
   user?: User;
+  contentDigest?: string;
 }
 
 export interface GetDraftServerSide {

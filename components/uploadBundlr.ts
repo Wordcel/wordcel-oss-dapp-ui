@@ -13,7 +13,8 @@ export const uploadBundle = async (
   data: ContentPayload,
   wallet: WalletContextState,
   postAccount: string,
-  profileAccount: string
+  profileAccount: string,
+  parentDigest?: string
 ) => {
   if (!wallet.signMessage) {
     toast.error('Sorry, your wallet does not support message signature');
@@ -49,6 +50,7 @@ export const uploadBundle = async (
     contentDigest,
     signatureEncoding: 'base64',
     digestEncoding: 'hex',
+    parentDigest: parentDigest || '',
   }
 
   const stringData = JSON.stringify(finalData);
@@ -60,7 +62,8 @@ export const uploadBundle = async (
     { name: "Author", value: wallet.publicKey.toBase58() },
     { name: "Publish-Date", value: new Date().getTime().toString() },
     { name: "Profile Account", value: profileAccount },
-    { name: "Post Account", value: postAccount }
+    { name: "Post Account", value: postAccount },
+    { name: "Parent Digest", value: parentDigest || '' },
   ];
 
   // Counts byte stize of stringData
