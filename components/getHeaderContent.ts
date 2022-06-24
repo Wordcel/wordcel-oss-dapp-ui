@@ -16,7 +16,7 @@ export const getHeaderContent = (
   const image_content = blocks.filter((block: any) => block.type === 'image');
   const title = headings[0]?.data.text || text_content[0]?.data.text|| 'Untitled Article';
   const description = text_content[0]?.data.text || 'No description';
-  const image_url = image_content[0]?.data.url || '';
+  const image_url = image_content[0]?.data?.url || image_content[0]?.data?.file?.url || '';
   const sanitizedSlug = slugify(title, {
     lower: true,
     remove: /[*+~.()'"!:@]/g
