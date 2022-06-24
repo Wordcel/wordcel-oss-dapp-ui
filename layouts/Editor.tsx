@@ -20,7 +20,12 @@ import List from "@editorjs/list";
 // @ts-expect-error
 import Quote from "@editorjs/quote";
 
+// // @ts-expect-error
+// import { MDImporter, MDParser } from '@/external/markdown.js';
+
 import { useWallet } from "@solana/wallet-adapter-react";
+
+// // @ts-expect-error
 // import ImageGallery from '@rodrigoodhin/editorjs-image-gallery';
 
 // @ts-expect-error
@@ -115,6 +120,7 @@ const CustomEditor = ({
     checklist: CheckList,
     delimiter: Delimiter,
     inlineCode: InlineCode,
+    // markdownImporter: MDImporter,
     // imageGallery: ImageGallery,
   }
 

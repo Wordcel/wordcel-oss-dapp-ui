@@ -33,6 +33,9 @@
       "@/styles/*": [
         "styles/*"
       ],
+      "@/external/*": [
+        "external/*"
+      ],
     },
     "strict": true,
     "forceConsistentCasingInFileNames": true,
