@@ -6,12 +6,22 @@ import {
 import { ContentPayload } from '@/components/upload';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { getBundlrBalance } from './networkRequests';
+import * as crypto from 'crypto';
 import toast from 'react-hot-toast';
 
 export const uploadBundle = async (
   data: ContentPayload,
-  wallet: WalletContextState
+  wallet: WalletContextState,
+  postAccount: string,
+  profileAccount: string
 ) => {
+  if (!wallet.signMessage) {
+    toast.error('Sorry, your wallet does not support message signature');
+    return;
+  }
+
+  if (!wallet.publicKey) return;
+
   const bundlr = new Bundlr(
     BUNDLR_MAINNET_ENDPOINT,
     'solana',
@@ -22,8 +32,36 @@ export const uploadBundle = async (
     },
   );
 
-  const stringData = JSON.stringify(data);
-  const tags = [{ name: "Content-Type", value: "text/json" }];
+  const contentDigest = crypto.createHash('sha256').update(
+    JSON.stringify(data.content)
+  ).digest().toString('hex');
+
+  const signature = await wallet.signMessage(new TextEncoder().encode(contentDigest));
+  if (!signature) return;
+
+  const stringSignature = Buffer.from(signature).toString('base64');
+  const finalData = {
+    ...data,
+    authorship: {
+      signature: stringSignature,
+      publicKey: wallet.publicKey.toBase58(),
+    },
+    contentDigest,
+    signatureEncoding: 'base64',
+    digestEncoding: 'hex',
+  }
+
+  const stringData = JSON.stringify(finalData);
+
+  const tags = [
+    { name: "Content-Type", value: "text/json" },
+    { name: "Content-Digest", value: contentDigest },
+    { name: "App-Name", value: "Wordcel" },
+    { name: "Author", value: wallet.publicKey.toBase58() },
+    { name: "Publish-Date", value: new Date().getTime().toString() },
+    { name: "Profile Account", value: profileAccount },
+    { name: "Post Account", value: postAccount }
+  ];
 
   // Counts byte stize of stringData
   const size = new Blob([stringData]).size;

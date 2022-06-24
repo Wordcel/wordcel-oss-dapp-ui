@@ -61,11 +61,11 @@ export const NewArticle = () => {
         saveToast();
       }
     }
-    if (typeof window !== 'undefined') {
+    if (typeof document !== 'undefined') {
       document.addEventListener("keydown", eventListener);
     }
     return () => {
-      if (typeof window !== 'undefined') {
+      if (typeof document !== 'undefined') {
         document.removeEventListener("keydown", eventListener);
       }
     }

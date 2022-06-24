@@ -108,11 +108,13 @@ export async function publishPost(
   toast.dismiss();
 
   toast.loading('Uploading');
-  let metadataURI = '';
+  let metadataURI: (string|undefined) = '';
   try {
     metadataURI = await uploadBundle(
       data,
-      adapterWallet
+      adapterWallet,
+      postAccount.toBase58(),
+      profileKey.toBase58()
     );
   } catch (e: any) {
     console.log(e);
