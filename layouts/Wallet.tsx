@@ -9,7 +9,7 @@ import {
   SolflareWalletAdapter,
   SolletExtensionWalletAdapter,
   SolletWalletAdapter,
-  GlowWalletAdapter
+  // GlowWalletAdapter
 } from '@solana/wallet-adapter-wallets';
 import {
   WalletModalProvider,
@@ -67,7 +67,7 @@ export const Wallet: FC = ({
       new LedgerWalletAdapter(),
       new SolletWalletAdapter({ network }),
       new SolletExtensionWalletAdapter({ network }),
-      new GlowWalletAdapter(),
+      // new GlowWalletAdapter(),
     ],
     [network]
   );
