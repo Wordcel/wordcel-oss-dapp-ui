@@ -121,7 +121,7 @@ export const InvitePage = () => {
   };
 
   const copyLink = (account: string) => {
-    navigator.clipboard.writeText('https://wordcel.club/invitation/' + account);
+    navigator.clipboard.writeText('https://wordcelclub.com/invitation/' + account);
     toast.success('Invitation link copied');
   };
 

@@ -90,12 +90,12 @@ export const OnboardingBox = ({
       new TextEncoder().encode(messageToSign(sanitizedTwitterHandle))
     );
     if (!signature) return;
-    const tweet = `I'm verifying my Twitter account for @Wordcel_Club\n\nhttps://wordcel.club/\n\n${Buffer.from(signature).toString('base64')}`
+    const tweet = `I'm verifying my Twitter account for @Wordcel_Club\n\nhttps://wordcelclub.com/\n\n${Buffer.from(signature).toString('base64')}`
     const encodedTweet = encodeURIComponent(tweet);
     window.open(`https://twitter.com/intent/tweet?text=${encodedTweet}`, '_blank');
   }
 
-  const shareTweetEncodedURL = `https://twitter.com/intent/tweet?text=Hey!%20I%20just%20set%20up%20my%20@wordcel_club%20profile,%20check%20it%20out%20here:%0Ahttps://wordcel.club/${username}`;
+  const shareTweetEncodedURL = `https://twitter.com/intent/tweet?text=Hey!%20I%20just%20set%20up%20my%20@wordcel_club%20profile,%20check%20it%20out%20here:%0Ahttps://wordcelclub.com/${username}`;
 
   const handleTweetedButton = async () => {
     const sanitizedTwitterHandle = twitter.replaceAll('@', '');

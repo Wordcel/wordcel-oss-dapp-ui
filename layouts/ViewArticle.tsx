@@ -90,7 +90,7 @@ export const ViewArticle = (props: GetArticleServerSide) => {
         description={props.article?.description}
         author={props.user?.name}
         blog_name={props.user?.blog_name}
-        url={`https://wordcel.club/${asPath}`}
+        url={`https://wordcelclub.com/${asPath}`}
         image={SEOImage}
       />
       <StaticNavbar

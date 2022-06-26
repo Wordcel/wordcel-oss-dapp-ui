@@ -28,13 +28,13 @@ export const DefaultHead = (config: SEO) => {
       )}
 
       <meta property='og:type' content={config.author ? 'article' : 'website'} />
-      <meta property='og:url' content={config.url || 'https://wordcel.club'} />
+      <meta property='og:url' content={config.url || 'https://wordcelclub.com'} />
       <meta property='og:title' content={config.title || 'Wordcel - Read, Write, Own'} />
       <meta property='og:description' content={config.description || 'Wordcel - Read, Write, Own'} />
       <meta property='og:image' content={config.image || DEFAULT_OG_IMAGE} />
 
       <meta property='twitter:card' content='summary_large_image' />
-      <meta property='twitter:url' content={config.url || 'https://wordcel.club'} />
+      <meta property='twitter:url' content={config.url || 'https://wordcelclub.com'} />
       <meta property='twitter:title' content={config.title || 'Wordcel - Read, Write, Own'} />
       <meta property='twitter:description' content={config.description || 'Wordcel - Read, Write, Own'} />
       <meta property='twitter:image' content={config.image || DEFAULT_OG_IMAGE} />

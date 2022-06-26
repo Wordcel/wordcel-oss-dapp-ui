@@ -2,7 +2,7 @@ import prisma from '@/lib/prisma';
 import { User, Connection, Article, Invite } from '@prisma/client';
 import { getTrimmedPublicKey } from './getTrimmedPublicKey';
 
-const getUserProfileURL = (user: User) => `*<https://wordcel.club/${user.username}|${user.name}>*`
+const getUserProfileURL = (user: User) => `*<https://wordcelclub.com/${user.username}|${user.name}>*`
 
 const sendAlert = async (data: any) => {
   if (!process.env.SLACK_HOOK) {
@@ -81,7 +81,7 @@ export const newPostAlert = async (
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `<https://wordcel.club/${poster.username}/${post.slug}|${post.title}>`
+          text: `<https://wordcelclub.com/${poster.username}/${post.slug}|${post.title}>`
         }
       },
       {
