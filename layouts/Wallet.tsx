@@ -15,6 +15,7 @@ import {
   WalletModalProvider,
   useWalletModal
 } from '@solana/wallet-adapter-react-ui';
+import { DEVNET_ENDPOINT, MAINNET_ENDPOINT } from '@/components/config/constants';
 
 // Default styles that can be overridden by your app
 require('@solana/wallet-adapter-react-ui/styles.css');
@@ -22,8 +23,8 @@ require('@solana/wallet-adapter-react-ui/styles.css');
 
 export const clusterApiUrl = (cluster: 'devnet' | 'mainnet-beta') => (
   cluster === 'devnet'
-    ? 'https://devnet.genesysgo.net/'
-    : 'https://ssc-dao.genesysgo.net/'
+    ? DEVNET_ENDPOINT
+    : MAINNET_ENDPOINT
 );
 
 export const AutoClear = () => {

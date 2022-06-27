@@ -87,7 +87,15 @@ export const uploadBundle = async (
   if (!skipFund) {
     const toFundAmount = price.multipliedBy(20);
     console.log(`Funding: ${toFundAmount}`);
-    await bundlr.fund(toFundAmount);
+    try {
+      await bundlr.fund(toFundAmount);
+    }
+    catch (e) {
+      console.log(e);
+      toast.dismiss();
+      toast.error('Sorry, we were not able to fund the upload');
+      return;
+    }
   }
 
   const transaction = bundlr.createTransaction(stringData, { tags });
@@ -138,7 +146,15 @@ export const uploadImageBundlr = async (
     toast.loading('Funding Bundlr for upload');
     const toFundAmount = price.multipliedBy(50);
     console.log(`Funding: ${toFundAmount}`);
-    await bundlr.fund(toFundAmount);
+    try {
+      await bundlr.fund(toFundAmount);
+    }
+    catch (e) {
+      console.log(e);
+      toast.dismiss();
+      toast.error('Sorry, we were not able to fund the upload');
+      return;
+    }
   }
 
   const file = new Uint8Array(await image.arrayBuffer());
