@@ -45,6 +45,9 @@ export async function getAllUserDomains (publicKey: PublicKey): Promise<string[]
       }
       catch (e) {
         console.log(e)
+        if (index === domainKeys.length - 1) {
+          resolve(domains);
+        }
       }
     })
   })
