@@ -63,7 +63,13 @@
 }
 
 .arweaveBadge {
-  height: 4.2rem;
+  width: auto;
+  @media only screen and (max-width: 1280px) {
+    width: 88%;
+  }
+  @media only screen and (max-width: 768px) {
+    width: 80%;
+  }
 }
 
 .popBadge {
