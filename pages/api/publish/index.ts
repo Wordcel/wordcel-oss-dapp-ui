@@ -80,7 +80,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       },
       data: {
         arweave_url,
-        on_chain: true,
+        on_chain: false,
+        updated_at: new Date(),
         proof_of_post,
         title,
         description,

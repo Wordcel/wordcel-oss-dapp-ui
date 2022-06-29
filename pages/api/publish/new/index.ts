@@ -84,7 +84,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         slug: slugify(sanitizedSlug),
         arweave_url,
         proof_of_post,
-        on_chain: true,
+        on_chain: false,
+        updated_at: new Date(),
         owner: {
           connect: {
             id: user.id

@@ -2,7 +2,7 @@ import * as anchor from '@project-serum/anchor';
 import randombytes from 'randombytes';
 import toast from 'react-hot-toast';
 import idl from '@/components/config/wordcel-idl.json';
-import { SystemProgram, PublicKey } from '@solana/web3.js';
+import { SystemProgram, PublicKey, Transaction } from '@solana/web3.js';
 import { ContentPayload } from '@/components/upload';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { uploadBundle } from '@/components/uploadBundlr';
@@ -282,3 +282,28 @@ export async function closeConnection (
     toast.error('Connection cancellation failed');
   }
 }
+
+export class DummyWallet {
+  publicKey: PublicKey
+  constructor() {
+    const dummyPair = anchor.web3.Keypair.generate();
+    const publicKey = dummyPair.publicKey;
+  }
+  async signTransaction(tx: Transaction): Promise<Transaction> {
+    tx = new Transaction()
+    return Promise.resolve(tx)
+  }
+  async signAllTransactions(txs: Transaction[]): Promise<Transaction[]> {
+    return Promise.resolve(txs)
+  }
+}
+
+export const getPostAccount = async (post_account: string) => {
+  const program = new anchor.Program(
+    idl as anchor.Idl,
+    programID,
+    provider(new DummyWallet() as anchor.Wallet)
+  );
+  const post_account_key = new PublicKey(post_account);
+  return await program.account.post.fetch(post_account_key);
+};

@@ -32,8 +32,9 @@ model Article {
   title String
   description String
   image_url String
-  on_chain Boolean @default(true)
+  on_chain Boolean @default(false)
   created_at DateTime @default(now())
+  updated_at DateTime?
   proof_of_post String
   arweave_url String
   slug String
@@ -62,7 +63,7 @@ model Draft {
 model Block {
   id Int @id @default(autoincrement())
   data String
-  draft_id Int
+  draft_id Int @unique
   draft Draft @relation(fields: [draft_id], references: [id], onDelete: Cascade)
 }
 

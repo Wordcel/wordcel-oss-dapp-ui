@@ -199,7 +199,7 @@ export const UserView = (props: GetUserServerSide) => {
             </div>
           </div>
           <div className={styles.articles}>
-            {props.articles && props.articles.map((article) => article.on_chain && (
+            {props.articles && props.articles.map((article) => article.arweave_url && (
               <ArticlePreview
                 key={article.slug}
                 article={article}
