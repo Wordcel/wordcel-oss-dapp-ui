@@ -56,7 +56,7 @@ export const uploadBundle = async (
   const stringData = JSON.stringify(finalData);
 
   const tags = [
-    { name: "Content-Type", value: "text/json" },
+    { name: "Content-Type", value: "application/json" },
     { name: "Content-Digest", value: contentDigest },
     { name: "App-Name", value: "Wordcel" },
     { name: "Author", value: wallet.publicKey.toBase58() },
