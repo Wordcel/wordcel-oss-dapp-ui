@@ -74,8 +74,8 @@ export const DashboardPage = (
             </DefaultBox>
           </div>
           <div className={styles.heading}>
-            <p onClick={() => replaceTab('drafts')} className={`${getActiveTabClassname('drafts')} mxs bold pointer`}>Drafts</p>
-            <p onClick={() => replaceTab('published')} className={`${getActiveTabClassname('published')} ml-3 mxs bold pointer`}>Published</p>
+            <p onClick={() => replaceTab('published')} className={`${getActiveTabClassname('published')} mxs bold pointer`}>Published</p>
+            <p onClick={() => replaceTab('drafts')} className={`${getActiveTabClassname('drafts')} ml-3 mxs bold pointer`}>Drafts</p>
           </div>
           <div className={styles.articles}>
             {props.drafts && (

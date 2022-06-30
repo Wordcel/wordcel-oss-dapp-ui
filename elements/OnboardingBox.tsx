@@ -331,7 +331,7 @@ export const OnboardingBox = ({
                 Share your Profile
               </button>
             </a>
-            <Link href={'/dashboard/' + publicKey?.toBase58() + '/drafts'}>
+            <Link href={'/dashboard/' + publicKey?.toBase58() + '/published'}>
               <a>
                 <button className="gray-btn sm mt-1">Continue to Dashboard</button>
               </a>

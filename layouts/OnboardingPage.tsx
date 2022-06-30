@@ -34,7 +34,7 @@ export const OnboardingPage = () => {
       if (!publicKey) return;
       const user_exists = await getUserExists(publicKey.toBase58());
       if (user_exists) {
-        router.push('/dashboard/' + publicKey.toBase58() + '/drafts')
+        router.push('/dashboard/' + publicKey.toBase58() + '/published')
         return;
       };
       try {
