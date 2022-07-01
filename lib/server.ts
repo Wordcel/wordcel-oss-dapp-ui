@@ -39,7 +39,7 @@ export const authenticate = (
 ): boolean => {
   const message = new TextEncoder().encode(MESSAGE_TO_SIGN);
   const public_key_bytes = new PublicKey(public_key).toBytes();
-  const parsedSignature = new Uint8Array(signature.data);
+  const parsedSignature = new Uint8Array(signature.data ? signature.data : Object.values(signature));
   const verified = nacl.sign.detached.verify(message, parsedSignature, public_key_bytes);
   if (!verified) {
     res.status(401).json({ detail: 'Unauthenticated' });
