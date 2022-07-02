@@ -82,7 +82,7 @@ export const DashboardPage = (
               <div>
                 {props.drafts.map((draft) => (
                   <VerticalArticlePreview
-                    key={draft.title}
+                    key={draft.id}
                     article={draft}
                     user={props.user}
                   />

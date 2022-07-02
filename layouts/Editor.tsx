@@ -1,5 +1,5 @@
 import Header from "@editorjs/header"
-import EditorJS from '@appigram/react-editor-js'
+import { createReactEditorJS} from 'react-editor-js'
 
 // @ts-expect-error
 import Paragraph from '@editorjs/paragraph';
@@ -37,6 +37,7 @@ interface Editor {
   handleInstance: (instance: any) => void;
   blocks?: any[];
   onChange?: () => void;
+  handleReady?: () => void;
 }
 
 const allowLinks = (
@@ -59,7 +60,8 @@ const allowLinks = (
 const CustomEditor = ({
   handleInstance,
   blocks,
-  onChange
+  onChange,
+  handleReady
 }: Editor) => {
 
   const wallet = useWallet();
@@ -67,7 +69,9 @@ const CustomEditor = ({
   useEffect(() => {
     const toAllowLinks = [Paragraph, List, Header, InlineCode, Quote, Embed];
     toAllowLinks.forEach((link) => allowLinks(link));
-  }, [])
+  }, []);
+
+  const Editor = createReactEditorJS();
 
   const EDITOR_JS_TOOLS = {
     embed: Embed,
@@ -126,15 +130,16 @@ const CustomEditor = ({
 
   return (
     <div style={{ fontSize: '170%' }}>
-      <EditorJS
+      <Editor
         holder='editor'
-        editorInstance={(instance: any) => handleInstance(instance)}
+        onInitialize={(instance: any) => handleInstance(instance)}
         // @ts-expect-error
         tools={EDITOR_JS_TOOLS}
         placeholder={`Write from here...`}
         // @ts-expect-error
-        data={{ blocks }}
+        defaultValue={{ blocks }}
         onChange={onChange}
+        onReady={handleReady}
       />
       <div id='editor' />
     </div>

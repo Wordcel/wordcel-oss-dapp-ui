@@ -2,11 +2,6 @@
 # yarn lockfile v1
 
 
-"@appigram/react-editor-js@^1.0.11":
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/@appigram/react-editor-js/-/react-editor-js-1.0.11.tgz#91d67580bde9aa47519b6a16d928b9bb396e490c"
-  integrity sha512-/X0Hj7X7GHk4rM6wKafMc7i5qBTHAhO4TxTEM/THiuEAO+iRTBTgrvoinr72NvJRPtwRJ9s/+8bOVNew0aSyvw==
-
 "@assemblyscript/loader@^0.9.4":
   version "0.9.4"
   resolved "https://registry.yarnpkg.com/@assemblyscript/loader/-/loader-0.9.4.tgz#a483c54c1253656bb33babd464e3154a173e1577"
@@ -1235,10 +1230,29 @@
   dependencies:
     "@randlabs/communication-bridge" "^1.0.0"
 
+"@react-editor-js/client@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@react-editor-js/client/-/client-2.1.0.tgz#a1f6a4ca6d24f950e56312585b36f15c128bf61e"
+  integrity sha512-X/OwqY2KKUUVIy24zvubHTI4qhiVIWMxGlU/Bc6tkf9gcsWgQjPvn75DwrQ5SIGBOYpSBcHY01JX0RRtJHRumw==
+  dependencies:
+    "@react-editor-js/core" "2.1.0"
+
+"@react-editor-js/core@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@react-editor-js/core/-/core-2.1.0.tgz#e7c0d2cf2ae7ab4787391857dfade55d3ac63e89"
+  integrity sha512-6h98D5g2RatdCDQRW/+N+eiMtjoq0n1n02m8oA7FrlEzEaOUyV+J+rmtmRS8OexLVOiNeWaSPDpVJ3MNiVLq8Q==
+
 "@react-editor-js/core@^2.0.6":
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/@react-editor-js/core/-/core-2.0.6.tgz#3f20c0668d1f8502489ed7e354ff26461b270dce"
   integrity sha512-mvHM2I+gT3AnvFpFhTZI0EFLKD9pRpgXDf286uwv6n6tngwLfnCCmtCbgiGI9ICph2GJvRZfaQubE+MHQ6YV8g==
+
+"@react-editor-js/server@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@react-editor-js/server/-/server-2.1.0.tgz#57570b034113030aaa1893b57688ba55a36ee918"
+  integrity sha512-RnTbCmzCHbjcjPNKhr9FaehItHgAZyd47Lq+iIGynFqWSsrwGy46LgOXSvb50DYbwDyT0GtxaXBIk6aiFki1Dg==
+  dependencies:
+    "@react-editor-js/core" "2.1.0"
 
 "@rodrigoodhin/editorjs-image-gallery@^0.1.0":
   version "0.1.0"
@@ -3319,6 +3333,11 @@ editorjs-blocks-react-renderer@^1.2.4:
   dependencies:
     html-react-parser "^1.4.5"
 
+editorjs-drag-drop@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/editorjs-drag-drop/-/editorjs-drag-drop-1.1.2.tgz#090eed9875a6bd0d0243aa52c0f30b7052917116"
+  integrity sha512-vgr0QgYScfIp1kurfh8FmceIAnS+ce3Vdtt5Z2SYTf3j0/eL3B5o5FrwOLJBv9GLumqXETZXbYcCo8Q75c7twQ==
+
 editorjs-react-renderer@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/editorjs-react-renderer/-/editorjs-react-renderer-3.1.1.tgz#3b193c10fc584c0db67255d78e402d74a021f4ba"
@@ -3328,6 +3347,13 @@ editorjs-react-renderer@^3.1.1:
     classnames "^2.3.1"
     html-react-parser "^1.4.0"
     react "^17.0.2"
+
+editorjs-undo@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/editorjs-undo/-/editorjs-undo-2.0.4.tgz#2bbdbe89574740c2c944491f7f09cf8e5cb18ad5"
+  integrity sha512-vHwp92fEnqWlG+v9loVWBVZ1wguXcHc8SbQhK/DGM8zDb60Ht1RoLWHAJNVzwzhg8SImgkeU9EgW/zFO3izr1Q==
+  dependencies:
+    vanilla-caret-js "^1.0.1"
 
 eip1193-provider@^1.0.1:
   version "1.0.1"
@@ -6196,6 +6222,15 @@ react-dom@17.0.2:
     object-assign "^4.1.1"
     scheduler "^0.20.2"
 
+react-editor-js@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-editor-js/-/react-editor-js-2.1.0.tgz#3cd82ecbe4935e9cb7330a457c034f74c73c296f"
+  integrity sha512-unI9D2pTH/2gBenc6LgCXJm8iqnrzB71CHgfjQmaB+lGR0Njx+ZXydgUQm1VofMmvF6vcCNVDE1Eb47zQbm14g==
+  dependencies:
+    "@react-editor-js/client" "2.1.0"
+    "@react-editor-js/core" "2.1.0"
+    "@react-editor-js/server" "2.1.0"
+
 react-hot-toast@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/react-hot-toast/-/react-hot-toast-2.2.0.tgz#ab6f4caed4214b9534f94bb8cfaaf21b051e62b9"
@@ -7335,6 +7370,11 @@ validate-npm-package-license@^3.0.1:
   dependencies:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
+
+vanilla-caret-js@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vanilla-caret-js/-/vanilla-caret-js-1.0.1.tgz#96cf4e6ee154ca87c813bb4604c90a24555abc35"
+  integrity sha512-s5hXdyIMmeJ1dzfqvZSEGIXGi5xaHrWKsfRZfNUFVqDLwD2TA5QlPJqFhUhZ4D3wgyf6Pjw5ygUbOpj/QePsSw==
 
 varint@^6.0.0:
   version "6.0.0"

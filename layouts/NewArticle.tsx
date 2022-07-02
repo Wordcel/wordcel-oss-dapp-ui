@@ -13,6 +13,11 @@ import { getUserSignature } from '@/lib/signMessage';
 import { deleteDraft, updateDraft } from '@/components/networkRequests';
 import { Footer } from './Footer';
 
+// @ts-expect-error
+import Undo from 'editorjs-undo';
+// @ts-expect-error
+import DragDrop from 'editorjs-drag-drop';
+
 
 export const NewArticle = () => {
   const router = useRouter();
@@ -35,24 +40,37 @@ export const NewArticle = () => {
     editorInstance.current = instance
   }, []);
 
+  const handleReady = () => {
+    // @ts-expect-error
+    const editor = editorInstance?.current?._editorJS;
+    const config = {
+      shortcuts: {
+        undo: 'CMD+Z',
+        redo: 'SHIFT+Z'
+      }
+    }
+    new Undo({ editor, config })
+    new DragDrop(editor);
+  };
+
   const defaultBlocks = [
     { type: 'header', data: { text: 'Enter a heading', level: 1 } },
     { type: 'paragraph', data: { text: 'Enter a sub heading' } },
+    { type: 'image', data: { file: '' }}
   ];
 
   useEffect(() => {
     (async function () {
       if (publicKey && signMessage) {
-        const userSignature = await getUserSignature(signMessage, publicKey.toBase58());
-        if (!userSignature) {
-          toast('Please sign the message on your wallet so that we can save your progress');
-          setSigError(`Error: ${Math.random()}`)
-          return;
-        };
-        setSignature(userSignature);
+        const userSignature = await getUserSignature(
+          signMessage,
+          publicKey.toBase58(),
+          true
+        );
+        if (userSignature) setSignature(userSignature);
       }
     })();
-  }, [sigError]);
+  }, []);
 
   useEffect(() => {
     const eventListener = (e: KeyboardEvent) => {
@@ -83,7 +101,7 @@ export const NewArticle = () => {
       });
       console.log(response);
       draft_id = response?.draft?.id;
-    }, 15000)
+    }, 8000);
     return () => {
       clearInterval(interval);
     }
@@ -143,6 +161,7 @@ export const NewArticle = () => {
               <Editor
                 blocks={defaultBlocks}
                 handleInstance={handleInitialize}
+                handleReady={handleReady}
               />
             </div>
           )}

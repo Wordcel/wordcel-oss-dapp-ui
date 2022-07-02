@@ -14,13 +14,18 @@ import { getUserSignature } from '@/lib/signMessage';
 import { deleteDraft, updateDraft } from '@/components/networkRequests';
 import { Footer } from './Footer';
 
+// @ts-expect-error
+import Undo from 'editorjs-undo';
+// @ts-expect-error
+import DragDrop from 'editorjs-drag-drop';
+
+
 export const EditDraft = (props: GetDraftServerSide) => {
   console.log(props);
   const wallet = useWallet();
   const router = useRouter();
   const anchorWallet = useAnchorWallet();
   const [blocks] = useState<any>(JSON.parse(props.draft?.blocks || ''));
-  const [sigError, setSigError] = useState('');
   const [signature, setSignature] = useState<Uint8Array>();
   const { publicKey, signMessage } = useWallet();
 
@@ -35,19 +40,31 @@ export const EditDraft = (props: GetDraftServerSide) => {
     editorInstance.current = instance
   }, []);
 
+  const handleReady = () => {
+    // @ts-expect-error
+    const editor = editorInstance?.current?._editorJS;
+    const config = {
+      shortcuts: {
+        undo: 'CMD+Z',
+        redo: 'SHIFT+Z'
+      }
+    }
+    new Undo({ editor, config })
+    new DragDrop(editor);
+  };
+
   useEffect(() => {
     (async function () {
       if (publicKey && signMessage) {
-        const userSignature = await getUserSignature(signMessage, publicKey.toBase58());
-        if (!userSignature) {
-          toast('Please sign the message on your wallet so that we can save your progress');
-          setSigError(`Error: ${Math.random()}`)
-          return;
-        };
-        setSignature(userSignature);
+        const userSignature = await getUserSignature(
+          signMessage,
+          publicKey.toBase58(),
+          true
+        );
+        if (userSignature) setSignature(userSignature);
       }
     })();
-  }, [sigError]);
+  }, []);
 
   useEffect(() => {
     const eventListener = (e: KeyboardEvent) => {
@@ -78,7 +95,7 @@ export const EditDraft = (props: GetDraftServerSide) => {
       });
       console.log(response);
       draft_id = response.draft.id;
-    }, 15000)
+    }, 8000)
     return () => {
       clearInterval(interval);
     }
@@ -139,6 +156,7 @@ export const EditDraft = (props: GetDraftServerSide) => {
               <Editor
                 blocks={blocks}
                 handleInstance={handleInitialize}
+                handleReady={handleReady}
               />
             </div>
           )}

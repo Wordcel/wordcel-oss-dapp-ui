@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@appigram/react-editor-js": "^1.0.11",
     "@bomdi/codebox": "^1.0.12",
     "@bonfida/spl-name-service": "^0.1.33",
     "@bundlr-network/client": "^0.7.11",
@@ -43,7 +42,9 @@
     "axios": "^0.26.1",
     "date-and-time": "^2.3.1",
     "editorjs-blocks-react-renderer": "^1.2.4",
+    "editorjs-drag-drop": "^1.1.2",
     "editorjs-react-renderer": "^3.1.1",
+    "editorjs-undo": "^2.0.4",
     "inter-ui": "^3.19.3",
     "next": "12.1.0",
     "nft.storage": "^6.2.0",
@@ -55,6 +56,7 @@
     "react-click-away-listener": "^2.2.1",
     "react-confetti": "^6.1.0",
     "react-dom": "17.0.2",
+    "react-editor-js": "^2.1.0",
     "react-hot-toast": "^2.2.0",
     "react-lottie": "^1.2.3",
     "react-modal": "^3.15.1",
