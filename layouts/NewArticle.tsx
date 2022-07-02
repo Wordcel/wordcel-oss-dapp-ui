@@ -13,11 +13,6 @@ import { getUserSignature } from '@/lib/signMessage';
 import { deleteDraft, updateDraft } from '@/components/networkRequests';
 import { Footer } from './Footer';
 
-// @ts-expect-error
-import Undo from 'editorjs-undo';
-// @ts-expect-error
-import DragDrop from 'editorjs-drag-drop';
-
 
 export const NewArticle = () => {
   const router = useRouter();
@@ -34,6 +29,16 @@ export const NewArticle = () => {
   const Editor: any = dynamic(() => import('@/layouts/Editor'), {
     ssr: false
   });
+
+  // @ts-expect-error
+  const Undo: any = dynamic(() => import('editorjs-undo'), {
+    ssr: false
+  });
+  // @ts-expect-error
+  const DragDrop: any = dynamic(() => import('editorjs-drag-drop'), {
+    ssr: false
+  });
+
   const editorInstance = useRef<EditorCore | null>(null);
 
   const handleInitialize = useCallback((instance) => {
@@ -42,6 +47,8 @@ export const NewArticle = () => {
 
   const handleReady = () => {
     // @ts-expect-error
+    if (!editorInstance?.current?._editorJS) return;
+    // @ts-expect-error
     const editor = editorInstance?.current?._editorJS;
     const config = {
       shortcuts: {
@@ -49,7 +56,7 @@ export const NewArticle = () => {
         redo: 'SHIFT+Z'
       }
     }
-    new Undo({ editor, config })
+    new Undo({ editor, config });
     new DragDrop(editor);
   };
 

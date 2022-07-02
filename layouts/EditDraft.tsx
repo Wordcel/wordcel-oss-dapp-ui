@@ -14,11 +14,6 @@ import { getUserSignature } from '@/lib/signMessage';
 import { deleteDraft, updateDraft } from '@/components/networkRequests';
 import { Footer } from './Footer';
 
-// @ts-expect-error
-import Undo from 'editorjs-undo';
-// @ts-expect-error
-import DragDrop from 'editorjs-drag-drop';
-
 
 export const EditDraft = (props: GetDraftServerSide) => {
   console.log(props);
@@ -31,9 +26,20 @@ export const EditDraft = (props: GetDraftServerSide) => {
 
   let [draft_id] = useState(props.draft?.id);
   let [publishClicked] = useState(false);
+
   const Editor: any = dynamic(() => import('@/layouts/Editor'), {
     ssr: false
   });
+
+  // @ts-expect-error
+  const Undo: any = dynamic(() => import('editorjs-undo'), {
+    ssr: false
+  });
+  // @ts-expect-error
+  const DragDrop: any = dynamic(() => import('editorjs-drag-drop'), {
+    ssr: false
+  });
+
   const editorInstance = useRef<EditorCore | null>(null);
 
   const handleInitialize = useCallback((instance) => {
