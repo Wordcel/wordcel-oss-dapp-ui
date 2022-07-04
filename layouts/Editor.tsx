@@ -17,8 +17,6 @@ import Embed from "@editorjs/embed";
 // @ts-expect-error
 import InlineCode from "@editorjs/inline-code";
 // @ts-expect-error
-import LinkTool from "@editorjs/link";
-// @ts-expect-error
 import List from "@editorjs/list";
 // @ts-expect-error
 import Quote from "@editorjs/quote";
@@ -153,7 +151,6 @@ const CustomEditor = ({
       inlineToolbar: ['link', 'bold', 'italic'],
     },
     code: CodeBox,
-    linkTool: LinkTool,
     quote: Quote,
     checklist: CheckList,
     delimiter: Delimiter,
