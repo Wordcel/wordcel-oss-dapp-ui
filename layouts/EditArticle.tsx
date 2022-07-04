@@ -12,6 +12,11 @@ import { StaticNavbar } from './Navbar';
 import { getUserSignature } from '@/lib/signMessage';
 import { Footer } from './Footer';
 
+// @ts-expect-error
+import Undo from 'editorjs-undo';
+// @ts-expect-error
+import DragDrop from 'editorjs-drag-drop';
+
 
 export const EditArticle = (props: GetArticleServerSide) => {
   const wallet = useWallet();
@@ -21,20 +26,9 @@ export const EditArticle = (props: GetArticleServerSide) => {
   const { publicKey, signMessage } = useWallet();
 
   let [publishClicked] = useState(false);
-
   const Editor: any = dynamic(() => import('@/layouts/Editor'), {
     ssr: false
   });
-
-  // @ts-expect-error
-  const Undo: any = dynamic(() => import('editorjs-undo'), {
-    ssr: false
-  });
-  // @ts-expect-error
-  const DragDrop: any = dynamic(() => import('editorjs-drag-drop'), {
-    ssr: false
-  });
-
   const editorInstance = useRef<EditorCore | null>(null);
 
   const handleInitialize = useCallback((instance) => {
