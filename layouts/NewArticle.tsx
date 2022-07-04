@@ -13,16 +13,10 @@ import { getUserSignature } from '@/lib/signMessage';
 import { deleteDraft, updateDraft } from '@/components/networkRequests';
 import { Footer } from './Footer';
 
-// @ts-expect-error
-import Undo from 'editorjs-undo';
-// @ts-expect-error
-import DragDrop from 'editorjs-drag-drop';
-
 
 export const NewArticle = () => {
   const router = useRouter();
   const { publicKey, signMessage } = useWallet();
-  const [sigError, setSigError] = useState('');
   const [signature, setSignature] = useState<Uint8Array>();
 
   let [draft_id] = useState('');
@@ -39,19 +33,6 @@ export const NewArticle = () => {
   const handleInitialize = useCallback((instance) => {
     editorInstance.current = instance
   }, []);
-
-  const handleReady = () => {
-    // @ts-expect-error
-    const editor = editorInstance?.current?._editorJS;
-    const config = {
-      shortcuts: {
-        undo: 'CMD+Z',
-        redo: 'SHIFT+Z'
-      }
-    }
-    new Undo({ editor, config })
-    new DragDrop(editor);
-  };
 
   const defaultBlocks = [
     { type: 'header', data: { text: 'Enter a heading', level: 1 } },
@@ -161,7 +142,7 @@ export const NewArticle = () => {
               <Editor
                 blocks={defaultBlocks}
                 handleInstance={handleInitialize}
-                handleReady={handleReady}
+                instance={editorInstance}
               />
             </div>
           )}

@@ -1,5 +1,8 @@
 import Header from "@editorjs/header"
-import { createReactEditorJS} from 'react-editor-js'
+import { useRef, useCallback } from "react";
+import { createReactEditorJS } from 'react-editor-js'
+import { EditorCore } from "@react-editor-js/core";
+
 
 // @ts-expect-error
 import Paragraph from '@editorjs/paragraph';
@@ -25,6 +28,12 @@ import Quote from "@editorjs/quote";
 
 import { useWallet } from "@solana/wallet-adapter-react";
 
+// @ts-expect-error
+import Undo from 'editorjs-undo';
+// @ts-expect-error
+import DragDrop from 'editorjs-drag-drop';
+
+
 // // @ts-expect-error
 // import ImageGallery from '@rodrigoodhin/editorjs-image-gallery';
 
@@ -32,12 +41,13 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import Image from "@editorjs/image";
 import { useEffect } from "react"
 import { uploadImageBundlr } from "@/components/uploadBundlr";
+import { timeout } from "@/lib/utils";
 
 interface Editor {
   handleInstance: (instance: any) => void;
   blocks?: any[];
   onChange?: () => void;
-  handleReady?: () => void;
+  instance: EditorCore | null;
 }
 
 const allowLinks = (
@@ -61,17 +71,41 @@ const CustomEditor = ({
   handleInstance,
   blocks,
   onChange,
-  handleReady
+  instance
 }: Editor) => {
 
   const wallet = useWallet();
+  const Editor = createReactEditorJS();
 
   useEffect(() => {
     const toAllowLinks = [Paragraph, List, Header, InlineCode, Quote, Embed];
     toAllowLinks.forEach((link) => allowLinks(link));
   }, []);
 
-  const Editor = createReactEditorJS();
+  const handleReady = async () => {
+    // @ts-expect-error
+    const editor = instance?.current?._editorJS;
+    const config = {
+      shortcuts: {
+        undo: 'CMD+Z',
+        redo: 'SHIFT+Z'
+      }
+    }
+    try {
+      new Undo({ editor, config })
+      new DragDrop(editor);
+    }
+    catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    (async function () {
+      await timeout(4000);
+      handleReady();
+    })();
+  }, []);
 
   const EDITOR_JS_TOOLS = {
     embed: Embed,
@@ -139,7 +173,6 @@ const CustomEditor = ({
         // @ts-expect-error
         defaultValue={{ blocks }}
         onChange={onChange}
-        onReady={handleReady}
       />
       <div id='editor' />
     </div>

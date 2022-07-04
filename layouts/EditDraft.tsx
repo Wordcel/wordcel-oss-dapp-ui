@@ -14,11 +14,6 @@ import { getUserSignature } from '@/lib/signMessage';
 import { deleteDraft, updateDraft } from '@/components/networkRequests';
 import { Footer } from './Footer';
 
-// @ts-expect-error
-import Undo from 'editorjs-undo';
-// @ts-expect-error
-import DragDrop from 'editorjs-drag-drop';
-
 
 export const EditDraft = (props: GetDraftServerSide) => {
   console.log(props);
@@ -39,19 +34,6 @@ export const EditDraft = (props: GetDraftServerSide) => {
   const handleInitialize = useCallback((instance) => {
     editorInstance.current = instance
   }, []);
-
-  const handleReady = () => {
-    // @ts-expect-error
-    const editor = editorInstance?.current?._editorJS;
-    const config = {
-      shortcuts: {
-        undo: 'CMD+Z',
-        redo: 'SHIFT+Z'
-      }
-    }
-    new Undo({ editor, config })
-    new DragDrop(editor);
-  };
 
   useEffect(() => {
     (async function () {
@@ -156,7 +138,7 @@ export const EditDraft = (props: GetDraftServerSide) => {
               <Editor
                 blocks={blocks}
                 handleInstance={handleInitialize}
-                handleReady={handleReady}
+                instance={editorInstance}
               />
             </div>
           )}
