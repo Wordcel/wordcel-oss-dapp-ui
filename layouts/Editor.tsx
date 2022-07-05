@@ -106,9 +106,12 @@ const CustomEditor = ({
   }, []);
 
   const EDITOR_JS_TOOLS = {
-    embed: Embed,
+    embed: {
+      class: Embed,
+    },
     image: {
       class: Image,
+      shortcut: "CMD+SHIFT+I",
       config: {
         uploader: {
           uploadByFile(file: File) {
@@ -140,21 +143,39 @@ const CustomEditor = ({
     },
     header: {
       class: Header,
+      shortcut: "CMD+SHIFT+H",
+      levels: [1, 2, 3, 4, 5, 6],
+      defaultLevel: 1,
       inlineToolbar: ['link', 'bold', 'italic'],
     },
     list: {
       class: List,
+      shortcut: "CMD+SHIFT+L",
       inlineToolbar: ['link', 'bold', 'italic'],
     },
     paragraph: {
       class: Paragraph,
       inlineToolbar: ['link', 'bold', 'italic'],
     },
-    code: CodeBox,
-    quote: Quote,
-    checklist: CheckList,
-    delimiter: Delimiter,
-    inlineCode: InlineCode,
+    code: {
+      class: CodeBox,
+      shortcut: "CMD+SHIFT+C",
+    },
+    quote: {
+      class: Quote,
+      shortcut: "CMD+SHIFT+Q",
+    },
+    checklist: {
+      class: CheckList,
+      shortcut: "CMD+SHIFT+K",
+    },
+    delimiter: {
+      class: Delimiter,
+      shortcut: "CMD+SHIFT+D",
+    },
+    inlineCode: {
+      class: InlineCode
+    },
     // markdownImporter: MDImporter,
     // imageGallery: ImageGallery,
   }
