@@ -1,3 +1,6 @@
+import * as crypto from 'crypto';
+import slugify from 'slugify';
+import toast from 'react-hot-toast';
 import Bundlr from '@bundlr-network/client';
 import {
   MAINNET_ENDPOINT,
@@ -6,8 +9,7 @@ import {
 import { ContentPayload } from '@/components/upload';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { getBundlrBalance } from './networkRequests';
-import * as crypto from 'crypto';
-import toast from 'react-hot-toast';
+import { getHeaderContent } from './getHeaderContent';
 
 export const uploadBundle = async (
   data: ContentPayload,
@@ -39,10 +41,25 @@ export const uploadBundle = async (
 
   const signature = await wallet.signMessage(new TextEncoder().encode(contentDigest));
   if (!signature) return;
-
   const stringSignature = Buffer.from(signature).toString('base64');
+
+  let mut_slug = '';
+
+  const { title, image_url, description } = getHeaderContent(data.content.blocks);
+  if (title) mut_slug = title
+  if (!title) mut_slug = 'Untitled Article ' + Date.now();
+
+  const sanitizedSlug = slugify(mut_slug, {
+    lower: true,
+    remove: /[*+~.()'"!:@]/g
+  });
+
   const finalData = {
     ...data,
+    slug: sanitizedSlug,
+    title: title || 'Untitled Article',
+    image_url: image_url || '',
+    description: description || '',
     authorship: {
       signature: stringSignature,
       publicKey: wallet.publicKey.toBase58(),
@@ -60,6 +77,10 @@ export const uploadBundle = async (
     { name: "Content-Digest", value: contentDigest },
     { name: "App-Name", value: "Wordcel" },
     { name: "Author", value: wallet.publicKey.toBase58() },
+    { name: "Title", value: title || 'Untitled Article' },
+    { name: "Slug", value: sanitizedSlug },
+    { name: "Description", value: description || '' },
+    { name: "Image-URL", value: image_url || '' },
     { name: "Publish-Date", value: new Date().getTime().toString() },
     { name: "Profile Account", value: profileAccount },
     { name: "Post Account", value: postAccount },
