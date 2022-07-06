@@ -677,3 +677,28 @@ figure {
   background: rgba(16, 172, 132, 0.22);
   border-radius: 0.6rem;
 }
+
+.cdx-input {
+  border: none !important;
+  box-shadow: none;
+}
+
+.cdx-quote__text {
+  min-height: 80px !important;
+  padding: 1.8rem 2rem !important;
+  margin: 0rem !important;
+}
+
+.cdx-quote {
+  margin: 2rem 0rem !important;
+  border-left: 0.5rem solid var(--text-color);
+}
+
+.cdx-block.cdx-quote {
+  padding: 0rem !important;
+}
+
+.cdx-quote__caption {
+  padding: 0rem 2rem !important;
+  padding-bottom: 1rem !important;
+}
