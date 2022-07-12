@@ -20,7 +20,7 @@ import quill from '@/images/elements/quill.svg';
 
 // JSX Imports
 import { DefaultHead } from "../components/DefaultHead";
-import { Loading } from '../components/Loading';
+import { Loading } from '../components/animations/Loading';
 import { StaticNavbar } from "../components/Navbar";
 import { Footer } from '../components/Footer';
 import { useRouter } from 'next/router';
