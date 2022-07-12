@@ -1,4 +1,4 @@
-import { getDraftServerSide } from '@/components/ssr/getDraftServerSide';
+import { getDraftServerSide } from '@/lib/ssr/getDraftServerSide';
 import { EditDraft } from '@/layouts/EditDraft';
 import { GetDraftServerSide } from '@/types/props';
 import { GetServerSideProps } from 'next';

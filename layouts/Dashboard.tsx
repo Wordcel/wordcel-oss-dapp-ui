@@ -4,13 +4,13 @@ import styles from '@/styles/Dashboard.module.scss';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Footer } from './Footer';
-import { DefaultHead } from './DefaultHead';
-import { StaticNavbar } from './Navbar';
+import { Footer } from '../components/Footer';
+import { DefaultHead } from '../components/DefaultHead';
+import { StaticNavbar } from '../components/Navbar';
 import { DefaultBox } from '@/elements/Box';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 import { DashboardSSR } from '@/types/props';
-import { VerticalArticlePreview } from './ArticlePreview';
+import { VerticalArticlePreview } from '../components/ArticlePreview';
 
 export const NoArticles = () => (
   <div className="flex justify-content-center mt-12">

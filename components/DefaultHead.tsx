@@ -1,4 +1,4 @@
-import { DEFAULT_OG_IMAGE } from '@/components/config/constants';
+import { DEFAULT_OG_IMAGE } from '@/lib/config/constants';
 import Head from 'next/head';
 
 interface SEO {

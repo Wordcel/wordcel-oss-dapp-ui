@@ -1,17 +1,17 @@
 import toast from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import styles from '@/styles/Editor.module.scss';
-import { saveToast } from '@/components/saveToast';
-import { publishPost } from '@/components/contractInteraction';
+import { saveToast } from '@/lib/saveToast';
+import { publishPost } from '@/lib/contractInteraction';
 import { EditorCore } from "@react-editor-js/core";
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { useRouter } from 'next/router';
 import { useEffect, useCallback, useRef, useState } from 'react';
-import { DefaultHead } from './DefaultHead';
-import { StaticNavbar } from './Navbar';
+import { DefaultHead } from '../components/DefaultHead';
+import { StaticNavbar } from '../components/Navbar';
 import { getUserSignature } from '@/lib/signMessage';
-import { deleteDraft, updateDraft } from '@/components/networkRequests';
-import { Footer } from './Footer';
+import { deleteDraft, updateDraft } from '@/lib/networkRequests';
+import { Footer } from '../components/Footer';
 
 
 export const NewArticle = () => {
@@ -25,7 +25,7 @@ export const NewArticle = () => {
   const anchorWallet = useAnchorWallet();
   const wallet = useWallet();
 
-  const Editor: any = dynamic(() => import('@/layouts/Editor'), {
+  const Editor: any = dynamic(() => import('@/components/Editor'), {
     ssr: false
   });
   const editorInstance = useRef<EditorCore | null>(null);

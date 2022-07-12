@@ -1,0 +1,80 @@
+:root {
+  --gray-50: hsl(210, 40%, 98%);
+  --gray-100: hsl(210, 40%, 96%);
+  --gray-200: hsl(214, 32%, 91%);
+  --gray-300: hsl(213, 27%, 84%);
+  --gray-400: hsl(215, 20%, 65%);
+  --gray-500: hsl(215, 16%, 47%);
+  --gray-600: hsl(215, 19%, 35%);
+  --gray-700: hsl(215, 25%, 27%);
+  --gray-800: hsl(217, 33%, 17%);
+  --gray-900: hsl(222, 47%, 11%);
+}
+
+.text.gray-50 {
+  color: var(--gray-50);
+}
+.text.gray-100 {
+  color: var(--gray-100);
+}
+.text.gray-200 {
+  color: var(--gray-200);
+}
+.text.gray-300 {
+  color: var(--gray-300);
+}
+.text.gray-400 {
+  color: var(--gray-400);
+}
+.text.gray-500 {
+  color: var(--gray-500);
+}
+.text.gray-600 {
+  color: var(--gray-600);
+}
+.text.gray-700 {
+  color: var(--gray-700);
+}
+.text.gray-800 {
+  color: var(--gray-800);
+}
+.text.gray-900 {
+  color: var(--gray-900);
+}
+
+.text.size-16 {
+  font-size: 1.6rem;
+}
+.text.size-20 {
+  font-size: 2.0rem;
+}
+.text.size-24 {
+  font-size: 2.4rem;
+}
+.text.size-28 {
+  font-size: 2.8rem;
+}
+.text.size-32 {
+  font-size: 3.2rem;
+}
+.text.size-36 {
+  font-size: 3.6rem;
+}
+.text.size-40 {
+  font-size: 4.0rem;
+}
+.text.size-44 {
+  font-size: 4.4rem;
+}
+.text.size-48 {
+  font-size: 4.8rem;
+}
+.text.size-52 {
+  font-size: 5.2rem;
+}
+.text.size-56 {
+  font-size: 5.6rem;
+}
+.text.size-60 {
+  font-size: 6.0rem;
+}

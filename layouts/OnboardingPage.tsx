@@ -3,9 +3,9 @@ import styles from '@/styles/Static.module.scss';
 
 
 // Layout Imports
-import { Footer } from './Footer';
-import { DefaultHead } from './DefaultHead';
-import { StaticNavbar } from './Navbar';
+import { Footer } from '../components/Footer';
+import { DefaultHead } from '../components/DefaultHead';
+import { StaticNavbar } from '../components/Navbar';
 import { RequestConnect } from '@/elements/RequestConnect';
 import { OnboardingBox } from '@/elements/OnboardingBox';
 
@@ -16,8 +16,8 @@ import useWindowSize from 'react-use/lib/useWindowSize';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
-import { getUserExists } from '@/components/networkRequests';
-import { getInviteAccount } from '@/components/invitationIntegration';
+import { getUserExists } from '@/lib/networkRequests';
+import { getInviteAccount } from '@/lib/invitationIntegration';
 
 
 export const OnboardingPage = () => {

@@ -7,10 +7,10 @@ import userStyles from '@/styles/UserView.module.scss';
 import authorBadge from '@/images/elements/author-badge.svg';
 import { GetArticleServerSide } from '@/types/props';
 import { useEffect, useState } from 'react';
-import { DefaultHead } from './DefaultHead';
-import { StaticNavbar } from './Navbar';
-import { Footer } from './Footer';
-import { getReadingTime } from '@/components/getReadingTime';
+import { DefaultHead } from '../components/DefaultHead';
+import { StaticNavbar } from '../components/Navbar';
+import { Footer } from '../components/Footer';
+import { getReadingTime } from '@/lib/getReadingTime';
 import { useRouter } from 'next/router';
 
 export const AuthorBox = (props: GetArticleServerSide) => {
@@ -51,7 +51,7 @@ export const AuthorBox = (props: GetArticleServerSide) => {
 export const ViewArticle = (props: GetArticleServerSide) => {
   const { asPath } = useRouter();
   const [blocks] = useState<any>(JSON.parse(props.blocks || ''));
-  const Reader: any = dynamic(() => import('@/layouts/Reader'), {
+  const Reader: any = dynamic(() => import('@/components/Reader'), {
     ssr: false
   });
   const SEOData = {

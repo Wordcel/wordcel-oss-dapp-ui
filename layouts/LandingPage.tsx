@@ -1,13 +1,13 @@
 import { toast } from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { ConnectWallet } from './Wallet';
-import { DefaultHead } from './DefaultHead';
-import { Navbar } from './Navbar';
-import { Footer } from './Footer';
+import { DefaultHead } from '../components/DefaultHead';
+import { Navbar } from '../components/Navbar';
+import { Footer } from '../components/Footer';
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { getIfWhitelisted } from '@/lib/getIfUserIsWhitelisted';
 import { useRouter } from 'next/router';
-import { WHITELIST_URL } from '@/components/config/constants';
+import { WHITELIST_URL } from '@/lib/config/constants';
 import Image from 'next/image';
 import quillIcon from '@/images/icons/quill.svg';
 import styles from '@/styles/Home.module.scss';

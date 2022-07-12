@@ -1,6 +1,6 @@
 import { Connection, PublicKey } from "@solana/web3.js";
 import { NAME_PROGRAM_ID, performReverseLookup } from "@bonfida/spl-name-service";
-import { MAINNET_ENDPOINT } from "@/components/config/constants";
+import { MAINNET_ENDPOINT } from "@/lib/config/constants";
 
 const SOL_TLD_AUTHORITY = new PublicKey(
   "58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx"

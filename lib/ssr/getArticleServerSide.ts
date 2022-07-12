@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-import { getBlocks } from '@/components/getArticleBlocks';
+import { getBlocks } from '@/lib/getArticleBlocks';
 import { getPostAccount } from '../contractInteraction';
 
 const redirect = () => {

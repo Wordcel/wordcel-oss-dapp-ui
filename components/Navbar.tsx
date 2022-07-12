@@ -7,7 +7,7 @@ import editButton from '@/images/elements/edit-profile.svg';
 import arweaveBadge from '@/images/elements/arweave.svg';
 import pop_image from '@/images/elements/proof-of-post.svg';
 import { ConnectWallet } from '@/layouts/Wallet';
-import { CLUSTER, WHITELIST_URL } from '@/components/config/constants';
+import { CLUSTER, WHITELIST_URL } from '@/lib/config/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 export const Navbar = ({

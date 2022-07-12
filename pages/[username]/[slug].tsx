@@ -1,6 +1,6 @@
 import { ViewArticle } from '@/layouts/ViewArticle';
 import { GetArticleServerSide } from '@/types/props';
-import { getArticleServerSide } from '@/components/ssr/getArticleServerSide';
+import { getArticleServerSide } from '@/lib/ssr/getArticleServerSide';
 import { GetServerSideProps } from 'next';
 
 const ViewArticlePage = (props: GetArticleServerSide) => {

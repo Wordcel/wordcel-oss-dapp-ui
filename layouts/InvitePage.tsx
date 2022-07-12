@@ -9,7 +9,7 @@ import {
   getInviteAccount,
   isAdmin,
   sendInvite
-} from '@/components/invitationIntegration';
+} from '@/lib/invitationIntegration';
 import {
   useAnchorWallet,
   useWallet
@@ -19,13 +19,13 @@ import {
 import quill from '@/images/elements/quill.svg';
 
 // JSX Imports
-import { DefaultHead } from "./DefaultHead";
-import { Loading } from './Loading';
-import { StaticNavbar } from "./Navbar";
-import { Footer } from './Footer';
+import { DefaultHead } from "../components/DefaultHead";
+import { Loading } from '../components/Loading';
+import { StaticNavbar } from "../components/Navbar";
+import { Footer } from '../components/Footer';
 import { useRouter } from 'next/router';
 import { RequestConnect } from '@/elements/RequestConnect';
-import { createNewInvite } from '@/components/networkRequests';
+import { createNewInvite } from '@/lib/networkRequests';
 import { getUserSignature } from '@/lib/signMessage';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 import { getDomainOwner } from '@/lib/verifySolDomain';

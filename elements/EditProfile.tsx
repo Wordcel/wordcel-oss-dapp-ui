@@ -16,7 +16,7 @@ import styles from '@/styles/EditProfile.module.scss';
 import { UpdatableUserDetails, UpdateUser } from '@/types/api';
 
 // Component Imports
-import { uploadImageBundlr } from '@/components/uploadBundlr';
+import { uploadImageBundlr } from '@/lib/uploadBundlr';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { getUserSignature } from '@/lib/signMessage';
 import { useRouter } from 'next/router';

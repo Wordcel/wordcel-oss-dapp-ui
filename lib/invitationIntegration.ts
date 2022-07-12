@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 import * as anchor from '@project-serum/anchor';
-import idl from '@/components/config/invite-idl.json';
+import idl from '@/lib/config/invite-idl.json';
 import {
   MAINNET_ENDPOINT,
   INVITATION_MAINNET_PROGRAM_ID

@@ -8,7 +8,7 @@ import {
   verifyMethod,
   authenticate
 } from '@/lib/server';
-import { getHeaderContent } from '@/components/getHeaderContent';
+import { getHeaderContent } from '@/lib/getHeaderContent';
 import { sanitizeHtml } from '@/lib/sanitize';
 import { withSentry } from '@sentry/nextjs';
 

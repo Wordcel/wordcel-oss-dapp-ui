@@ -5,8 +5,8 @@ import Bundlr from '@bundlr-network/client';
 import {
   MAINNET_ENDPOINT,
   BUNDLR_MAINNET_ENDPOINT
-} from '@/components/config/constants';
-import { ContentPayload } from '@/components/upload';
+} from '@/lib/config/constants';
+import { ContentPayload } from '@/lib/upload';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { getBundlrBalance } from './networkRequests';
 import { getHeaderContent } from './getHeaderContent';

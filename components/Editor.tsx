@@ -38,7 +38,7 @@ import ImageGallery from '@rodrigoodhin/editorjs-image-gallery';
 // @ts-expect-error
 import Image from "@editorjs/image";
 import { useEffect } from "react"
-import { uploadImageBundlr } from "@/components/uploadBundlr";
+import { uploadImageBundlr } from "@/lib/uploadBundlr";
 import { timeout } from "@/lib/utils";
 
 interface Editor {

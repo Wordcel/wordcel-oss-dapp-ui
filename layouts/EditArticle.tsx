@@ -1,16 +1,16 @@
 import toast from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import styles from '@/styles/Editor.module.scss';
-import { publishPost } from '@/components/contractInteraction';
+import { publishPost } from '@/lib/contractInteraction';
 import { EditorCore } from "@react-editor-js/core";
 import { GetArticleServerSide } from '@/types/props';
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { useRouter } from 'next/router';
 import { useEffect, useCallback, useRef, useState } from 'react';
-import { DefaultHead } from './DefaultHead';
-import { StaticNavbar } from './Navbar';
+import { DefaultHead } from '../components/DefaultHead';
+import { StaticNavbar } from '../components/Navbar';
 import { getUserSignature } from '@/lib/signMessage';
-import { Footer } from './Footer';
+import { Footer } from '../components/Footer';
 
 
 export const EditArticle = (props: GetArticleServerSide) => {
@@ -21,7 +21,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
   const { publicKey, signMessage } = useWallet();
 
   let [publishClicked] = useState(false);
-  const Editor: any = dynamic(() => import('@/layouts/Editor'), {
+  const Editor: any = dynamic(() => import('@/components/Editor'), {
     ssr: false
   });
   const editorInstance = useRef<EditorCore | null>(null);

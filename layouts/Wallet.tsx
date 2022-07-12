@@ -15,7 +15,7 @@ import {
   WalletModalProvider,
   useWalletModal
 } from '@solana/wallet-adapter-react-ui';
-import { DEVNET_ENDPOINT, MAINNET_ENDPOINT } from '@/components/config/constants';
+import { DEVNET_ENDPOINT, MAINNET_ENDPOINT } from '@/lib/config/constants';
 
 // Default styles that can be overridden by your app
 require('@solana/wallet-adapter-react-ui/styles.css');

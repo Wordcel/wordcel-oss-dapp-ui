@@ -1,4 +1,4 @@
-import { MAINNET_ENDPOINT } from "@/components/config/constants";
+import { MAINNET_ENDPOINT } from "@/lib/config/constants";
 import {
   getHashedName,
   getNameAccountKey,

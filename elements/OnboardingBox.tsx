@@ -10,11 +10,11 @@ import { Done, Step } from '@/images/dynamic/Step';
 import { useEffect, useRef, useState } from 'react';
 import { getUserSignature } from '@/lib/signMessage';
 import { getAllUserDomains } from '@/lib/getAllUserDomains';
-import { createNewProfile, getUserTwitter, verifyTwitterRequest } from '@/components/networkRequests';
+import { createNewProfile, getUserTwitter, verifyTwitterRequest } from '@/lib/networkRequests';
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
-import { createFreshProfile } from '@/components/contractInteraction';
+import { createFreshProfile } from '@/lib/contractInteraction';
 import { getUserNFTs } from '@/lib/getAllUserNFTs';
-import { uploadImageBundlr } from '@/components/uploadBundlr';
+import { uploadImageBundlr } from '@/lib/uploadBundlr';
 import { messageToSign } from '@/lib/verifyTwitter';
 
 

@@ -4,15 +4,15 @@ import tickIcon from '@/images/icons/tick.svg';
 import noArticles from '@/images/elements/no-articles.svg';
 import {
   getDefaultArticleImage
-} from '@/components/getDefaultPreviewImage';
-import { DefaultHead } from "../layouts/DefaultHead";
-import { StaticNavbar } from "../layouts/Navbar";
+} from '@/lib/getDefaultPreviewImage';
+import { DefaultHead } from "../components/DefaultHead";
+import { StaticNavbar } from "../components/Navbar";
 import { Article, GetArticlesServerSide } from "@/types/props";
 import { useState, useEffect } from "react";
 import { shortenSentence } from "@/lib/sanitize";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
-import { Footer } from "../layouts/Footer";
+import { Footer } from "../components/Footer";
 
 export const ImportArticles = ({
   articles,

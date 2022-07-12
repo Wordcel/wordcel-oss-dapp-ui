@@ -2,8 +2,8 @@ import Image from 'next/image';
 import styles from '@/styles/Welcome.module.scss';
 import verifiedElement from '@/images/elements/verified.svg';
 import importGradient from '@/images/elements/welcome-gradient.png'
-import { StaticNavbar } from "../layouts/Navbar";
-import { DefaultHead } from "../layouts/DefaultHead";
+import { StaticNavbar } from "../components/Navbar";
+import { DefaultHead } from "../components/DefaultHead";
 import { GetUserServerSide } from '@/types/props';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';

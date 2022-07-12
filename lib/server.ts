@@ -1,7 +1,7 @@
 import * as nacl from 'tweetnacl';
 import { PublicKey } from '@solana/web3.js';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { MESSAGE_TO_SIGN } from '@/components/config/constants';
+import { MESSAGE_TO_SIGN } from '@/lib/config/constants';
 
 export const verifyKeys = (
   req: NextApiRequest,

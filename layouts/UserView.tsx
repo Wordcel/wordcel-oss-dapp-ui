@@ -1,11 +1,11 @@
 // Stylesheet
 import styles from '@/styles/UserView.module.scss';
 
-import { Footer } from './Footer';
-import { DefaultHead } from './DefaultHead';
-import { StaticNavbar } from '@/layouts/Navbar';
+import { Footer } from '../components/Footer';
+import { DefaultHead } from '../components/DefaultHead';
+import { StaticNavbar } from '@/components/Navbar';
 import { GetUserServerSide } from '@/types/props';
-import { ArticlePreview } from './ArticlePreview';
+import { ArticlePreview } from '../components/ArticlePreview';
 
 // @ts-expect-error
 import AnchorifyText from 'react-anchorify-text';
@@ -13,8 +13,8 @@ import AnchorifyText from 'react-anchorify-text';
 import {
   closeConnection,
   createConnection
-} from '@/components/contractInteraction';
-import { getIfConnected } from '@/components/networkRequests';
+} from '@/lib/contractInteraction';
+import { getIfConnected } from '@/lib/networkRequests';
 
 // Images
 import defaultBanner from '@/images/gradients/user-default-banner.png';
@@ -26,7 +26,7 @@ import { getUserSignature } from '@/lib/signMessage';
 import { PublicKey } from '@solana/web3.js';
 import { ConnectWallet } from './Wallet';
 import { useEffect, useState } from 'react';
-import { getDefaultUserImage } from '@/components/getDefaultPreviewImage';
+import { getDefaultUserImage } from '@/lib/getDefaultPreviewImage';
 import { useRouter } from 'next/router';
 import { EditProfile } from '@/elements/EditProfile';
 

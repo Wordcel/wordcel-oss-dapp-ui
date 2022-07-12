@@ -1,11 +1,11 @@
 import * as anchor from '@project-serum/anchor';
 import randombytes from 'randombytes';
 import toast from 'react-hot-toast';
-import idl from '@/components/config/wordcel-idl.json';
+import idl from '@/lib/config/wordcel-idl.json';
 import { SystemProgram, PublicKey, Transaction } from '@solana/web3.js';
-import { ContentPayload } from '@/components/upload';
+import { ContentPayload } from '@/lib/upload';
 import { WalletContextState } from '@solana/wallet-adapter-react';
-import { uploadBundle } from '@/components/uploadBundlr';
+import { uploadBundle } from '@/lib/uploadBundlr';
 import {
   MAINNET_ENDPOINT,
   WORDCEL_MAINNET_PROGRAM_ID,
@@ -15,7 +15,7 @@ import {
   publishToServer,
   updateConnectionServer,
   getProfileHash
-} from '@/components/networkRequests';
+} from '@/lib/networkRequests';
 import { sendAndConfirmTransaction } from './txConfirmation';
 
 const preflightCommitment = "processed";
