@@ -14,9 +14,10 @@ export const getHeaderContent = (
   const headings = blocks.filter((block: any) => block.type === 'header');
   const text_content = blocks.filter((block: any) => block.type === 'paragraph');
   const image_content = blocks.filter((block: any) => block.type === 'image');
+  const image_gallery_content = blocks.filter((block: any) => block.type === 'imageGallery');
   const title = headings[0]?.data.text || text_content[0]?.data.text|| 'Untitled Article';
   const description = text_content[0]?.data.text || 'No description';
-  const image_url = image_content[0]?.data?.url || image_content[0]?.data?.file?.url || '';
+  const image_url = image_content[0]?.data?.url || image_content[0]?.data?.file?.url || image_gallery_content[0]?.data?.urls?.[0] ||'';
   const sanitizedSlug = slugify(title, {
     lower: true,
     remove: /[*+~.()'"!:@]/g

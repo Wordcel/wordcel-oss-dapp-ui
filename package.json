@@ -59,11 +59,13 @@
     "react-hot-toast": "^2.2.0",
     "react-lottie": "^1.2.3",
     "react-modal": "^3.15.1",
+    "react-photo-collage": "^1.0.9",
     "react-use": "^17.4.0",
     "sanitize-html": "^2.7.0",
     "sass": "^1.49.9",
     "sharp": "^0.30.3",
     "slugify": "^1.6.5",
+    "styled-components": "^5.3.5",
     "tweetnacl": "^1.0.3"
   },
   "devDependencies": {

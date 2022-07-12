@@ -32,8 +32,8 @@ import Undo from 'editorjs-undo';
 import DragDrop from 'editorjs-drag-drop';
 
 
-// // @ts-expect-error
-// import ImageGallery from '@rodrigoodhin/editorjs-image-gallery';
+// @ts-expect-error
+import ImageGallery from '@rodrigoodhin/editorjs-image-gallery';
 
 // @ts-expect-error
 import Image from "@editorjs/image";
@@ -176,8 +176,8 @@ const CustomEditor = ({
     inlineCode: {
       class: InlineCode
     },
+    imageGallery: ImageGallery,
     // markdownImporter: MDImporter,
-    // imageGallery: ImageGallery,
   }
 
   return (
