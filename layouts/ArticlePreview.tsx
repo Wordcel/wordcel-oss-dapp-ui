@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import date from 'date-and-time';
 import styles from '@/styles/UserView.module.scss';
 import editArticle from '@/images/elements/edit-article.svg';
@@ -22,19 +23,19 @@ export const ArticlePreview = ({
   const DefaultImage = `https://og.up.railway.app/article/${encodeURIComponent(base64Data)}`;
   return (
     <div className={styles.articleContainer}>
-      <p
-        onClick={() => router.push(`/${user?.username}/${article.slug}`)}
-        className="heading md nm pointer">{article.title}</p>
+      <Link href={`/${user?.username}/${article.slug}`}><a>
+        <p className="heading md nm pointer">{article.title}</p>
+      </a></Link>
       <div>
         <p>
           <span className="normal-text cursive-text">
             {shortenSentence(article.description)}
           </span>
-          <span
-            onClick={() => router.push(`/${user?.username}/${article.slug}`)}
-            className="blue-text pointer ml-1 op-1">
-            READ MORE
-          </span>
+          <Link href={`/${user?.username}/${article.slug}`}><a>
+            <span className="blue-text pointer ml-1 op-1">
+              READ MORE
+            </span>
+          </a></Link>
         </p>
       </div>
       <img className={styles.articleImage} src={article.image_url || DefaultImage} />
