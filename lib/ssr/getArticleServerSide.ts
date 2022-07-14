@@ -99,7 +99,7 @@ export const getArticleServerSide = async (
       username: user.username,
       blocks,
       user,
-      contentDigest: arweave_data.contentDigest,
+      contentDigest: arweave_data?.contentDigest || '',
     }
   }
 };

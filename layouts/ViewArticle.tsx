@@ -5,6 +5,8 @@ import styles from '@/styles/Reader.module.scss';
 import editorStyles from '@/styles/Editor.module.scss';
 import userStyles from '@/styles/UserView.module.scss';
 import authorBadge from '@/images/elements/author-badge.svg';
+import gradient from '@/images/gradients/reader.png';
+import gradient2 from '@/images/gradients/reader-2.png'
 import { GetArticleServerSide } from '@/types/props';
 import { useEffect, useState } from 'react';
 import { DefaultHead } from '../components/DefaultHead';
@@ -99,6 +101,10 @@ export const ViewArticle = (props: GetArticleServerSide) => {
           account: props.article?.proof_of_post
         }}
       />
+
+      <img className={styles.topLeftGradient} src={gradient.src} alt="" />
+      <img className={styles.bottomRightGradient} src={gradient2.src} alt="" />
+
       <div className={editorStyles.container}>
         <div
           style={{ display: 'flex', justifyContent: 'center' }}
