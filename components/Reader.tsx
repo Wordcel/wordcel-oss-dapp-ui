@@ -9,6 +9,9 @@ const Reader = ({
   blocks: any
 }) => {
   const READER_CONFIG = {
+    header: {
+      className: "reader-header",
+    },
     image: {
       className: "reader-image"
     },

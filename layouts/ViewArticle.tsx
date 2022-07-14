@@ -75,7 +75,7 @@ export const ViewArticle = (props: GetArticleServerSide) => {
         const created_at = new Date(props.article.created_at);
         const formatted_date = date.format(created_at, 'DD MMM, YYYY');
         const details = document.createElement('p');
-        details.className = 'normal-text sm bold mt-1 mb-4';
+        details.className = 'reader-paragraph mt-1 mb-4';
         details.textContent = `${formatted_date} • ${readingTime} read`;
         insertAfter(details, firstElement);
       }
