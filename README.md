@@ -7,6 +7,7 @@ ___
 1. Create a .env file and populate it with a PostgreSQL Database URL
 ```
 DATABASE_URL=
+SLACK_HOOK=
 ```
 
 2. Install all dependencies
