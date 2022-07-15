@@ -484,6 +484,10 @@ a {
   padding-bottom: 8rem;
 }
 
+::selection {
+  background: var(--gray-200);
+}
+
 .reader-header {
   color: var(--gray-700);
 }
