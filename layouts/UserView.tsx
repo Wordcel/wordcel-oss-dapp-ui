@@ -29,6 +29,7 @@ import { useEffect, useState } from 'react';
 import { getDefaultUserImage } from '@/lib/getDefaultPreviewImage';
 import { useRouter } from 'next/router';
 import { EditProfile } from '@/elements/EditProfile';
+import { NotFoundElement } from '@/components/404';
 
 
 export const UserView = (props: GetUserServerSide) => {
@@ -209,7 +210,9 @@ export const UserView = (props: GetUserServerSide) => {
           </div>
         </>
       )}
-      {/* Add a 404 component here, whenever done */}
+      {!props.user && (
+        <NotFoundElement />
+      )}
       <Footer />
     </div>
   );

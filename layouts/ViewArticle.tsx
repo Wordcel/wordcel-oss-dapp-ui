@@ -14,6 +14,7 @@ import { StaticNavbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { getReadingTime } from '@/lib/getReadingTime';
 import { useRouter } from 'next/router';
+import { NotFoundElement } from '@/components/404';
 
 export const AuthorBox = (props: GetArticleServerSide) => {
   const Name = props.user?.name;
@@ -52,7 +53,7 @@ export const AuthorBox = (props: GetArticleServerSide) => {
 
 export const ViewArticle = (props: GetArticleServerSide) => {
   const { asPath } = useRouter();
-  const [blocks] = useState<any>(JSON.parse(props.blocks || ''));
+  const [blocks] = useState<any>(JSON.parse(props.blocks ? props.blocks : "[]"));
   const Reader: any = dynamic(() => import('@/components/Reader'), {
     ssr: false
   });
@@ -64,10 +65,13 @@ export const ViewArticle = (props: GetArticleServerSide) => {
   const base64Data = Buffer.from(JSON.stringify(SEOData)).toString('base64');
   const SEOImage = `https://og.up.railway.app/article/${encodeURIComponent(base64Data)}`;
 
-  const readingTime = getReadingTime(JSON.parse(props.blocks || ''));
+  const readingTime = getReadingTime(blocks);
 
   const insertAfter = (newNode: Node, existingNode: Node) => {
-    existingNode.parentNode?.insertBefore(newNode, existingNode.nextSibling);
+    existingNode.parentNode?.insertBefore(
+      newNode,
+      existingNode.nextSibling
+    );
   }
 
   useEffect(() => {
@@ -105,18 +109,25 @@ export const ViewArticle = (props: GetArticleServerSide) => {
       <img className={styles.topLeftGradient} src={gradient.src} alt="" />
       <img className={styles.bottomRightGradient} src={gradient2.src} alt="" />
 
-      <div className={editorStyles.container}>
-        <div
-          style={{ display: 'flex', justifyContent: 'center' }}
-          className={editorStyles.editorMaxWidth}>
-          {typeof window !== 'undefined' && (
-            <div className="reader-max-width">
-              <Reader blocks={blocks} />
-              <AuthorBox {...props} />
-            </div>
-          )}
+      {blocks.length > 0 && (
+        <div className={editorStyles.container}>
+          <div
+            style={{ display: 'flex', justifyContent: 'center' }}
+            className={editorStyles.editorMaxWidth}>
+            {typeof window !== 'undefined' && (
+              <div className="reader-max-width">
+                <Reader blocks={blocks} />
+                <AuthorBox {...props} />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
+
+      {blocks.length === 0 && (
+        <NotFoundElement />
+      )}
+
       <Footer />
     </div>
   );

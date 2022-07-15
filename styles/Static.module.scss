@@ -269,3 +269,29 @@
   border: 0.1rem solid black;
   margin-left: 0.5rem;
 }
+
+.notFoundContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.notFoundHeader {
+  margin-top: 10rem;
+  text-align: center;
+  max-width: 40rem;
+  width: 100%;
+}
+
+.notFoundImage {
+  margin: 10rem 0rem;
+  max-width: 100%;
+}
+
+.notFoundPattern {
+  position: absolute;
+  top: 0;
+  max-width: 100%;
+}

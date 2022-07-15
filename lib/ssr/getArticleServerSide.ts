@@ -2,13 +2,11 @@ import prisma from '@/lib/prisma';
 import { getBlocks } from '@/lib/getArticleBlocks';
 import { getPostAccount } from '../contractInteraction';
 
-const redirect = () => {
+const notFound = () => {
   return {
-    redirect: {
-      permanent: false,
-      destination: '/'
-    },
-    props: {}
+    props: {
+      error: "Not Found"
+    }
   }
 }
 
@@ -41,17 +39,17 @@ export const getArticleServerSide = async (
     });
   }
 
-  if (!article) return redirect();
+  if (!article) return notFound();
   const user = await prisma.user.findFirst({
     where: {
       id: article.user_id
     }
   });
-  if (!user) return redirect();
+  if (!user) return notFound();
   const arweave_data = await getBlocks(article.arweave_url, true);
-  if (!arweave_data) return redirect();
+  if (!arweave_data) return notFound();
   const blocks = JSON.stringify(arweave_data.content.blocks);
-  if (!blocks) return redirect();
+  if (!blocks) return notFound();
 
   if (!article.on_chain && article.updated_at) {
     // calculate if it has been 10 mintues since the article was updated
