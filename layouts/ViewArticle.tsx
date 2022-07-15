@@ -51,6 +51,15 @@ export const AuthorBox = (props: GetArticleServerSide) => {
 };
 
 
+const Gradients = () => {
+  return (
+    <>
+      <img className={styles.topLeftGradient} src={gradient.src} alt="" />
+      <img className={styles.bottomRightGradient} src={gradient2.src} alt="" />
+    </>
+  );
+}
+
 export const ViewArticle = (props: GetArticleServerSide) => {
   const { asPath } = useRouter();
   const [blocks] = useState<any>(JSON.parse(props.blocks ? props.blocks : "[]"));
@@ -78,16 +87,44 @@ export const ViewArticle = (props: GetArticleServerSide) => {
     setTimeout(() => {
       const firstElement = document.getElementById('reader')?.firstElementChild;
       if (firstElement && props.article) {
-        const created_at = new Date(props.article.created_at);
-        const formatted_date = date.format(created_at, 'DD MMM, YYYY');
-        const details = document.createElement('p');
-        details.className = 'reader-paragraph mt-1 mb-4';
-        details.textContent = `${formatted_date} • ${readingTime} read`;
-        insertAfter(details, firstElement);
+        const div = document.getElementById('reader-article-details');
+        if (!div) return;
+        document.getElementById('reader-article-details-parent')?.removeChild(div);
+        insertAfter(div, firstElement);
       }
     }, 500)
   }, []);
 
+  const ArticleDetails = () => {
+    if (!props.article) return <></>;
+    const created_at = new Date(props.article.created_at);
+    const formatted_date = date.format(created_at, 'DD MMM, YYYY');
+    return (
+      <div id="reader-article-details-parent">
+        <div id="reader-article-details">
+          <div className={styles.readerBasicAuthorBox}>
+            <Link href={`/${props.username}`}>
+              <a>
+                <img
+                  className={styles.readerAuthorImage}
+                  src={props.user?.image_url}
+                  alt=""
+                />
+              </a>
+            </Link>
+            <div>
+              <Link href={`/${props.username}`}>
+                <a>
+                  <p className="text gray-600 size-16 weight-600 nm">{props.username}</p>
+                </a>
+              </Link>
+              <p className="reader-paragraph nm">{formatted_date} • {readingTime} read</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="container-flex">
@@ -105,10 +142,7 @@ export const ViewArticle = (props: GetArticleServerSide) => {
           account: props.article?.proof_of_post
         }}
       />
-
-      <img className={styles.topLeftGradient} src={gradient.src} alt="" />
-      <img className={styles.bottomRightGradient} src={gradient2.src} alt="" />
-
+      <Gradients />
       {blocks.length > 0 && (
         <div className={editorStyles.container}>
           <div
@@ -116,6 +150,7 @@ export const ViewArticle = (props: GetArticleServerSide) => {
             className={editorStyles.editorMaxWidth}>
             {typeof window !== 'undefined' && (
               <div className="reader-max-width">
+                <ArticleDetails />
                 <Reader blocks={blocks} />
                 <AuthorBox {...props} />
               </div>

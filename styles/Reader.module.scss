@@ -37,3 +37,20 @@
     display: none;
   }
 }
+
+.readerBasicAuthorBox {
+  margin-top: 3.5rem;
+  margin-bottom: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.readerAuthorImage {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 5rem;
+  background-color: var(--gray-200);
+  margin-right: 1.5rem;
+  object-fit: cover;
+}
