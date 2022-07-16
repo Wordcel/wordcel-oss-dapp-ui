@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic';
 import styles from '@/styles/Reader.module.scss';
 import editorStyles from '@/styles/Editor.module.scss';
 import userStyles from '@/styles/UserView.module.scss';
-import authorBadge from '@/images/elements/author-badge.svg';
 import gradient from '@/images/gradients/reader.png';
 import gradient2 from '@/images/gradients/reader-2.png'
 import { GetArticleServerSide } from '@/types/props';
@@ -15,6 +14,7 @@ import { Footer } from '../components/Footer';
 import { getReadingTime } from '@/lib/getReadingTime';
 import { useRouter } from 'next/router';
 import { NotFoundElement } from '@/components/404';
+import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 
 export const AuthorBox = (props: GetArticleServerSide) => {
   const Name = props.user?.name;
@@ -23,24 +23,20 @@ export const AuthorBox = (props: GetArticleServerSide) => {
 
   return (
     <div className={styles.authorBox}>
-      <img
-        className={styles.authorBadge}
-        src={authorBadge.src}
-        alt="AUTHOR"
-      />
-      <div className="flex height-100">
+      <div className="flex height-100 align-items-center">
         <img
           src={Avatar}
           className={userStyles.avatar}
           alt={props.user?.username}
         />
         <div className="ml-2">
+          <p className="text size-16 weight-600 gray-400 nm mt-2 mb-0-5">ABOUT THE AUTHOR</p>
           <Link href={`/${props.user?.username}`}>
             <a>
-              <p className="heading sm nm-bottom nm-top">{Name}</p>
+              <p className="text gray-700 weight-700 size-28 nm-bottom nm-top">{Name}</p>
             </a>
           </Link>
-          <p className="light-sub-heading nm">@{props.user?.username}</p>
+          <p className="text size-16 weight-500 gray-400 nm">{props.user?.username} • {getTrimmedPublicKey(props.user?.public_key)}</p>
           {Bio && (
             <p className="normal-text sm nm-bottom mt-1">{Bio}</p>
           )}
