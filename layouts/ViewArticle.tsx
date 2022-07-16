@@ -36,7 +36,9 @@ export const AuthorBox = (props: GetArticleServerSide) => {
               <p className="text gray-700 weight-700 size-28 nm-bottom nm-top">{Name}</p>
             </a>
           </Link>
-          <p className="text size-16 weight-500 gray-400 nm">{props.user?.username} • {getTrimmedPublicKey(props.user?.public_key)}</p>
+          {props.user && (
+            <p className="text size-16 weight-500 gray-400 nm">{props.user?.username} • {getTrimmedPublicKey(props.user.public_key)}</p>
+          )}
           {Bio && (
             <p className="normal-text sm nm-bottom mt-1">{Bio}</p>
           )}
