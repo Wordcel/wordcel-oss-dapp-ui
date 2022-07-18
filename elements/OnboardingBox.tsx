@@ -1,12 +1,11 @@
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import styles from '@/styles/Static.module.scss';
-import tweetToVerify from '@/images/elements/tweet-to-verify.svg';
 import uploadImagePreview from '@/images/elements/upload.svg';
 import greenCheck from '@/images/elements/green-check.svg';
 import twitterIcon from '@/images/icons/twitter.svg';
 
-import { Done, Step } from '@/images/dynamic/Step';
+import { Done, Step, SmallCheckIcon } from '@/images/dynamic/Step';
 import { useEffect, useRef, useState } from 'react';
 import { getUserSignature } from '@/lib/signMessage';
 import { getAllUserDomains } from '@/lib/getAllUserDomains';
@@ -126,13 +125,7 @@ export const OnboardingBox = ({
     }
   };
 
-  const handleDomainChange = (domain: string) => {
-    if (username === domain) {
-      setUsername('');
-      return;
-    }
-    setUsername(domain);
-  };
+  const handleDomainChange = (domain: string) => setUsername(domain);
 
   const handleUploadButton = () => {
     // @ts-expect-error
@@ -189,7 +182,7 @@ export const OnboardingBox = ({
         </div>
         <div className={getTabClassName(2)}>
           <Step step={2} />
-          <p className={`normal-text ml-3 sm ${tabIsActive(2) ? 'op-1' : ''}`}>Profile</p>
+          <p className={`normal-text ml-3 sm ${tabIsActive(2) ? 'op-1' : ''}`}>Complete Profile</p>
         </div>
       </div>
     );
@@ -208,18 +201,18 @@ export const OnboardingBox = ({
             className="onboarding-input"
             placeholder="@wordcel_club"
           />
-          <div className={styles.tweetButtons}>
+          <div className="mt-2">
             <button
               onClick={handleTweetButton}
-              className={styles.tweetButton}
+              className="secondary-btn brdr"
             >
-              <img src={tweetToVerify.src} alt="Tweet to Verify" />
+              Tweet to verify
             </button>
             <button
               onClick={handleTweetedButton}
-              className={styles.tweetedButton}
+              className="secondary-btn brdr mt-1 inverse"
             >
-              I've Tweeted
+              I have tweeted
             </button>
           </div>
         </div>
@@ -271,22 +264,27 @@ export const OnboardingBox = ({
             <p className="normal-text sm nm">{"Choose a domain as your username"}</p>
             {domains.length > 0 && (
               <div className={styles.domainGrid}>
-                {domains.map((domain) => (
-                  <div
-                    key={domain}
-                    onClick={() => handleDomainChange(domain)}
-                    className={styles.domain}
-                    style={{ border: username === domain ? '0.12rem solid black' : '0.12rem solid #D8D8D8' }}
-                  >
+                {domains.map((domain) => {
+                  const isActive = domain === username;
+                  return (
                     <div
-                      style={{ backgroundColor: username === domain ? 'black' : 'transparent' }}
-                      className={styles.radioBox}
-                    />
-                    <p className="nm">{
-                      domain.length > 20 ? `...${domain.slice(domain.length-18, domain.length)}` : domain
-                    }</p>
-                  </div>
-                ))}
+                      key={domain}
+                      onClick={() => handleDomainChange(domain)}
+                      className={styles.domain}
+                      style={{ border: isActive ? '0.15rem solid var(--gray-500)' : '0.15rem solid var(--gray-300)' }}
+                    >
+                      <div
+                        className={styles.domainSelectionCheck}
+                        style={{ border: isActive ? 'none' : ''}}
+                      >
+                        {isActive && <SmallCheckIcon />}
+                      </div>
+                      <p className={`nm text weight-500 ${isActive ? 'gray-500' : 'gray-300'}`}>{
+                        domain.length > 20 ? `...${domain.slice(domain.length-18, domain.length)}` : domain
+                      }</p>
+                    </div>
+                  )
+                })}
               </div>
             )}
             {domains.length === 0 && (
