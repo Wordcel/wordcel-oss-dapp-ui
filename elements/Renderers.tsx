@@ -5,8 +5,8 @@ export const ImageGalleryOutput = (
 ) => {
   const collageSettings = {
     width: '100%',
-    height: ['25rem', '18rem'],
-    layout: [1, 3],
+    height: ['20rem', '20rem'],
+    layout: [2, 2],
     photos: data?.urls?.map((url: string) => ({ source: url })),
     showNumOfRemainingPhotos: true
   };
