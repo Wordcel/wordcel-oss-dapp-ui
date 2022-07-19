@@ -28,7 +28,7 @@ export const OnboardingPage = () => {
   const router = useRouter();
   const windowSize = useWindowSize();
   const { publicKey } = useWallet();
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState(!false);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
 
@@ -51,8 +51,8 @@ export const OnboardingPage = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setWidth(windowSize.width);
-      setHeight(windowSize.height);
+      setWidth(windowSize.width - 50);
+      setHeight(windowSize.height - 50);
     }
   }, []);
 
@@ -77,17 +77,19 @@ export const OnboardingPage = () => {
                 </div>
               )}
               <OnboardingBox setDone={setDone} />
-              <div className="flex align-items-center justify-content-center">
-                <div>
-                  <p className="text size-20 weight-400 gray-400 text-align-center nm mt-4">By creating an account you agree to</p>
-                  <Link href="/terms">
-                    <a>
-                      <p className="text size-20 weight-400 gray-600 text-align-center nm mt-0-5 underline">{"Wordcel's Terms of Service"}</p>
-                    </a>
-                  </Link>
-                  <img className="mt-8" src={pattern.src} alt="" />
+              {!done && (
+                <div className="flex align-items-center justify-content-center">
+                  <div>
+                    <p className="text size-20 weight-400 gray-400 text-align-center nm mt-4">By creating an account you agree to</p>
+                    <Link href="/terms">
+                      <a>
+                        <p className="text size-20 weight-400 gray-600 text-align-center nm mt-0-5 underline">{"Wordcel's Terms of Service"}</p>
+                      </a>
+                    </Link>
+                    <img className="mt-8" src={pattern.src} alt="" />
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           )}
           {!publicKey && (

@@ -3,8 +3,9 @@ import toast from 'react-hot-toast';
 import styles from '@/styles/Static.module.scss';
 import uploadImagePreview from '@/images/elements/upload.svg';
 import greenCheck from '@/images/elements/green-check.svg';
-import twitterIcon from '@/images/icons/twitter.svg';
+import watchBtn from '@/images/elements/watch-btn.svg';
 
+import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 import { Done, Step, SmallCheckIcon } from '@/images/dynamic/Step';
 import { useEffect, useRef, useState } from 'react';
 import { getUserSignature } from '@/lib/signMessage';
@@ -15,6 +16,7 @@ import { createFreshProfile } from '@/lib/contractInteraction';
 import { getUserNFTs } from '@/lib/getAllUserNFTs';
 import { uploadImageBundlr } from '@/lib/uploadBundlr';
 import { messageToSign } from '@/lib/verifyTwitter';
+import { CreateButton } from './Buttons';
 
 
 export const OnboardingBox = ({
@@ -93,8 +95,6 @@ export const OnboardingBox = ({
     const encodedTweet = encodeURIComponent(tweet);
     window.open(`https://twitter.com/intent/tweet?text=${encodedTweet}`, '_blank');
   }
-
-  const shareTweetEncodedURL = `https://twitter.com/intent/tweet?text=Hey!%20I%20just%20set%20up%20my%20@wordcel_club%20profile,%20check%20it%20out%20here:%0Ahttps://wordcelclub.com/${username}`;
 
   const handleTweetedButton = async () => {
     const sanitizedTwitterHandle = twitter.replaceAll('@', '');
@@ -189,152 +189,176 @@ export const OnboardingBox = ({
   };
 
   return (
-    <div className={styles.obBox}>
+    <div>
       {(step === 1 || step === 2) && (
-        <Header />
-      )}
-      {step === 1 && (
-        <div className={styles.obContent}>
-          <p className="normal-text sm">What's your Twitter username?</p>
-          <input
-            onChange={(e) => setTwitter(e.target.value)}
-            className="onboarding-input"
-            placeholder="@wordcel_club"
-          />
-          <div className="mt-2">
-            <button
-              onClick={handleTweetButton}
-              className="secondary-btn brdr"
-            >
-              Tweet to verify
-            </button>
-            <button
-              onClick={handleTweetedButton}
-              className="secondary-btn brdr mt-1 inverse"
-            >
-              I have tweeted
-            </button>
-          </div>
-        </div>
-      )}
-      {step === 2 && (
-        <div className={styles.obContent}>
-          <p className="normal-text sm">What's your display name?</p>
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="onboarding-input"
-            placeholder="Elon Musk"
-          />
-          <p className="normal-text sm">What's your blog name?</p>
-          <input
-            onChange={(e) => setBlogName(e.target.value)}
-            className="onboarding-input"
-            placeholder="SpaceX Blog"
-          />
-
-          <div className="mt-2 mb-2">
-            <p className="normal-text sm nm">Upload Profile Photo</p>
-            <div className={styles.uploadImageDiv}>
+        <div className={styles.obBox}>
+          <Header />
+          {step === 1 && (
+            <div className={styles.obContent}>
+              <p className="normal-text sm">What's your Twitter username?</p>
               <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/png, image/jpeg, image/gif"
-                className="hidden"
-                onChange={async (e) => {
-                  const file = e.target.files?.[0];
-                  if (!file) return;
-                  const url = await uploadImageBundlr(file, walletContext);
-                  if (url) setImage(url);
-                }}
+                onChange={(e) => setTwitter(e.target.value)}
+                className="onboarding-input"
+                placeholder="@wordcel_club"
               />
-              <img
-                className={styles.uploadPreview}
-                src={image ? image : uploadImagePreview.src}
-                alt=""
-              />
-              <button
-                onClick={handleUploadButton}
-                className={styles.uploadButton}
-              >Upload</button>
-            </div>
-          </div>
-
-          <div className="mt-2 mb-2">
-            <p className="normal-text sm nm">{"Choose a domain as your username"}</p>
-            {domains.length > 0 && (
-              <div className={styles.domainGrid}>
-                {domains.map((domain) => {
-                  const isActive = domain === username;
-                  return (
-                    <div
-                      key={domain}
-                      onClick={() => handleDomainChange(domain)}
-                      className={styles.domain}
-                      style={{ border: isActive ? '0.15rem solid var(--gray-500)' : '0.15rem solid var(--gray-300)' }}
-                    >
-                      <div
-                        className={styles.domainSelectionCheck}
-                        style={{ border: isActive ? 'none' : ''}}
-                      >
-                        {isActive && <SmallCheckIcon />}
-                      </div>
-                      <p className={`nm text weight-500 ${isActive ? 'gray-500' : 'gray-300'}`}>{
-                        domain.length > 20 ? `...${domain.slice(domain.length-18, domain.length)}` : domain
-                      }</p>
-                    </div>
-                  )
-                })}
-              </div>
-            )}
-            {domains.length === 0 && (
-              <p className="normal-text sm">It seems like you don't have any domains, you need a .SOL domain to sign up</p>
-            )}
-          </div>
-
-          {Array.from(nfts).length > 0 && (
-            <div>
-              <p className="normal-text sm">{"Select NFT as Profile Photo"}</p>
-              <div className={styles.nftGrid}>
-                {Array.from(nfts).map((nft, index) => (
-                  <img
-                    className={styles.nftImage} key={index}
-                    src={nft} alt=""
-                    onClick={() => setImage(nft)}
-                    onError={() => nfts.delete(nft)}
-                    style={{ opacity: nft === image ? '1' : '' }}
-                  />
-                ))}
+              <div className="mt-2">
+                <button
+                  onClick={handleTweetButton}
+                  className="secondary-btn brdr"
+                >
+                  Tweet to verify
+                </button>
+                <button
+                  onClick={handleTweetedButton}
+                  className="secondary-btn brdr mt-1 inverse"
+                >
+                  I have tweeted
+                </button>
               </div>
             </div>
           )}
+          {step === 2 && (
+            <div className={styles.obContent}>
+              <p className="normal-text sm">What's your display name?</p>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="onboarding-input"
+                placeholder="Elon Musk"
+              />
+              <p className="normal-text sm">What's your blog name?</p>
+              <input
+                onChange={(e) => setBlogName(e.target.value)}
+                className="onboarding-input"
+                placeholder="SpaceX Blog"
+              />
 
-          <button
-            onClick={handleSubmit}
-            className="secondary-btn mt-2"
-          >Continue</button>
+              <div className="mt-2 mb-2">
+                <p className="normal-text sm nm">Upload Profile Photo</p>
+                <div className={styles.uploadImageDiv}>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/png, image/jpeg, image/gif"
+                    className="hidden"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      const url = await uploadImageBundlr(file, walletContext);
+                      if (url) setImage(url);
+                    }}
+                  />
+                  <img
+                    className={styles.uploadPreview}
+                    src={image ? image : uploadImagePreview.src}
+                    alt=""
+                  />
+                  <button
+                    onClick={handleUploadButton}
+                    className={styles.uploadButton}
+                  >Upload</button>
+                </div>
+              </div>
 
+              <div className="mt-2 mb-2">
+                <p className="normal-text sm nm">{"Choose a domain as your username"}</p>
+                {domains.length > 0 && (
+                  <div className={styles.domainGrid}>
+                    {domains.map((domain) => {
+                      const isActive = domain === username;
+                      return (
+                        <div
+                          key={domain}
+                          onClick={() => handleDomainChange(domain)}
+                          className={styles.domain}
+                          style={{ border: isActive ? '0.15rem solid var(--gray-500)' : '0.15rem solid var(--gray-300)' }}
+                        >
+                          <div
+                            className={styles.domainSelectionCheck}
+                            style={{ border: isActive ? 'none' : ''}}
+                          >
+                            {isActive && <SmallCheckIcon />}
+                          </div>
+                          <p className={`nm text weight-500 ${isActive ? 'gray-500' : 'gray-300'}`}>{
+                            domain.length > 20 ? `...${domain.slice(domain.length-18, domain.length)}` : domain
+                          }</p>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+                {domains.length === 0 && (
+                  <p className="normal-text sm">It seems like you don't have any domains, you need a .SOL domain to sign up</p>
+                )}
+              </div>
+
+              {Array.from(nfts).length > 0 && (
+                <div>
+                  <p className="normal-text sm">{"Select NFT as Profile Photo"}</p>
+                  <div className={styles.nftGrid}>
+                    {Array.from(nfts).map((nft, index) => (
+                      <img
+                        className={styles.nftImage} key={index}
+                        src={nft} alt=""
+                        onClick={() => setImage(nft)}
+                        onError={() => nfts.delete(nft)}
+                        style={{ opacity: nft === image ? '1' : '' }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <button
+                onClick={handleSubmit}
+                className="secondary-btn mt-2"
+              >Continue</button>
+
+            </div>
+          )}
         </div>
       )}
-
-      {step === 3 && (
-        <div className={styles.stepThree}>
+      {step === 3 && publicKey && (
+        <div className={styles.stepThreeParent}>
           <img src={greenCheck.src} />
-          <h1 className="subheading lg bold center nm mt-2">You're all set, {name.split(' ')[0]}.</h1>
-          <p className="light-sub-heading thin center">Welcome to Wordcel. The future of decentralised publishing is now.</p>
-          <div className={styles.stepThreeButtons}>
-            <a href={shareTweetEncodedURL} target="_blank" rel="noopener noreferrer">
-              <button className={styles.shareProfileBtn}>
-                <img src={twitterIcon.src} alt="" />
-                Share your Profile
-              </button>
-            </a>
-            <Link href={'/dashboard/' + publicKey?.toBase58() + '/published'}>
-              <a>
-                <button className="gray-btn sm mt-1">Continue to Dashboard</button>
-              </a>
-            </Link>
+          <h1 className="text gray-700 weight-600 size-28 nm mt-3">{"You're all set"}</h1>
+          <p className="text gray-400 weight-400 size-20 nm mt-1">The future of decentralized publishing begins now</p>
+          <div className={styles.stepThreeContent}>
+            <div className={styles.stepThreeProfile}>
+              <img className={styles.stepThreeProfileImage} src={image} alt="" />
+              <div className="ml-2">
+                <p className="text gray-700 weight-600 size-28 nm">{name}</p>
+                <p className="text gray-500 weight-400 size-20 nm mt-0-5">{username} • {getTrimmedPublicKey(publicKey.toBase58())}</p>
+              </div>
+            </div>
+            <div className={styles.stepThreeLongBox}>
+              <div className={styles.stepThreeBoxSection}>
+                <div>
+                  <p className="text gray-700 weight-600 size-20 nm">Create your first post</p>
+                  <p className="text gray-400 weight-400 size-20 nm mt-0-5">Publish your first on-chain post</p>
+                </div>
+                <Link href="/new">
+                  <a className={styles.createButton}>
+                    <CreateButton />
+                  </a>
+                </Link>
+              </div>
+              <div className={styles.stepThreeBoxSection}>
+                <div>
+                  <p className="text gray-700 weight-600 size-20 nm">See how it works</p>
+                  <p className="text gray-400 weight-400 size-20 nm mt-0-5">Get a quick introduction to the platform</p>
+                </div>
+                <a href="/" target="_blank" rel="noopener noreferrer">
+                  <img src={watchBtn.src} alt="Watch Video" />
+                </a>
+              </div>
+            </div>
           </div>
+          <Link href={`/dashboard/${publicKey.toBase58()}/published`}>
+            <a>
+              <p className="text gray-300 weight-400 size-24 nm mt-5">Skip to Dashboard</p>
+            </a>
+          </Link>
         </div>
       )}
     </div>
