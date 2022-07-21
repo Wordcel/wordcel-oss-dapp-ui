@@ -1,43 +1,26 @@
-.heroSection {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(32rem, 32rem));
-  margin-top: 3rem;
-  grid-gap: 2rem;
-  justify-content: center;
-}
-
-.publishImage {
-  max-width: 18rem;
-  width: 100%;
-}
-
-.heading {
+.container {
   display: flex;
-  align-items: center;
-  max-width: 102rem;
   width: 100%;
-  margin: 0 auto;
-  padding-top: 5rem;
-  border-bottom: 0.1rem solid rgba(186, 186, 186, 0.22);
-  & > p {
-    transition: 0.15s all ease-in-out;
-    &:hover {
-      color: var(--text-color);
-    }
-  }
-  @media only screen and (max-width: 940px) {
-    justify-content: center;
-  }
+  min-height: 100vh;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
-.articles {
-  max-width: 102rem;
+.main {
+  padding: 3.5rem;
   width: 100%;
-  margin: 0 auto;
-  margin-bottom: 12rem;
+  height: 100%;
+  min-height: 100vh;
+  transition: all 0.3s ease-in-out;
 }
 
-.noArticlesImage {
-  max-width: 14rem;
+.sidebar {
+  min-height: 100vh;
+  max-width: 5rem;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    max-width: 25rem;
+  }
   width: 100%;
+  background: var(--gray-50);
 }

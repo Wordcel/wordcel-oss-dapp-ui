@@ -8,7 +8,7 @@ import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { useRouter } from 'next/router';
 import { useEffect, useCallback, useRef, useState } from 'react';
 import { DefaultHead } from '../components/DefaultHead';
-import { StaticNavbar } from '../components/Navbar';
+import { Navbar } from '../components/Navbar';
 import { getUserSignature } from '@/lib/signMessage';
 import { deleteDraft, updateDraft } from '@/lib/networkRequests';
 import { Footer } from '../components/Footer';
@@ -134,7 +134,7 @@ export const NewArticle = () => {
   return (
     <div className="container-flex">
       <DefaultHead title="Publish new article" />
-      <StaticNavbar publish={handlePublish} />
+      <Navbar publish={handlePublish} />
       <div className={styles.container}>
         <div className={styles.editorMaxWidth}>
           {typeof window !== 'undefined' && (

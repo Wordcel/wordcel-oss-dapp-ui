@@ -4,7 +4,7 @@ import element from '@/images/elements/404.svg';
 import pattern from '@/images/elements/pattern.svg';
 
 import { DefaultHead } from './DefaultHead';
-import { StaticNavbar } from './Navbar';
+import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 
 export const NotFoundElement = () => {
@@ -30,7 +30,7 @@ export const NotFoundPage = () => {
   return (
     <div className="container-flex">
       <DefaultHead />
-      <StaticNavbar />
+      <Navbar />
       <NotFoundElement />
       <Footer />
     </div>

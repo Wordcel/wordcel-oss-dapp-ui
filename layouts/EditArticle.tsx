@@ -8,7 +8,7 @@ import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { useRouter } from 'next/router';
 import { useEffect, useCallback, useRef, useState } from 'react';
 import { DefaultHead } from '../components/DefaultHead';
-import { StaticNavbar } from '../components/Navbar';
+import { Navbar } from '../components/Navbar';
 import { getUserSignature } from '@/lib/signMessage';
 import { Footer } from '../components/Footer';
 
@@ -73,7 +73,7 @@ export const EditArticle = (props: GetArticleServerSide) => {
         description={props.article?.description}
         image={props.article?.image_url}
       />
-      <StaticNavbar publish={handlePublish} />
+      <Navbar publish={handlePublish} />
       <div className={styles.container}>
         <div className={styles.editorMaxWidth}>
           {typeof window !== 'undefined' && (

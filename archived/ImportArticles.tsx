@@ -6,7 +6,7 @@ import {
   getDefaultArticleImage
 } from '@/lib/getDefaultPreviewImage';
 import { DefaultHead } from "../components/DefaultHead";
-import { StaticNavbar } from "../components/Navbar";
+import { Navbar } from "../components/Navbar";
 import { Article, GetArticlesServerSide } from "@/types/props";
 import { useState, useEffect } from "react";
 import { shortenSentence } from "@/lib/sanitize";
@@ -36,7 +36,7 @@ export const ImportArticles = ({
   return (
     <div className="container-flex">
       <DefaultHead />
-      <StaticNavbar />
+      <Navbar />
       <div className={styles.container}>
         <div className={styles.maxWidth}>
           <div className={styles.spaceBetween}>

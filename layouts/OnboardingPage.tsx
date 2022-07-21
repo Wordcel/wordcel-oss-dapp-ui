@@ -7,7 +7,7 @@ import pattern from '@/images/elements/pattern.svg';
 // Layout Imports
 import { Footer } from '../components/Footer';
 import { DefaultHead } from '../components/DefaultHead';
-import { StaticNavbar } from '../components/Navbar';
+import { Navbar } from '../components/Navbar';
 import { RequestConnect } from '@/elements/RequestConnect';
 import { OnboardingBox } from '@/elements/OnboardingBox';
 
@@ -59,7 +59,7 @@ export const OnboardingPage = () => {
   return (
     <div className='container-flex'>
       <DefaultHead title='Welcome to Wordcel' />
-      <StaticNavbar />
+      <Navbar />
       <div className={styles.container}>
         <div className="main-padding">
           {done && (

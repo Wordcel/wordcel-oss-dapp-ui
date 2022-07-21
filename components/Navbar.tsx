@@ -10,7 +10,7 @@ import { ConnectWallet } from '@/layouts/Wallet';
 import { CLUSTER, WHITELIST_URL } from '@/lib/config/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
 
-export const Navbar = ({
+export const LandingNavbar = ({
   whitelisted,
   clicked,
   setClicked
@@ -57,7 +57,7 @@ interface EditProfile {
   edit: () => void;
 }
 
-export const StaticNavbar = ({
+export const Navbar = ({
   publish,
   proof_of_post,
   editProfile

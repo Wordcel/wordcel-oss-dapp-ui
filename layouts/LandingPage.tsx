@@ -2,7 +2,7 @@ import { toast } from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { ConnectWallet } from './Wallet';
 import { DefaultHead } from '../components/DefaultHead';
-import { Navbar } from '../components/Navbar';
+import { LandingNavbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { getIfWhitelisted } from '@/lib/getIfUserIsWhitelisted';
@@ -66,7 +66,7 @@ export const LandingPage = () => {
     <div className="container-flex">
       <DefaultHead />
       <div className={styles.heroGradient}>
-        <Navbar
+        <LandingNavbar
           whitelisted={whitelisted}
           clicked={clicked}
           setClicked={setClicked}

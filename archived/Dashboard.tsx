@@ -1,12 +1,12 @@
 import noArticles from '@/images/elements/no-articles.svg';
 import publishNew from '@/images/elements/publish-new-article.svg';
-import styles from '@/styles/Dashboard.module.scss';
+import styles from './Dashboard.module.scss';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Footer } from '../components/Footer';
 import { DefaultHead } from '../components/DefaultHead';
-import { StaticNavbar } from '../components/Navbar';
+import { Navbar } from '../components/Navbar';
 import { DefaultBox } from '@/elements/Box';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 import { DashboardSSR } from '@/types/props';
@@ -43,7 +43,7 @@ export const DashboardPage = (
     <div className="container-flex">
       <div className="max-width">
         <DefaultHead title={`Welcome ${props.user?.name}`} />
-        <StaticNavbar />
+        <Navbar />
         <div className="main-padding">
           <div className={styles.heroSection}>
             <DefaultBox>

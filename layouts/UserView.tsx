@@ -3,7 +3,7 @@ import styles from '@/styles/UserView.module.scss';
 
 import { Footer } from '../components/Footer';
 import { DefaultHead } from '../components/DefaultHead';
-import { StaticNavbar } from '@/components/Navbar';
+import { Navbar } from '@/components/Navbar';
 import { GetUserServerSide } from '@/types/props';
 import { ArticlePreview } from '../components/ArticlePreview';
 
@@ -115,7 +115,7 @@ export const UserView = (props: GetUserServerSide) => {
   return (
     <div className="container-flex">
       <DefaultHead title={SEOTitle} description={Bio} image={SEOImage} />
-      <StaticNavbar
+      <Navbar
         editProfile={{
           edit: editProfile,
           owner: props.user?.public_key

@@ -7,12 +7,12 @@ import pattern from '@/images/elements/pattern.svg';
 
 // Components
 import { DefaultHead } from "@/components/DefaultHead"
-import { StaticNavbar } from "@/components/Navbar"
+import { Navbar } from "@/components/Navbar"
 
 export const TermsPage = () => {
   return (
     <div>
-      <StaticNavbar />
+      <Navbar />
       <DefaultHead />
       <div className={styles.header}>
         <img className="mb-2" src={fileIcon.src} alt="" />

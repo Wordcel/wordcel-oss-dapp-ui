@@ -2,7 +2,7 @@ import Image from 'next/image';
 import styles from '@/styles/Welcome.module.scss';
 import verifiedElement from '@/images/elements/verified.svg';
 import importGradient from '@/images/elements/welcome-gradient.png'
-import { StaticNavbar } from "../components/Navbar";
+import { Navbar } from "../components/Navbar";
 import { DefaultHead } from "../components/DefaultHead";
 import { GetUserServerSide } from '@/types/props';
 import { useEffect } from 'react';
@@ -24,7 +24,7 @@ export const WelcomePage = ({ user }: GetUserServerSide) => {
   return (
     <div>
       <DefaultHead />
-      <StaticNavbar />
+      <Navbar />
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.verified}>

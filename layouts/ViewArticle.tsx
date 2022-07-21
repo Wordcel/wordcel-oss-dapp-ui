@@ -9,7 +9,7 @@ import gradient2 from '@/images/gradients/reader-2.png'
 import { GetArticleServerSide } from '@/types/props';
 import { useEffect, useState } from 'react';
 import { DefaultHead } from '../components/DefaultHead';
-import { StaticNavbar } from '../components/Navbar';
+import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { getReadingTime } from '@/lib/getReadingTime';
 import { useRouter } from 'next/router';
@@ -134,7 +134,7 @@ export const ViewArticle = (props: GetArticleServerSide) => {
         url={`https://wordcelclub.com/${asPath}`}
         image={SEOImage}
       />
-      <StaticNavbar
+      <Navbar
         proof_of_post={{
           arweave_url: props.article?.arweave_url,
           account: props.article?.proof_of_post

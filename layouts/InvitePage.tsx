@@ -21,7 +21,7 @@ import quill from '@/images/elements/quill.svg';
 // JSX Imports
 import { DefaultHead } from "../components/DefaultHead";
 import { Loading } from '../components/animations/Loading';
-import { StaticNavbar } from "../components/Navbar";
+import { Navbar } from "../components/Navbar";
 import { Footer } from '../components/Footer';
 import { useRouter } from 'next/router';
 import { RequestConnect } from '@/elements/RequestConnect';
@@ -128,7 +128,7 @@ export const InvitePage = () => {
   return (
     <div className="container-flex">
       <DefaultHead title="Send Invites" />
-      <StaticNavbar />
+      <Navbar />
       <div className={styles.container}>
         <div className="main-padding">
           {loading && (

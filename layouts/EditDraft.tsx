@@ -8,7 +8,7 @@ import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { useRouter } from 'next/router';
 import { useEffect, useCallback, useRef, useState } from 'react';
 import { DefaultHead } from '../components/DefaultHead';
-import { StaticNavbar } from '../components/Navbar';
+import { Navbar } from '../components/Navbar';
 import { saveToast } from '@/lib/saveToast';
 import { getUserSignature } from '@/lib/signMessage';
 import { deleteDraft, updateDraft } from '@/lib/networkRequests';
@@ -130,7 +130,7 @@ export const EditDraft = (props: GetDraftServerSide) => {
         description={props.draft?.description}
         image={props.draft?.image_url}
       />
-      <StaticNavbar publish={handlePublish} />
+      <Navbar publish={handlePublish} />
       <div className={styles.container}>
         <div className={styles.editorMaxWidth}>
           {typeof window !== 'undefined' && (
