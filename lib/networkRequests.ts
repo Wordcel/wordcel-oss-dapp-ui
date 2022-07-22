@@ -7,6 +7,7 @@ import {
 } from '@/types/api';
 import BigNumber from 'bignumber.js';
 import * as anchor from '@project-serum/anchor';
+import { User } from '@prisma/client';
 import { BUNDLR_MAINNET_ENDPOINT } from './config/constants';
 
 export async function publishToServer (
@@ -117,6 +118,19 @@ export async function getUserExists (
     return false;
   }
 };
+
+export async function getUser (
+  public_key: string
+): Promise<User | null> {
+  try {
+    const request = await fetch('/api/user/get/' + public_key);
+    const response = await request.json();
+    return response;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}
 
 export async function verifyTwitterRequest (
   public_key: string,

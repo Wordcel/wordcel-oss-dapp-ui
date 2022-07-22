@@ -48,7 +48,7 @@ export const LandingPage = () => {
     (async function () {
       if (!publicKey) return;
       if (whitelisted && clicked !== 0) {
-        router.push(`/dashboard/${publicKey.toBase58()}/published`)
+        router.push('/dashboard')
         return;
       }
       toast.loading('Loading')

@@ -354,7 +354,7 @@ export const OnboardingBox = ({
               </div>
             </div>
           </div>
-          <Link href={`/dashboard/${publicKey.toBase58()}/published`}>
+          <Link href={'/dashboard'}>
             <a>
               <p className="text gray-300 weight-400 size-24 nm mt-5">Skip to Dashboard</p>
             </a>
