@@ -16,11 +16,121 @@
 
 .sidebar {
   min-height: 100vh;
-  max-width: 5rem;
+  max-width: 6rem;
   transition: all 0.3s ease-in-out;
   &:hover {
     max-width: 25rem;
   }
   width: 100%;
   background: var(--gray-50);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5rem 0rem;
+  &:hover {
+    & .createButton {
+      max-width: 20.2rem;
+      & > span {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+    & .sidebarLink {
+      max-width: 23.2rem;
+      & > span {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.createButton {
+  border: none;
+  outline: none;
+  max-width: 4rem;
+  width: 100%;
+  height: 4rem;
+  background: var(--gray-800);
+  border-radius: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+  margin-bottom: 3rem;
+  & > span {
+    visibility: hidden;
+    opacity: 0;
+    font-weight: 500;
+    font-size: 1.6rem;
+    color: var(--inverse-color);
+    transition: visibility 0s, opacity 0.5s ease-in-out;
+    margin-left: 3.2rem;
+  }
+  & > img {
+    display: flex;
+    margin-left: 0.5rem;
+    transition: all 0.3s ease-in-out;
+    transform: rotate(180deg);
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+  &:hover {
+    opacity: 0.85;
+    & > img {
+      transform: rotate(0deg);
+    }
+  }
+}
+
+.linkParent {
+  width: 100%;
+  height: 4rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    background-color: var(--gray-100);
+  }
+}
+
+.linkParent.active {
+  background-color: var(--gray-200);
+  & > .sidebarLink > span {
+    color: var(--gray-600);
+  }
+}
+
+.sidebarLink {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 4rem;
+  cursor: pointer;
+  overflow: hidden;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+  & > img {
+    width: 1.8rem;
+    height: 1.8rem;
+    margin-left: 2rem;
+    transition: all 0.3s ease-in-out;
+  }
+  & > span {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s ease-in-out;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--gray-400);
+    margin-left: 3.5rem;
+  }
+  &:hover {
+    & > span {
+      color: var(--gray-500);
+    }
+  }
 }

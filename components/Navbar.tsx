@@ -9,6 +9,7 @@ import pop_image from '@/images/elements/proof-of-post.svg';
 import { ConnectWallet } from '@/layouts/Wallet';
 import { CLUSTER, WHITELIST_URL } from '@/lib/config/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { useUser } from './Context';
 
 export const LandingNavbar = ({
   whitelisted,
@@ -69,6 +70,9 @@ export const Navbar = ({
   const { publicKey } = useWallet();
   const showEditProfile = editProfile && publicKey && editProfile.owner === publicKey.toBase58();
   const spaceBetweenContent = publish || proof_of_post || ((editProfile && !publicKey) || showEditProfile);
+
+  const data = useUser();
+  console.log(data);
 
   return (
     <div
