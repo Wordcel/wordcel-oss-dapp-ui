@@ -34,60 +34,6 @@ export const NewArticle = () => {
     editorInstance.current = instance
   }, []);
 
-  const defaultBlocks = [
-    { type: 'header', data: { text: 'Enter a heading', level: 1 } },
-    { type: 'paragraph', data: { text: 'Enter a sub heading' } },
-    { type: 'image', data: { file: '' }}
-  ];
-
-  useEffect(() => {
-    (async function () {
-      if (publicKey && signMessage) {
-        const userSignature = await getUserSignature(
-          signMessage,
-          publicKey.toBase58(),
-          true
-        );
-        if (userSignature) setSignature(userSignature);
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    const eventListener = (e: KeyboardEvent) => {
-      if (e.keyCode === 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-        e.preventDefault();
-        saveToast();
-      }
-    }
-    if (typeof document !== 'undefined') {
-      document.addEventListener("keydown", eventListener);
-    }
-    return () => {
-      if (typeof document !== 'undefined') {
-        document.removeEventListener("keydown", eventListener);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      if (!editorInstance.current?.save || !publicKey || !signature || publishClicked) return;
-      const data = await editorInstance.current.save();
-      const response = await updateDraft({
-        id: draft_id,
-        blocks: data.blocks,
-        signature: signature,
-        public_key: publicKey.toBase58()
-      });
-      console.log(response);
-      draft_id = response?.draft?.id;
-    }, 8000);
-    return () => {
-      clearInterval(interval);
-    }
-  }, [signature]);
-
   const handlePublish = async () => {
     if (!anchorWallet || publishClicked) return;
     publishClicked = true;
@@ -118,19 +64,6 @@ export const NewArticle = () => {
     router.push(`/${response.username}/${response.article.slug}`);
   }
 
-  useEffect(() => {
-    if (publicKey === null) {
-      router.push('/');
-    } else {
-      (async function () {
-        const request = await fetch(`/api/user/get/${publicKey}`);
-        if (!request.ok) {
-          router.push('/');
-        }
-      })();
-    }
-  }, [publicKey]);
-
   return (
     <div className="container-flex">
       <DefaultHead title="Publish new article" />
@@ -140,7 +73,6 @@ export const NewArticle = () => {
           {typeof window !== 'undefined' && (
             <div className="mb-main">
               <Editor
-                blocks={defaultBlocks}
                 handleInstance={handleInitialize}
                 instance={editorInstance}
               />

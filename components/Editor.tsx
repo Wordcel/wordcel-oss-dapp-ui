@@ -109,6 +109,13 @@ const CustomEditor = ({
     embed: {
       class: Embed,
     },
+    header: {
+      class: Header,
+      shortcut: "CMD+SHIFT+H",
+      levels: [1, 2, 3, 4, 5, 6],
+      defaultLevel: 1,
+      inlineToolbar: ['link', 'bold', 'italic'],
+    },
     image: {
       class: Image,
       shortcut: "CMD+SHIFT+I",
@@ -140,13 +147,6 @@ const CustomEditor = ({
           }
         }
       }
-    },
-    header: {
-      class: Header,
-      shortcut: "CMD+SHIFT+H",
-      levels: [1, 2, 3, 4, 5, 6],
-      defaultLevel: 1,
-      inlineToolbar: ['link', 'bold', 'italic'],
     },
     list: {
       class: List,
@@ -187,7 +187,7 @@ const CustomEditor = ({
         onInitialize={(instance: any) => handleInstance(instance)}
         // @ts-expect-error
         tools={EDITOR_JS_TOOLS}
-        placeholder={`Write from here...`}
+        placeholder={`Start writing from here`}
         // @ts-expect-error
         defaultValue={{ blocks }}
         onChange={onChange}

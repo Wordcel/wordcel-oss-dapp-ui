@@ -528,6 +528,28 @@ a {
   color: var(--gray-700);
 }
 
+.ce-paragraph {
+  &::before {
+    font-weight: 600 !important;
+    font-size: 2.4rem;
+    line-height: 2.9rem;
+    color: var(--gray-200) !important;
+    cursor: text;
+  }
+}
+
+.ce-settings__button {
+  color: var(--gray-700);
+}
+
+.ce-toolbar__content {
+  max-width: 80rem !important;
+}
+
+.ce-block__content {
+  max-width: 80rem !important;
+}
+
 .ce-toolbar__plus {
   color: var(--gray-300);
   width: 3.4rem;
@@ -538,12 +560,16 @@ a {
 
 .ce-toolbar__settings-btn {
   color: var(--gray-300);
-  width: 3.4rem;
+  width: 2.5rem;
   height: 3.4rem;
   & > svg {
     width: 2rem;
     height: 2rem;
   }
+}
+
+.ce-toolbar__actions.ce-toolbar__actions--opened {
+  margin-right: 2rem;
 }
 
 .ce-toolbox__button {
@@ -787,7 +813,8 @@ figure {
 
 .cdx-quote {
   margin: 2rem 0rem !important;
-  border-left: 0.5rem solid var(--text-color);
+  border-left: 0.5rem solid var(--gray-500);
+  background: var(--gray-100);
 }
 
 .cdx-block.cdx-quote {

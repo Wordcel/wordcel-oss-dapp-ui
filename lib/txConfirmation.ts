@@ -8,8 +8,8 @@ export async function sendAndConfirmTransaction (
   wallet: anchor.Wallet,
   confirmTransaction = true
 ) {
+  let _txid = '';
   try {
-
     // Configure the Transaction
     toast.loading('Sending Transaction');
     const tx = transaction;
@@ -22,14 +22,21 @@ export async function sendAndConfirmTransaction (
     const txid = await connection.sendRawTransaction(signedTx.serialize());
     console.log('Transaction ID:', txid);
     toast.dismiss();
+    _txid = txid;
     if (!confirmTransaction && txid) {
       toast.success('Transaction sent');
       return txid;
     };
     if (!txid || !confirmTransaction) return;
+  } catch (e) {
+    toast.error('Failed to send transaction to the network');
+    console.error(e);
+    return false;
+  }
 
+  try {
     // Confirm Transaction
-    const confirmation = connection.confirmTransaction(txid);
+    const confirmation = connection.confirmTransaction(_txid);
     toast.promise(confirmation, {
       loading: 'Confirming Transaction',
       success: 'Transaction Confirmed',
