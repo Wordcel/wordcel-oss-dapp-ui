@@ -524,6 +524,32 @@ a {
   background: var(--gray-200);
 }
 
+.ce-header {
+  color: var(--gray-700);
+}
+
+.ce-toolbar__plus {
+  color: var(--gray-300);
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 0.7rem;
+  border: 0.1rem solid var(--gray-400);
+}
+
+.ce-toolbar__settings-btn {
+  color: var(--gray-300);
+  width: 3.4rem;
+  height: 3.4rem;
+  & > svg {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+.ce-toolbox__button {
+  color: var(--gray-700);
+}
+
 .reader-header {
   color: var(--gray-700);
 }

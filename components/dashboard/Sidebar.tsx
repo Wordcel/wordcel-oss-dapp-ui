@@ -13,13 +13,12 @@ import { useRouter } from 'next/router';
 const links = [
   {name: "Articles", icon: articlesIcon.src, href: "/dashboard"},
   {name: "Profile", icon: profileIcon.src, href: "/dashboard/profile"},
-  {name: "Import", icon: importIcon.src, href: "/dashboard/import"},
-  {name: "Invite", icon: inviteIcon.src, href: "/dashboard/invite"},
+  // {name: "Import", icon: importIcon.src, href: "/dashboard/import"},
+  // {name: "Invite", icon: inviteIcon.src, href: "/dashboard/invite"},
 ]
 
 function Sidebar () {
   const { asPath, push } = useRouter();
-  console.log(asPath);
 
   return (
     <div className={styles.sidebar}>
