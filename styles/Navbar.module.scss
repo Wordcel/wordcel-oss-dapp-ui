@@ -42,8 +42,9 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 1rem 3.5rem;
+  justify-content: space-between;
+  height: 5.5rem;
+  padding: 0rem 3.5rem;
   border-bottom: 0.15rem solid var(--nav-border);
 }
 
@@ -75,4 +76,22 @@
 .popBadge {
   height: 4.2rem;
   margin-right: 1.5rem;
+}
+
+.profile {
+  height: 100%;
+  max-width: 36rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-left: 0.2rem solid var(--gray-100);
+}
+
+.profileIcon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 3rem;
+  object-fit: cover;
+  margin-left: 2rem;
 }

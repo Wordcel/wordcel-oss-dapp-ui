@@ -10,6 +10,7 @@ import { ConnectWallet } from '@/layouts/Wallet';
 import { CLUSTER, WHITELIST_URL } from '@/lib/config/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useUser } from './Context';
+import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 
 export const LandingNavbar = ({
   whitelisted,
@@ -67,18 +68,20 @@ export const Navbar = ({
   proof_of_post?: ProofOfPost;
   editProfile?: EditProfile;
 }) => {
-  const { publicKey } = useWallet();
-  const showEditProfile = editProfile && publicKey && editProfile.owner === publicKey.toBase58();
-  const spaceBetweenContent = publish || proof_of_post || ((editProfile && !publicKey) || showEditProfile);
-
   const data = useUser();
   console.log(data);
 
+  const { publicKey } = useWallet();
+  const showEditProfile = editProfile && data && editProfile.owner === data?.user?.public_key;
+
+  // Todo:
+  // 1. Add proof of post icon to open up right sidebar
+  // 2. Add edit profile icon to open the edit profile modal
+
   return (
     <div
-      style={{ justifyContent: spaceBetweenContent ? 'space-between' : 'center' }}
       className={`${styles.staticContainer} ${proof_of_post ? styles.hasPop : ''}`}>
-      <Link href={publicKey ? '/dashboard' : '/'}>
+      <Link href={data?.user ? '/dashboard' : '/'}>
         <a>
           <div className={styles.logoMaxWidth}>
             <Image alt="Wordcel" src={logo} />
@@ -92,35 +95,18 @@ export const Navbar = ({
           <Image src={publishButton} alt="Publish"/>
         </div>
       )}
-      {proof_of_post?.arweave_url && (
-        <div className={styles.proofOfPost}>
-          <a
-            href={`https://explorer.solana.com/account/${proof_of_post.account}?cluster=${CLUSTER}`}
-            target="_blank"
-            rel="noopener noreferrer">
-              <img
-                className={styles.popBadge}
-                src={pop_image.src}
-                alt="Proof of Post"
-              />
-          </a>
-          <a href={proof_of_post.arweave_url} target="_blank" rel="noopener noreferrer">
-            <img
-              className={styles.arweaveBadge}
-              src={arweaveBadge.src} alt="Arweave Badge" />
-          </a>
-        </div>
-      )}
-      {editProfile && !publicKey && (
-        <ConnectWallet>
+      {!publicKey && !data?.user && (
+        <ConnectWallet noFullSize={true}>
           <p className="blue-text txt-right pointer">CONNECT WALLET</p>
         </ConnectWallet>
       )}
-      {showEditProfile && (
-        <div
-          onClick={editProfile.edit}
-          className="pointer">
-          <Image src={editButton} alt="Edit Profile" />
+      {data?.user && (
+        <div className={styles.profile}>
+          <img className={styles.profileIcon} src={
+            data.user.image_url || 'https://avatars.wagmi.bio/' + data.user.username
+          } alt="" />
+          <p className="text gray-500 size-16 weight-600 ml-2">{data.user.username}</p>
+          <p className="text gray-400 size-16 weight-500 ml-1">{getTrimmedPublicKey(data.user.public_key)}</p>
         </div>
       )}
     </div>
