@@ -18,6 +18,7 @@ Router.events.on('routeChangeError', () => NProgress.done());
 
 function Worcel({ Component, pageProps }: any) {
   return (
+    // @ts-expect-error
     <NextUIProvider>
       <Wallet>
         <UserProvider>
