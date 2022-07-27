@@ -3,14 +3,17 @@ import Image from 'next/image';
 import logo from '@/images/logo.svg';
 import styles from '@/styles/Navbar.module.scss';
 import publishButton from '@/images/elements/publish.svg';
-import editButton from '@/images/elements/edit-profile.svg';
-import arweaveBadge from '@/images/elements/arweave.svg';
-import pop_image from '@/images/elements/proof-of-post.svg';
+// import editButton from '@/images/elements/edit-profile.svg';
+// import arweaveBadge from '@/images/elements/arweave.svg';
+// import pop_image from '@/images/elements/proof-of-post.svg';
+import expandIcon from '@/images/icons/expand.svg';
+import { Dropdown } from '@nextui-org/react';
 import { ConnectWallet } from '@/layouts/Wallet';
 import { CLUSTER, WHITELIST_URL } from '@/lib/config/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useUser } from './Context';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
+import { useRouter } from 'next/router';
 
 export const LandingNavbar = ({
   whitelisted,
@@ -68,15 +71,30 @@ export const Navbar = ({
   proof_of_post?: ProofOfPost;
   editProfile?: EditProfile;
 }) => {
+  const router = useRouter();
   const data = useUser();
   console.log(data);
 
-  const { publicKey } = useWallet();
+  const { publicKey, disconnect } = useWallet();
   const showEditProfile = editProfile && data && editProfile.owner === data?.user?.public_key;
 
   // Todo:
   // 1. Add proof of post icon to open up right sidebar
-  // 2. Add edit profile icon to open the edit profile modal
+  // 2. Add publish button with dropdown
+
+  const handleDropDownItems = (key: string) => {
+    switch (key) {
+      case 'profile':
+        showEditProfile ? editProfile.edit() : router.push('/' + data?.user?.username)
+        break;
+      case 'copy':
+        if (data?.user) navigator.clipboard.writeText(data.user.public_key);
+        break;
+      case 'disconnect':
+        disconnect();
+        break;
+    }
+  }
 
   return (
     <div
@@ -101,12 +119,28 @@ export const Navbar = ({
         </ConnectWallet>
       )}
       {data?.user && (
-        <div className={styles.profile}>
-          <img className={styles.profileIcon} src={
-            data.user.image_url || 'https://avatars.wagmi.bio/' + data.user.username
-          } alt="" />
-          <p className="text gray-500 size-16 weight-600 ml-2">{data.user.username}</p>
-          <p className="text gray-400 size-16 weight-500 ml-1">{getTrimmedPublicKey(data.user.public_key)}</p>
+        <div className={styles.profileParent}>
+          <Dropdown>
+            <Dropdown.Trigger>
+              <div className={styles.profile}>
+                <img className={styles.profileIcon} src={
+                  data.user.image_url || 'https://avatars.wagmi.bio/' + data.user.username
+                } alt="" />
+                <p className="text gray-500 size-16 weight-600 ml-2">{data.user.username}</p>
+                <p className="text gray-400 size-16 weight-500 ml-1">{getTrimmedPublicKey(data.user.public_key)}</p>
+                <img src={expandIcon.src} className={styles.expandIcon} alt="" />
+              </div>
+            </Dropdown.Trigger>
+            <div className={styles.dropdownMenu}>
+              <Dropdown.Menu onAction={(key) => handleDropDownItems(key.toString())} aria-label="Static Actions">
+                <Dropdown.Item key="profile">{showEditProfile ? 'Edit Profile' : 'My Profile'}</Dropdown.Item>
+                <Dropdown.Item key="copy">Copy Address</Dropdown.Item>
+                <Dropdown.Item key="disconnect" withDivider color="error">
+                  Disconnect
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </div>
+          </Dropdown>
         </div>
       )}
     </div>

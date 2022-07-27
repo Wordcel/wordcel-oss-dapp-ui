@@ -25,6 +25,7 @@ const Provider = ({ children }: any) => {
         if (_user) setUser(_user);
       }
     })();
+    if (!wallet.publicKey) setUser(null);
   }, [wallet.publicKey]);
 
   return (
