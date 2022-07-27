@@ -51,7 +51,11 @@ body {
   padding: 0;
   margin: 0;
   font-family: 'Inter', sans-serif, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue;
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue !important;
+}
+
+p {
+  font-size: 1.75rem;
 }
 
 a {
@@ -61,6 +65,13 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+p, h1, h2, h3, h4, h5, h6, a, small, span {
+  font-family: 'Inter', sans-serif, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue !important;
+  line-height: normal !important;
+  letter-spacing: normal !important;
 }
 
 // defaults
@@ -654,6 +665,7 @@ figure {
 
 .reader-blockquote {
   margin: 0rem;
+  border-radius: 0rem;
   font-family: 'Inter', sans-serif, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
   Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue;
   font-size: 2.1rem;
@@ -667,6 +679,7 @@ figure {
   background: var(--gray-100);
   & p {
     margin: 0rem;
+    font-size: 2.1rem;
   }
   & footer {
     margin: 0rem;

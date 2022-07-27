@@ -55,8 +55,10 @@ export const AutoClear = () => {
   return <></>;
 }
 
-export const Wallet: FC = ({
+export const Wallet = ({
   children
+}: {
+  children: React.ReactNode;
 }) => {
   const network = WalletAdapterNetwork.Mainnet;
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);

@@ -114,7 +114,7 @@ export const LandingPage = () => {
         <div className={styles.detailsContainer}>
           {details.map((detail) => (
             <div className={styles.detailBox} key={detail['title']}>
-              <div style={{ width: '5rem' }}>
+              <div style={{ width: '9.5rem' }}>
                 <img src={detail.icon.src} alt="" />
               </div>
               <div className={styles.detailContent}>
