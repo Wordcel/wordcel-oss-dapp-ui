@@ -41,6 +41,7 @@ function Dashboard(props: GetDraftServerSide) {
   const [signature, setSignature] = useState<Uint8Array>();
   const [shareHash, setShareHash] = useState('');
   const [blocks] = useState<any>(JSON.parse(props.draft?.blocks || ''));
+  const [saveText, setSaveText] = useState('');
 
   let [draft_id] = useState('');
   let [publishClicked] = useState(false);
@@ -93,6 +94,7 @@ function Dashboard(props: GetDraftServerSide) {
   useEffect(() => {
     const interval = setInterval(async () => {
       if (!editorInstance.current?.save || !publicKey || !signature || publishClicked) return;
+      setSaveText('Saving...');
       const data = await editorInstance.current.save();
       const response = await updateDraft({
         id: draft_id,
@@ -103,6 +105,7 @@ function Dashboard(props: GetDraftServerSide) {
       console.log(response);
       if (response?.draft?.id) draft_id = response.draft.id;
       if (response?.draft?.share_hash) setShareHash(response.draft.share_hash);
+      setSaveText('Saved');
     }, 8000);
     return () => {
       clearInterval(interval);
@@ -120,6 +123,7 @@ function Dashboard(props: GetDraftServerSide) {
     <div>
       <DefaultHead title="Dashboard • Publish New Article" />
       <Navbar
+        saveText={saveText}
         publish={handlePublish}
         shareDraft={shareHash ? handleShareDraft : undefined}
       />

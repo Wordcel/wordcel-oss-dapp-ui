@@ -70,12 +70,14 @@ export const Navbar = ({
   publish,
   proof_of_post,
   editProfile,
-  shareDraft
+  shareDraft,
+  saveText
 }: {
   publish?: () => void;
   proof_of_post?: ProofOfPost;
   editProfile?: EditProfile;
   shareDraft?: () => void;
+  saveText?: string;
 }) => {
 
   const data = useUser();
@@ -116,6 +118,9 @@ export const Navbar = ({
       </Link>
       {publish && data?.user && publicKey && (
         <div className={styles.publishParent}>
+          {saveText && (
+            <p className="text weight-400 size-16 gray-400 mr-2">{saveText}</p>
+          )}
           <button onClick={!showShareDraft ? publish : shareDraft} className={styles.publishBtn}>
             <img src={!showShareDraft ? checkIcon.src : linkIcon.src} alt="" />
             {!showShareDraft ? 'Publish Now' : 'Share Draft'}
