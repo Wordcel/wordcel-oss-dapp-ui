@@ -7,7 +7,7 @@ import 'inter-ui/inter.css';
 import '@fontsource/spectral';
 import '@/styles/globals/index.scss';
 
-import { NextUIProvider, createTheme } from '@nextui-org/react';
+import { NextUIProvider } from '@nextui-org/react';
 import { Toaster } from 'react-hot-toast';
 import { Wallet } from '@/layouts/Wallet';
 

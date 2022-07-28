@@ -14,6 +14,11 @@ import { publishPost } from '@/lib/contractInteraction';
 import { getUserSignature } from '@/lib/signMessage';
 import { deleteDraft, updateDraft } from '@/lib/networkRequests';
 
+// SSR
+import { getDraftServerSide } from '@/lib/ssr/getDraftServerSide';
+import { GetDraftServerSide } from '@/types/props';
+import { GetServerSideProps } from 'next';
+
 // Layout Imports
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
@@ -21,7 +26,7 @@ import { MainLayout } from "@/components/dashboard/MainLayout";
 import { DefaultHead } from "@/components/DefaultHead";
 
 
-function Dashboard() {
+function Dashboard(props: GetDraftServerSide) {
   const router = useRouter();
   const wallet = useWallet();
   const anchorWallet = useAnchorWallet();
@@ -35,6 +40,7 @@ function Dashboard() {
   }, []);
   const [signature, setSignature] = useState<Uint8Array>();
   const [shareHash, setShareHash] = useState('');
+  const [blocks] = useState<any>(JSON.parse(props.draft?.blocks || ''));
 
   let [draft_id] = useState('');
   let [publishClicked] = useState(false);
@@ -103,10 +109,10 @@ function Dashboard() {
     }
   }, [signature]);
 
+
   const handleShareDraft = () => {
     if (shareHash) {
       navigator.clipboard.writeText('https://wordcelclub.com/draft/' + shareHash);
-      toast.success('Draft link copied to clipboard');
     }
   }
 
@@ -119,7 +125,11 @@ function Dashboard() {
       />
       <MainLayout>
         <div className="mt-5">
-          <Editor handleInstance={handleInitialize} instance={editorInstance} />
+          <Editor
+            blocks={blocks}
+            handleInstance={handleInitialize}
+            instance={editorInstance}
+          />
         </div>
       </MainLayout>
       <Footer />
@@ -128,3 +138,8 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const props = await getDraftServerSide(context);
+  return props;
+};

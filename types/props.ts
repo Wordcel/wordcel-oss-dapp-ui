@@ -34,6 +34,8 @@ export interface Draft {
   description: string;
   image_url: string;
   created_at: Date;
+  updated_at: Date;
+  share_hash?: string;
   blocks?: string;
 }
 

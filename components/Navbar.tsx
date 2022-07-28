@@ -2,14 +2,18 @@ import Link from 'next/link';
 import Image from 'next/image';
 import logo from '@/images/logo.svg';
 import styles from '@/styles/Navbar.module.scss';
-import publishButton from '@/images/elements/publish.svg';
-// import editButton from '@/images/elements/edit-profile.svg';
+import checkIcon from '@/images/icons/check.svg';
+import menuIcon from '@/images/icons/menu.svg';
+import expandIcon from '@/images/icons/expand.svg';
+import linkIcon from '@/images/icons/link.svg';
+
 // import arweaveBadge from '@/images/elements/arweave.svg';
 // import pop_image from '@/images/elements/proof-of-post.svg';
-import expandIcon from '@/images/icons/expand.svg';
+
+import { useState } from 'react';
 import { Dropdown } from '@nextui-org/react';
 import { ConnectWallet } from '@/layouts/Wallet';
-import { CLUSTER, WHITELIST_URL } from '@/lib/config/constants';
+import { WHITELIST_URL } from '@/lib/config/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useUser } from './Context';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
@@ -65,22 +69,24 @@ interface EditProfile {
 export const Navbar = ({
   publish,
   proof_of_post,
-  editProfile
+  editProfile,
+  shareDraft
 }: {
   publish?: () => void;
   proof_of_post?: ProofOfPost;
   editProfile?: EditProfile;
+  shareDraft?: () => void;
 }) => {
-  const router = useRouter();
+
   const data = useUser();
-  console.log(data);
+  const router = useRouter();
 
   const { publicKey, disconnect } = useWallet();
   const showEditProfile = editProfile && data && editProfile.owner === data?.user?.public_key;
+  const [buttonOption, setButtonOption] = useState('publish');
 
   // Todo:
   // 1. Add proof of post icon to open up right sidebar
-  // 2. Add publish button with dropdown
 
   const handleDropDownItems = (key: string) => {
     switch (key) {
@@ -96,6 +102,8 @@ export const Navbar = ({
     }
   }
 
+  const showShareDraft = shareDraft && buttonOption === 'share';
+
   return (
     <div
       className={`${styles.staticContainer} ${proof_of_post ? styles.hasPop : ''}`}>
@@ -106,16 +114,30 @@ export const Navbar = ({
           </div>
         </a>
       </Link>
-      {publish && (
-        <div
-          onClick={publish}
-          className="pointer">
-          <Image src={publishButton} alt="Publish"/>
+      {publish && data?.user && publicKey && (
+        <div className={styles.publishParent}>
+          <button onClick={!showShareDraft ? publish : shareDraft} className={styles.publishBtn}>
+            <img src={!showShareDraft ? checkIcon.src : linkIcon.src} alt="" />
+            {!showShareDraft ? 'Publish Now' : 'Share Draft'}
+          </button>
+          {shareDraft && (
+            <Dropdown>
+              <Dropdown.Trigger>
+                <img className={styles.menuIcon} src={menuIcon.src} alt="" />
+              </Dropdown.Trigger>
+              <div className={styles.dropdownMenu}>
+                <Dropdown.Menu onAction={(key) => setButtonOption(key.toString())} aria-label="Publish Actions">
+                  <Dropdown.Item key="publish">Publish Now</Dropdown.Item>
+                  <Dropdown.Item key="share">Share Draft</Dropdown.Item>
+                </Dropdown.Menu>
+              </div>
+            </Dropdown>
+          )}
         </div>
       )}
       {!publicKey && !data?.user && (
         <ConnectWallet noFullSize={true}>
-          <p className="blue-text txt-right pointer">CONNECT WALLET</p>
+          <p style={{ width: '14rem' }} className="blue-text txt-right pointer">CONNECT WALLET</p>
         </ConnectWallet>
       )}
       {data?.user && (
@@ -132,7 +154,7 @@ export const Navbar = ({
               </div>
             </Dropdown.Trigger>
             <div className={styles.dropdownMenu}>
-              <Dropdown.Menu onAction={(key) => handleDropDownItems(key.toString())} aria-label="Static Actions">
+              <Dropdown.Menu onAction={(key) => handleDropDownItems(key.toString())} aria-label="Profile Actions">
                 <Dropdown.Item key="profile">{showEditProfile ? 'Edit Profile' : 'My Profile'}</Dropdown.Item>
                 <Dropdown.Item key="copy">Copy Address</Dropdown.Item>
                 <Dropdown.Item key="disconnect" withDivider color="error">

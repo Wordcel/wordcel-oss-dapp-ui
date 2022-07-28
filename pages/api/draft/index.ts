@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import prisma from '@/lib/prisma';
 import type {
   NextApiRequest,
@@ -94,10 +95,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           title: sanitizeHtml(title),
           description: sanitizeHtml(description),
           image_url: sanitizeHtml(image_url),
+          updated_at: new Date(),
         }
       });
 
-      const updated_blocks = await prisma.block.update({
+      await prisma.block.update({
         where: { id: blocks_id },
         data: {
           data: JSON.stringify(blocks),
@@ -112,11 +114,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return
     }
 
+    const randomBytes = crypto.randomBytes(32).toString('hex');
+
     const newDraft = await prisma.draft.create({
       data: {
         title: sanitizeHtml(title),
         description: sanitizeHtml(description),
         image_url,
+        updated_at: new Date(),
+        share_hash: randomBytes,
         owner: {
           connect: {
             id: user.id
@@ -125,7 +131,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       }
     });
 
-    const newBlocks = await prisma.block.create({
+    await prisma.block.create({
       data: {
         data: JSON.stringify(blocks),
         draft_id: newDraft.id

@@ -55,8 +55,10 @@ model Draft {
   description String
   image_url String
   created_at DateTime @default(now())
-  user_id Int
+  updated_at DateTime?
   blocks Block?
+  share_hash String?
+  user_id Int
   owner User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
