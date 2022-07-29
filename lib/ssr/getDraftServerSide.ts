@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma';
+import { Draft } from '@prisma/client';
 
 const redirect = () => {
   return {
@@ -11,14 +12,29 @@ const redirect = () => {
 }
 
 export const getDraftServerSide = async (
-  context: any
+  context: any,
+  isHash: boolean = false
 ) => {
-  const id = context.query.id;
-  const draft = await prisma.draft.findFirst({
-    where: {
-      id: Number(id)
-    }
-  });
+  let draft: Draft | null;
+
+  if (isHash) {
+    const hash = context.query.hash;
+    const draft_ = await prisma.draft.findFirst({
+      where: {
+        share_hash: hash
+      }
+    });
+    draft = draft_;
+  } else {
+    const id = context.query.id;
+    const draft_ = await prisma.draft.findFirst({
+      where: {
+        id: Number(id)
+      }
+    });
+    draft = draft_;
+  }
+
   if (!draft) return redirect();
   const blocks = await prisma.block.findFirst({
     where: {
