@@ -99,6 +99,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         }
       });
 
+      if (!updated.share_hash) {
+        const randomBytes = crypto.randomBytes(32).toString('hex');
+        await prisma.draft.update({
+          where: { id: Number(id) },
+          data: {
+            share_hash: randomBytes
+          }
+        });
+      }
+
       await prisma.block.update({
         where: { id: blocks_id },
         data: {
