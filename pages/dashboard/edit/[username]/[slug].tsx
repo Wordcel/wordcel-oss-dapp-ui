@@ -80,7 +80,7 @@ function Dashboard(props: GetArticleServerSide) {
         <div className="mt-5">
           <Editor
             blocks={blocks}
-            handleInstance={handleInitialize}
+            handleInitialize={handleInitialize}
             instance={editorInstance}
           />
         </div>

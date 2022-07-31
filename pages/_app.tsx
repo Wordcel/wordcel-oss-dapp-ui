@@ -6,7 +6,7 @@ import 'inter-ui/inter.css';
 import '@fontsource/spectral';
 import '@/styles/globals/index.scss';
 
-import { UserProvider, EditorProvider } from '@/components/Context';
+import { UserProvider } from '@/components/Context';
 import { NextUIProvider } from '@nextui-org/react';
 import { Toaster } from 'react-hot-toast';
 import { Wallet } from '@/layouts/Wallet';
@@ -25,9 +25,7 @@ function Worcel({ Component, pageProps }: any) {
           <div style={{ fontSize: '170%' }}>
             <Toaster />
           </div>
-          <EditorProvider>
-            <Component {...pageProps} />
-          </EditorProvider>
+          <Component {...pageProps} />
         </UserProvider>
       </Wallet>
     </NextUIProvider>

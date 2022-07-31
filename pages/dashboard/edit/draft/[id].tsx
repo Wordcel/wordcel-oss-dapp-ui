@@ -6,7 +6,7 @@ import {
   useCallback,
   useRef,
   useState,
-  useEffect
+  useEffect,
 } from 'react';
 import { useRouter } from 'next/router';
 import { useWallet, useAnchorWallet } from '@solana/wallet-adapter-react';
@@ -21,16 +21,19 @@ import { GetServerSideProps } from 'next';
 
 // Layout Imports
 import { Footer } from "@/components/Footer";
-import { Navbar } from "@/components/Navbar";
+import { EditorNavbar } from "@/components/Navbar";
 import { MainLayout } from "@/components/dashboard/MainLayout";
 import { DefaultHead } from "@/components/DefaultHead";
 
 
 function Dashboard(props: GetDraftServerSide) {
+
+  const { publicKey, signMessage } = useWallet();
+
   const router = useRouter();
   const wallet = useWallet();
   const anchorWallet = useAnchorWallet();
-  const { publicKey, signMessage } = useWallet();
+  const [blocks] = useState<any>(JSON.parse(props.draft?.blocks || ''));
   const Editor: any = dynamic(() => import('@/components/Editor'), {
     ssr: false
   });
@@ -39,9 +42,9 @@ function Dashboard(props: GetDraftServerSide) {
     editorInstance.current = instance
   }, []);
   const [signature, setSignature] = useState<Uint8Array>();
-  const [shareHash, setShareHash] = useState('');
-  const [blocks] = useState<any>(JSON.parse(props.draft?.blocks || ''));
-  const [saveText, setSaveText] = useState('');
+
+  const shareHash = useRef("");
+  const saveText = useRef("");
 
   let [draft_id] = useState('');
   let [publishClicked] = useState(false);
@@ -49,7 +52,8 @@ function Dashboard(props: GetDraftServerSide) {
   const handlePublish = async () => {
     if (!anchorWallet || publishClicked) return;
     publishClicked = true;
-    const savedContent = await editorInstance.current?.save();
+    const currentInstance = editorInstance.current;
+    const savedContent = await currentInstance?.save();
     if (!savedContent || !signMessage || !publicKey) return;
     const signature = await getUserSignature(signMessage, publicKey.toBase58());
     if (!signature) return;
@@ -93,9 +97,12 @@ function Dashboard(props: GetDraftServerSide) {
   // Auto save the draft
   useEffect(() => {
     const interval = setInterval(async () => {
-      if (!editorInstance.current?.save || !publicKey || !signature || publishClicked) return;
-      setSaveText('Saving...');
-      const data = await editorInstance.current.save();
+      console.log('this is running');
+      const currentInstance = editorInstance.current;
+      console.log(currentInstance, publicKey, signature);
+      if (!currentInstance || !publicKey || !signature) return;
+      if (saveText.current !== 'Saved' ) saveText.current = 'Saving...';
+      const data = await currentInstance?.save();
       const response = await updateDraft({
         id: draft_id,
         blocks: data.blocks,
@@ -104,35 +111,33 @@ function Dashboard(props: GetDraftServerSide) {
       });
       console.log(response);
       if (response?.draft?.id) draft_id = response.draft.id;
-      if (response?.draft?.share_hash) setShareHash(response.draft.share_hash);
-      setSaveText('Saved');
+      if (response?.draft?.share_hash) shareHash.current = response.draft.share_hash;
+      saveText.current = 'Saved';
     }, 8000);
     return () => {
       clearInterval(interval);
     }
   }, [signature]);
 
-
-  const handleShareDraft = () => {
-    if (shareHash) {
-      navigator.clipboard.writeText('https://wordcelclub.com/draft/' + shareHash);
-    }
+  const onChangeNotSavedText = () => {
+    saveText.current = 'Waiting to save';
   }
 
   return (
     <div>
-      <DefaultHead title="Dashboard • Publish New Article" />
-      <Navbar
-        saveText={saveText}
-        publish={handlePublish}
-        shareDraft={shareHash ? handleShareDraft : undefined}
+      <DefaultHead title="Dashboard • Edit Draft" />
+      <EditorNavbar
+        handlePublish={handlePublish}
+        parentSaveText={saveText}
+        parentShareHash={shareHash}
       />
       <MainLayout>
         <div className="mt-5">
           <Editor
             blocks={blocks}
-            handleInstance={handleInitialize}
+            handleInitialize={handleInitialize}
             instance={editorInstance}
+            onChange={onChangeNotSavedText}
           />
         </div>
       </MainLayout>

@@ -1,25 +1,24 @@
 // Component Imports
 import toast from 'react-hot-toast';
 import dynamic from 'next/dynamic';
-import { EditorCore } from "@react-editor-js/core";
 import {
-  useCallback,
-  useRef,
   useState,
-  useEffect
+  useEffect,
+  useRef,
+  useCallback
 } from 'react';
 import { useRouter } from 'next/router';
 import { useWallet, useAnchorWallet } from '@solana/wallet-adapter-react';
 import { publishPost } from '@/lib/contractInteraction';
 import { getUserSignature } from '@/lib/signMessage';
 import { deleteDraft, updateDraft } from '@/lib/networkRequests';
+import { EditorCore } from '@react-editor-js/core';
 
 // Layout Imports
 import { Footer } from "@/components/Footer";
-import { Navbar } from "@/components/Navbar";
+import { EditorNavbar } from "@/components/Navbar";
 import { MainLayout } from "@/components/dashboard/MainLayout";
 import { DefaultHead } from "@/components/DefaultHead";
-import { useEditor } from '@/components/Context';
 
 
 function Dashboard() {
@@ -30,19 +29,23 @@ function Dashboard() {
   const Editor: any = dynamic(() => import('@/components/Editor'), {
     ssr: false
   });
-  const editorContext = useEditor();
-
+  const editorInstance = useRef<EditorCore | null>(null);
+  const handleInitialize = useCallback((instance) => {
+    editorInstance.current = instance
+  }, []);
   const [signature, setSignature] = useState<Uint8Array>();
-  const [shareHash, setShareHash] = useState('');
-  const [saveText, setSaveText] = useState('');
 
   let [draft_id] = useState('');
   let [publishClicked] = useState(false);
 
+  const shareHash = useRef("");
+  const saveText = useRef("");
+
   const handlePublish = async () => {
     if (!anchorWallet || publishClicked) return;
     publishClicked = true;
-    const savedContent = await editorContext?.instance?.save();
+    const currentInstance = editorInstance.current;
+    const savedContent = await currentInstance?.save();
     if (!savedContent || !signMessage || !publicKey) return;
     const signature = await getUserSignature(signMessage, publicKey.toBase58());
     if (!signature) return;
@@ -86,9 +89,11 @@ function Dashboard() {
   // Auto save the draft
   useEffect(() => {
     const interval = setInterval(async () => {
-      if (!editorContext?.instance?.save || !publicKey || !signature || publishClicked) return;
-      setSaveText('Saving...');
-      const data = await editorContext?.instance?.save();
+      console.log('this is running');
+      const currentInstance = editorInstance.current;
+      if (!currentInstance || !publicKey || !signature) return;
+      if (saveText.current !== 'Saved' ) saveText.current = 'Saving...';
+      const data = await currentInstance?.save();
       const response = await updateDraft({
         id: draft_id,
         blocks: data.blocks,
@@ -97,32 +102,33 @@ function Dashboard() {
       });
       console.log(response);
       if (response?.draft?.id) draft_id = response.draft.id;
-      if (response?.draft?.share_hash) setShareHash(response.draft.share_hash);
-      setSaveText('Saved');
+      if (response?.draft?.share_hash) shareHash.current = response.draft.share_hash;
+      saveText.current = 'Saved';
     }, 8000);
     return () => {
       clearInterval(interval);
     }
   }, [signature]);
 
-  const handleShareDraft = () => {
-    if (shareHash) {
-      navigator.clipboard.writeText('https://wordcelclub.com/draft/' + shareHash);
-      toast.success('Draft link copied to clipboard');
-    }
+  const onChangeNotSavedText = () => {
+    saveText.current = 'Waiting to save';
   }
 
   return (
     <div>
       <DefaultHead title="Dashboard • Publish New Article" />
-      <Navbar
-        saveText={saveText}
-        publish={handlePublish}
-        shareDraft={shareHash ? handleShareDraft : undefined}
+      <EditorNavbar
+        handlePublish={handlePublish}
+        parentSaveText={saveText}
+        parentShareHash={shareHash}
       />
       <MainLayout>
         <div className="mt-5">
-          <Editor />
+          <Editor
+            handleInitialize={handleInitialize}
+            instance={editorInstance}
+            onChange={onChangeNotSavedText}
+          />
         </div>
       </MainLayout>
       <Footer />

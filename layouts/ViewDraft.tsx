@@ -60,7 +60,7 @@ const Gradients = () => {
 
 export const ViewDraft = (props: GetDraftServerSide) => {
   const { asPath } = useRouter();
-  const [blocks] = useState<any>(JSON.parse(props.blocks ? props.blocks : "[]"));
+  const [blocks] = useState<any>(JSON.parse(props.draft?.blocks ? props.draft?.blocks : "[]"));
   const Reader: any = dynamic(() => import('@/components/Reader'), {
     ssr: false
   });

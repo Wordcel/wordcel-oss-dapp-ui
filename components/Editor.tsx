@@ -1,5 +1,4 @@
 import Header from "@editorjs/header"
-import { useState } from "react";
 import { createReactEditorJS } from 'react-editor-js'
 import { EditorCore } from "@react-editor-js/core";
 
@@ -40,10 +39,10 @@ import Image from "@editorjs/image";
 import { useEffect } from "react"
 import { uploadImageBundlr } from "@/lib/uploadBundlr";
 import { timeout } from "@/lib/utils";
-import { useEditor } from "./Context";
+
 
 interface Editor {
-  handleInstance: (instance: any) => void;
+  handleInitialize: (instance: any) => void;
   blocks?: any[];
   onChange?: () => void;
   instance: EditorCore | null;
@@ -68,15 +67,13 @@ const allowLinks = (
 
 const CustomEditor = ({
   blocks,
-  onChange
+  onChange,
+  handleInitialize,
+  instance
 }: Editor) => {
 
   const wallet = useWallet();
-  const context = useEditor();
   const Editor = createReactEditorJS();
-
-  const [instance, setInstance] = useState<EditorCore | null>(null);
-  const [initalized, setInitalized] = useState<boolean>(false);
 
   useEffect(() => {
     const toAllowLinks = [Paragraph, List, Header, InlineCode, Quote, Embed];
@@ -85,7 +82,7 @@ const CustomEditor = ({
 
   const handleReady = async () => {
     // @ts-expect-error
-    const editor = context?.instance?.current?._editorJS;
+    const editor = instance?.current?._editorJS;
     const config = {
       shortcuts: {
         undo: 'CMD+Z',
@@ -107,14 +104,6 @@ const CustomEditor = ({
       handleReady();
     })();
   }, []);
-
-  useEffect(() => {
-    if (instance && !initalized) {
-      context?.initialize(instance);
-      console.log(context);
-      console.log('Infinite loop?')
-    }
-  }, [instance]);
 
   const EDITOR_JS_TOOLS = {
     embed: {
@@ -195,10 +184,7 @@ const CustomEditor = ({
     <div style={{ fontSize: '170%' }}>
       <Editor
         holder='editor'
-        onInitialize={(_instance: any) => {
-          if (initalized) return;
-          setInstance(_instance);
-        }}
+        onInitialize={(instance: any) => handleInitialize(instance)}
         // @ts-expect-error
         tools={EDITOR_JS_TOOLS}
         placeholder={`Start writing from here`}

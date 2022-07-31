@@ -1,7 +1,14 @@
+
+// Default Imports
 import Link from 'next/link';
 import Image from 'next/image';
-import logo from '@/images/logo.svg';
+import toast from 'react-hot-toast';
+
+// Styles
 import styles from '@/styles/Navbar.module.scss';
+
+// Images
+import logo from '@/images/logo.svg';
 import checkIcon from '@/images/icons/check.svg';
 import menuIcon from '@/images/icons/menu.svg';
 import expandIcon from '@/images/icons/expand.svg';
@@ -10,7 +17,8 @@ import linkIcon from '@/images/icons/link.svg';
 // import arweaveBadge from '@/images/elements/arweave.svg';
 // import pop_image from '@/images/elements/proof-of-post.svg';
 
-import { useState } from 'react';
+// Component Imports
+import { useState, useEffect, MutableRefObject } from 'react';
 import { Dropdown } from '@nextui-org/react';
 import { ConnectWallet } from '@/layouts/Wallet';
 import { WHITELIST_URL } from '@/lib/config/constants';
@@ -18,6 +26,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useUser } from './Context';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 import { useRouter } from 'next/router';
+
 
 export const LandingNavbar = ({
   whitelisted,
@@ -173,3 +182,42 @@ export const Navbar = ({
     </div>
   )
 };
+
+
+export const EditorNavbar = ({
+  handlePublish,
+  parentShareHash,
+  parentSaveText
+}: {
+  handlePublish: () => void;
+  parentShareHash: MutableRefObject<string>;
+  parentSaveText: MutableRefObject<string>;
+}) => {
+  const [saveText, setSaveText] = useState("");
+  const [shareHash, setShareHash] = useState("");
+
+  const handleShareDraft = () => {
+    if (shareHash) {
+      navigator.clipboard.writeText('https://wordcelclub.com/draft/' + shareHash);
+      toast.success('Draft link copied to clipboard');
+    }
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (parentShareHash.current !== shareHash) setShareHash(parentShareHash.current);
+      if (parentSaveText.current !== saveText) setSaveText(parentSaveText.current);
+    }, 500)
+    return () => {
+      clearInterval(interval);
+    }
+  }, [])
+
+  return (
+    <Navbar
+      saveText={saveText}
+      publish={handlePublish}
+      shareDraft={shareHash ? handleShareDraft : undefined}
+    />
+  )
+}
