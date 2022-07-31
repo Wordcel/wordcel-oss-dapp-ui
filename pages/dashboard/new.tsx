@@ -19,6 +19,7 @@ import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { MainLayout } from "@/components/dashboard/MainLayout";
 import { DefaultHead } from "@/components/DefaultHead";
+import { useEditor } from '@/components/Context';
 
 
 function Dashboard() {
@@ -29,10 +30,8 @@ function Dashboard() {
   const Editor: any = dynamic(() => import('@/components/Editor'), {
     ssr: false
   });
-  const editorInstance = useRef<EditorCore | null>(null);
-  const handleInitialize = useCallback((instance) => {
-    editorInstance.current = instance
-  }, []);
+  const editorContext = useEditor();
+
   const [signature, setSignature] = useState<Uint8Array>();
   const [shareHash, setShareHash] = useState('');
   const [saveText, setSaveText] = useState('');
@@ -43,7 +42,7 @@ function Dashboard() {
   const handlePublish = async () => {
     if (!anchorWallet || publishClicked) return;
     publishClicked = true;
-    const savedContent = await editorInstance.current?.save();
+    const savedContent = await editorContext?.instance?.save();
     if (!savedContent || !signMessage || !publicKey) return;
     const signature = await getUserSignature(signMessage, publicKey.toBase58());
     if (!signature) return;
@@ -87,9 +86,9 @@ function Dashboard() {
   // Auto save the draft
   useEffect(() => {
     const interval = setInterval(async () => {
-      if (!editorInstance.current?.save || !publicKey || !signature || publishClicked) return;
+      if (!editorContext?.instance?.save || !publicKey || !signature || publishClicked) return;
       setSaveText('Saving...');
-      const data = await editorInstance.current.save();
+      const data = await editorContext?.instance?.save();
       const response = await updateDraft({
         id: draft_id,
         blocks: data.blocks,
@@ -123,7 +122,7 @@ function Dashboard() {
       />
       <MainLayout>
         <div className="mt-5">
-          <Editor handleInstance={handleInitialize} instance={editorInstance} />
+          <Editor />
         </div>
       </MainLayout>
       <Footer />
