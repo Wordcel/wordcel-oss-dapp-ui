@@ -60,7 +60,9 @@ function Dashboard(props: GetArticleServerSide) {
       wallet,
       signature,
       undefined,
-      true
+      true,
+      props.article?.proof_of_post,
+      props.contentDigest
     );
     deleteDraft({
       id: draft_id?.toString(),
