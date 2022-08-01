@@ -2,7 +2,14 @@ import Link from 'next/link';
 import date from 'date-and-time';
 import styles from '@/styles/UserView.module.scss';
 import editArticle from '@/images/elements/edit-article.svg';
-import { Article, Draft, User } from '@/types/props';
+
+// Tags
+import publishedTag from '@/images/tags/published.svg';
+import draftTag from '@/images/tags/draft.svg';
+import uploadedTag from '@/images/tags/uploaded.svg';
+
+import { User } from '@prisma/client';
+import { Article, Draft } from '@/types/props';
 import { shortenSentence } from '@/lib/sanitize';
 import { useRouter } from 'next/router';
 
@@ -48,7 +55,7 @@ export const VerticalArticlePreview = ({
   user
 }: {
   article: Article | Draft;
-  user: User | undefined;
+  user: User | null;
 }) => {
   const router = useRouter();
   const created_at = new Date(article.created_at);
@@ -73,25 +80,32 @@ export const VerticalArticlePreview = ({
                 router.push(`/${user?.username}/${article.slug}`)
               }
             }}
-            className={`subheading sm nm ${isNotDraft ? 'pointer' : ''}`}>{shortenSentence(article.title, 75)}</p>
-          <p className="normal-text cursive-text nm mt-1">
+            className={`text gray-600 weight-600 size-20 nm ${isNotDraft ? 'pointer' : ''}`}>{shortenSentence(article.title, 75)}</p>
+          <p className="text size-16 weight-500 gray-400 nm mt-1">
             {shortenSentence(article.description, 112)}
           </p>
         </div>
       </div>
       <div className={styles.verticalArticleAdditional}>
-        <div className="width-100">
-          <p className="normal-text sm nm">{formatted_date}</p>
-        </div>
+        {isNotDraft && (
+          <img className={styles.onChainTag} src={article.on_chain ? publishedTag.src : uploadedTag.src} alt="" />
+        )}
+        {!isNotDraft && (
+          <img className={styles.draftsTag} src={draftTag.src} alt="" />
+        )}
+        <p className="text size-16 weight-500 gray-400">{formatted_date}</p>
         <img
           onClick={() => {
             if (isNotDraft) {
-              router.push(`/edit/${user?.username}/${article.slug}`)
+              router.push(`/dashboard/edit/${user?.username}/${article.slug}`)
             } else {
-              router.push(`/edit/draft/${article.id}`)
+              router.push(`/dashboard/edit/draft/${article.id}`)
             }
           }}
-          className={styles.editArticle} src={editArticle.src} alt="Edit Article" />
+          className={styles.editArticle}
+          src={editArticle.src}
+          alt="Edit Article"
+        />
       </div>
     </div>
   );

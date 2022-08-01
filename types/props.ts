@@ -7,6 +7,7 @@ export interface User {
   blog_name: string;
   import_enabled: boolean;
   connection_count?: number;
+  profile_hash?: string;
   bio?: string;
   twitter?: string;
   discord?: string;

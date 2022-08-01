@@ -13,7 +13,7 @@ export interface Connect {
   signature: Uint8Array;
 }
 
-export interface Draft {
+export interface UpdateDraft {
   id: string | undefined;
   blocks: any;
   public_key: string;

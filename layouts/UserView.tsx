@@ -30,6 +30,7 @@ import { getDefaultUserImage } from '@/lib/getDefaultPreviewImage';
 import { useRouter } from 'next/router';
 import { EditProfile } from '@/elements/EditProfile';
 import { NotFoundElement } from '@/components/404';
+import { User } from '@prisma/client';
 
 
 export const UserView = (props: GetUserServerSide) => {
@@ -204,7 +205,7 @@ export const UserView = (props: GetUserServerSide) => {
               <ArticlePreview
                 key={article.slug}
                 article={article}
-                user={props.user}
+                user={props.user as User}
               />
             ))}
           </div>

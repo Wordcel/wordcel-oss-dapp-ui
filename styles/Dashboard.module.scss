@@ -18,28 +18,30 @@
   min-height: 100vh;
   max-width: 6rem;
   transition: all 0.3s ease-in-out;
-  &:hover {
-    max-width: 25rem;
-  }
   width: 100%;
   background: var(--gray-50);
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 5rem 0rem;
-  &:hover {
-    & .createButton {
-      max-width: 20.2rem;
-      & > span {
-        visibility: visible;
-        opacity: 1;
-      }
+  @media only screen and (min-width: 500px) {
+    &:hover {
+      max-width: 25rem;
     }
-    & .sidebarLink {
-      max-width: 23.2rem;
-      & > span {
-        visibility: visible;
-        opacity: 1;
+    &:hover {
+      & .createButton {
+        max-width: 20.2rem;
+        & > span {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+      & .sidebarLink {
+        max-width: 23.2rem;
+        & > span {
+          visibility: visible;
+          opacity: 1;
+        }
       }
     }
   }

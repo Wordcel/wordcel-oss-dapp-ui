@@ -60,15 +60,8 @@
 
 .verticalContainer {
   display: flex;
-  padding: 4rem 0rem;
+  padding: 3rem 0rem;
   justify-content: space-between;
-  &:not(:first-child) {
-    border-top: 0.1rem solid rgba(186, 186, 186, 0.22);
-    border-bottom: 0.1rem solid rgba(186, 186, 186, 0.22);
-  }
-  &:first-child {
-    border-bottom: 0.1rem solid rgba(186, 186, 186, 0.22);
-  }
   @media only screen and (max-width: 940px) {
     flex-direction: column;
   }
@@ -102,7 +95,7 @@
 }
 
 .editArticle {
-  max-width: 12.8rem;
+  max-width: 6rem;
   width: 100%;
   cursor: pointer;
   margin-left: 3rem;
@@ -111,7 +104,22 @@
 
 .verticalArticleAdditional {
   display: flex;
+  align-items: center;
+  width: 40%;
+  justify-content: flex-end;
   @media only screen and (max-width: 940px) {
+    justify-content: flex-start;
     margin-top: 2rem;
+    width: 100%;
   }
+}
+
+.onChainTag {
+  margin-right: 3rem;
+  width: 10.5rem;
+}
+
+.draftsTag {
+  margin-right: 3rem;
+  width: 7.3rem;
 }

@@ -1,14 +1,16 @@
 import {
   PublishArticleRequest,
   Connect,
-  Draft,
+  UpdateDraft,
   NewProfile,
   NewInvite
 } from '@/types/api';
+import { Draft } from '@/types/props';
 import BigNumber from 'bignumber.js';
 import * as anchor from '@project-serum/anchor';
 import { User } from '@prisma/client';
 import { BUNDLR_MAINNET_ENDPOINT } from './config/constants';
+import { Article } from '@/types/props';
 
 export async function publishToServer (
   data: PublishArticleRequest
@@ -64,7 +66,7 @@ export async function getIfConnected(
 };
 
 export const updateDraft = async (
-  data: Draft
+  data: UpdateDraft
 ) => {
   console.log(data);
   const request = await fetch(
@@ -212,3 +214,29 @@ export async function getUserTwitter (
     return undefined
   }
 };
+
+export async function getAllArticles (
+  public_key: string
+): Promise<Article[] | undefined> {
+  try {
+    const request = await fetch('/api/articles/' + public_key);
+    const response = await request.json();
+    return response;
+  }
+  catch {
+    return undefined
+  }
+};
+
+export async function getAllDrafts (
+  public_key: string
+): Promise<Draft[] | undefined> {
+  try {
+    const request = await fetch('/api/drafts/' + public_key);
+    const response = await request.json();
+    return response;
+  }
+  catch {
+    return undefined
+  }
+}
