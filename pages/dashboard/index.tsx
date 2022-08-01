@@ -14,6 +14,7 @@ import { DefaultHead } from "@/components/DefaultHead";
 import { DashboardBox } from "@/components/dashboard/Box";
 import { useUser } from '@/components/Context';
 import { getFirstName } from '@/lib/utils';
+import { DashboardArticles } from '@/components/dashboard/Articles';
 
 function Dashboard() {
   const data = useUser();
@@ -42,12 +43,13 @@ function Dashboard() {
           <DashboardBox className={styles.learnBox}>
             <p className="nm text size-24 weight-600 gray-800">Learn about Wordcel</p>
             <p className="nm text size-20 weight-500 gray-400 mt-0-5">Helpful articles to explore</p>
-            <button className={styles.readButton}>
+            <a className={styles.readButton} href="/wordcelclub.sol" target="_blank" rel="noopener noreferrer">
               <img src={arrow.src} alt="" />
               Read Articles
-            </button>
+            </a>
           </DashboardBox>
         </div>
+        <DashboardArticles />
       </MainLayout>
       <Footer />
     </div>
