@@ -42,6 +42,7 @@ export interface Draft {
 
 export interface GetUserServerSide {
   user?: User;
+  post_count?: number;
   articles?: Article[];
 }
 

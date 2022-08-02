@@ -30,16 +30,18 @@ export const ArticlePreview = ({
   const DefaultImage = `https://og.up.railway.app/article/${encodeURIComponent(base64Data)}`;
   return (
     <div className={styles.articleContainer}>
-      <Link href={`/${user?.username}/${article.slug}`}><a>
-        <p className="heading md nm pointer">{article.title}</p>
-      </a></Link>
+      <Link href={`/${user?.username}/${article.slug}`}>
+        <a>
+          <p className="text gray-700 weight-700 size-32 md nm pointer">{article.title}</p>
+        </a>
+      </Link>
       <div>
         <p>
-          <span className="normal-text cursive-text">
+          <span className="text size-20 weight-400 gray-400">
             {shortenSentence(article.description)}
           </span>
           <Link href={`/${user?.username}/${article.slug}`}><a>
-            <span className="blue-text pointer ml-1 op-1">
+            <span className="text size-16 weight-700 gray-500 pointer ml-1 op-1">
               READ MORE
             </span>
           </a></Link>

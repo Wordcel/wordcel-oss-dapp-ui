@@ -3,12 +3,13 @@
 }
 
 .banner {
-  height: 17.5rem;
+  height: 24rem;
   width: 100%;
   & img {
     height: 100%;
     width: 100%;
   }
+  margin-bottom: 8rem;
 }
 
 .profilePadding {
@@ -16,18 +17,37 @@
 }
 
 .profile {
-  position: relative;
-  top: -5rem;
-  max-width: 85.6rem;
+  max-width: 85rem;
   margin: 0 auto;
-  padding-bottom: 2.5rem;
+  padding-bottom: 0.25rem;
   border-bottom: 0.1rem solid rgba(0, 0, 0, 0.13);
+  margin-bottom: 4.5rem;
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    & button {
+      margin-top: 3.5rem;
+    }
+  }
+}
+
+.profileNamePublicKey {
+  margin-left: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .avatar {
-  width: 9rem;
-  height: 9rem;
-  border-radius: 9rem;
+  width: 11rem;
+  height: 11rem;
+  border-radius: 11rem;
   object-fit: cover;
 }
 
@@ -53,9 +73,6 @@
 .articleImage {
   width: 100%;
   object-fit: cover;
-  @media only screen and (min-width: 768px) {
-    height: 31.3rem;
-  }
 }
 
 .verticalContainer {
@@ -122,4 +139,10 @@
 .draftsTag {
   margin-right: 3rem;
   width: 7.3rem;
+}
+
+.profileAdditional {
+  display: flex;
+  align-items: center;
+  gap: 3.5%;
 }

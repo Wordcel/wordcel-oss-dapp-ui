@@ -36,6 +36,9 @@ export const getUserServerSide = async (
   const connection_count = await prisma.connection.count({
     where: { profile_owner: user.public_key }
   });
+  const post_count = await prisma.article.count({
+    where: { user_id: user.id }
+  });
   const userData = {
     ...user,
     connection_count
@@ -52,7 +55,8 @@ export const getUserServerSide = async (
     return {
       props: {
         user: userData,
-        articles: JSON.parse(JSON.stringify(articles))
+        articles: JSON.parse(JSON.stringify(articles)),
+        post_count
       }
     }
   }

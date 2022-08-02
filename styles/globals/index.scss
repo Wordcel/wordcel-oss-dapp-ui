@@ -248,13 +248,14 @@ pre {
   width: 100%;
   height: 6.1rem;
   border-radius: 0.8rem;
-  background-color: var(--btn-color);
+  background-color: var(--gray-800);
   color: var(--inverse-color);
   font-weight: 600;
   font-size: 2rem;
   cursor: pointer;
   border: none;
   font-family: inherit;
+  transition: 0.2s all ease-in-out;
   &:hover {
     opacity: 0.85;
   }
@@ -329,9 +330,19 @@ pre {
 }
 
 .main-btn.sm {
-  width: 15rem;
-  height: 4.2rem;
-  font-size: 1.5rem;
+  width: 12.5rem;
+  height: 4.25rem;
+  font-size: 1.6rem;
+  border-radius: 0.5rem;
+}
+
+.main-btn.follow-btn.connected {
+  background: none;
+  color: var(--gray-800);
+  border: 0.12rem solid var(--gray-800);
+  &:hover {
+    background-color: var(--gray-100);
+  }
 }
 
 .main-btn.sm.pop {

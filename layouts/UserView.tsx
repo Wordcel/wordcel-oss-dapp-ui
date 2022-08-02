@@ -31,30 +31,199 @@ import { useRouter } from 'next/router';
 import { EditProfile } from '@/elements/EditProfile';
 import { NotFoundElement } from '@/components/404';
 import { User } from '@prisma/client';
+import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 
 
-export const UserView = (props: GetUserServerSide) => {
+export const UserProfile = (props: GetUserServerSide) => {
+
   const router = useRouter();
   const wallet = useAnchorWallet();
   const { publicKey, signMessage } = useWallet();
 
   const [hideFollow, setHideFollow] = useState(false);
   const [connected, setConnected] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [connectionKey, setConnectionKey] = useState('');
-  const [clicked, setClicked] = useState(0);
 
   const Name = props.user?.name;
   const Bio = props.user?.bio;
-  const SEOTitle = props.user?.blog_name ? `${props.user?.blog_name} by ${props.user?.name}` : '';
   const Banner = props.user?.banner_url || defaultBanner.src;
   const Avatar = props.user?.image_url || `https://avatars.wagmi.bio/${props.user?.name}`;
   const FollowersCount = props.user?.connection_count;
-  const SEOImage = getDefaultUserImage(props.user);
+  const PostsCount = props.post_count;
 
   const refreshData = () => {
     router.replace(router.asPath);
   };
+
+  const checkIfConnected = async () => {
+    if (wallet && props.user?.public_key) {
+      try {
+        const res = await getIfConnected(wallet as any, props.user.public_key, true);
+        if (res.error) return false;
+        setConnectionKey(res.connection.account);
+        setConnected(true);
+        return true;
+      } catch (e) {
+        console.log(e);
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  const isSameUser = publicKey?.toBase58() === props.user?.public_key;
+
+  const unfollow = async () => {
+    if (!props.user?.public_key || !signMessage || !publicKey || isSameUser) return;
+    const signature = await getUserSignature(signMessage, publicKey.toBase58());
+    if (!signature) return;
+    if (connectionKey) {
+      await closeConnection(
+        wallet as any,
+        new PublicKey(props.user.public_key),
+        setConnected,
+        signature
+      );
+      refreshData();
+      return;
+    };
+  }
+
+  const follow = async () => {
+    if (!props.user?.public_key || !signMessage || !publicKey || isSameUser) return;
+    const alreadyConnected = await checkIfConnected();
+    if (alreadyConnected) return;
+    const signature = await getUserSignature(signMessage, publicKey.toBase58());
+    if (!signature) return;
+    await createConnection(
+      wallet as any,
+      new PublicKey(props.user.public_key),
+      setConnected,
+      signature
+    );
+    refreshData();
+  }
+
+  useEffect(() => {
+    if (publicKey?.toBase58() === props.user?.public_key) {
+      setHideFollow(true);
+    }
+  }, [publicKey]);
+
+  useEffect(() => {
+    (async function () {
+      const getConnected = await checkIfConnected();
+      setConnected(getConnected);
+    })();
+  }, [wallet, publicKey, connected]);
+
+  return (
+    <>
+      {props.user && (
+        <div>
+          <div>
+            <div className={styles.profileContainer}>
+              <div className={styles.banner}>
+                <img src={Banner} alt="User Banner" />
+              </div>
+              <div className={styles.profilePadding}>
+                <div className={styles.profile}>
+                  <div className={styles.profileHeader}>
+                    <div className="flex align-center">
+                      <img
+                        alt="Profile Picture"
+                        src={Avatar}
+                        className={styles.avatar}
+                      />
+                      <div className={styles.profileNamePublicKey}>
+                        <p className="text size-32 weight-700 gray-700 nm">{Name}</p>
+                        <p className="text size-20 weight-500 gray-400 nm mt-1">
+                          {props.user.username} • {getTrimmedPublicKey(props.user.public_key)}
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      {!hideFollow && (
+                        <ConnectWallet noFullSize={true} noToast={true}>
+                          <button
+                            onClick={() => {
+                              connectionKey ? unfollow() : follow();
+                            }}
+                            className={`main-btn sm follow-btn ${connected ? 'connected' : ''}`}
+                          >
+                            {connected ? 'Unfollow' : 'Follow'}
+                          </button>
+                        </ConnectWallet>
+                      )}
+                    </div>
+                  </div>
+                  {Bio && (
+                    <p className="text size-20 weight-400 gray-500 mt-4 mb-3">
+                      <AnchorifyText text={Bio}></AnchorifyText>
+                    </p>
+                  )}
+                  <div className={styles.profileAdditional}>
+                    {props.user.twitter && (
+                      <a
+                        href={`https://twitter.com/${props.user.twitter}`}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        key={props.user.twitter}>
+                          <TwitterIcon color="#94A3B8" />
+                      </a>
+                    )}
+                    {props.user.discord && (
+                      <a
+                        href={props.user.discord}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        key={props.user.discord}>
+                          <DiscordIcon color="#94A3B8" />
+                      </a>
+                    )}
+                    {typeof PostsCount !== 'undefined' && (
+                      <p className="text size-16 weight-700 gray-700">
+                        {PostsCount}
+                        <span className='ml-1 text size-16 weight-600 gray-400'>
+                          {PostsCount === 1 ? 'Post' : 'Posts'}
+                        </span>
+                      </p>
+                    )}
+                    {typeof FollowersCount !== 'undefined' && (
+                      <p className="text size-16 weight-700 gray-700">
+                        {FollowersCount}
+                        <span className='ml-1 text size-16 weight-600 gray-400'>
+                          {FollowersCount === 1 ? 'Follower' : 'Followers'}
+                        </span>
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className={styles.articles}>
+            {props.articles && props.articles.map((article) => article.arweave_url && (
+              <ArticlePreview
+                key={article.slug}
+                article={article}
+                user={props.user as User}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
+
+export const UserView = (props: GetUserServerSide) => {
+  const Bio = props.user?.bio;
+  const SEOTitle = props.user?.blog_name ? `${props.user?.blog_name} by ${props.user?.name}` : '';
+  const SEOImage = getDefaultUserImage(props.user);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const editProfile = () => {
     setModalIsOpen(true);
@@ -68,50 +237,6 @@ export const UserView = (props: GetUserServerSide) => {
     twitter: props.user?.twitter,
     discord: props.user?.discord
   };
-
-  useEffect(() => {
-    if (publicKey?.toBase58() === props.user?.public_key) {
-      setHideFollow(true);
-    }
-    (async function () {
-      if (publicKey && clicked !== 0 && props.user?.public_key && signMessage) {
-        const signature = await getUserSignature(signMessage, publicKey.toBase58());
-        if (!signature) return;
-        if (connected && connectionKey) {
-          await closeConnection(
-            wallet as any,
-            new PublicKey(props.user.public_key),
-            setConnected,
-            signature
-          );
-          refreshData();
-          return;
-        };
-        await createConnection(
-          wallet as any,
-          new PublicKey(props.user.public_key),
-          setConnected,
-          signature
-        );
-        refreshData();
-      }
-    })();
-  }, [clicked, publicKey, signMessage]);
-
-  useEffect(() => {
-    (async function () {
-      if (wallet && props.user?.public_key) {
-        try {
-          const res = await getIfConnected(wallet as any, props.user.public_key, true);
-          if (res.error) return;
-          setConnectionKey(res.connection.account);
-          setConnected(true);
-        } catch (e) {
-          console.log(e);
-        }
-      }
-    })();
-  }, [wallet, publicKey, connected])
 
   return (
     <div className="container-flex">
@@ -128,88 +253,7 @@ export const UserView = (props: GetUserServerSide) => {
         setIsOpen={setModalIsOpen}
       />
       {props.user && (
-        <>
-          <div>
-            <div className={styles.profileContainer}>
-              <div className={styles.banner}>
-                <img src={Banner} alt="User Banner" />
-              </div>
-              <div className={styles.profilePadding}>
-                <div className={styles.profile}>
-                  <img
-                    alt="Profile Picture"
-                    src={Avatar}
-                    className={styles.avatar}
-                  />
-                  <div className="flex align-items-center justify-space-between">
-                    <div>
-                      <p className="heading sm nm-bottom">{Name}</p>
-                      <p className="light-sub-heading nm mt-1">@{props.user.username}</p>
-                    </div>
-                    <div className="mt-2">
-                      {!hideFollow && (
-                        <ConnectWallet noFullSize={true} noToast={true}>
-                          <button
-                            onClick={() => setClicked(clicked + 1)}
-                            className="main-btn sm subscribe-btn"
-                            style={{
-                              backgroundColor: connected ? 'transparent' : '',
-                              border: connected ? '0.2rem solid black' : '',
-                              color: connected ? 'black' : ''
-                            }}
-                          >
-                            {connected ? 'UNFOLLOW' : 'FOLLOW'}
-                          </button>
-                        </ConnectWallet>
-                      )}
-                      <div className="user-socials">
-                        {props.user.twitter && (
-                          <a
-                            href={`https://twitter.com/${props.user.twitter}`}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                            key={props.user.twitter}>
-                              <TwitterIcon color="#1E2833" />
-                          </a>
-                        )}
-                        {props.user.discord && (
-                          <a
-                            href={props.user.discord}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                            key={props.user.discord}>
-                              <DiscordIcon color="#1E2833" />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  {Bio && (
-                    <p className="normal-text">
-                      <AnchorifyText text={Bio}></AnchorifyText>
-                    </p>
-                  )}
-                  {typeof FollowersCount !== 'undefined' && (
-                    <p className="subheading xs">
-                      {FollowersCount} <span className='subheading xs ml-0-5 light'>
-                      {FollowersCount === 1 ? 'Follower' : 'Followers'}
-                      </span>
-                    </p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.articles}>
-            {props.articles && props.articles.map((article) => article.arweave_url && (
-              <ArticlePreview
-                key={article.slug}
-                article={article}
-                user={props.user as User}
-              />
-            ))}
-          </div>
-        </>
+        <UserProfile {...props} />
       )}
       {!props.user && (
         <NotFoundElement />
