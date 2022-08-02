@@ -51,7 +51,7 @@ export async function getProfileHash (
   const request = await fetch(`/api/user/get/${public_key}`);
   const response = await request.json();
   console.log(response);
-  return response.user.profile_hash;
+  return response.profile_hash;
 };
 
 export async function getIfConnected(
