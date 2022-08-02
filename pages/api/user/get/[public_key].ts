@@ -21,8 +21,12 @@ async function handler(
     });
     return;
   };
+  const connection_count = await prisma.connection.count({
+    where: { profile_owner: user.public_key }
+  });
   res.status(200).json({
-    user
+    ...user,
+    connection_count
   });
 };
 

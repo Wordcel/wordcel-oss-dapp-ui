@@ -21,12 +21,12 @@ export interface UpdateDraft {
 }
 
 export interface UpdatableUserDetails {
-  name?: string;
-  bio?: string;
-  blog_name?: string;
-  image_url?: string;
-  twitter?: string;
-  discord?: string;
+  name?: string | null;
+  bio?: string | null;
+  blog_name?: string | null;
+  image_url?: string | null;
+  twitter?: string | null;
+  discord?: string | null;
 }
 
 export interface UpdateUser extends UpdatableUserDetails {

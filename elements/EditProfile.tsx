@@ -157,32 +157,32 @@ export const EditProfile = ({
                 <SecondaryInput
                   placeHolder="Name"
                   label="Name"
-                  value={updateData.name}
+                  value={updateData.name ? updateData.name : ''}
                   onChange={(e: any) => setUpdateData({ ...updateData, name: e.target.value })}
                 />
                 <SecondaryInput
                   textArea={true}
                   placeHolder="Bio"
                   label="Bio"
-                  value={updateData.bio}
+                  value={updateData.bio ? updateData.bio : ''}
                   onChange={(e: any) => setUpdateData({ ...updateData, bio: e.target.value })}
                 />
                 <SecondaryInput
                   placeHolder="Blog Name"
                   label="Blog Name"
-                  value={updateData.blog_name}
+                  value={updateData.blog_name ? updateData.blog_name : ''}
                   onChange={(e: any) => setUpdateData({ ...updateData, blog_name: e.target.value })}
                 />
                 <SecondaryInput
                   placeHolder="Twitter Username"
                   label="Twitter Username"
-                  value={updateData.twitter}
+                  value={updateData.twitter ? updateData.twitter : ''}
                   onChange={(e: any) => setUpdateData({ ...updateData, twitter: e.target.value })}
                 />
                 <SecondaryInput
                   placeHolder="Discord Invite"
                   label="Discord Invite"
-                  value={updateData.discord}
+                  value={updateData.discord ? updateData.discord : ''}
                   onChange={(e: any) => setUpdateData({ ...updateData, discord: e.target.value })}
                 />
               </div>

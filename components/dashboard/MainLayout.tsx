@@ -5,15 +5,20 @@ import { useUser } from '../Context';
 import { RequestConnect } from '@/elements/RequestConnect';
 
 function MainLayout({
-  children
+  children,
+  noPadding
 }: {
   children: React.ReactNode;
+  noPadding?: boolean;
 }) {
   const data = useUser();
   return (
     <div className={styles.container}>
       <Sidebar />
-      <div className={styles.main}>
+      <div
+        style={{ padding: noPadding ? '0rem' : '3.5rem' }}
+        className={styles.main}
+      >
         {data?.user && (
           <>
             {children}

@@ -3,9 +3,7 @@ export interface User {
   name: string;
   username: string;
   public_key: string;
-  nft_key: string;
   blog_name: string;
-  import_enabled: boolean;
   connection_count?: number;
   profile_hash?: string;
   bio?: string;

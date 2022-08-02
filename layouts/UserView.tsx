@@ -34,7 +34,11 @@ import { User } from '@prisma/client';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 
 
-export const UserProfile = (props: GetUserServerSide) => {
+export const UserProfile = ({
+  props
+}: {
+  props: GetUserServerSide;
+}) => {
 
   const router = useRouter();
   const wallet = useAnchorWallet();
@@ -253,7 +257,7 @@ export const UserView = (props: GetUserServerSide) => {
         setIsOpen={setModalIsOpen}
       />
       {props.user && (
-        <UserProfile {...props} />
+        <UserProfile props={props} />
       )}
       {!props.user && (
         <NotFoundElement />
