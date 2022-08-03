@@ -12,7 +12,13 @@ interface UserData {
   user: User | null;
 }
 
+interface SidebarData {
+  collapsed: boolean;
+  setCollapsed: (collapsed: boolean) => void;
+}
+
 const UserContext = createContext<UserData | null>(null);
+const SidebarContext = createContext<SidebarData | null>(null);
 
 const UserProvider = ({ children }: any) => {
   const wallet = useWallet();
@@ -37,9 +43,24 @@ const UserProvider = ({ children }: any) => {
   );
 }
 
+const SidebarProvider = ({ children }: any) => {
+  const [collapsed, setCollapsed] = useState<boolean>(true);
+  return (
+    <SidebarContext.Provider value={{
+      collapsed,
+      setCollapsed
+    }}>
+      {children}
+    </SidebarContext.Provider>
+  );
+}
+
 const useUser = () => useContext(UserContext);
+const useSidebar = () => useContext(SidebarContext);
 
 export {
   useUser,
-  UserProvider
+  UserProvider,
+  useSidebar,
+  SidebarProvider,
 };

@@ -23,30 +23,58 @@
   flex-direction: column;
   align-items: center;
   padding: 5rem 0rem;
+  position: fixed;
+  top: 0;
+  z-index: 9;
+}
+
+.sidebarToggle {
+  transition: 0.25s all ease-in-out;
+}
+
+.toggleParent {
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.4rem;
+  transition: 0.25s all ease-in-out;
+  cursor: pointer;
+  margin-top: 5rem;
+  &:hover {
+    background: var(--gray-100);
+  }
+}
+
+.toggleExpanded {
+  width: 100%;
+  justify-content: flex-end;
+  padding-right: 1.5rem;
+}
+
+.expandedSidebar {
   @media only screen and (min-width: 500px) {
-    &:hover {
-      max-width: 25rem;
-    }
-    &:hover {
-      & .createButton {
-        max-width: 20.2rem;
-        & > span {
-          visibility: visible;
-          opacity: 1;
-        }
+    max-width: 25rem;
+    & .createButton {
+      max-width: 20.2rem;
+      & > span {
+        visibility: visible;
+        opacity: 1;
       }
-      & .sidebarLink {
-        max-width: 23.2rem;
-        & > span {
-          visibility: visible;
-          opacity: 1;
-        }
+    }
+    & .sidebarLink {
+      max-width: 23.2rem;
+      & > span {
+        visibility: visible;
+        opacity: 1;
       }
     }
   }
 }
 
 .createButton {
+  margin-top: 5rem;
   border: none;
   outline: none;
   max-width: 4rem;

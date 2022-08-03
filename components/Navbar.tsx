@@ -122,116 +122,119 @@ export const Navbar = ({
   }
 
   return (
-    <div
-      className={`${styles.staticContainer}`}>
-      <Link href={data?.user ? '/dashboard' : '/'}>
-        <a>
-          <div className={styles.logoMaxWidth}>
-            <Image alt="Wordcel" src={logo} />
-          </div>
-        </a>
-      </Link>
-      {proof_of_post && (
-        <Popover>
-          <div className={styles.popButtonContainer}>
-            <Popover.Trigger>
-              <img className={styles.popButton} src={pop_image.src} alt="" />
-            </Popover.Trigger>
-          </div>
-          <div>
-            <Popover.Content>
-              <div className={styles.popContainer}>
-                <div className={styles.popHeader}>
-                  {proof_of_post.account && (
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={`https://explorer.solana.com/account/${proof_of_post.account}`}
-                    >
-                      <img src={pop_open_image.src} alt="" />
-                    </a>
-                  )}
+    <div className={styles.parent}>
+      <div className={styles.filler} />
+      <div
+        className={`${styles.staticContainer}`}>
+        <Link href={data?.user ? '/dashboard' : '/'}>
+          <a>
+            <div className={styles.logoMaxWidth}>
+              <Image alt="Wordcel" src={logo} />
+            </div>
+          </a>
+        </Link>
+        {proof_of_post && (
+          <Popover>
+            <div className={styles.popButtonContainer}>
+              <Popover.Trigger>
+                <img className={styles.popButton} src={pop_image.src} alt="" />
+              </Popover.Trigger>
+            </div>
+            <div>
+              <Popover.Content>
+                <div className={styles.popContainer}>
+                  <div className={styles.popHeader}>
+                    {proof_of_post.account && (
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={`https://explorer.solana.com/account/${proof_of_post.account}`}
+                      >
+                        <img src={pop_open_image.src} alt="" />
+                      </a>
+                    )}
+                    {proof_of_post.arweave_url && (
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={proof_of_post.arweave_url}
+                      >
+                        <img className={styles.arweaveBadge} src={arweaveBadge.src} alt="" />
+                      </a>
+                    )}
+                  </div>
+                  <div className="mt-2" />
                   {proof_of_post.arweave_url && (
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={proof_of_post.arweave_url}
-                    >
-                      <img className={styles.arweaveBadge} src={arweaveBadge.src} alt="" />
-                    </a>
+                    <>
+                      <p className="nm text size-12 weight-400 gray-400 mt-1">ARWEAVE TXID</p>
+                      <p className="nm text size-12 weight-400 gray-500 mt-0-5">{
+                        proof_of_post.arweave_url.split('https://arweave.net/')[1]
+                      }</p>
+                    </>
                   )}
+                  <p className="nm text size-12 weight-400 gray-400 mt-2">WRITTEN BY</p>
+                  <p className="nm text size-12 weight-400 gray-500 mt-0-5">{
+                    '8kgbAgt8oedfprQ9LWekUh6rbY264Nv75eunHPpkbYGX'
+                  }</p>
                 </div>
-                <div className="mt-2" />
-                {proof_of_post.arweave_url && (
-                  <>
-                    <p className="nm text size-12 weight-400 gray-400 mt-1">ARWEAVE TXID</p>
-                    <p className="nm text size-12 weight-400 gray-500 mt-0-5">{
-                      proof_of_post.arweave_url.split('https://arweave.net/')[1]
-                    }</p>
-                  </>
-                )}
-                <p className="nm text size-12 weight-400 gray-400 mt-2">WRITTEN BY</p>
-                <p className="nm text size-12 weight-400 gray-500 mt-0-5">{
-                  '8kgbAgt8oedfprQ9LWekUh6rbY264Nv75eunHPpkbYGX'
-                }</p>
-              </div>
-            </Popover.Content>
+              </Popover.Content>
+            </div>
+          </Popover>
+        )}
+        {publish && data?.user && publicKey && (
+          <div className={styles.publishParent}>
+            {saveText && (
+              <p className="text weight-400 size-16 gray-400 mr-2">{saveText}</p>
+            )}
+            <button onClick={publish} className={styles.publishBtn}>
+              <img src={checkIcon.src} alt="" />
+              Publish Now
+            </button>
+            {showPreview && (
+              <Dropdown>
+                <Dropdown.Trigger>
+                  <img className={styles.menuIcon} src={menuIcon.src} alt="" />
+                </Dropdown.Trigger>
+                <div className={styles.dropdownMenu}>
+                  <Dropdown.Menu onAction={(key) => handleAdditionalSettings(key.toString())} aria-label="Publish Actions">
+                    <Dropdown.Item key="preview">Show Preview</Dropdown.Item>
+                  </Dropdown.Menu>
+                </div>
+              </Dropdown>
+            )}
           </div>
-        </Popover>
-      )}
-      {publish && data?.user && publicKey && (
-        <div className={styles.publishParent}>
-          {saveText && (
-            <p className="text weight-400 size-16 gray-400 mr-2">{saveText}</p>
-          )}
-          <button onClick={publish} className={styles.publishBtn}>
-            <img src={checkIcon.src} alt="" />
-            Publish Now
-          </button>
-          {showPreview && (
+        )}
+        {!publicKey && !data?.user && (
+          <ConnectWallet noFullSize={true}>
+            <p style={{ width: '14rem' }} className="blue-text txt-right pointer">CONNECT WALLET</p>
+          </ConnectWallet>
+        )}
+        {data?.user && (
+          <div className={styles.profileParent}>
             <Dropdown>
               <Dropdown.Trigger>
-                <img className={styles.menuIcon} src={menuIcon.src} alt="" />
+                <div className={styles.profile}>
+                  <img className={styles.profileIcon} src={
+                    data.user.image_url || 'https://avatars.wagmi.bio/' + data.user.username
+                  } alt="" />
+                  <p className="text gray-500 size-16 weight-600 ml-2">{data.user.username}</p>
+                  <p className="text gray-400 size-16 weight-500 ml-1">{getTrimmedPublicKey(data.user.public_key)}</p>
+                  <img src={expandIcon.src} className={styles.expandIcon} alt="" />
+                </div>
               </Dropdown.Trigger>
               <div className={styles.dropdownMenu}>
-                <Dropdown.Menu onAction={(key) => handleAdditionalSettings(key.toString())} aria-label="Publish Actions">
-                  <Dropdown.Item key="preview">Show Preview</Dropdown.Item>
+                <Dropdown.Menu onAction={(key) => handleDropDownItems(key.toString())} aria-label="Profile Actions">
+                  <Dropdown.Item key="profile">{showEditProfile ? 'Edit Profile' : 'My Profile'}</Dropdown.Item>
+                  <Dropdown.Item key="copy">Copy Address</Dropdown.Item>
+                  <Dropdown.Item key="disconnect" withDivider color="error">
+                    Disconnect
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </div>
             </Dropdown>
-          )}
-        </div>
-      )}
-      {!publicKey && !data?.user && (
-        <ConnectWallet noFullSize={true}>
-          <p style={{ width: '14rem' }} className="blue-text txt-right pointer">CONNECT WALLET</p>
-        </ConnectWallet>
-      )}
-      {data?.user && (
-        <div className={styles.profileParent}>
-          <Dropdown>
-            <Dropdown.Trigger>
-              <div className={styles.profile}>
-                <img className={styles.profileIcon} src={
-                  data.user.image_url || 'https://avatars.wagmi.bio/' + data.user.username
-                } alt="" />
-                <p className="text gray-500 size-16 weight-600 ml-2">{data.user.username}</p>
-                <p className="text gray-400 size-16 weight-500 ml-1">{getTrimmedPublicKey(data.user.public_key)}</p>
-                <img src={expandIcon.src} className={styles.expandIcon} alt="" />
-              </div>
-            </Dropdown.Trigger>
-            <div className={styles.dropdownMenu}>
-              <Dropdown.Menu onAction={(key) => handleDropDownItems(key.toString())} aria-label="Profile Actions">
-                <Dropdown.Item key="profile">{showEditProfile ? 'Edit Profile' : 'My Profile'}</Dropdown.Item>
-                <Dropdown.Item key="copy">Copy Address</Dropdown.Item>
-                <Dropdown.Item key="disconnect" withDivider color="error">
-                  Disconnect
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </div>
-          </Dropdown>
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </div>
   )
 };
