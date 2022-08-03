@@ -2,7 +2,7 @@
 // Default Imports
 import Link from 'next/link';
 import Image from 'next/image';
-import toast from 'react-hot-toast';
+// import toast from 'react-hot-toast';
 
 // Styles
 import styles from '@/styles/Navbar.module.scss';
@@ -12,7 +12,7 @@ import logo from '@/images/logo.svg';
 import checkIcon from '@/images/icons/check.svg';
 import menuIcon from '@/images/icons/menu.svg';
 import expandIcon from '@/images/icons/expand.svg';
-import linkIcon from '@/images/icons/link.svg';
+// import linkIcon from '@/images/icons/link.svg';
 
 // import arweaveBadge from '@/images/elements/arweave.svg';
 // import pop_image from '@/images/elements/proof-of-post.svg';
@@ -79,13 +79,13 @@ export const Navbar = ({
   publish,
   proof_of_post,
   editProfile,
-  shareDraft,
+  showPreview,
   saveText
 }: {
   publish?: () => void;
   proof_of_post?: ProofOfPost;
   editProfile?: EditProfile;
-  shareDraft?: () => void;
+  showPreview?: () => void;
   saveText?: string;
 }) => {
 
@@ -94,7 +94,6 @@ export const Navbar = ({
 
   const { publicKey, disconnect } = useWallet();
   const showEditProfile = editProfile && data && editProfile.owner === data?.user?.public_key;
-  const [buttonOption, setButtonOption] = useState('publish');
 
   // Todo:
   // 1. Add proof of post icon to open up right sidebar
@@ -113,7 +112,13 @@ export const Navbar = ({
     }
   }
 
-  const showShareDraft = shareDraft && buttonOption === 'share';
+  const handleAdditionalSettings = (key: string) => {
+    switch (key) {
+      case 'preview':
+        if (showPreview) showPreview();
+        break;
+    }
+  }
 
   return (
     <div
@@ -130,19 +135,18 @@ export const Navbar = ({
           {saveText && (
             <p className="text weight-400 size-16 gray-400 mr-2">{saveText}</p>
           )}
-          <button onClick={!showShareDraft ? publish : shareDraft} className={styles.publishBtn}>
-            <img src={!showShareDraft ? checkIcon.src : linkIcon.src} alt="" />
-            {!showShareDraft ? 'Publish Now' : 'Share Draft'}
+          <button onClick={publish} className={styles.publishBtn}>
+            <img src={checkIcon.src} alt="" />
+            Publish Now
           </button>
-          {shareDraft && (
+          {showPreview && (
             <Dropdown>
               <Dropdown.Trigger>
                 <img className={styles.menuIcon} src={menuIcon.src} alt="" />
               </Dropdown.Trigger>
               <div className={styles.dropdownMenu}>
-                <Dropdown.Menu onAction={(key) => setButtonOption(key.toString())} aria-label="Publish Actions">
-                  <Dropdown.Item key="publish">Publish Now</Dropdown.Item>
-                  <Dropdown.Item key="share">Share Draft</Dropdown.Item>
+                <Dropdown.Menu onAction={(key) => handleAdditionalSettings(key.toString())} aria-label="Publish Actions">
+                  <Dropdown.Item key="preview">Show Preview</Dropdown.Item>
                 </Dropdown.Menu>
               </div>
             </Dropdown>
@@ -196,11 +200,8 @@ export const EditorNavbar = ({
   const [saveText, setSaveText] = useState("");
   const [shareHash, setShareHash] = useState("");
 
-  const handleShareDraft = () => {
-    if (shareHash) {
-      navigator.clipboard.writeText('https://wordcelclub.com/draft/' + shareHash);
-      toast.success('Draft link copied to clipboard');
-    }
+  const showPreview = () => {
+    if (shareHash) window.open(`/draft/${shareHash}`, '_blank');
   }
 
   useEffect(() => {
@@ -217,7 +218,7 @@ export const EditorNavbar = ({
     <Navbar
       saveText={saveText}
       publish={handlePublish}
-      shareDraft={shareHash ? handleShareDraft : undefined}
+      showPreview={shareHash ? showPreview : undefined}
     />
   )
 }
