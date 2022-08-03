@@ -14,12 +14,13 @@ import menuIcon from '@/images/icons/menu.svg';
 import expandIcon from '@/images/icons/expand.svg';
 // import linkIcon from '@/images/icons/link.svg';
 
-// import arweaveBadge from '@/images/elements/arweave.svg';
-// import pop_image from '@/images/elements/proof-of-post.svg';
+import arweaveBadge from '@/images/elements/arweave.svg';
+import pop_image from '@/images/elements/proof-of-post.svg';
+import pop_open_image from '@/images/elements/proof-of-post-open.svg';
 
 // Component Imports
 import { useState, useEffect, MutableRefObject } from 'react';
-import { Dropdown } from '@nextui-org/react';
+import { Dropdown, Popover } from '@nextui-org/react';
 import { ConnectWallet } from '@/layouts/Wallet';
 import { WHITELIST_URL } from '@/lib/config/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -122,7 +123,7 @@ export const Navbar = ({
 
   return (
     <div
-      className={`${styles.staticContainer} ${proof_of_post ? styles.hasPop : ''}`}>
+      className={`${styles.staticContainer}`}>
       <Link href={data?.user ? '/dashboard' : '/'}>
         <a>
           <div className={styles.logoMaxWidth}>
@@ -130,6 +131,54 @@ export const Navbar = ({
           </div>
         </a>
       </Link>
+      {proof_of_post && (
+        <Popover>
+          <div className={styles.popButtonContainer}>
+            <Popover.Trigger>
+              <img className={styles.popButton} src={pop_image.src} alt="" />
+            </Popover.Trigger>
+          </div>
+          <div>
+            <Popover.Content>
+              <div className={styles.popContainer}>
+                <div className={styles.popHeader}>
+                  {proof_of_post.account && (
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`https://explorer.solana.com/account/${proof_of_post.account}`}
+                    >
+                      <img src={pop_open_image.src} alt="" />
+                    </a>
+                  )}
+                  {proof_of_post.arweave_url && (
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={proof_of_post.arweave_url}
+                    >
+                      <img className={styles.arweaveBadge} src={arweaveBadge.src} alt="" />
+                    </a>
+                  )}
+                </div>
+                <div className="mt-2" />
+                {proof_of_post.arweave_url && (
+                  <>
+                    <p className="nm text size-12 weight-400 gray-400 mt-1">ARWEAVE TXID</p>
+                    <p className="nm text size-12 weight-400 gray-500 mt-0-5">{
+                      proof_of_post.arweave_url.split('https://arweave.net/')[1]
+                    }</p>
+                  </>
+                )}
+                <p className="nm text size-12 weight-400 gray-400 mt-2">WRITTEN BY</p>
+                <p className="nm text size-12 weight-400 gray-500 mt-0-5">{
+                  '8kgbAgt8oedfprQ9LWekUh6rbY264Nv75eunHPpkbYGX'
+                }</p>
+              </div>
+            </Popover.Content>
+          </div>
+        </Popover>
+      )}
       {publish && data?.user && publicKey && (
         <div className={styles.publishParent}>
           {saveText && (

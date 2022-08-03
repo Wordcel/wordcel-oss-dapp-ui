@@ -76,7 +76,7 @@ function Dashboard(props: GetArticleServerSide) {
 
   return (
     <div>
-      <DefaultHead title="Dashboard • Publish New Article" />
+      <DefaultHead title="Dashboard • Edit Article" />
       <Navbar publish={handlePublish} />
       <MainLayout>
         <div className="mt-5">

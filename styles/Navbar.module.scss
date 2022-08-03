@@ -48,29 +48,40 @@
   border-bottom: 0.15rem solid var(--nav-border);
 }
 
-.hasPop {
-  @media only screen and (max-width: 480px) {
-    flex-direction: column;
-  }
+.popContainer {
+  padding: 2.1rem;
+  width: 53rem;
+  height: 22rem;
 }
 
-.proofOfPost {
+.popHeader {
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  @media only screen and (max-width: 480px) {
-    margin-top: 2rem;
+  justify-content: space-between;
+}
+
+.popButtonContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 1.75rem;
+}
+
+.popButton {
+  max-width: 19.6rem;
+  width: 100%;
+  transition: 0.25s all ease-in-out;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--gray-50);
   }
 }
 
 .arweaveBadge {
-  width: auto;
-  @media only screen and (max-width: 1280px) {
-    width: 88%;
-  }
-  @media only screen and (max-width: 768px) {
-    width: 80%;
-  }
+  height: min-content;
 }
 
 .popBadge {
