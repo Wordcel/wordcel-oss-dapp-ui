@@ -72,6 +72,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         title: sanitizeHtml(title),
         description: sanitizeHtml(description),
         image_url,
+        source: 'twitter',
         updated_at: new Date(),
         share_hash: randomBytes,
         owner: {

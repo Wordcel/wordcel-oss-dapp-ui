@@ -54,6 +54,7 @@ model Draft {
   title String
   description String
   image_url String
+  source String @default("dapp")
   created_at DateTime @default(now())
   updated_at DateTime?
   blocks Block?
