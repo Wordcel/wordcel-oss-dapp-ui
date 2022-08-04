@@ -19,7 +19,6 @@ import { getArticleServerSide } from '@/lib/ssr/getArticleServerSide';
 import { GetServerSideProps } from 'next';
 
 // Layout Imports
-import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { MainLayout } from "@/components/dashboard/MainLayout";
 import { DefaultHead } from "@/components/DefaultHead";
@@ -87,7 +86,6 @@ function Dashboard(props: GetArticleServerSide) {
           />
         </div>
       </MainLayout>
-      <Footer />
     </div>
   );
 }

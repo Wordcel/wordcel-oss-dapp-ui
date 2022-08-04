@@ -20,7 +20,6 @@ import { GetDraftServerSide } from '@/types/props';
 import { GetServerSideProps } from 'next';
 
 // Layout Imports
-import { Footer } from "@/components/Footer";
 import { EditorNavbar } from "@/components/Navbar";
 import { MainLayout } from "@/components/dashboard/MainLayout";
 import { DefaultHead } from "@/components/DefaultHead";
@@ -141,7 +140,6 @@ function Dashboard(props: GetDraftServerSide) {
           />
         </div>
       </MainLayout>
-      <Footer />
     </div>
   );
 }

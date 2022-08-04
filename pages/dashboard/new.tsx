@@ -15,7 +15,6 @@ import { deleteDraft, updateDraft } from '@/lib/networkRequests';
 import { EditorCore } from '@react-editor-js/core';
 
 // Layout Imports
-import { Footer } from "@/components/Footer";
 import { EditorNavbar } from "@/components/Navbar";
 import { MainLayout } from "@/components/dashboard/MainLayout";
 import { DefaultHead } from "@/components/DefaultHead";
@@ -131,7 +130,6 @@ function Dashboard() {
           />
         </div>
       </MainLayout>
-      <Footer />
     </div>
   );
 }

@@ -7,7 +7,6 @@ import vector from '@/images/elements/author-box-vector.svg';
 import pattern from '@/images/elements/pattern.svg';
 
 import { useState } from 'react';
-import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { MainLayout } from "@/components/dashboard/MainLayout";
 import { DefaultHead } from "@/components/DefaultHead";
@@ -51,7 +50,6 @@ function Dashboard() {
         </div>
         <DashboardArticles />
       </MainLayout>
-      <Footer />
     </div>
   );
 }
