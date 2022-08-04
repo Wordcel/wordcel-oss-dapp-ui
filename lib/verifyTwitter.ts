@@ -49,7 +49,7 @@ export const verifyTwitterUsername = async (
   public_key: string,
 ) => {
   const basicData = await getUserIdAndGuestToken(username);
-  if (!basicData || !basicData.id || !basicData.guest_token) return false;
+  if (!basicData || !basicData.id || !basicData.guest_token) return undefined;
   const request = await fetch(`https://twitter.com/i/api/graphql/AKPZtpVOPulWtyo5wSzrjA/UserTweetsAndReplies?variables=%7B%22userId%22%3A%22${basicData.id}%22%2C%22count%22%3A40%2C%22includePromotedContent%22%3Atrue%2C%22withCommunity%22%3Atrue%2C%22withSuperFollowsUserFields%22%3Atrue%2C%22withDownvotePerspective%22%3Afalse%2C%22withReactionsMetadata%22%3Afalse%2C%22withReactionsPerspective%22%3Afalse%2C%22withSuperFollowsTweetFields%22%3Atrue%2C%22withVoice%22%3Atrue%2C%22withV2Timeline%22%3Atrue%7D&features=%7B%22dont_mention_me_view_api_enabled%22%3Atrue%2C%22interactive_text_enabled%22%3Atrue%2C%22responsive_web_uc_gql_enabled%22%3Afalse%2C%22vibe_tweet_context_enabled%22%3Afalse%2C%22responsive_web_edit_tweet_api_enabled%22%3Afalse%2C%22standardized_nudges_for_misinfo_nudges_enabled%22%3Afalse%7D`, {
     "headers": {
       "accept": "*/*",
@@ -73,11 +73,11 @@ export const verifyTwitterUsername = async (
   });
   const response = await request.json();
   const timeline = response?.data?.user?.result?.timeline_v2?.timeline?.instructions?.filter((f: any) => f.type === 'TimelineAddEntries')[0];
-  if (!timeline) return false;
+  if (!timeline) return undefined;
   const tweets = timeline.entries.filter((f: any) => f?.content?.itemContent?.itemType === 'TimelineTweet');
-  if (!tweets || tweets.length === 0) return false;
+  if (!tweets || tweets.length === 0) return undefined;
   const text_content = tweets?.map((tweet: any) => tweet.content?.itemContent?.tweet_results?.result?.legacy?.full_text);
-  if (!text_content || text_content.length === 0) return false;
+  if (!text_content || text_content.length === 0) return undefined;
   const base64_regex = new RegExp('^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$');
   let signature_base_64 = '';
   for (const text of text_content) {
@@ -87,10 +87,11 @@ export const verifyTwitterUsername = async (
       break;
     }
   }
-  if (!signature_base_64) return false;
+  if (!signature_base_64) return undefined;
   const signature = Buffer.from(signature_base_64, 'base64');
   const message = new TextEncoder().encode(messageToSign(username));
   const public_key_bytes = new PublicKey(public_key).toBytes();
   const verified = nacl.sign.detached.verify(message, signature, public_key_bytes);
-  return verified;
+  if (!verified) return undefined;
+  return basicData.id;
 };

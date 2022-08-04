@@ -28,7 +28,7 @@ export const OnboardingPage = () => {
   const router = useRouter();
   const windowSize = useWindowSize();
   const { publicKey } = useWallet();
-  const [done, setDone] = useState(!false);
+  const [done, setDone] = useState(false);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
 

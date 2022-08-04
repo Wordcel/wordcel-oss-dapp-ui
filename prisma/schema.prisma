@@ -73,6 +73,7 @@ model VerifiedTwitter {
   id Int @id @default(autoincrement())
   public_key String
   username String
+  twitter_user_id String?
 }
 
 model Invite {

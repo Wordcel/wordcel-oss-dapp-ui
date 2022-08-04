@@ -96,9 +96,6 @@ export const Navbar = ({
   const { publicKey, disconnect } = useWallet();
   const showEditProfile = editProfile && data && editProfile.owner === data?.user?.public_key;
 
-  // Todo:
-  // 1. Add proof of post icon to open up right sidebar
-
   const handleDropDownItems = (key: string) => {
     switch (key) {
       case 'profile':
