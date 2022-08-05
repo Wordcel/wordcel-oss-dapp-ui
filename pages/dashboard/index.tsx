@@ -18,6 +18,9 @@ import { DashboardArticles } from '@/components/dashboard/Articles';
 function Dashboard() {
   const data = useUser();
   const [tab, setTab] = useState("published");
+
+  const avatar = data?.user?.image_url || vector.src;
+
   return (
     <div>
       <DefaultHead title="Dashboard" />
@@ -25,9 +28,9 @@ function Dashboard() {
       <MainLayout>
         <div className={styles.header}>
           <DashboardBox className={styles.userBox}>
-            <img className={styles.userBoxVector} src={vector.src} alt="" />
+            <img className={styles.userBoxVector} src={avatar} alt="" />
             <div>
-              <p className="nm text size-24 weight-600 gray-800">Hello, {getFirstName(data?.user?.name)}</p>
+              <p className={`nm text size-24 weight-600 gray-800`}>Hello, {getFirstName(data?.user?.name)}</p>
               <a
                 href={`https://wordcelclub.com/${data?.user?.username}`}
                 target="_blank"
