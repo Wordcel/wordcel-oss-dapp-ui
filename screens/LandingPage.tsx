@@ -1,6 +1,6 @@
 import { toast } from 'react-hot-toast';
 import { useEffect, useState } from 'react';
-import { ConnectWallet } from './Wallet';
+import { ConnectWallet } from '../components/Wallet';
 import { DefaultHead } from '../components/DefaultHead';
 import { LandingNavbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';

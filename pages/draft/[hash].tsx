@@ -1,4 +1,4 @@
-import { ViewDraft } from '@/layouts/ViewDraft';
+import { ViewDraft } from '@/screens/ViewDraft';
 import { GetDraftServerSide } from '@/types/props';
 import { getDraftServerSide } from '@/lib/ssr/getDraftServerSide';
 import { GetServerSideProps } from 'next';

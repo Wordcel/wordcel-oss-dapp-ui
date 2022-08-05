@@ -1,6 +1,6 @@
 import styles from '@/styles/Static.module.scss';
 import quill from '@/images/elements/quill.svg';
-import { ConnectWallet } from '@/layouts/Wallet';
+import { ConnectWallet } from '@/components/Wallet';
 
 export const RequestConnect = ({
   dashboard

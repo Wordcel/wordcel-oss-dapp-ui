@@ -1,4 +1,4 @@
-import { OnboardingPage } from '@/layouts/OnboardingPage'
+import { OnboardingPage } from '@/screens/OnboardingPage'
 
 const Onboarding = () => {
   return <OnboardingPage />

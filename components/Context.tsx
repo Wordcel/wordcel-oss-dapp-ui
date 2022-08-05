@@ -28,9 +28,11 @@ const UserProvider = ({ children }: any) => {
     (async function () {
       if (wallet.publicKey) {
         const _user = await getUser(wallet.publicKey.toBase58());
-        if (_user) setUser({
-          user: _user
-        } as any);
+        if (_user) {
+          setUser({ user: _user } as any);
+        } else {
+          setUser(null)
+        }
       }
     })();
     if (!wallet.publicKey) setUser(null);

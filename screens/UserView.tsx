@@ -24,7 +24,7 @@ import DiscordIcon from '@/images/dynamic/Discord';
 import { useWallet, useAnchorWallet } from '@solana/wallet-adapter-react';
 import { getUserSignature } from '@/lib/signMessage';
 import { PublicKey } from '@solana/web3.js';
-import { ConnectWallet } from './Wallet';
+import { ConnectWallet } from '../components/Wallet';
 import { useEffect, useState } from 'react';
 import { getDefaultUserImage } from '@/lib/getDefaultPreviewImage';
 import { useRouter } from 'next/router';

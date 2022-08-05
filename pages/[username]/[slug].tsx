@@ -1,4 +1,4 @@
-import { ViewArticle } from '@/layouts/ViewArticle';
+import { ViewArticle } from '@/screens/ViewArticle';
 import { GetArticleServerSide } from '@/types/props';
 import { getArticleServerSide } from '@/lib/ssr/getArticleServerSide';
 import { GetServerSideProps } from 'next';

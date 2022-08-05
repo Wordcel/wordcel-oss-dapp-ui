@@ -1,4 +1,4 @@
-import { InvitePage } from '@/layouts/InvitePage'
+import { InvitePage } from '@/screens/InvitePage'
 
 const Invite = () => {
   return <InvitePage />

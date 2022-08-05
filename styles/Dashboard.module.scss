@@ -45,6 +45,9 @@
   &:hover {
     background: var(--gray-100);
   }
+  @media only screen and (max-width: 500px) {
+    visibility: hidden;
+  }
 }
 
 .toggleExpanded {

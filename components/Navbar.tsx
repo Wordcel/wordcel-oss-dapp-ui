@@ -9,6 +9,7 @@ import styles from '@/styles/Navbar.module.scss';
 
 // Images
 import logo from '@/images/logo.svg';
+import logoSmall from '@/images/logo-vector.svg';
 import checkIcon from '@/images/icons/check.svg';
 import menuIcon from '@/images/icons/menu.svg';
 import expandIcon from '@/images/icons/expand.svg';
@@ -21,7 +22,7 @@ import pop_open_image from '@/images/elements/proof-of-post-open.svg';
 // Component Imports
 import { useState, useEffect, MutableRefObject } from 'react';
 import { Dropdown, Popover } from '@nextui-org/react';
-import { ConnectWallet } from '@/layouts/Wallet';
+import { ConnectWallet } from '@/components/Wallet';
 import { WHITELIST_URL } from '@/lib/config/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useUser } from './Context';
@@ -125,13 +126,20 @@ export const Navbar = ({
       <div className={styles.filler} />
       <div
         className={`${styles.staticContainer}`}>
-        <Link href={data?.user ? '/dashboard' : '/'}>
-          <a>
-            <div className={styles.logoMaxWidth}>
+        <div className={styles.logoMaxWidth}>
+          <Link href={data?.user ? '/dashboard' : '/'}>
+            <a>
               <Image alt="Wordcel" src={logo} />
-            </div>
-          </a>
-        </Link>
+            </a>
+          </Link>
+        </div>
+        <div className={styles.logoSmall}>
+          <Link href={data?.user ? '/dashboard' : '/'}>
+            <a>
+              <Image alt="Wordcel" src={logoSmall} />
+            </a>
+          </Link>
+        </div>
         {proof_of_post && (
           <Popover>
             <div className={styles.popButtonContainer}>
@@ -212,7 +220,9 @@ export const Navbar = ({
                   <img className={styles.profileIcon} src={
                     data.user.image_url || 'https://avatars.wagmi.bio/' + data.user.username
                   } alt="" />
-                  <p className="text gray-500 size-16 weight-600 ml-2">{data.user.username}</p>
+                  {data.user.username && (
+                    <p className="text gray-500 size-16 weight-600 ml-2">{data.user.username}</p>
+                  )}
                   <p className="text gray-400 size-16 weight-500 ml-1">{getTrimmedPublicKey(data.user.public_key)}</p>
                   <img src={expandIcon.src} className={styles.expandIcon} alt="" />
                 </div>

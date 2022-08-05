@@ -13,10 +13,20 @@
       width: 15rem !important;
     }
   }
-  @media only screen and (max-width: 400px) {
+  @media only screen and (max-width: 550px) {
     & img {
-      width: 11rem !important;
+      display: none !important;
     }
+  }
+}
+
+.logoSmall {
+  display: none !important;
+  width: 100%;
+  @media only screen and (max-width: 550px) {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
   }
 }
 
@@ -56,6 +66,9 @@
   position: fixed;
   z-index: 10;
   top: 0;
+  @media only screen and (max-width: 550px) {
+    padding: 0rem 1.5rem;
+  }
 }
 
 .filler {

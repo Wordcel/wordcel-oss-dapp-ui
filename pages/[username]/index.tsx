@@ -1,4 +1,4 @@
-import { UserView } from '@/layouts/UserView';
+import { UserView } from '@/screens/UserView';
 import { GetServerSideProps } from 'next';
 import { getUserServerSide } from '@/lib/ssr/getUserServerSide';
 import { GetUserServerSide } from '@/types/props';

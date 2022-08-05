@@ -127,7 +127,7 @@ export async function getUser (
   try {
     const request = await fetch('/api/user/get/' + public_key);
     const response = await request.json();
-    return response;
+    return response.error ? null : response;
   } catch (err) {
     console.error(err);
     return null;

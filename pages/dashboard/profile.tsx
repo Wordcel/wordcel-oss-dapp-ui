@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { User, Article } from "@/types/props";
 import { getUser, getAllArticles } from "@/lib/networkRequests";
 import { useUser } from "@/components/Context";
-import { UserProfile } from "@/layouts/UserView";
+import { UserProfile } from "@/screens/UserView";
 import { Loading } from "@/components/animations/Loading";
 import { EditProfile } from "@/elements/EditProfile";
 

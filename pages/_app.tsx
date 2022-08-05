@@ -9,7 +9,7 @@ import '@/styles/globals/index.scss';
 import { SidebarProvider, UserProvider } from '@/components/Context';
 import { NextUIProvider } from '@nextui-org/react';
 import { Toaster } from 'react-hot-toast';
-import { Wallet } from '@/layouts/Wallet';
+import { Wallet } from '@/components/Wallet';
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());

@@ -1,4 +1,4 @@
-import { TermsPage } from '@/layouts/TermsPage'
+import { TermsPage } from '@/screens/TermsPage'
 
 const Terms = () => {
   return <TermsPage />
