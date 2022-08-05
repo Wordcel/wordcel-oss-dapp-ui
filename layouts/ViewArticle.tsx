@@ -137,7 +137,9 @@ export const ViewArticle = (props: GetArticleServerSide) => {
       <Navbar
         proof_of_post={{
           arweave_url: props.article?.arweave_url,
-          account: props.article?.proof_of_post
+          account: props.article?.proof_of_post,
+          written_by: props.user?.public_key,
+          username: props.user?.username
         }}
       />
       <Gradients />

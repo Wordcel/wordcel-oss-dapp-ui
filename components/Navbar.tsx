@@ -69,6 +69,8 @@ export const LandingNavbar = ({
 interface ProofOfPost {
   arweave_url: string | undefined;
   account: string | undefined;
+  username: string | undefined;
+  written_by: string | undefined;
 }
 
 interface EditProfile {
@@ -161,18 +163,14 @@ export const Navbar = ({
                     )}
                   </div>
                   <div className="mt-2" />
-                  {proof_of_post.arweave_url && (
-                    <>
-                      <p className="nm text size-12 weight-400 gray-400 mt-1">ARWEAVE TXID</p>
-                      <p className="nm text size-12 weight-400 gray-500 mt-0-5">{
-                        proof_of_post.arweave_url.split('https://arweave.net/')[1]
-                      }</p>
-                    </>
-                  )}
-                  <p className="nm text size-12 weight-400 gray-400 mt-2">WRITTEN BY</p>
-                  <p className="nm text size-12 weight-400 gray-500 mt-0-5">{
-                    '8kgbAgt8oedfprQ9LWekUh6rbY264Nv75eunHPpkbYGX'
-                  }</p>
+                  <p className="nm text size-12 weight-400 gray-400 mt-3">WRITTEN BY</p>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`https://explorer.solana.com/account/${proof_of_post.written_by}`}
+                  >
+                    <p className="nm text size-12 weight-400 gray-500 mt-1">{proof_of_post.username}</p>
+                  </a>
                 </div>
               </Popover.Content>
             </div>
