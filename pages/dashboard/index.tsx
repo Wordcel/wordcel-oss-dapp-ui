@@ -17,8 +17,6 @@ import { DashboardArticles } from '@/components/dashboard/Articles';
 
 function Dashboard() {
   const data = useUser();
-  const [tab, setTab] = useState("published");
-
   const avatar = data?.user?.image_url || vector.src;
 
   return (
