@@ -4,7 +4,7 @@ import styles from '@/styles/UserView.module.scss';
 import editArticle from '@/images/elements/edit-article.svg';
 
 // Tags
-import publishedTag from '@/images/tags/published.svg';
+import confirmedTag from '@/images/tags/confirmed.svg';
 import draftTag from '@/images/tags/draft.svg';
 import uploadedTag from '@/images/tags/uploaded.svg';
 
@@ -90,7 +90,15 @@ export const VerticalArticlePreview = ({
       </div>
       <div className={styles.verticalArticleAdditional}>
         {isNotDraft && (
-          <img className={styles.onChainTag} src={article.on_chain ? publishedTag.src : uploadedTag.src} alt="" />
+          <img
+            onClick={() => {
+              if (article.on_chain) window.open(`https://explorer.solana.com/account/${article.proof_of_post}`, '_blank');
+            }}
+            className={styles.onChainTag}
+            src={article.on_chain ? confirmedTag.src : uploadedTag.src}
+            alt=""
+            style={{ cursor: article.on_chain ? 'pointer' : 'default' }}
+          />
         )}
         {!isNotDraft && (
           <img className={styles.draftsTag} src={draftTag.src} alt="" />
