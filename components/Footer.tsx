@@ -3,10 +3,12 @@ import logo from '@/images/logo.svg';
 import styles from '@/styles/Footer.module.scss';
 import TwitterIcon from '@/images/dynamic/Twitter';
 import DiscordIcon from '@/images/dynamic/Discord';
+import WordcelIcon from '@/images/dynamic/Wordcel';
 
 const socials = [
   { link: 'https://twitter.com/wordcel_club', icon: TwitterIcon },
   { link: 'https://discord.gg/tCswbSK5W2', icon: DiscordIcon },
+  { link: "/wordcelclub.sol", icon: WordcelIcon },
 ];
 
 export const Footer = () => {

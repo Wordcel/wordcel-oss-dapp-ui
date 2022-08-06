@@ -3,6 +3,9 @@ import date from 'date-and-time';
 import styles from '@/styles/UserView.module.scss';
 import editArticle from '@/images/elements/edit-article.svg';
 
+// Images
+import defaultGradient from '@/images/gradients/draft-gradient.png';
+
 // Tags
 import confirmedTag from '@/images/tags/confirmed.svg';
 import draftTag from '@/images/tags/draft.svg';
@@ -20,7 +23,6 @@ export const ArticlePreview = ({
   article: Article;
   user: User | undefined;
 }) => {
-  const router = useRouter();
   const SEOData = {
     title: article.title,
     name: user?.name,
@@ -28,6 +30,7 @@ export const ArticlePreview = ({
   };
   const base64Data = Buffer.from(JSON.stringify(SEOData)).toString('base64');
   const DefaultImage = `https://og.up.railway.app/article/${encodeURIComponent(base64Data)}`;
+
   return (
     <div className={styles.articleContainer}>
       <Link href={`/${user?.username}/${article.slug}`}>
@@ -62,19 +65,12 @@ export const VerticalArticlePreview = ({
   const router = useRouter();
   const created_at = new Date(article.created_at);
   const formatted_date = date.format(created_at, 'DD MMM YYYY');
-  const SEOData = {
-    title: article.title,
-    name: user?.name,
-    image: user?.image_url
-  };
-  const base64Data = Buffer.from(JSON.stringify(SEOData)).toString('base64');
-  const DefaultImage = `https://og.up.railway.app/article/${encodeURIComponent(base64Data)}`;
   const isNotDraft = 'slug' in article;
 
   return (
     <div className={styles.verticalContainer}>
       <div className={styles.verticalPreview}>
-        <img src={article.image_url || DefaultImage} className={styles.verticalImage} />
+        <img src={article.image_url || defaultGradient.src} className={styles.verticalImage} />
         <div className={styles.verticalArticleText}>
           <p
             onClick={() => {
