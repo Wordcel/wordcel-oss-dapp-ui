@@ -1,0 +1,37 @@
+:root {
+  --gray-50: hsl(210, 40%, 98%);
+  --gray-100: hsl(210, 40%, 96%);
+  --gray-200: hsl(214, 32%, 91%);
+  --gray-300: hsl(213, 27%, 84%);
+  --gray-400: hsl(215, 20%, 65%);
+  --gray-500: hsl(215, 16%, 47%);
+  --gray-600: hsl(215, 19%, 35%);
+  --gray-700: hsl(215, 25%, 27%);
+  --gray-800: hsl(217, 33%, 17%);
+  --gray-900: hsl(222, 47%, 11%);
+}
+
+.create-btn {
+  height: 4rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border: none;
+  outline: none;
+  transition: 0.2s all ease-in-out;
+  border-radius: 0.4rem;
+  background-color: var(--gray-800);
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 500;
+  &>img {
+    margin-left: 5px;
+  }
+  & > span {
+    margin-left: 20px;
+  }
+  &:hover {
+    background-color: var(--gray-700);
+  }
+}

@@ -13,10 +13,20 @@
       width: 15rem !important;
     }
   }
-  @media only screen and (max-width: 400px) {
+  @media only screen and (max-width: 550px) {
     & img {
-      width: 11rem !important;
+      display: none !important;
     }
+  }
+}
+
+.logoSmall {
+  display: none !important;
+  width: 100%;
+  @media only screen and (max-width: 550px) {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
   }
 }
 
@@ -38,41 +48,153 @@
   }
 }
 
+.parent {
+  position: relative;
+}
+
 .staticContainer {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 2rem 3.5rem;
+  justify-content: space-between;
+  height: 5.5rem;
+  padding: 0rem 3.5rem;
   border-bottom: 0.15rem solid var(--nav-border);
-}
-
-.hasPop {
-  @media only screen and (max-width: 480px) {
-    flex-direction: column;
+  background-color: rgb(255, 255, 255, 0.75);
+  -webkit-backdrop-filter: blur(0.8rem);
+  backdrop-filter: blur(0.8rem);
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  @media only screen and (max-width: 550px) {
+    padding: 0rem 1.5rem;
   }
 }
 
-.proofOfPost {
+.filler {
+  width: 100%;
+  height: 5.5rem;
+  visibility: hidden;
+  background-color: var(--inverse-color);
+}
+
+.popContainer {
+  padding: 2.5rem;
+  width: 40rem;
+}
+
+.popHeader {
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  @media only screen and (max-width: 480px) {
-    margin-top: 2rem;
+  justify-content: space-between;
+}
+
+.popButtonContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 1.75rem;
+}
+
+.popButton {
+  max-width: 19.6rem;
+  width: 100%;
+  transition: 0.25s all ease-in-out;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--gray-50);
   }
 }
 
 .arweaveBadge {
-  width: auto;
-  @media only screen and (max-width: 1280px) {
-    width: 88%;
-  }
-  @media only screen and (max-width: 768px) {
-    width: 80%;
-  }
+  height: min-content;
 }
 
 .popBadge {
   height: 4.2rem;
   margin-right: 1.5rem;
+}
+
+.profileParent {
+  height: 100%;
+  max-width: 36rem;
+  width: 100%;
+  border-left: 0.2rem solid var(--gray-100);
+  cursor: pointer;
+}
+
+.profile {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.profileIcon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 3rem;
+  object-fit: cover;
+  margin-left: 2rem;
+}
+
+.dropdownMenu {
+  & * {
+    font-size: 120% !important;
+  }
+  & ul {
+    --nextui--dropdownItemHeight: var(--nextui-space-18) !important;
+  }
+}
+
+.expandIcon {
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-left: 9rem;
+}
+
+.publishParent {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.publishBtn {
+  height: 3.5rem;
+  max-width: 14rem;
+  width: 100%;
+  border: none;
+  outline: none;
+  background: var(--gray-100);
+  cursor: pointer;
+  border-radius: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  color: var(--gray-800);
+  font-size: 1.4rem;
+  transition: all 0.3s ease-in-out;
+  margin-right: 2rem;
+  & > img {
+    width: 1.8rem;
+    height: 1.8rem;
+    margin-right: 0.75rem;
+  }
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+.menuIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-right: 2rem;
+  cursor: pointer;
 }

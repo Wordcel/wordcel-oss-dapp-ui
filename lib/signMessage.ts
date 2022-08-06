@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast';
-import { MESSAGE_TO_SIGN } from '@/components/config/constants';
+import { MESSAGE_TO_SIGN } from '@/lib/config/constants';
 
 export const getUserSignature = async (
   sign: (message: Uint8Array) => Promise<Uint8Array | undefined>,

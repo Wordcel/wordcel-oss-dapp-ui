@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import prisma from '@/lib/prisma';
 import type {
   NextApiRequest,
@@ -8,7 +9,7 @@ import {
   verifyMethod,
   authenticate
 } from '@/lib/server';
-import { getHeaderContent } from '@/components/getHeaderContent';
+import { getHeaderContent } from '@/lib/getHeaderContent';
 import { sanitizeHtml } from '@/lib/sanitize';
 import { withSentry } from '@sentry/nextjs';
 
@@ -94,10 +95,21 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           title: sanitizeHtml(title),
           description: sanitizeHtml(description),
           image_url: sanitizeHtml(image_url),
+          updated_at: new Date(),
         }
       });
 
-      const updated_blocks = await prisma.block.update({
+      if (!updated.share_hash) {
+        const randomBytes = crypto.randomBytes(32).toString('hex');
+        await prisma.draft.update({
+          where: { id: Number(id) },
+          data: {
+            share_hash: randomBytes
+          }
+        });
+      }
+
+      await prisma.block.update({
         where: { id: blocks_id },
         data: {
           data: JSON.stringify(blocks),
@@ -112,11 +124,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return
     }
 
+    const randomBytes = crypto.randomBytes(32).toString('hex');
+
     const newDraft = await prisma.draft.create({
       data: {
         title: sanitizeHtml(title),
         description: sanitizeHtml(description),
         image_url,
+        updated_at: new Date(),
+        share_hash: randomBytes,
         owner: {
           connect: {
             id: user.id
@@ -125,7 +141,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       }
     });
 
-    const newBlocks = await prisma.block.create({
+    await prisma.block.create({
       data: {
         data: JSON.stringify(blocks),
         draft_id: newDraft.id

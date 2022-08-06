@@ -8,8 +8,8 @@ import {
   verifyMethod,
   authenticate
 } from '@/lib/server';
-import { getHeaderContent } from '@/components/getHeaderContent';
-import { getBlocks } from '@/components/getArticleBlocks';
+import { getHeaderContent } from '@/lib/getHeaderContent';
+import { getBlocks } from '@/lib/getArticleBlocks';
 import { withSentry } from '@sentry/nextjs';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {

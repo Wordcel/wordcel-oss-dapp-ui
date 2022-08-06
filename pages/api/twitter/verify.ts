@@ -43,8 +43,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const authenticated = authenticate(public_key, signature, res);
     if (!authenticated) return;
 
-    const twitter_verified = await verifyTwitterUsername(username, public_key);
-    if (!twitter_verified) {
+    const verified_twitter_id = await verifyTwitterUsername(username, public_key);
+
+    if (typeof verified_twitter_id === 'undefined') {
       res.status(400).json({
         error: 'Tweet not found'
       });
@@ -55,6 +56,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       data: {
         public_key,
         username,
+        twitter_user_id: String(verified_twitter_id)
       }
     });
 

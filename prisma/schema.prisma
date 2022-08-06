@@ -54,9 +54,12 @@ model Draft {
   title String
   description String
   image_url String
+  source String @default("dapp")
   created_at DateTime @default(now())
-  user_id Int
+  updated_at DateTime?
   blocks Block?
+  share_hash String?
+  user_id Int
   owner User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
@@ -71,6 +74,7 @@ model VerifiedTwitter {
   id Int @id @default(autoincrement())
   public_key String
   username String
+  twitter_user_id String?
 }
 
 model Invite {

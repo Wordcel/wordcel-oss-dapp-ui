@@ -21,8 +21,8 @@
       "@/util/*": [
         "util/*"
       ],
-      "@/layouts/*": [
-        "layouts/*"
+      "@/screens/*": [
+        "screens/*"
       ],
       "@/images/*": [
         "images/*"

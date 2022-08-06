@@ -8,9 +8,9 @@ import {
   verifyMethod,
   authenticate
 } from '@/lib/server';
-import { getHeaderContent } from '@/components/getHeaderContent';
+import { getHeaderContent } from '@/lib/getHeaderContent';
 import { sanitizeHtml } from '@/lib/sanitize';
-import { getBlocks } from '@/components/getArticleBlocks';
+import { getBlocks } from '@/lib/getArticleBlocks';
 import { withSentry } from '@sentry/nextjs';
 import slugify from 'slugify';
 import { newPostAlert } from '@/lib/sendUserActivity';

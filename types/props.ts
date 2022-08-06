@@ -3,10 +3,9 @@ export interface User {
   name: string;
   username: string;
   public_key: string;
-  nft_key: string;
   blog_name: string;
-  import_enabled: boolean;
   connection_count?: number;
+  profile_hash?: string;
   bio?: string;
   twitter?: string;
   discord?: string;
@@ -34,11 +33,14 @@ export interface Draft {
   description: string;
   image_url: string;
   created_at: Date;
+  updated_at: Date;
+  share_hash?: string;
   blocks?: string;
 }
 
 export interface GetUserServerSide {
   user?: User;
+  post_count?: number;
   articles?: Article[];
 }
 

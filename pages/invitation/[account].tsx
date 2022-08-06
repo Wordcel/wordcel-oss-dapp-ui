@@ -1,10 +1,10 @@
 import prisma from '@/lib/prisma';
-import { DefaultHead } from '@/layouts/DefaultHead';
+import { DefaultHead } from '@/components/DefaultHead';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { StaticNavbar } from '@/layouts/Navbar';
-import { Footer } from '@/layouts/Footer';
+import { Navbar } from '@/components/Navbar';
+import { Footer } from '@/components/Footer';
 
 interface InviteProps {
   name: string;
@@ -20,7 +20,7 @@ const InviteRedirect = (props: InviteProps) => {
 
   return (
     <div className="container-flex">
-      <StaticNavbar />
+      <Navbar />
       <DefaultHead
         title={props.name + ' has invited you to the future of publishing.'}
         image={OGImage}
