@@ -43,7 +43,12 @@ export const Footer = () => {
         </div>
         <div className={styles.bottomSection}>
           <p className="normal-text sm">
-            Copyright © {new Date().getFullYear()}. Coffee to Code Technologies Pte Ltd.
+            Copyright © {new Date().getFullYear()}. Coffee to Code Technologies Pte Ltd. |
+            <span className="ml-1">
+              <a href="https://www.figma.com/file/6EF6Pkbtxzf1Ofe76zevsP/Wordcel-Media-Kit?node-id=0%3A1" target="_blank" rel="noopener noreferrer">
+                Media Kit
+              </a>
+            </span>
           </p>
         </div>
       </div>
