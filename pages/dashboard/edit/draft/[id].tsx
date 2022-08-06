@@ -23,14 +23,15 @@ import { GetServerSideProps } from 'next';
 import { EditorNavbar } from "@/components/Navbar";
 import { MainLayout } from "@/components/dashboard/MainLayout";
 import { DefaultHead } from "@/components/DefaultHead";
+import { useUser } from '@/components/Context';
 
 
 function Dashboard(props: GetDraftServerSide) {
-
   const { publicKey, signMessage } = useWallet();
 
   const router = useRouter();
   const wallet = useWallet();
+  const userData = useUser();
   const anchorWallet = useAnchorWallet();
   const [blocks] = useState<any>(JSON.parse(props.draft?.blocks || ''));
   const Editor: any = dynamic(() => import('@/components/Editor'), {
@@ -117,6 +118,14 @@ function Dashboard(props: GetDraftServerSide) {
       clearInterval(interval);
     }
   }, [signature]);
+
+  useEffect(() => {
+    if (props.user?.public_key && userData?.user?.public_key) {
+      if (props.user.public_key !== userData.user.public_key) {
+        router.push('/dashboard');
+      }
+    }
+  }, [userData, props]);
 
   const onChangeNotSavedText = () => {
     saveText.current = 'Waiting to save';

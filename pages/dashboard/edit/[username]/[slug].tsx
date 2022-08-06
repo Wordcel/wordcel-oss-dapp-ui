@@ -5,7 +5,8 @@ import { EditorCore } from "@react-editor-js/core";
 import {
   useCallback,
   useRef,
-  useState
+  useState,
+  useEffect,
 } from 'react';
 import { useRouter } from 'next/router';
 import { useWallet, useAnchorWallet } from '@solana/wallet-adapter-react';
@@ -22,9 +23,11 @@ import { GetServerSideProps } from 'next';
 import { Navbar } from "@/components/Navbar";
 import { MainLayout } from "@/components/dashboard/MainLayout";
 import { DefaultHead } from "@/components/DefaultHead";
+import { useUser } from '@/components/Context';
 
 
 function Dashboard(props: GetArticleServerSide) {
+  const userData = useUser();
   const router = useRouter();
   const wallet = useWallet();
   const anchorWallet = useAnchorWallet();
@@ -40,6 +43,14 @@ function Dashboard(props: GetArticleServerSide) {
 
   let [draft_id] = useState('');
   let [publishClicked] = useState(false);
+
+  useEffect(() => {
+    if (props.user?.public_key && userData?.user?.public_key) {
+      if (props.user.public_key !== userData.user.public_key) {
+        router.push('/dashboard');
+      }
+    }
+  }, [userData, props]);
 
   const handlePublish = async () => {
     if (!anchorWallet || publishClicked) return;

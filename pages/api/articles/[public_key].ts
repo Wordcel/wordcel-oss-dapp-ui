@@ -17,7 +17,7 @@ async function handler(
       }
     },
     orderBy: {
-      updated_at: 'desc',
+      created_at: 'desc',
     }
   });
   res.status(200).json(articles);

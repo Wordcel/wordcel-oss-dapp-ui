@@ -30,6 +30,11 @@
   }
 }
 
+.additional {
+  display: flex;
+  align-items: center;
+}
+
 .landingConnect {
   display: flex;
   align-items: center;
@@ -101,7 +106,6 @@
 
 .popButton {
   max-width: 19.6rem;
-  width: 100%;
   transition: 0.25s all ease-in-out;
   cursor: pointer;
   &:hover {
@@ -124,6 +128,9 @@
   width: 100%;
   border-left: 0.2rem solid var(--gray-100);
   cursor: pointer;
+  @media only screen and (max-width: 550px) {
+    display: none;
+  }
 }
 
 .profile {
