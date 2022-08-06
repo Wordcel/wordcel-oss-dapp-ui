@@ -134,7 +134,7 @@ export const Navbar = ({
           </Link>
         </div>
         <div className={styles.logoSmall}>
-          <Link href={data?.user ? '/dashboard' : '/'}>
+          <Link href="/">
             <a>
               <Image alt="Wordcel" src={logoSmall} />
             </a>
@@ -209,9 +209,11 @@ export const Navbar = ({
             </div>
           )}
           {!publicKey && !data?.user && (
-            <ConnectWallet noFullSize={true}>
-              <p style={{ width: '14rem' }} className="blue-text txt-right pointer">CONNECT WALLET</p>
-            </ConnectWallet>
+            <div className={styles.connectWalletText}>
+              <ConnectWallet noFullSize={true}>
+                <p style={{ width: '14rem' }} className="blue-text txt-right pointer">CONNECT WALLET</p>
+              </ConnectWallet>
+            </div>
           )}
           {data?.user && (
             <div className={styles.profileParent}>
