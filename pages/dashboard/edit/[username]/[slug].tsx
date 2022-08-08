@@ -12,7 +12,6 @@ import { useRouter } from 'next/router';
 import { useWallet, useAnchorWallet } from '@solana/wallet-adapter-react';
 import { publishPost } from '@/lib/contractInteraction';
 import { getUserSignature } from '@/lib/signMessage';
-import { deleteDraft } from '@/lib/networkRequests';
 
 // SSR
 import { GetArticleServerSide } from '@/types/props';
@@ -41,7 +40,6 @@ function Dashboard(props: GetArticleServerSide) {
   }, []);
   const [blocks] = useState<any>(JSON.parse(props.blocks || ''));
 
-  let [draft_id] = useState('');
   let [publishClicked] = useState(false);
 
   useEffect(() => {
@@ -74,11 +72,6 @@ function Dashboard(props: GetArticleServerSide) {
       props.article?.proof_of_post,
       props.contentDigest
     );
-    deleteDraft({
-      id: draft_id?.toString(),
-      signature: signature,
-      public_key: wallet.publicKey?.toBase58()
-    });
     if (!response.article) return;
     toast('Redirecting...');
     router.push(`/${response.username}/${response.article.slug}`);
