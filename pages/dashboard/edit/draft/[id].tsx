@@ -46,7 +46,7 @@ function Dashboard(props: GetDraftServerSide) {
   const shareHash = useRef("");
   const saveText = useRef("");
 
-  let [draft_id] = useState('');
+  let [draft_id] = useState(props.draft?.id?.toString());
   let [publishClicked] = useState(false);
 
   const handlePublish = async () => {
@@ -71,7 +71,7 @@ function Dashboard(props: GetDraftServerSide) {
       true
     );
     deleteDraft({
-      id: draft_id?.toString(),
+      id: draft_id,
       signature: signature,
       public_key: wallet.publicKey?.toBase58()
     });
@@ -100,7 +100,7 @@ function Dashboard(props: GetDraftServerSide) {
       console.log('this is running');
       const currentInstance = editorInstance.current;
       console.log(currentInstance, publicKey, signature);
-      if (!currentInstance || !publicKey || !signature) return;
+      if (!currentInstance || !publicKey || !signature || !draft_id) return;
       if (saveText.current !== 'Saved' ) saveText.current = 'Saving...';
       const data = await currentInstance?.save();
       const response = await updateDraft({
