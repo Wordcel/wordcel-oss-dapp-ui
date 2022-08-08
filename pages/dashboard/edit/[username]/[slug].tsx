@@ -69,7 +69,7 @@ function Dashboard(props: GetArticleServerSide) {
       anchorWallet as any,
       wallet,
       signature,
-      undefined,
+      props.article?.id,
       true,
       props.article?.proof_of_post,
       props.contentDigest
