@@ -17,6 +17,7 @@ import { getUserNFTs } from '@/lib/getAllUserNFTs';
 import { uploadImageBundlr } from '@/lib/uploadBundlr';
 import { messageToSign } from '@/lib/verifyTwitter';
 import { CreateButton } from './Buttons';
+import { useCardinal } from '@/components/Context';
 
 
 export const OnboardingBox = ({
@@ -36,6 +37,7 @@ export const OnboardingBox = ({
 
   const wallet = useAnchorWallet();
   const walletContext = useWallet();
+  const cardinalContext = useCardinal();
   const fileInputRef = useRef(null);
   const { publicKey, signMessage } = useWallet();
 
@@ -68,6 +70,13 @@ export const OnboardingBox = ({
       setStep(2);
     })();
   }, [publicKey]);
+
+  useEffect(() => {
+    if (cardinalContext?.cardinal_verified && cardinalContext?.username) {
+      setStep(2);
+      toast.success(`Twitter identity for @${cardinalContext.username} verified using Cardinal`);
+    }
+  }, [cardinalContext])
 
   useEffect(() => {
     if (domains.length === 1) setUsername(domains[0]);
