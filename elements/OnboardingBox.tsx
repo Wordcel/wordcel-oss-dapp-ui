@@ -346,7 +346,7 @@ export const OnboardingBox = ({
                   <p className="text gray-700 weight-600 size-20 nm">Create your first post</p>
                   <p className="text gray-400 weight-400 size-20 nm mt-0-5">Publish your first on-chain post</p>
                 </div>
-                <Link href="/new">
+                <Link href="/dashboard/new">
                   <a className={styles.createButton}>
                     <CreateButton />
                   </a>
