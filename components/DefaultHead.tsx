@@ -1,5 +1,6 @@
 import { DEFAULT_OG_IMAGE } from '@/lib/config/constants';
 import Head from 'next/head';
+import Script from 'next/script';
 
 interface SEO {
   title?: string;
@@ -38,6 +39,24 @@ export const DefaultHead = (config: SEO) => {
       <meta property='twitter:title' content={config.title || 'Wordcel - Read, Write, Own'} />
       <meta property='twitter:description' content={config.description || 'Wordcel - Read, Write, Own'} />
       <meta property='twitter:image' content={config.image || DEFAULT_OG_IMAGE} />
+
+      {/* Google Analytics -- Start */}
+      <Script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-WZLDV8RBNC"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-WZLDV8RBNC');
+        `}
+      </Script>
+      {/* Google Analytics -- End */}
+
     </Head>
   );
 };
