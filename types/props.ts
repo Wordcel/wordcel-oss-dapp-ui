@@ -32,6 +32,7 @@ export interface Draft {
   title: string;
   description: string;
   image_url: string;
+  source: string;
   created_at: Date;
   updated_at: Date;
   share_hash?: string;

@@ -7,6 +7,7 @@ import editArticle from '@/images/elements/edit-article.svg';
 import defaultGradient from '@/images/gradients/draft-gradient.png';
 
 // Tags
+import twitterTag from '@/images/tags/twitter.svg';
 import confirmedTag from '@/images/tags/confirmed.svg';
 import draftTag from '@/images/tags/draft.svg';
 import uploadedTag from '@/images/tags/uploaded.svg';
@@ -66,6 +67,7 @@ export const VerticalArticlePreview = ({
   const created_at = new Date(article.created_at);
   const formatted_date = date.format(created_at, 'DD MMM YYYY');
   const isNotDraft = 'slug' in article;
+  const containsSource = 'source' in article;
 
   return (
     <div className={styles.verticalContainer}>
@@ -96,8 +98,12 @@ export const VerticalArticlePreview = ({
             style={{ cursor: article.on_chain ? 'pointer' : 'default' }}
           />
         )}
-        {!isNotDraft && (
-          <img className={styles.draftsTag} src={draftTag.src} alt="" />
+        {!isNotDraft && containsSource && (
+          <img
+            className={styles.draftsTag}
+            src={article.source === 'twitter' ? twitterTag.src : draftTag.src}
+            alt=""
+          />
         )}
         <p className="text size-16 weight-500 gray-400">{formatted_date}</p>
         <img
