@@ -19,6 +19,8 @@ import InlineCode from "@editorjs/inline-code";
 import List from "@editorjs/list";
 // @ts-expect-error
 import Quote from "@editorjs/quote";
+// @ts-expect-error
+import MathEx from 'editorjs-math';
 
 // // @ts-expect-error
 // import { MDImporter, MDParser } from '@/external/markdown.js';
@@ -152,6 +154,9 @@ const CustomEditor = ({
       class: List,
       shortcut: "CMD+SHIFT+L",
       inlineToolbar: ['link', 'bold', 'italic'],
+    },
+    math: {
+      class: MathEx
     },
     paragraph: {
       class: Paragraph,

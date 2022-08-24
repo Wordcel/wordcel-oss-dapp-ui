@@ -550,6 +550,10 @@ li {
   text-align: center;
 }
 
+i {
+  font-style: italic;
+}
+
 .underline {
   text-decoration: underline;
   &:hover {
@@ -615,6 +619,12 @@ li {
 
 .ce-block__content {
   max-width: 80rem !important;
+}
+
+.mjx-chtml {
+  text-align: left !important;
+  width: max-content !important;
+  padding-left: 2rem !important;
 }
 
 .ce-toolbar__plus {

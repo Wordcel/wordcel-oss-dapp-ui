@@ -1,4 +1,5 @@
 import { ReactPhotoCollage } from "react-photo-collage";
+import MathJax from 'react-mathjax';
 
 export const ImageGalleryOutput = (
   { data }: any
@@ -16,5 +17,17 @@ export const ImageGalleryOutput = (
         <ReactPhotoCollage {...collageSettings} />
       )}
     </div>
+  );
+}
+
+export const MathExOutput = (
+  { data }: any
+) => {
+  return (
+    <MathJax.Provider>
+      <div className="mt-2 mb-2">
+        <MathJax.Node formula={data.text} />
+      </div>
+    </MathJax.Provider>
   );
 }
