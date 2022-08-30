@@ -71,6 +71,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       mut_slug = `${slug}-${Date.now()}`
     }
 
+    mut_slug = mut_slug.substring(0, 128);
+
     const sanitizedSlug = slugify(mut_slug, {
       lower: true,
       remove: /[*+~.()'"!:@]/g
