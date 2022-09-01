@@ -22,6 +22,17 @@ const nextConfig = {
   },
 }
 
+const svgrWebpack = {
+    webpack: (config) => {
+    config.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: ['@svgr/webpack'],
+    });
+    return config;
+  },
+}
+
 const { withSentryConfig } = require('@sentry/nextjs');
 
 const sentryWebpackPluginOptions = {
@@ -29,4 +40,4 @@ const sentryWebpackPluginOptions = {
   dryRun: process.env.VERCEL_ENV !== "production"
 };
 
-module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
+module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions, svgrWebpack);

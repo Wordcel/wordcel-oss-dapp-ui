@@ -70,7 +70,8 @@
     "sharp": "^0.30.3",
     "slugify": "^1.6.5",
     "styled-components": "^5.3.5",
-    "tweetnacl": "^1.0.3"
+    "tweetnacl": "^1.0.3",
+    "@wordcel/dialect-react": "1.0.0-beta.1.0"
   },
   "devDependencies": {
     "@types/editorjs__header": "^2.6.0",
@@ -83,6 +84,7 @@
     "@types/react-mathjax": "^1.0.1",
     "@types/react-modal": "^3.13.1",
     "@types/sanitize-html": "^2.6.2",
+    "@svgr/webpack": "^6.2.0",
     "eslint": "8.11.0",
     "eslint-config-next": "12.1.0",
     "typescript": "4.6.2"

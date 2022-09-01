@@ -28,6 +28,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useUser } from './Context';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 import { useRouter } from 'next/router';
+import { WordcelNotification } from '@/components/Notification';
 
 
 export const LandingNavbar = ({
@@ -207,6 +208,9 @@ export const Navbar = ({
                 </Dropdown>
               )}
             </div>
+          )}
+          {data?.user && (
+            <WordcelNotification />
           )}
           {!publicKey && !data?.user && (
             <div className={styles.connectWalletText}>

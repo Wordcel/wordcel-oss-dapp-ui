@@ -5,6 +5,7 @@ import 'nprogress/nprogress.css';
 import 'inter-ui/inter.css';
 import '@fontsource/spectral';
 import '@/styles/globals/index.scss';
+import '@wordcel/dialect-react/index.css';
 
 import { CardinalProvider, SidebarProvider, UserProvider } from '@/components/Context';
 import { NextUIProvider } from '@nextui-org/react';
