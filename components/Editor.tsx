@@ -162,10 +162,10 @@ const CustomEditor = ({
       class: Paragraph,
       inlineToolbar: ['link', 'bold', 'italic'],
     },
-    code: {
-      class: CodeBox,
-      shortcut: "CMD+SHIFT+C",
-    },
+    // code: {
+    //   class: CodeBox,
+    //   shortcut: "CMD+SHIFT+C",
+    // },
     quote: {
       class: Quote,
       shortcut: "CMD+SHIFT+Q",
