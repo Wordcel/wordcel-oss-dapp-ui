@@ -5,7 +5,7 @@ import type {
 } from 'next';
 import { withSentry } from '@sentry/nextjs';
 
-// Get connection by profile owner
+// Get connections by profile owner
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse
