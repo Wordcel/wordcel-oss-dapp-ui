@@ -210,7 +210,9 @@ export const Navbar = ({
             </div>
           )}
           {data?.user && (
-            <WordcelNotification />
+            <div style={{ fontSize: '170%', paddingRight:'12px' }}>
+              <WordcelNotification />
+            </div>
           )}
           {!publicKey && !data?.user && (
             <div className={styles.connectWalletText}>
