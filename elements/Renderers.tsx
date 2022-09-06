@@ -36,7 +36,6 @@ export const MathExOutput = (
 export const EmbedOutput = (
   { data }: any
 ) => {
-  console.log(data);
   return (
     <Embed url={data.source} />
   )

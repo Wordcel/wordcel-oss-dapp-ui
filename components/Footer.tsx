@@ -46,7 +46,7 @@ export const Footer = () => {
             Copyright © {new Date().getFullYear()}. Coffee to Code Technologies Pte Ltd.
             <span className="ml-1">|</span>
             <span>
-              <a href="/terms" className="mr-1 ml-1">
+              <a href="/terms" target="_blank" rel="noopener noreferrer" className="mr-1 ml-1">
                 Terms of Service
               </a>
             </span>
