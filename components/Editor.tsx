@@ -110,6 +110,7 @@ const CustomEditor = ({
   const EDITOR_JS_TOOLS = {
     embed: {
       class: Embed,
+      inlineToolbar: true
     },
     header: {
       class: Header,

@@ -1,7 +1,7 @@
 import Output from "editorjs-blocks-react-renderer";
 // @ts-expect-error
 import { ChecklistOutput, CodeBoxOutput } from 'editorjs-react-renderer';
-import { ImageGalleryOutput, MathExOutput } from "@/elements/Renderers";
+import { EmbedOutput, ImageGalleryOutput, MathExOutput } from "@/elements/Renderers";
 
 const Reader = ({
   blocks
@@ -43,7 +43,8 @@ const Reader = ({
         checklist: ChecklistOutput,
         code: CodeBoxOutput,
         imageGallery: ImageGalleryOutput,
-        math: MathExOutput
+        math: MathExOutput,
+        embed: EmbedOutput
       }} config={READER_CONFIG} />
     </div>
   )

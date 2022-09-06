@@ -1,5 +1,6 @@
-import { ReactPhotoCollage } from "react-photo-collage";
+import Embed from 'react-embed';
 import MathJax from 'react-mathjax';
+import { ReactPhotoCollage } from "react-photo-collage";
 
 export const ImageGalleryOutput = (
   { data }: any
@@ -30,4 +31,13 @@ export const MathExOutput = (
       </div>
     </MathJax.Provider>
   );
+}
+
+export const EmbedOutput = (
+  { data }: any
+) => {
+  console.log(data);
+  return (
+    <Embed url={data.source} />
+  )
 }
