@@ -75,6 +75,19 @@ p, h1, h2, h3, h4, h5, h6, a, small, span {
   letter-spacing: normal !important;
 }
 
+
+code {
+  color: inherit !important;
+  background: inherit !important;
+  padding: 2rem 0rem 2rem 2rem !important;
+  font-family: 'Fira Code', monospace !important;
+}
+
+code > span {
+  font-family: 'Fira Code', monospace !important;
+}
+
+
 pre {
   padding: none;
 }

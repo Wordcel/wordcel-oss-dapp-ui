@@ -1,6 +1,11 @@
+import styles from '@/styles/Static.module.scss';
+
 import Embed from 'react-embed';
 import MathJax from 'react-mathjax';
+import { detect } from 'program-language-detector';
 import { ReactPhotoCollage } from "react-photo-collage";
+import { CodeBlock } from "react-code-blocks";
+
 
 export const ImageGalleryOutput = (
   { data }: any
@@ -46,6 +51,12 @@ export const CodeOutput = (
 ) => {
   console.log(data);
   return (
-    <></>
-  )
+    <div className={styles.codeblocks}>
+      <CodeBlock
+        text={data.code}
+        language={detect(data.code).toLowerCase()}
+        showLineNumbers={true}
+      />
+    </div>
+  );
 }
