@@ -40,3 +40,12 @@ export const EmbedOutput = (
     <Embed url={data.source} />
   )
 }
+
+export const CodeOutput = (
+  { data }: any
+) => {
+  console.log(data);
+  return (
+    <></>
+  )
+}
