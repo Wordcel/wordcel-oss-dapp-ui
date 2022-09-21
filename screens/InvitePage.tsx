@@ -97,7 +97,7 @@ export const InvitePage = () => {
     const signature = await getUserSignature(signMessage, publicKey.toBase58());
     if (!signature) return;
     toast.loading('Fetching wallet address from domain');
-    const toInviteAddress = await getDomainOwner(domain);
+    const toInviteAddress = await getDomainOwner(domain.toLowerCase());
     if (!toInviteAddress) {
       toast.error('Invalid domain');
       return;
@@ -109,7 +109,7 @@ export const InvitePage = () => {
     );
     if (!invite) return;
     const account = invite.toBase58();
-    const saved = await createNewInvite({
+    await createNewInvite({
       account: account,
       public_key: publicKey.toBase58(),
       signature: signature,
