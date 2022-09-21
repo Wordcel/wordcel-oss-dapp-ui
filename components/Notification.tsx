@@ -55,6 +55,7 @@ export const themeVariables: IncomingThemeVariables = {
     modal: `${defaultVariables.light.modal} ${styles.modal}`,
     modalWrapper: styles.modelWrapperTwo,
     sliderWrapper: `${defaultVariables.light.sliderWrapper} ${styles.sliderWrapper}`,
+    scrollbar: "",
     iconButton: `${defaultVariables.light.iconButton} ${styles.iconButton}`,
     addormentButton: styles.addormentButton,
     section: styles.section,

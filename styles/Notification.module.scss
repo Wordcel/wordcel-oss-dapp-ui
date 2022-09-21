@@ -81,12 +81,12 @@
 .addormentButton {
   display: flex;
   color: white;
+  padding: 0px;
   font-size: 10px;
   line-height: 14px;
   justify-content: center;
   align-items: center;
   border-width: 0;
-  background: transparent;
   border-radius: 28px;
 }
 
@@ -106,9 +106,10 @@
 }
 
 .button {
-  border: 1px solid var(--gray-800);
-  background: var(--gray-800);
-  border-radius: 28px;
+  width: 37px;
+  height: 28px;
+  background: #CBD5E1;
+  border-radius: 5px;
 }
 .button:hover {
   opacity: 0.8;
@@ -162,7 +163,7 @@
 }
 
 .outlinedInput {
-  padding: 0.5em 0.75em;
+  padding: 0.5em 0.25em;
   line-height: 1.25em;
   border: 1px solid #E2E8EF;
   border-radius: 5px;

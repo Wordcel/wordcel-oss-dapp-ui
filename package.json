@@ -71,7 +71,7 @@
     "slugify": "^1.6.5",
     "styled-components": "^5.3.5",
     "tweetnacl": "^1.0.3",
-    "@wordcel/dialect-react": "1.0.0-beta.1.2"
+    "@wordcel/dialect-react": "git+https://${process.env.GITHUB_TOKEN}:x-oauth-basic@github.com/wordcel/dialect-react.git"
   },
   "devDependencies": {
     "@types/editorjs__header": "^2.6.0",
