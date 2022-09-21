@@ -8,8 +8,7 @@ import Paragraph from '@editorjs/paragraph';
 // @ts-expect-error
 import CheckList from "@editorjs/checklist";
 
-// @ts-expect-error
-import CodeBox from "@editorjs/code";
+import CodeBox from "@/components/plugins/CodeBox";
 
 // @ts-expect-error
 import Delimiter from "@editorjs/delimiter";

@@ -2,7 +2,6 @@ import styles from '@/styles/Static.module.scss';
 
 import Embed from 'react-embed';
 import MathJax from 'react-mathjax';
-import { detect } from 'program-language-detector';
 import { ReactPhotoCollage } from "react-photo-collage";
 import { CodeBlock } from "react-code-blocks";
 
@@ -54,7 +53,7 @@ export const CodeOutput = (
     <div className={styles.codeblocks}>
       <CodeBlock
         text={data.code}
-        language={detect(data.code).toLowerCase()}
+        language={data.language ? data.language?.toLowerCase() : undefined}
         showLineNumbers={true}
       />
     </div>

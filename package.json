@@ -53,7 +53,6 @@
     "nft.storage": "^6.2.0",
     "nprogress": "^0.2.0",
     "prisma": "^4.3.1",
-    "program-language-detector": "^0.0.12",
     "randombytes": "^2.1.0",
     "react": "17.0.2",
     "react-anchorify-text": "^2.4.1",
