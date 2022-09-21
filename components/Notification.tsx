@@ -19,7 +19,7 @@ import { useEffect, useMemo, useState } from 'react';
 import styles from '@/styles/Notification.module.scss';
 
 const DIALECT_PUBLIC_KEY = new anchor.web3.PublicKey(
-  'EMJhYtWKbPtkbSzWk32fAYmMvEgCQubXQaCV2n7BCkog'
+ process.env.NEXT_PUBLIC_DIALECT_PUBLIC_KEY as string
 );
 
 export const themeVariables: IncomingThemeVariables = {
