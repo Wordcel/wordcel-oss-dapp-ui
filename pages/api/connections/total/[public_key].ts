@@ -14,9 +14,6 @@ async function handler(
   const connection = await prisma.connection.count({
     where: {
       profile_owner: public_key as string,
-    },
-    select: {
-      connector: true,
     }
   });
 
@@ -28,7 +25,7 @@ async function handler(
   }
 
   res.status(200).json({
-    total_connections: connection.connector
+    total_connections: connection
   });
 };
 
