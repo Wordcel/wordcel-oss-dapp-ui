@@ -11,21 +11,13 @@ async function handler(
   res: NextApiResponse
 ) {
   const { public_key } = req.query;
-  const connection = await prisma.connection.count({
+  const connections = await prisma.connection.count({
     where: {
       profile_owner: public_key as string,
     }
   });
-
-  if (!connection) {
-    res.status(404).json({
-      error: 'Connection does not exist'
-    });
-    return;
-  }
-
   res.status(200).json({
-    total_connections: connection
+    total_connections: connections
   });
 };
 
