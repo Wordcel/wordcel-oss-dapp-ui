@@ -1,6 +1,10 @@
+import styles from '@/styles/Static.module.scss';
+
 import Embed from 'react-embed';
 import MathJax from 'react-mathjax';
 import { ReactPhotoCollage } from "react-photo-collage";
+import { CodeBlock } from "react-code-blocks";
+
 
 export const ImageGalleryOutput = (
   { data }: any
@@ -39,4 +43,19 @@ export const EmbedOutput = (
   return (
     <Embed url={data.source} />
   )
+}
+
+export const CodeOutput = (
+  { data }: any
+) => {
+  console.log(data);
+  return (
+    <div className={styles.codeblocks}>
+      <CodeBlock
+        text={data.code}
+        language={data.language ? data.language?.toLowerCase() : undefined}
+        showLineNumbers={true}
+      />
+    </div>
+  );
 }

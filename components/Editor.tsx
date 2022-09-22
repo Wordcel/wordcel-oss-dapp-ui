@@ -7,8 +7,9 @@ import { EditorCore } from "@react-editor-js/core";
 import Paragraph from '@editorjs/paragraph';
 // @ts-expect-error
 import CheckList from "@editorjs/checklist";
-// @ts-expect-error
-import CodeBox from "@bomdi/codebox";
+
+import CodeBox from "@/components/plugins/CodeBox";
+
 // @ts-expect-error
 import Delimiter from "@editorjs/delimiter";
 // @ts-expect-error
@@ -163,10 +164,10 @@ const CustomEditor = ({
       class: Paragraph,
       inlineToolbar: ['link', 'bold', 'italic'],
     },
-    // code: {
-    //   class: CodeBox,
-    //   shortcut: "CMD+SHIFT+C",
-    // },
+    codebox: {
+      class: CodeBox,
+      shortcut: "CMD+SHIFT+C",
+    },
     quote: {
       class: Quote,
       shortcut: "CMD+SHIFT+Q",
