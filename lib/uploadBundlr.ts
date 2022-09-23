@@ -1,5 +1,5 @@
 import * as crypto from 'crypto';
-import slugify from 'slugify';
+import slug from 'slug';
 import toast from 'react-hot-toast';
 import Bundlr from '@bundlr-network/client';
 import {
@@ -49,9 +49,9 @@ export const uploadBundle = async (
   if (title) mut_slug = title
   if (!title) mut_slug = 'Untitled Article ' + Date.now();
 
-  const sanitizedSlug = slugify(mut_slug, {
+  const sanitizedSlug = slug(mut_slug, {
     lower: true,
-    remove: /[*+~.()'"!:@]/g
+    remove: /[^A-Za-z0-9\s]/g
   });
 
   const finalData = {

@@ -12,7 +12,7 @@ import { getHeaderContent } from '@/lib/getHeaderContent';
 import { sanitizeHtml } from '@/lib/sanitize';
 import { getBlocks } from '@/lib/getArticleBlocks';
 import { withSentry } from '@sentry/nextjs';
-import slugify from 'slugify';
+import slug from 'slug';
 import { newPostAlert } from '@/lib/sendUserActivity';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -56,8 +56,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       slug
     } = getHeaderContent(blocks);
 
-    let mut_slug = slug;
-
     const already_exists = await prisma.article.findFirst({
       where: {
         slug,
@@ -67,23 +65,22 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       }
     });
 
+    console.log('slug before sanitization', slug);
+
+    let mut_slug = slug;
+
     if (already_exists) {
       mut_slug = `${slug}-${Date.now()}`
     }
 
     mut_slug = mut_slug.substring(0, 128);
 
-    const sanitizedSlug = slugify(mut_slug, {
-      lower: true,
-      remove: /[*+~.()'"!:@]/g
-    });
-
     const newArticle = await prisma.article.create({
       data: {
         title: sanitizeHtml(title),
         description: sanitizeHtml(description),
         image_url,
-        slug: slugify(sanitizedSlug),
+        slug: mut_slug,
         arweave_url,
         proof_of_post,
         on_chain: false,

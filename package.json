@@ -48,6 +48,7 @@
     "editorjs-math": "^1.0.2",
     "editorjs-react-renderer": "^3.1.1",
     "editorjs-undo": "^2.0.4",
+    "html-entities": "^2.3.3",
     "inter-ui": "^3.19.3",
     "next": "12.1.0",
     "nft.storage": "^6.2.0",
@@ -71,7 +72,7 @@
     "sanitize-html": "^2.7.0",
     "sass": "^1.49.9",
     "sharp": "^0.30.3",
-    "slugify": "^1.6.5",
+    "slug": "^8.0.0",
     "styled-components": "^5.3.5",
     "tweetnacl": "^1.0.3"
   },
@@ -86,6 +87,7 @@
     "@types/react-mathjax": "^1.0.1",
     "@types/react-modal": "^3.13.1",
     "@types/sanitize-html": "^2.6.2",
+    "@types/slug": "^5.0.3",
     "eslint": "8.11.0",
     "eslint-config-next": "12.1.0",
     "typescript": "4.6.2"
