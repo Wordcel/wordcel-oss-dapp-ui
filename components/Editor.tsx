@@ -88,8 +88,7 @@ const CustomEditor = ({
     const editor = instance?.current?._editorJS;
     const config = {
       shortcuts: {
-        undo: 'CMD+Z',
-        redo: 'SHIFT+Z'
+        undo: 'CMD+Z'
       }
     }
     try {
