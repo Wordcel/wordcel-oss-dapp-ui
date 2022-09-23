@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import date from 'date-and-time';
 import styles from '@/styles/UserView.module.scss';
-import editArticle from '@/images/elements/edit-article.svg';
 
 // Images
+import viewsIcon from '@/images/icons/eye.svg';
+import editArticle from '@/images/elements/edit-article.svg';
 import defaultGradient from '@/images/gradients/draft-gradient.png';
 
 // Tags
@@ -16,6 +17,7 @@ import { User } from '@prisma/client';
 import { Article, Draft } from '@/types/props';
 import { shortenSentence } from '@/lib/sanitize';
 import { useRouter } from 'next/router';
+import { numformat } from '@/lib/utils';
 
 export const ArticlePreview = ({
   article,
@@ -74,13 +76,15 @@ export const VerticalArticlePreview = ({
       <div className={styles.verticalPreview}>
         <img src={article.image_url || defaultGradient.src} className={styles.verticalImage} />
         <div className={styles.verticalArticleText}>
-          <p
-            onClick={() => {
-              if (isNotDraft) {
-                router.push(`/${user?.username}/${article.slug}`)
-              }
-            }}
-            className={`text gray-600 weight-600 size-20 nm ${isNotDraft ? 'pointer' : ''}`}>{shortenSentence(article.title, 75)}</p>
+          <Link href={isNotDraft ? `/${user?.username}/${article.slug}` : `/dashboard/edit/draft/${article.id}`}>
+            <a>
+              <p
+                className={`text gray-600 weight-600 size-20 nm ${isNotDraft ? 'pointer' : ''}`}
+              >
+                {shortenSentence(article.title, 75)}
+              </p>
+            </a>
+          </Link>
           <p className="text size-16 weight-500 gray-400 nm mt-1">
             {shortenSentence(article.description, 112)}
           </p>
@@ -106,6 +110,16 @@ export const VerticalArticlePreview = ({
           />
         )}
         <p className="text size-16 weight-500 gray-400">{formatted_date}</p>
+        {isNotDraft && (
+          <>
+            <img
+              src={viewsIcon.src}
+              alt=""
+              className={styles.viewsIcon}
+            />
+            <p className="text size-16 weight-500 gray-400 ml-1">{numformat(article.views)}</p>
+          </>
+        )}
         <img
           onClick={() => {
             if (isNotDraft) {

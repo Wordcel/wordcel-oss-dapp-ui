@@ -18,6 +18,7 @@ export interface Article {
   title: string;
   description: string;
   image_url: string;
+  views: number;
   created_at: Date;
   user_id: number;
   on_chain: boolean;

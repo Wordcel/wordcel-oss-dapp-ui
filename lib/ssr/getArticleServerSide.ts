@@ -40,14 +40,17 @@ export const getArticleServerSide = async (
   }
 
   if (!article) return notFound();
+
   const user = await prisma.user.findFirst({
     where: {
       id: article.user_id
     }
   });
   if (!user) return notFound();
+
   const arweave_data = await getBlocks(article.arweave_url, true);
   if (!arweave_data) return notFound();
+
   const blocks = JSON.stringify(arweave_data.content.blocks);
   if (!blocks) return notFound();
 
@@ -89,6 +92,16 @@ export const getArticleServerSide = async (
       }
     }
   }
+
+  // Update the view count
+  await prisma.article.update({
+    where: {
+      id: article.id
+    },
+    data: {
+      views: article.views + 1
+    }
+  });
 
   return {
     props: {

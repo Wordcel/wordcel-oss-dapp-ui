@@ -96,7 +96,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       }
     });
 
-    newPostAlert(newArticle);
+    // newPostAlert(newArticle);
 
     res.status(200).json({
       success: 'Article created',

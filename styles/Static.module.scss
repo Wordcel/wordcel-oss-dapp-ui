@@ -318,3 +318,9 @@
   top: 0;
   max-width: 100%;
 }
+
+.codeblocks {
+  &>span {
+    border-radius: 1rem !important;
+  }
+}

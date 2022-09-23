@@ -2,8 +2,8 @@ import toast from 'react-hot-toast';
 import * as anchor from '@project-serum/anchor';
 import idl from '@/lib/config/invite-idl.json';
 import {
-  MAINNET_ENDPOINT,
-  INVITATION_MAINNET_PROGRAM_ID
+  DEVNET_ENDPOINT,
+  INVITATION_DEVNET_PROGRAM_ID
 } from './config/constants';
 import { SystemProgram, PublicKey } from '@solana/web3.js';
 import { sendAndConfirmTransaction } from './txConfirmation';
@@ -11,8 +11,8 @@ import { sendAndConfirmTransaction } from './txConfirmation';
 const invitationPrefix = Buffer.from("invite");
 
 const preflightCommitment = "processed";
-const programID = INVITATION_MAINNET_PROGRAM_ID;
-const connection = new anchor.web3.Connection(MAINNET_ENDPOINT, {
+const programID = INVITATION_DEVNET_PROGRAM_ID;
+const connection = new anchor.web3.Connection(DEVNET_ENDPOINT, {
   commitment: preflightCommitment,
   confirmTransactionInitialTimeout: 120000,
 });
@@ -32,6 +32,8 @@ const admin_accounts = [
   "8kgbAgt8oedfprQ9LWekUh6rbY264Nv75eunHPpkbYGX",
   // Paarug
   "Gs3xD3V6We8H62pM9fkufKs644KWz1pts4EUn3bAR6Yb",
+  // Vijay
+  "9psZBS7GHNrFxADh93Gv1Qnr9TTCP9GAdfrvDFzgLJUf",
 ];
 
 

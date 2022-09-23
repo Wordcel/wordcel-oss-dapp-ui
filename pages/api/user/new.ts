@@ -90,7 +90,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       }
     });
 
-    newUserAlert(new_profile);
+    // newUserAlert(new_profile);
 
     res.status(200).json({
       success: 'Profile created',

@@ -32,6 +32,7 @@ model Article {
   title String
   description String
   image_url String
+  views Int @default(0)
   on_chain Boolean @default(false)
   created_at DateTime @default(now())
   updated_at DateTime?
