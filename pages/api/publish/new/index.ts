@@ -65,8 +65,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       }
     });
 
-    console.log('slug before sanitization', slug);
-
     let mut_slug = slug;
 
     if (already_exists) {
