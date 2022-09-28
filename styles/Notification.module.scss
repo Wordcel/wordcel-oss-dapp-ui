@@ -4,7 +4,7 @@
 }
 
 .notificationBadgeColor {
-  background-color: white;
+  background-color: hwb(0 29% 0%);
 }
 
 .toggleBackgroundActive {
@@ -133,8 +133,8 @@
 
   @media (min-width: 640px) {
     position: absolute;
-    top: 3em;
-    right: -1em;
+    top: 2.3em;
+    right: 0em;
     width: 359px;
     height: 493px;
   }
