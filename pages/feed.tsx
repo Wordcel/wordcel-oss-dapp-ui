@@ -11,7 +11,7 @@ import { Navbar } from "@/components/Navbar"
 import { useState } from 'react';
 
 function Feed() {
-  const [tab, setTab] = useState(1);
+  const [tab, setTab] = useState(0);
 
   const getActiveTab = (t: number) => t === tab;
 
