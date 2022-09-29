@@ -7,9 +7,9 @@ import { ContentPayload } from '@/lib/upload';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { uploadBundle } from '@/lib/uploadBundlr';
 import {
-  DEVNET_ENDPOINT,
-  WORDCEL_DEVNET_PROGRAM_ID,
-  INVITATION_DEVNET_PROGRAM_ID
+  MAINNET_ENDPOINT,
+  WORDCEL_MAINNET_PROGRAM_ID,
+  INVITATION_MAINNET_PROGRAM_ID
 } from './config/constants';
 import {
   publishToServer,
@@ -19,9 +19,9 @@ import {
 import { sendAndConfirmTransaction } from './txConfirmation';
 
 const preflightCommitment = "processed";
-const programID = WORDCEL_DEVNET_PROGRAM_ID;
-const invitationProgramID = INVITATION_DEVNET_PROGRAM_ID;
-const connection = new anchor.web3.Connection(DEVNET_ENDPOINT, {
+const programID = WORDCEL_MAINNET_PROGRAM_ID;
+const invitationProgramID = INVITATION_MAINNET_PROGRAM_ID;
+const connection = new anchor.web3.Connection(MAINNET_ENDPOINT, {
   commitment: preflightCommitment,
   confirmTransactionInitialTimeout: 120000,
 });

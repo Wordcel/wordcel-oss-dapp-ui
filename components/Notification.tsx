@@ -17,6 +17,9 @@ import {
 } from '@solana/wallet-adapter-react';
 import { useEffect, useMemo, useState } from 'react';
 import styles from '@/styles/Notification.module.scss';
+import {
+  MAINNET_ENDPOINT
+} from '../lib/config/constants';
 
 const DIALECT_PUBLIC_KEY = new anchor.web3.PublicKey(
  process.env.NEXT_PUBLIC_DIALECT_PUBLIC_KEY as string
@@ -128,12 +131,12 @@ export function WordcelNotification(): JSX.Element {
   const dialectConfig = useMemo(
     (): Config => ({
       backends: [Backend.Solana, Backend.DialectCloud],
-      environment: 'development',
+      environment: 'production',
       dialectCloud: {
         tokenStore: 'local-storage',
       },
       solana: {
-        rpcUrl: 'https://api.devnet.solana.com' // replace it with connection rpc url
+        rpcUrl: MAINNET_ENDPOINT
       },
     }),
     [connection]

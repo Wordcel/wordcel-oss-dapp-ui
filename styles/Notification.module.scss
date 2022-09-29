@@ -90,12 +90,8 @@
   border-radius: 28px;
 }
 
-.iconButton {
-  color: #DADADA;
-
-  :hover {
-    opacity: 1;
-  }
+.iconButton:hover {
+  transform: scale(1.1);
 }
 
 .bellButton {
@@ -145,7 +141,7 @@
 
   @media (min-width: 640px) {
     border-radius: 4px;
-    box-shadow: 0px 4px 42px #E0E7EB;
+    box-shadow: 0px 4px 42px hsl(202, 22%, 90%);
   }
 }
 
@@ -165,7 +161,7 @@
 .outlinedInput {
   padding: 0.5em 0.25em;
   line-height: 1.25em;
-  border: 1px solid #E2E8EF;
+  border: 1px solid hsl(212, 29%, 91%);
   border-radius: 5px;
   width: 324px;
   height: 40px;
@@ -182,7 +178,7 @@
 }
 
 .notificationMessage:hover {
-  background-color: #F7FAFC;
+  background-color: hsl(204, 45%, 98%);
 }
 
 .notificationsDivider {
@@ -193,7 +189,7 @@
 
 .highlighted {
   padding: 11px 15px 11px 15px;
-  background: #F7FAFC;
+  background: hsl(204, 45%, 98%);
   border-radius: 28px;
   align-content: center;
 }
