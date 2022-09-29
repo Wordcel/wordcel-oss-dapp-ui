@@ -4,6 +4,7 @@ const removeFromWord = (word: string) => {
   let editedWord = word.replace('<br />', '');
   editedWord = editedWord.replace('&nbsp;', '');
   editedWord = editedWord.replace('&gt;', '');
+  editedWord = editedWord.replace('&lt;', '');
   return editedWord;
 }
 
@@ -19,7 +20,7 @@ export const sanitizeHtml = (
     allowedTags: [],
     allowedAttributes: {}
   });
-  return final
+  return final;
 };
 
 export const shortenSentence = (

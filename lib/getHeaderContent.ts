@@ -1,5 +1,6 @@
-import slugify from 'slugify';
+import slug from 'slug';
 import { sanitizeHtml } from '@/lib/sanitize';
+import { decode } from 'html-entities';
 
 interface HeaderContent {
   title: string,
@@ -18,9 +19,10 @@ export const getHeaderContent = (
   const title = headings[0]?.data.text || text_content[0]?.data.text|| 'Untitled Article';
   const description = text_content[0]?.data.text || 'No description';
   const image_url = image_content[0]?.data?.url || image_content[0]?.data?.file?.url || image_gallery_content[0]?.data?.urls?.[0] ||'';
-  const sanitizedSlug = slugify(title, {
+  const decodedTitle = decode(title);
+  const sanitizedSlug = slug(decodedTitle, {
     lower: true,
-    remove: /[*+~.()'"!:@]/g
+    remove: /[^A-Za-z0-9\s]/g
   });
   return {
     title: sanitizeHtml(title),
