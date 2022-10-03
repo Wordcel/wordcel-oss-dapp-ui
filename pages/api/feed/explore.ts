@@ -18,6 +18,9 @@ async function handler(
       created_at: {
         gte: from_date
       }
+    },
+    include: {
+      owner: true
     }
   });
   articles.sort((a, b) => b.views - a.views);

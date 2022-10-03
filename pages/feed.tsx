@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { Article } from '@/types/props';
 import { Loading } from '@/components/animations/Loading';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { Preview } from '@/components/FeedPreview';
 
 function Feed() {
   const { publicKey } = useWallet();
@@ -81,8 +82,10 @@ function Feed() {
               <Loading width={200} height={200} />
             )}
             {!exploreLoading && (
-              <div>
-
+              <div className={styles.articleContainer}>
+                {exploreArticles.map((article, index) => (
+                  <Preview article={article} key={index} />
+                ))}
               </div>
             )}
           </div>
@@ -97,9 +100,11 @@ function Feed() {
             {followingLoading && publicKey && (
               <Loading width={200} height={200} />
             )}
-            {!followingLoading && (
-              <div>
-
+            {!followingLoading && followingArticles.length > 0 && (
+              <div className={styles.articleContainer}>
+                {followingArticles.map((article, index) => (
+                  <Preview article={article} key={index} />
+                ))}
               </div>
             )}
             {!followingLoading && followingArticles.length === 0 && (

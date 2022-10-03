@@ -4,6 +4,7 @@ export const getDefaultArticleImage = (
   article: Article,
   user?: User
 ) => {
+  console.log(user);
   const data = {
     title: article.title,
     name: user?.name,

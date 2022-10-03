@@ -32,7 +32,7 @@
 }
 
 .container {
-  max-width: 112rem;
+  max-width: 152rem;
   width: 100%;
   min-height: 50rem;
   height: 100%;
@@ -86,4 +86,28 @@
 
 .activeTab {
   color: var(--gray-800) !important;
+}
+
+.articleContainer {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 4rem;
+}
+
+.preview {
+  width: 100%;
+  min-height: 21rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.imagePreview {
+  height: 20rem;
+  max-width: 45.4rem;
+  width: 100%;
+  object-fit: cover;
 }
