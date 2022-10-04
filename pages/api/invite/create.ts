@@ -52,7 +52,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       }
     });
 
-    // newInviteAlert(invite);
+    newInviteAlert(invite);
 
     res.status(200).json({
       success: true,

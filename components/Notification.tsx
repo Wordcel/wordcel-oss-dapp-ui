@@ -75,7 +75,6 @@ export const themeVariables: IncomingThemeVariables = {
   },
 };
 
-// TODO: move this to any other place and export it
 const walletToDialectWallet = (
   wallet: WalletContextState
 ): DialectWalletAdapter => ({
@@ -99,7 +98,7 @@ const walletToDialectWallet = (
 
 type ThemeType = 'light' | 'dark' | undefined;
 
-function AuthedHome() {
+function NotificationComponent() {
   return (
     <NotificationsButton
       dialectId="dialect-notifications"
@@ -116,10 +115,10 @@ function AuthedHome() {
   );
 }
 
-export function WordcelNotification(): JSX.Element {
+export function Notification(): JSX.Element {
   const { connection } = useConnection();
   const wallet = useWallet();
-  const [theme, setTheme] = useState<ThemeType>('light');
+  const theme = 'light' as ThemeType;
 
   const [dialectWalletAdapter, setDialectWalletAdapter] =
     useState<DialectWalletAdapter>(() => walletToDialectWallet(wallet));
@@ -153,7 +152,7 @@ export function WordcelNotification(): JSX.Element {
     >
       <DialectThemeProvider theme={theme} variables={themeVariables}>
         <DialectUiManagementProvider>
-          <AuthedHome />
+          <NotificationComponent />
         </DialectUiManagementProvider>
       </DialectThemeProvider>
     </DialectContextProvider>

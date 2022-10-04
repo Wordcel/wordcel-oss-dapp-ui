@@ -51,7 +51,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       }
     });
 
-    // newConnectionAlert(newConnection);
+    newConnectionAlert(newConnection);
 
     res.status(200).json({
       success: 'Connection created',
