@@ -37,6 +37,7 @@
   min-height: 50rem;
   height: 100%;
   margin: 4rem 0rem;
+  margin-bottom: 12rem;
   padding-right: 2rem;
   padding-left: 22rem;
   @media only screen and (max-width: 1280px) {
@@ -101,13 +102,31 @@
   width: 100%;
   min-height: 21rem;
   display: flex;
-  align-items: center;
   justify-content: space-between;
 }
 
 .imagePreview {
-  height: 20rem;
+  max-height: 20rem;
   max-width: 45.4rem;
   width: 100%;
+  border-radius: 1rem;
+  object-fit: cover;
+}
+
+.previewDetails {
+  max-width: 64rem;
+  height: 100%;
+}
+
+.previewUser {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.previewPfP {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 3rem;
   object-fit: cover;
 }

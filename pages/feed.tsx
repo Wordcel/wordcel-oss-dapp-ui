@@ -9,7 +9,7 @@ import pattern from '@/images/elements/pattern.svg';
 import { DefaultHead } from "@/components/DefaultHead"
 import { Navbar } from "@/components/Navbar"
 import { useEffect, useState } from 'react';
-import { Article } from '@/types/props';
+import { ArticleWithOwner } from '@/types/props';
 import { Loading } from '@/components/animations/Loading';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Preview } from '@/components/FeedPreview';
@@ -21,8 +21,8 @@ function Feed() {
   const [tab, setTab] = useState(0);
   const [exploreLoading, setExploreLoading] = useState(true);
   const [followingLoading, setFollowingLoading] = useState(true);
-  const [exploreArticles, setExploreArticles] = useState<Article[]>([]);
-  const [followingArticles, setFollowingArticles] = useState<Article[]>([]);
+  const [exploreArticles, setExploreArticles] = useState<ArticleWithOwner[]>([]);
+  const [followingArticles, setFollowingArticles] = useState<ArticleWithOwner[]>([]);
 
   useEffect(() => {
     (async function () {

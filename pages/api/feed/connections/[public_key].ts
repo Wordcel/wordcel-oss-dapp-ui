@@ -25,6 +25,9 @@ async function handler(
     },
     orderBy: {
       created_at: 'desc',
+    },
+    include: {
+      owner: true
     }
   });
   res.status(200).json(articles);
