@@ -1,9 +1,9 @@
+import Link from 'next/link';
 import date from 'date-and-time';
 import styles from '@/styles/Feed.module.scss';
-import defaultGradient from '@/images/gradients/draft-gradient.png';
-import Link from 'next/link';
 import { ArticleWithOwner } from '@/types/props';
 import { shortenSentence } from '@/lib/sanitize';
+import { getDefaultArticleImage } from '@/lib/getDefaultPreviewImage';
 
 function Preview({
   article
@@ -43,7 +43,7 @@ function Preview({
       </div>
       <img
         className={styles.imagePreview}
-        src={article.image_url || defaultGradient.src}
+        src={article.image_url || getDefaultArticleImage(article, article.owner)}
       />
     </div>
   )
