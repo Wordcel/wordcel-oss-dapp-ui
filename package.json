@@ -40,6 +40,7 @@
     "@solana/wallet-adapter-react-ui": "^0.9.6",
     "@solana/wallet-adapter-wallets": "^0.15.5",
     "@solana/web3.js": "^1.36.0",
+    "algoliasearch": "^4.14.2",
     "arweave": "^1.10.23",
     "axios": "^0.27.2",
     "date-and-time": "^2.3.1",

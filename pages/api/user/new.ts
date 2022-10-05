@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma';
+import algoliasearch from 'algoliasearch';
 import type {
   NextApiRequest,
   NextApiResponse,
@@ -11,6 +12,8 @@ import {
 import { verifySolDomain } from '@/lib/verifySolDomain';
 import { withSentry } from '@sentry/nextjs';
 import { newUserAlert } from '@/lib/sendUserActivity';
+import { ALGOLIA_APPLICATION_ID } from '@/lib/config/constants';
+
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const allowed = verifyMethod(req, res, 'POST');
@@ -89,6 +92,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         twitter: twitter || ''
       }
     });
+
+    if (process.env.ALGOLIA_KEY) {
+      const client = algoliasearch(ALGOLIA_APPLICATION_ID, process.env.ALGOLIA_KEY);
+      const index = client.initIndex('users');
+      index.saveObject(new_profile, {
+        autoGenerateObjectIDIfNotExist: true
+      });
+    } else {
+      console.log('Warning, Algolia API key not set, new users won\'t be indexed.');
+    }
 
     newUserAlert(new_profile);
 

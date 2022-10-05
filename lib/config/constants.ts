@@ -1,6 +1,6 @@
 import { PublicKey } from "@solana/web3.js";
 
-
+export const ALGOLIA_APPLICATION_ID = 'L7IX5NUB4W';
 export const MESSAGE_TO_SIGN = 'WORDCEL';
 
 // export const ENDPOINT = 'https://devnet.genesysgo.net/';
