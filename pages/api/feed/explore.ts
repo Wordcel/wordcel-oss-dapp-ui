@@ -10,7 +10,7 @@ async function handler(
   res: NextApiResponse
 ) {
   const from_date = new Date();
-  from_date.setDate(from_date.getDate() - 7);
+  from_date.setDate(from_date.getDate() - 14);
 
   const articles = await prisma.article.findMany({
     take: 100,
