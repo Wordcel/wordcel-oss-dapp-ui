@@ -28,6 +28,10 @@ export interface Article {
   slug?: string
 }
 
+export interface ArticleWithOwner extends Article {
+  owner: User
+}
+
 export interface Draft {
   id: number;
   title: string;
