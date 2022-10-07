@@ -16,7 +16,11 @@ import {
 import { ALGOLIA_APPLICATION_ID } from '@/lib/config/constants';
 import { User } from '@prisma/client';
 import { useState } from 'react';
+
+// Other Components
 import Link from 'next/link';
+import ClickAwayListener from 'react-click-away-listener';
+
 
 const searchClient = algoliasearch(
   ALGOLIA_APPLICATION_ID,
@@ -47,8 +51,10 @@ function Hit(props: {
 
 function CustomSearchBox ({
   currentRefinement,
-  refine
+  refine,
+  showResults
 }: any) {
+
   return (
     <div className={styles.searchInputParent}>
       <input
@@ -56,7 +62,8 @@ function CustomSearchBox ({
         type="search"
         placeholder="Search for a user"
         value={currentRefinement}
-        onChange={event => refine(event.currentTarget.value)}
+        onChange={(event) => refine(event.currentTarget.value)}
+        onFocus={() => showResults(true)}
       />
       <img
         className="mr-1-5"
@@ -71,22 +78,33 @@ function CustomSearchBox ({
 function SearchBar() {
   const [showHits, setShowHits] = useState(false);
 
-  const SearchBox = connectSearchBox((args) => <CustomSearchBox {...args} />);
+  const SearchBox = connectSearchBox((args) =>
+    <CustomSearchBox
+      {...args}
+      showResults={setShowHits}
+    />
+  );
 
   return (
     <div className={styles.searchBar}>
       <InstantSearch
-        onSearchStateChange={() => setShowHits(true)}
         indexName="users"
         searchClient={searchClient}
       >
-        <SearchBox />
-        <Configure hitsPerPage={6} />
-        {showHits && (
-          <div className={styles.searchResults}>
-            <Hits hitComponent={Hit} />
+        <ClickAwayListener onClickAway={() => {
+          setShowHits(false);
+        }}>
+          <div>
+            <SearchBox />
+            <Configure hitsPerPage={6} />
+            <div
+              style={{ display: showHits ? 'block' : 'none' }}
+              className={styles.searchResults}
+            >
+              <Hits hitComponent={Hit} />
+            </div>
           </div>
-        )}
+        </ClickAwayListener>
       </InstantSearch>
     </div>
   )
