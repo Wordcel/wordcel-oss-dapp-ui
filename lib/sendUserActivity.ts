@@ -3,6 +3,7 @@ import { User, Connection, Article, Invite } from '@prisma/client';
 import { getTrimmedPublicKey } from './getTrimmedPublicKey';
 
 const getUserProfileURL = (user: User) => `*<https://wordcelclub.com/${user.username}|${user.name}>*`
+const getPublicKeyURL = (publicKey: string) => `*<https://explorer.solana.com/account/${publicKey}|${getTrimmedPublicKey(publicKey)}>*`
 
 const sendAlert = async (data: any) => {
   if (!process.env.SLACK_HOOK) {
@@ -42,7 +43,7 @@ export const newTipAlert = async (
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `${typeof from === "string" ? `*${getTrimmedPublicKey(from)}*` : getUserProfileURL(from)} has just tipped ${getUserProfileURL(to)} $1 on Wordcel 🤑`
+          text: `${typeof from === "string" ? `*${getPublicKeyURL(from)}*` : getUserProfileURL(from)} has just tipped ${getUserProfileURL(to)} $1 on Wordcel 🤑`
         }
       }
     ]
