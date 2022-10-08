@@ -34,7 +34,7 @@
     "@react-editor-js/core": "^2.0.6",
     "@rodrigoodhin/editorjs-image-gallery": "^0.1.0",
     "@sentry/nextjs": "^7.2.0",
-    "@solana/spl-token": "^0.2.0",
+    "@solana/spl-token": "0.1.8",
     "@solana/wallet-adapter-base": "^0.9.5",
     "@solana/wallet-adapter-react": "^0.15.4",
     "@solana/wallet-adapter-react-ui": "^0.9.6",

@@ -6,11 +6,13 @@ import {
   NewInvite
 } from '@/types/api';
 import { Draft } from '@/types/props';
+import crypto from 'crypto';
 import BigNumber from 'bignumber.js';
 import * as anchor from '@project-serum/anchor';
 import { User } from '@prisma/client';
-import { BUNDLR_MAINNET_ENDPOINT } from './config/constants';
+import { BUNDLR_MAINNET_ENDPOINT, MAINNET_ENDPOINT } from './config/constants';
 import { Article } from '@/types/props';
+import { Connection, PublicKey, ParsedAccountData } from '@solana/web3.js'
 
 export async function publishToServer (
   data: PublishArticleRequest
@@ -239,4 +241,55 @@ export async function getAllDrafts (
   catch {
     return undefined
   }
+}
+
+export async function addTip (
+  from: string,
+  to: string,
+  txid: string
+) {
+  try {
+    const request = await fetch(
+      '/api/tip/new',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        public_key: from,
+        to_user: to,
+        txid
+      })
+    });
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export async function getTipDestination (txid: string) {
+  const connection = new Connection(MAINNET_ENDPOINT);
+  const data = {
+    method: 'getTransaction',
+    jsonrpc: '2.0',
+    id: crypto.randomBytes(32).toString('hex'),
+    params: [
+      txid,
+      { encoding: 'jsonParsed', commitment: 'confirmed' }
+    ],
+  }
+  const res = await fetch(MAINNET_ENDPOINT, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {"Content-Type": "application/json"}
+  })
+  const response = await res.json();
+  const instructions = response.result.transaction.message.instructions;
+  const transfer_instructions = instructions.filter((i: any) => i.parsed.type === "transfer");
+  const destination = transfer_instructions[0].parsed.info.destination;
+  const tokenAccountInfo = await connection.getParsedAccountInfo(
+    new PublicKey(destination)
+  );
+  const accountInfo = (tokenAccountInfo.value?.data as ParsedAccountData).parsed.info;
+  return accountInfo.owner;
 }

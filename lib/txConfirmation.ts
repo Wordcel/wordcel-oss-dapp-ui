@@ -36,7 +36,7 @@ export async function sendAndConfirmTransaction (
 
   try {
     // Confirm Transaction
-    const confirmation = connection.confirmTransaction(_txid);
+    const confirmation = connection.confirmTransaction(_txid, 'processed');
     toast.promise(confirmation, {
       loading: 'Confirming Transaction',
       success: 'Transaction Confirmed',

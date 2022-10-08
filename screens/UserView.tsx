@@ -32,6 +32,7 @@ import { EditProfile } from '@/elements/EditProfile';
 import { NotFoundElement } from '@/components/404';
 import { User } from '@prisma/client';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
+import { sendSPL } from '@/lib/sendSPL';
 
 
 export const UserProfile = ({
@@ -42,6 +43,7 @@ export const UserProfile = ({
 
   const router = useRouter();
   const wallet = useAnchorWallet();
+  const walletContext = useWallet();
   const { publicKey, signMessage } = useWallet();
 
   const [hideFollow, setHideFollow] = useState(false);
@@ -109,6 +111,15 @@ export const UserProfile = ({
     refreshData();
   }
 
+  const handleTip = async () => {
+    if (!props.user) return;
+    const confirmed = await sendSPL(
+      walletContext,
+      props.user.public_key,
+      1,
+    );
+  }
+
   useEffect(() => {
     if (publicKey?.toBase58() === props.user?.public_key) {
       setHideFollow(true);
@@ -147,7 +158,8 @@ export const UserProfile = ({
                         </p>
                       </div>
                     </div>
-                    <div>
+                    <div className={styles.profileButtons}>
+                      <button onClick={handleTip}>Tip $1</button>
                       {!hideFollow && (
                         <ConnectWallet noFullSize={true} noToast={true}>
                           <button

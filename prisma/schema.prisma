@@ -25,6 +25,7 @@ model User {
   invites Invite[]
   articles Article[]
   drafts Draft[]
+  tips Tip[]
 }
 
 model Article {
@@ -86,4 +87,13 @@ model Invite {
   sender User @relation(fields: [user_id], references: [id], onDelete: Cascade)
   receiver String
   receiver_name String?
+}
+
+model Tip {
+  id Int @id @default(autoincrement())
+  created_at DateTime @default(now())
+  from String
+  txid String
+  user_id Int
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }

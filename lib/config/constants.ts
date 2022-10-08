@@ -24,3 +24,7 @@ export const INVITATION_DEVNET_PROGRAM_ID = new PublicKey('6G5x4Es2YZYB5e4QkFJN8
 
 export const WORDCEL_MAINNET_PROGRAM_ID = new PublicKey('EXzAYHZ8xS6QJ6xGRsdKZXixoQBLsuMbmwJozm85jHp');
 export const INVITATION_MAINNET_PROGRAM_ID = new PublicKey('Fc4q6ttyDHr11HjMHRvanG9SskeR24Q62egdwsUUMHLf');
+
+
+// Token Mint Addresses
+export const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';

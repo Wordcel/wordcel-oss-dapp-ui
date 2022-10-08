@@ -25,7 +25,24 @@ export const newUserAlert = async (user: User) => {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `*${user.name}* has just signed up on Wordcel 😍`
+          text: `${getUserProfileURL(user)} has just signed up on Wordcel 😍`
+        }
+      }
+    ]
+  })
+};
+
+export const newTipAlert = async (
+  from: string | User,
+  to: User
+) => {
+  sendAlert({
+    blocks: [
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `${typeof from === "string" ? `*${getTrimmedPublicKey(from)}*` : getUserProfileURL(from)} has just tipped ${getUserProfileURL(to)} $1 on Wordcel 🤑`
         }
       }
     ]
