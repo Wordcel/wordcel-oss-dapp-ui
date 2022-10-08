@@ -54,7 +54,6 @@ function CustomSearchBox ({
   refine,
   showResults
 }: any) {
-
   return (
     <div className={styles.searchInputParent}>
       <input
@@ -62,8 +61,11 @@ function CustomSearchBox ({
         type="search"
         placeholder="Search for a user"
         value={currentRefinement}
-        onChange={(event) => refine(event.currentTarget.value)}
-        onFocus={() => showResults(true)}
+        onChange={(event) => {
+          const value = event.currentTarget.value;
+          refine(value);
+        }}
+        // onClick={() => showResults(true)}
       />
       <img
         className="mr-1-5"
