@@ -2,7 +2,6 @@
 import styles from '@/styles/Feed.module.scss';
 
 // Icons
-import searchIcon from '@/images/icons/search.svg';
 import arrowRight from '@/images/icons/arrow-right.svg';
 
 // Search Bar Components
@@ -11,7 +10,7 @@ import {
   InstantSearch,
   Hits,
   Configure,
-  connectSearchBox
+  SearchBox
 } from 'react-instantsearch-dom';
 import { ALGOLIA_APPLICATION_ID } from '@/lib/config/constants';
 import { User } from '@prisma/client';
@@ -49,43 +48,8 @@ function Hit(props: {
   )
 };
 
-function CustomSearchBox ({
-  currentRefinement,
-  refine,
-  showResults
-}: any) {
-  return (
-    <div className={styles.searchInputParent}>
-      <input
-        className={styles.searchInput}
-        type="search"
-        placeholder="Search for a user"
-        value={currentRefinement}
-        onChange={(event) => {
-          const value = event.currentTarget.value;
-          refine(value);
-        }}
-        // onClick={() => showResults(true)}
-      />
-      <img
-        className="mr-1-5"
-        src={searchIcon.src}
-        alt=""
-      />
-    </div>
-  )
-}
-
-
 function SearchBar() {
   const [showHits, setShowHits] = useState(false);
-
-  const SearchBox = connectSearchBox((args) =>
-    <CustomSearchBox
-      {...args}
-      showResults={setShowHits}
-    />
-  );
 
   return (
     <div className={styles.searchBar}>
@@ -97,7 +61,14 @@ function SearchBar() {
           setShowHits(false);
         }}>
           <div>
-            <SearchBox />
+            {/* Correct types haven't been implemented for this module */}
+            {/* @ts-expect-error */}
+            <SearchBox onFocus={() => setShowHits(true)}
+              className={styles.searchInput}
+              translations={{
+                placeholder: "Search for users..."
+              }}
+            />
             <Configure hitsPerPage={6} />
             <div
               style={{ display: showHits ? 'block' : 'none' }}
