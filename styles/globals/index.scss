@@ -934,6 +934,10 @@ figure {
   padding-bottom: 1rem !important;
 }
 
+.ReactModal__Overlay--after-open {
+  background-color: rgba(30, 41, 59, 0.34) !important;
+}
+
 .codeBoxHolder{
   display: flex;
   flex-direction: column;
