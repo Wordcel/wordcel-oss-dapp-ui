@@ -32,7 +32,7 @@ import { EditProfile } from '@/elements/EditProfile';
 import { NotFoundElement } from '@/components/404';
 import { User } from '@prisma/client';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
-import { sendSPL } from '@/lib/sendSPL';
+import { TipButton } from '@/components/Buttons';
 
 
 export const UserProfile = ({
@@ -111,15 +111,6 @@ export const UserProfile = ({
     refreshData();
   }
 
-  const handleTip = async () => {
-    if (!props.user) return;
-    const confirmed = await sendSPL(
-      walletContext,
-      props.user.public_key,
-      1,
-    );
-  }
-
   useEffect(() => {
     if (publicKey?.toBase58() === props.user?.public_key) {
       setHideFollow(true);
@@ -159,7 +150,9 @@ export const UserProfile = ({
                       </div>
                     </div>
                     <div className={styles.profileButtons}>
-                      <button onClick={handleTip}>Tip $1</button>
+                      <div className='mr-1-5'>
+                        <TipButton user={props.user} />
+                      </div>
                       {!hideFollow && (
                         <ConnectWallet noFullSize={true} noToast={true}>
                           <button

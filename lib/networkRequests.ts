@@ -277,12 +277,12 @@ export async function getTipDestination (txid: string) {
       txid,
       { encoding: 'jsonParsed', commitment: 'confirmed' }
     ],
-  }
+  };
   const res = await fetch(MAINNET_ENDPOINT, {
     method: "POST",
     body: JSON.stringify(data),
     headers: {"Content-Type": "application/json"}
-  })
+  });
   const response = await res.json();
   const instructions = response.result.transaction.message.instructions;
   const transfer_instructions = instructions.filter((i: any) => i.parsed.type === "transfer");
