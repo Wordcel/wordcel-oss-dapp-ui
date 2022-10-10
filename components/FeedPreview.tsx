@@ -14,7 +14,7 @@ function Preview({
     <div className={styles.preview}>
       <div className={styles.previewDetails}>
         <a href={'/' + article.owner.username + '/' + article.slug} target="_blank" rel="noopener noreferrer">
-          <h1 className="text size-28 weight-700 gray-700 pointer">{shortenSentence(article.title, 50)}</h1>
+          <h1 className="text size-28 weight-700 gray-700 pointer">{shortenSentence(article.title, 80)}</h1>
         </a>
         <p className="text size-16 weight-400 gray-500">
           {shortenSentence(article.description)}
