@@ -16,18 +16,23 @@ function TipButton({
   const [status, setStatus] = useState('dormant');
 
   const handleTip = async () => {
-    setStatus('started');
-    const confirmed = await sendSPL(
+    await sendSPL(
       wallet,
       user.public_key,
       1,
+      setStatus
     );
+    setTimeout(() => {
+      setStatus('dormant');
+    }, 4000)
   }
 
   return (
-    <button onClick={handleTip} className={styles.tipButton}>
-      <img src={cashIcon.src} alt="" />
-      <span>Tip</span>
+    <button className={styles.tipButton}>
+      <div className={styles.tipButtonContent} onClick={handleTip}>
+        <img src={cashIcon.src} alt="" />
+        <span>Tip</span>
+      </div>
       <TipModal status={status} setStatus={setStatus} />
     </button>
   );

@@ -343,6 +343,15 @@
   &:hover {
     background-color: var(--gray-100);
   }
+}
+
+
+.tipButtonContent {
+  width: 9rem;
+  height: 4.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   & > span {
     margin-left: 1.1rem;
   }

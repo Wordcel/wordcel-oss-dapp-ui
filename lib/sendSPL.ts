@@ -18,14 +18,17 @@ export const sendSPL = async (
   wallet: WalletContextState,
   toWalletAddress: string,
   amount: number,
+  setStatus: (s: string) => void,
   decimals = 6,
   mint = USDC_MINT
-): Promise<boolean | undefined> => {
+): Promise<boolean> => {
 
   if (!wallet.publicKey || !wallet.signTransaction || wallet === null) {
     toast('Please connect your wallet');
-    return
+    return false;
   };
+
+  setStatus('started');
 
   // Construct wallet keypairs
   const fromWallet = Keypair.generate();
@@ -50,7 +53,8 @@ export const sendSPL = async (
     // Create associated token accounts for the recipient if they don't exist yet
   } catch (error: any) {
     toast.error(`${error.message} for SPL token of the sender`);
-    return;
+    setStatus('dormant');
+    return false;
   }
 
   const associatedDestinationTokenAddr = await Token.getAssociatedTokenAddress(
@@ -93,18 +97,34 @@ export const sendSPL = async (
   transaction.recentBlockhash = blockhash;
   transaction.feePayer = wallet.publicKey;
 
-  const signed_tx = await wallet.signTransaction(transaction);
+  let signed_tx: any;
+
+  try {
+    signed_tx = await wallet.signTransaction(transaction);
+    setStatus('signed');
+  } catch (e) {
+    console.log('Request rejected');
+    setStatus('dormant');
+    return false;
+  }
+
   let txid;
 
   try {
     const _txid = await connection.sendRawTransaction(signed_tx.serialize());
     txid = _txid;
+    setStatus('sent');
   } catch (err) {
     console.log(err);
-    toast.error('Failed to send tranasction to the network')
+    toast.error('Failed to send tranasction to the network');
+    setStatus('dormant');
+    return false;
   }
 
-  if (!txid) return false;
+  if (!txid) {
+    setStatus('dormant');
+    return false;
+  };
 
   try {
     const confirmed = await connection.confirmTransaction(
@@ -115,6 +135,7 @@ export const sendSPL = async (
       toast.error('Transaction Failed');
       return false;
     };
+    setStatus('confirmed');
     addTip(wallet.publicKey.toBase58(), toWalletAddress, txid);
     return true;
   } catch {
