@@ -5,7 +5,7 @@ import { TipModal } from './Modals';
 import { User } from '@/types/props';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { sendSPL } from '@/lib/sendSPL';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function TipButton({
   user
@@ -22,10 +22,7 @@ function TipButton({
       1,
       setStatus
     );
-    setTimeout(() => {
-      setStatus('dormant');
-    }, 4000)
-  }
+  };
 
   return (
     <button className={styles.tipButton}>

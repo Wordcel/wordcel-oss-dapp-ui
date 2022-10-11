@@ -91,10 +91,12 @@ export const ConnectWallet = ({
   children,
   noFullSize,
   noToast,
+  afterConnect
 }: {
   children: React.ReactNode;
   noFullSize?: boolean;
   noToast?: boolean;
+  afterConnect?: any;
 }) => {
   const { wallet, connect, publicKey } = useWallet();
   const { visible, setVisible } = useWalletModal();
@@ -111,6 +113,7 @@ export const ConnectWallet = ({
       return;
     }
     if (publicKey && !noToast) toast.success('Connected to wallet');
+    if (afterConnect) afterConnect();
   }, [
     wallet,
     visible,

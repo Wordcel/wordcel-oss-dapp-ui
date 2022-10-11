@@ -24,7 +24,7 @@ export const sendSPL = async (
 ): Promise<boolean> => {
 
   if (!wallet.publicKey || !wallet.signTransaction || wallet === null) {
-    toast('Please connect your wallet');
+    // toast('Please connect your wallet');
     return false;
   };
 
@@ -136,6 +136,9 @@ export const sendSPL = async (
       return false;
     };
     setStatus('confirmed');
+    setTimeout(() => {
+      setStatus('dormant');
+    }, 4000);
     addTip(wallet.publicKey.toBase58(), toWalletAddress, txid);
     return true;
   } catch {
