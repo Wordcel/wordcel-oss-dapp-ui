@@ -27,6 +27,7 @@ async function handler(
       bio,
       blog_name,
       image_url,
+      tip_enabled,
       twitter,
       discord
     } = req.body;
@@ -56,6 +57,7 @@ async function handler(
         bio: bio || user.bio,
         blog_name: blog_name || user.blog_name,
         image_url: image_url || user.image_url,
+        tip_enabled: typeof tip_enabled === 'boolean' ? tip_enabled : user.tip_enabled,
         twitter: twitter,
         discord: discord
       }

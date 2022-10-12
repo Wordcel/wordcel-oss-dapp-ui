@@ -22,6 +22,7 @@ model User {
   discord String?
   image_url String?
   banner_url String?
+  tip_enabled Boolean @default(false)
   invites Invite[]
   articles Article[]
   drafts Draft[]

@@ -68,3 +68,11 @@
   align-items: center;
   margin-top: 1rem;
 }
+
+.termsLink {
+  color: var(--gray-700);
+  transition: .2s all ease-in-out;
+  &:hover {
+    color: var(--gray-500);
+  }
+}

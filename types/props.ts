@@ -4,6 +4,7 @@ export interface User {
   username: string;
   public_key: string;
   blog_name: string;
+  tip_enabled: boolean;
   connection_count?: number;
   profile_hash?: string;
   bio?: string;

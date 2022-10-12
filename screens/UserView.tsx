@@ -150,11 +150,13 @@ export const UserProfile = ({
                       </div>
                     </div>
                     <div className={styles.profileButtons}>
-                      <div className='mr-1-5'>
-                        <ConnectWallet noFullSize={true} noToast={true}>
-                          <TipButton user={props.user} />
-                        </ConnectWallet>
-                      </div>
+                      {props.user.tip_enabled && (
+                        <div className='mr-1-5'>
+                          <ConnectWallet noFullSize={true} noToast={true}>
+                            <TipButton user={props.user} />
+                          </ConnectWallet>
+                        </div>
+                      )}
                       {!hideFollow && (
                         <ConnectWallet noFullSize={true} noToast={true}>
                           <button
