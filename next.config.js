@@ -4,6 +4,11 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: "/",
+        destination: "/feed",
+        permanent: false
+      },
+      {
         source: '/shek/:slug',
         destination: '/shek.sol/:slug',
         permanent: true,
@@ -16,6 +21,21 @@ const nextConfig = {
       {
         source: '/paarug/:slug',
         destination: '/paarug.sol/:slug',
+        permanent: true,
+      },
+      {
+        source: '/shek',
+        destination: '/shek.sol',
+        permanent: true,
+      },
+      {
+        source: '/kunal',
+        destination: '/kunal.sol',
+        permanent: true,
+      },
+      {
+        source: '/paarug',
+        destination: '/paarug.sol',
         permanent: true,
       },
     ]
