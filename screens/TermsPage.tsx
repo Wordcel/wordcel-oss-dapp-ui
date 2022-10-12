@@ -63,7 +63,7 @@ export const TermsPage = () => {
 
           <h1 className="text gray-600 size-24 weight-700 mt-4">Payments, fees, and transactions</h1>
 
-          <p className="text gray-500 size-16 weight-400">All payments made or received as upload fees, minting fees, or subscription payments, shall be made via listed crypto assets, on the Solana blockchain. By using Wordcel Club, the user agrees to the same, and acknowledges and takes responsibility for the risks inherently involved in using such a technology.</p>
+          <p className="text gray-500 size-16 weight-400">All payments made or received as upload fees, minting fees, or subscription payments, shall be made via listed crypto assets, on the Solana blockchain. By using Wordcel Club, the user agrees to the same, and acknowledges and takes responsibility for the risks inherently involved in using such a technology. Users shall be able to transfer certain crypto tokens to other users, namely, publishers of the content. These transfers may be in USDC or any other non-stable coin. Such transfer shall purely be a peer to peer transaction, and Wordcel Club shall not interact with or withhold any portion of any such transfer. Users sending and receiving such tokens shall be solely responsible for compliance with all local laws (including taxation) as applicable to them.</p>
 
           <h1 className="text gray-600 size-24 weight-700 mt-4">Indemnification</h1>
 
