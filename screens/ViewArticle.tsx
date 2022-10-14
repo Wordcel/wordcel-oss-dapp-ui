@@ -45,7 +45,7 @@ export const AuthorBox = (props: GetArticleServerSide) => {
           )}
         </div>
       </div>
-      {props.user && <TipButton user={props.user} />}
+      {props.user && props.user.tip_enabled && <TipButton user={props.user} />}
     </div>
   );
 
