@@ -8,6 +8,7 @@ ___
 ```
 DATABASE_URL=
 SLACK_HOOK=
+BUNDLR_PRIVATE_KEY=
 ```
 
 2. Install all dependencies
