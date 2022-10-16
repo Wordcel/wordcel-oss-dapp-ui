@@ -82,6 +82,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const image = files?.[0][1];
   if (!proceedWithUpload || !image) return;
 
+  if (image.size > 8e+6) {
+    const response = { url: null, error: "Please upload an image less than 8mb in size"};
+    res.status(400).json(response);
+    return;
+  }
+
   const response = await uploadImageNode(image, keypair);
   if (response.error) {
     res.status(500).json(response)

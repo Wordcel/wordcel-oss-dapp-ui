@@ -96,7 +96,6 @@ export const uploadImageNode = async (
 
   if (keypair.publicKey) {
     const currentBalance = await getBundlrBalance(keypair.publicKey.toBase58());
-    console.log('Current Balance', currentBalance);
     if (!currentBalance.lt(minimumFunds)) skipFund = true;
   }
 
