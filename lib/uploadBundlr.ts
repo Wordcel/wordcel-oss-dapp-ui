@@ -126,70 +126,70 @@ export const uploadBundle = async (
   return `https://arweave.net/${id}`
 };
 
-// export const uploadImageBundlr = async (
-//   image: File,
-//   wallet: WalletContextState
-// ) => {
-//   toast.loading('Uploading Image');
-//   const extension = image.name.split('.').pop();
-//   const type = extension === 'jpg' ? 'jpeg' : extension;
-//   const tags = [{ name: "Content-Type", value: `image/${type}` }];
+export const uploadImageBundlr = async (
+  image: File,
+  wallet: WalletContextState
+) => {
+  toast.loading('Uploading Image');
+  const extension = image.name.split('.').pop();
+  const type = extension === 'jpg' ? 'jpeg' : extension;
+  const tags = [{ name: "Content-Type", value: `image/${type}` }];
 
-//   const bundlr = new Bundlr(
-//     BUNDLR_MAINNET_ENDPOINT,
-//     'solana',
-//     wallet,
-//     {
-//       timeout: 60000,
-//       providerUrl: MAINNET_ENDPOINT,
-//     },
-//   );
+  const bundlr = new Bundlr(
+    BUNDLR_MAINNET_ENDPOINT,
+    'solana',
+    wallet,
+    {
+      timeout: 60000,
+      providerUrl: MAINNET_ENDPOINT,
+    },
+  );
 
-//   const size = image.size;
-//   console.log('Byte Size', size);
+  const size = image.size;
+  console.log('Byte Size', size);
 
-//   const price = await bundlr.getPrice(size);
-//   console.log('Price', price);
+  const price = await bundlr.getPrice(size);
+  console.log('Price', price);
 
-//   const minimumFunds = price.multipliedBy(3);
-//   console.log('Minimum Funds', minimumFunds);
+  const minimumFunds = price.multipliedBy(3);
+  console.log('Minimum Funds', minimumFunds);
 
-//   let skipFund = false;
+  let skipFund = false;
 
-//   if (wallet.publicKey) {
-//     const currentBalance = await getBundlrBalance(wallet.publicKey.toBase58());
-//     console.log('Current Balance', currentBalance);
-//     if (!currentBalance.lt(minimumFunds)) skipFund = true;
-//   }
+  if (wallet.publicKey) {
+    const currentBalance = await getBundlrBalance(wallet.publicKey.toBase58());
+    console.log('Current Balance', currentBalance);
+    if (!currentBalance.lt(minimumFunds)) skipFund = true;
+  }
 
-//   if (!skipFund) {
-//     toast.dismiss();
-//     toast.loading('Funding Bundlr for upload');
-//     const toFundAmount = price.multipliedBy(50);
-//     console.log(`Funding: ${toFundAmount}`);
-//     try {
-//       await bundlr.fund(toFundAmount);
-//     }
-//     catch (e) {
-//       console.log(e);
-//       toast.dismiss();
-//       toast.error('Sorry, we were not able to fund the upload');
-//       return;
-//     }
-//   }
+  if (!skipFund) {
+    toast.dismiss();
+    toast.loading('Funding Bundlr for upload');
+    const toFundAmount = price.multipliedBy(50);
+    console.log(`Funding: ${toFundAmount}`);
+    try {
+      await bundlr.fund(toFundAmount);
+    }
+    catch (e) {
+      console.log(e);
+      toast.dismiss();
+      toast.error('Sorry, we were not able to fund the upload');
+      return;
+    }
+  }
 
-//   const file = new Uint8Array(await image.arrayBuffer());
-//   const transaction = bundlr.createTransaction(file, { tags });
-//   await transaction.sign();
-//   await transaction.upload();
-//   const id = transaction.id;
-//   if (!id) {
-//     toast.dismiss();
-//     toast.error('Error uploading image');
-//     return;
-//   }
-//   const url = 'https://arweave.net/' + id;
-//   toast.dismiss();
-//   toast.success('Image stored permanently');
-//   return url;
-// };
+  const file = new Uint8Array(await image.arrayBuffer());
+  const transaction = bundlr.createTransaction(file, { tags });
+  await transaction.sign();
+  await transaction.upload();
+  const id = transaction.id;
+  if (!id) {
+    toast.dismiss();
+    toast.error('Error uploading image');
+    return;
+  }
+  const url = 'https://arweave.net/' + id;
+  toast.dismiss();
+  toast.success('Image stored permanently');
+  return url;
+};
