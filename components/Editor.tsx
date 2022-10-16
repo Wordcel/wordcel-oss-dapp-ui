@@ -1,15 +1,12 @@
-import Header from "@editorjs/header"
 import { createReactEditorJS } from 'react-editor-js'
 import { EditorCore } from "@react-editor-js/core";
 
-
+import Header from "@editorjs/header"
 // @ts-expect-error
 import Paragraph from '@editorjs/paragraph';
 // @ts-expect-error
 import CheckList from "@editorjs/checklist";
-
 import CodeBox from "@/components/plugins/CodeBox";
-
 // @ts-expect-error
 import Delimiter from "@editorjs/delimiter";
 // @ts-expect-error
@@ -22,26 +19,24 @@ import List from "@editorjs/list";
 import Quote from "@editorjs/quote";
 // @ts-expect-error
 import MathEx from 'editorjs-math';
-
-// // @ts-expect-error
-// import { MDImporter, MDParser } from '@/external/markdown.js';
-
-import { useWallet } from "@solana/wallet-adapter-react";
-
 // @ts-expect-error
 import Undo from 'editorjs-undo';
 // @ts-expect-error
 import DragDrop from 'editorjs-drag-drop';
-
-
 // @ts-expect-error
 import ImageGallery from '@rodrigoodhin/editorjs-image-gallery';
-
 // @ts-expect-error
 import Image from "@editorjs/image";
+
+// // @ts-expect-error
+// import { MDImporter, MDParser } from '@/external/markdown.js';
+
+import { getUserSignature } from '@/lib/signMessage';
+import { useWallet, WalletContextState } from "@solana/wallet-adapter-react";
+
 import { useEffect } from "react"
-import { uploadImageBundlr } from "@/lib/uploadBundlr";
 import { timeout } from "@/lib/utils";
+import toast from 'react-hot-toast';
 
 
 interface Editor {
@@ -66,6 +61,45 @@ const allowLinks = (
   } catch (e) {
     console.log(e);
   }
+}
+
+async function uploadImage(
+  file: File,
+  wallet: WalletContextState
+) {
+  let uploadedURL = '';
+  return new Promise (async (resolve, reject) => {
+    const { signMessage } = wallet;
+    if (!signMessage || !wallet.publicKey) return;
+
+    const signature = await getUserSignature(signMessage, wallet.publicKey.toBase58());
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('public_key', wallet.publicKey?.toBase58());
+    formData.append('signature', JSON.stringify(signature));
+
+    const response = await fetch('/api/upload/image', {
+      method: 'POST',
+      body: formData
+    });
+    const data = await response.json();
+    if (data.url) {
+      uploadedURL = data.url;
+      resolve(data.url);
+    } else {
+      toast.error(data.error);
+      reject(data.error);
+    }
+
+  }).then(() => {
+    return uploadedURL ? {
+      success: 1,
+      file: { url: uploadedURL }
+    } : {
+      success: 0,
+      error: 'Error uploading image'
+    }
+  });
 }
 
 const CustomEditor = ({
@@ -125,28 +159,7 @@ const CustomEditor = ({
       config: {
         uploader: {
           uploadByFile(file: File) {
-            let uploadedURL = '';
-            return new Promise (async (resolve, reject) => {
-              const url = await uploadImageBundlr(file, wallet);
-              if (url) {
-                uploadedURL = url;
-                resolve(uploadedURL);
-              } else reject(new Error('Upload failed'));
-            }).then(() => {
-              if (uploadedURL) {
-                return {
-                  success: 1,
-                  file: {
-                    url: uploadedURL
-                  }
-                }
-              } else {
-                return {
-                  success: 0,
-                  error: 'Error uploading image'
-                }
-              }
-            })
+            return uploadImage(file, wallet);
           }
         }
       }

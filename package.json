@@ -49,6 +49,7 @@
     "editorjs-math": "^1.0.2",
     "editorjs-react-renderer": "^3.1.1",
     "editorjs-undo": "^2.0.4",
+    "formidable": "^2.0.1",
     "html-entities": "^2.3.3",
     "inter-ui": "^3.19.3",
     "next": "12.1.0",
@@ -81,6 +82,7 @@
   },
   "devDependencies": {
     "@types/editorjs__header": "^2.6.0",
+    "@types/formidable": "^2.0.5",
     "@types/node": "17.0.21",
     "@types/nprogress": "^0.2.0",
     "@types/randombytes": "^2.0.0",
