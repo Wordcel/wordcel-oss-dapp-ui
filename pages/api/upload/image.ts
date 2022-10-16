@@ -21,7 +21,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const allowed = verifyMethod(req, res, "POST");
   if (!allowed) return;
 
-  let proceedWithUpload = false;
+  const body = {
+    public_key: '',
+    signature: ''
+  }
 
   // Collect all the files
   const files = await new Promise<ProcessedFiles | undefined>(
@@ -47,32 +50,34 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           return;
         }
 
-        // Authenticate the public key using signature
-        const authenticated = authenticate(
-          public_key as string,
-          JSON.parse(signature as string),
-          res
-        );
-        if (!authenticated) return;
-
-        // Check if user exists
-        const user = await prisma.user.findFirst({
-          where: {
-            public_key: public_key as string,
-          },
-        });
-
-        if (!user) {
-          res.status(400).json({
-            error: "User does not exist",
-          });
-          return;
-        }
-        proceedWithUpload = true;
+        body.public_key = public_key as string;
+        body.signature = signature as string;
         resolve(files);
       });
     }
   );
+
+  // Authenticate the public key using signature
+  const authenticated = authenticate(
+    body.public_key as string,
+    JSON.parse(body.signature as string),
+    res
+  );
+  if (!authenticated) return;
+
+  // Check if user exists
+  const user = await prisma.user.findFirst({
+    where: {
+      public_key: body.public_key
+    },
+  });
+
+  if (!user) {
+    res.status(400).json({
+      error: "User does not exist",
+    });
+    return;
+  }
 
   const private_key_raw = JSON.parse(process.env.BUNDLR_PRIVATE_KEY);
   const private_key_array: number[] = Array.from(private_key_raw);
@@ -80,7 +85,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const keypair = Keypair.fromSecretKey(private_key);
 
   const image = files?.[0][1];
-  if (!proceedWithUpload || !image) return;
+  if (!image) return;
 
   if (image.size > 8e+6) {
     const response = { url: null, error: "Please upload an image less than 8mb in size"};
