@@ -10,6 +10,7 @@ import { ContentPayload } from '@/lib/upload';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { getBundlrBalance } from './networkRequests';
 import { getHeaderContent } from './getHeaderContent';
+import { Keypair } from '@solana/web3.js';
 
 export const uploadBundle = async (
   data: ContentPayload,
@@ -193,3 +194,73 @@ export const uploadImageBundlr = async (
   toast.success('Image stored permanently');
   return url;
 };
+
+export const uploadImageNode = async (
+  image: File,
+  keypair: Keypair
+) => {
+  const allowedExtensions = ['png', 'jpg', 'jpeg', 'gif'];
+  const extension = image.name.split('.').pop();
+
+  if (!extension) {
+    return { url: null, error: "Invalid file extension" }
+  }
+
+  if (!allowedExtensions.includes(extension)) {
+    return { url: null, error: "File type not allowed" }
+  }
+
+  const type = extension === 'jpg' ? 'jpeg' : extension;
+  const tags = [{ name: "Content-Type", value: `image/${type}` }];
+
+  const bundlr = new Bundlr(
+    BUNDLR_MAINNET_ENDPOINT,
+    'solana',
+    keypair.secretKey,
+    {
+      timeout: 60000,
+      providerUrl: MAINNET_ENDPOINT,
+    },
+  );
+
+  const size = image.size;
+  const price = await bundlr.getPrice(size);
+  const minimumFunds = price.multipliedBy(3);
+
+  let skipFund = false;
+
+  if (keypair.publicKey) {
+    const currentBalance = await getBundlrBalance(keypair.publicKey.toBase58());
+    console.log('Current Balance', currentBalance);
+    if (!currentBalance.lt(minimumFunds)) skipFund = true;
+  }
+
+  if (!skipFund) {
+    const toFundAmount = price.multipliedBy(50);
+    console.log(`Funding: ${toFundAmount}`);
+    try {
+      await bundlr.fund(toFundAmount);
+    }
+    catch (e) {
+      console.log(e);
+      return { url: null, error: "Insufficient balance to upload" };
+    }
+  }
+
+  const file = new Uint8Array(await image.arrayBuffer());
+  const transaction = bundlr.createTransaction(file, { tags });
+  await transaction.sign();
+  await transaction.upload();
+  const id = transaction.id;
+
+  if (!id) {
+    toast.dismiss();
+    toast.error('Error uploading image');
+    return { url: null, error: "Error while trying to upload image to arweave" };
+  }
+
+  const url = 'https://arweave.net/' + id;
+  toast.dismiss();
+  toast.success('Image stored permanently');
+  return { url: url, error: null };
+}
