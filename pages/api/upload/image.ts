@@ -6,6 +6,7 @@ import {
 import { withSentry } from "@sentry/nextjs";
 import { uploadImageNode } from "@/lib/server";
 import { Keypair } from "@solana/web3.js";
+import prisma from "@/lib/prisma";
 import formidable, { File } from "formidable";
 
 export const config = {
