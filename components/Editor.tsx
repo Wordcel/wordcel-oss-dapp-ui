@@ -159,6 +159,20 @@ const CustomEditor = ({
       config: {
         uploader: {
           uploadByFile(file: File) {
+            const allowed_extensions = ['png', 'jpg', 'jpeg', 'gif'];
+            if (file.size > 8e+6) {
+              toast.error('Please select an image less than 8MB');
+              return { success: 0, error: 'Error uploading image' };
+            }
+            const file_extension = file.name.split('.').pop();
+            if (!file_extension) {
+              toast.error('Please select a valid file');
+              return { success: 0, error: 'Error uploading image' };
+            }
+            if (!allowed_extensions.includes(file_extension)) {
+              toast.error('File type is not supported');
+              return { success: 0, error: 'Error uploading image' };
+            }
             return uploadImage(file, wallet);
           }
         }
