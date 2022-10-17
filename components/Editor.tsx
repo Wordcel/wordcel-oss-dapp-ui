@@ -78,7 +78,7 @@ async function uploadImage(
     formData.append('public_key', wallet.publicKey?.toBase58());
     formData.append('signature', JSON.stringify(signature));
 
-    const response = await fetch('/api/upload/image', {
+    const response = await fetch('https://wordcel.up.railway.app/upload', {
       method: 'POST',
       body: formData
     });
