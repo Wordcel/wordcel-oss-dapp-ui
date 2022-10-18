@@ -3456,10 +3456,10 @@
   resolved "https://registry.yarnpkg.com/@web3-storage/multipart-parser/-/multipart-parser-1.0.0.tgz#6b69dc2a32a5b207ba43e556c25cc136a56659c4"
   integrity sha512-BEO6al7BYqcnfX15W2cnGR+Q566ACXAT9UQykORCWW80lmkpWsnEob6zJS1ZVBKsSJC8+7vJkHwlp+lXG1UCdw==
 
-"@wordcel/dialect-react@1.0.0-beta.1.8":
-  version "1.0.0-beta.1.8"
-  resolved "https://npm.pkg.github.com/download/@wordcel/dialect-react/1.0.0-beta.1.8/003abcc0bfcb5fb22f2c68d02d0d965dfe20fa53#003abcc0bfcb5fb22f2c68d02d0d965dfe20fa53"
-  integrity sha512-weFFlH2qY2tdQ4xzSYOA4GaH2ZCKCCCuALS/pwZxeNjwS4/EW9LMd7gFkH7OYM1w1GoXoK5H5GB/PNSq5ssyYQ==
+"@wordcel/dialect-react@1.0.0-beta.1.9":
+  version "1.0.0-beta.1.9"
+  resolved "https://npm.pkg.github.com/download/@wordcel/dialect-react/1.0.0-beta.1.9/565289233815dd6c40e684be5be0f16ee084f9a0#565289233815dd6c40e684be5be0f16ee084f9a0"
+  integrity sha512-OG8Vdc5v+3rzNtZ/v9miIfDF86t4MWoSHghQ8sJngOyM1/aewkuZTPgoGhOoyv1JZjTjXh+eD12puYwLcSOf1g==
   dependencies:
     "@dialectlabs/react-sdk" "1.0.0-beta.29"
     "@headlessui/react" "^1.2.0"
