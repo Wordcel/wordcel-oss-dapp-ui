@@ -1348,6 +1348,11 @@
   dependencies:
     tslib "^2.1.0"
 
+"@headlessui/react@^1.2.0":
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.7.3.tgz#853c598ff47b37cdd192c5cbee890d9b610c3ec0"
+  integrity sha512-LGp06SrGv7BMaIQlTs8s2G06moqkI0cb0b8stgq7KZ3xcHdH3qMP+cRyV7qe5x4XEW/IGY48BW4fLesD6NQLng==
+
 "@humanwhocodes/config-array@^0.9.2":
   version "0.9.5"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.9.5.tgz#2cbaf9a89460da24b5ca6531b8bbfc23e1df50c7"
@@ -3451,10 +3456,10 @@
   resolved "https://registry.yarnpkg.com/@web3-storage/multipart-parser/-/multipart-parser-1.0.0.tgz#6b69dc2a32a5b207ba43e556c25cc136a56659c4"
   integrity sha512-BEO6al7BYqcnfX15W2cnGR+Q566ACXAT9UQykORCWW80lmkpWsnEob6zJS1ZVBKsSJC8+7vJkHwlp+lXG1UCdw==
 
-"@wordcel/dialect-react@1.0.0-beta.1.7":
-  version "1.0.0-beta.1.7"
-  resolved "https://npm.pkg.github.com/download/@wordcel/dialect-react/1.0.0-beta.1.7/181ad43f1f84aa4186d859c1e09bb3b8d6de9ca9#181ad43f1f84aa4186d859c1e09bb3b8d6de9ca9"
-  integrity sha512-3FbdzWwGM/Kps5TsnqBQUPRtEIF7AIE222mcP36k2WsLHbWgpankOI/YmT7NUEp0gGbgtjKVBQqkiWnNoEbkHw==
+"@wordcel/dialect-react@1.0.0-beta.1.8":
+  version "1.0.0-beta.1.8"
+  resolved "https://npm.pkg.github.com/download/@wordcel/dialect-react/1.0.0-beta.1.8/003abcc0bfcb5fb22f2c68d02d0d965dfe20fa53#003abcc0bfcb5fb22f2c68d02d0d965dfe20fa53"
+  integrity sha512-weFFlH2qY2tdQ4xzSYOA4GaH2ZCKCCCuALS/pwZxeNjwS4/EW9LMd7gFkH7OYM1w1GoXoK5H5GB/PNSq5ssyYQ==
   dependencies:
     "@dialectlabs/react-sdk" "1.0.0-beta.29"
     "@headlessui/react" "^1.2.0"
@@ -4961,6 +4966,13 @@ dotenv@8.2.0:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
   integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
+
+ed2curve@0.3.0, ed2curve@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/ed2curve/-/ed2curve-0.3.0.tgz#322b575152a45305429d546b071823a93129a05d"
+  integrity sha512-8w2fmmq3hv9rCrcI7g9hms2pMunQr1JINfcjwR9tAyZqhtyaMN991lF/ZfHfr5tzZQ8c7y7aBgZbjfbd0fjFwQ==
+  dependencies:
+    tweetnacl "1.x.x"
 
 editorjs-blocks-react-renderer@^1.2.4:
   version "1.2.4"
