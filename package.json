@@ -77,7 +77,8 @@
     "sharp": "^0.30.3",
     "slug": "^8.0.0",
     "styled-components": "^5.3.5",
-    "tweetnacl": "^1.0.3"
+    "tweetnacl": "^1.0.3",
+    "@wordcel/dialect-react": "1.0.0-beta.1.9"
   },
   "devDependencies": {
     "@types/editorjs__header": "^2.6.0",

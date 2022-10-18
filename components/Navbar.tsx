@@ -28,6 +28,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useUser } from './Context';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 import { useRouter } from 'next/router';
+import { Notification } from '@/components/Notification';
 
 
 export const LandingNavbar = ({
@@ -206,6 +207,11 @@ export const Navbar = ({
                   </div>
                 </Dropdown>
               )}
+            </div>
+          )}
+          {data?.user && (
+            <div style={{ fontSize: '170%', paddingRight:'12px' }}>
+              <Notification />
             </div>
           )}
           {!publicKey && !data?.user && (
