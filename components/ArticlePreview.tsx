@@ -32,7 +32,7 @@ export const ArticlePreview = ({
     image: user?.image_url
   };
   const base64Data = Buffer.from(JSON.stringify(SEOData)).toString('base64');
-  const DefaultImage = `https://og.up.railway.app/article/${encodeURIComponent(base64Data)}`;
+  const DefaultImage = `https://og.wdclclub.com/article/${encodeURIComponent(base64Data)}`;
 
   return (
     <div className={styles.articleContainer}>

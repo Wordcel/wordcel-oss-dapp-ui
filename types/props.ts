@@ -4,6 +4,7 @@ export interface User {
   username: string;
   public_key: string;
   blog_name: string;
+  tip_enabled: boolean;
   connection_count?: number;
   profile_hash?: string;
   bio?: string;
@@ -26,6 +27,10 @@ export interface Article {
   proof_of_post?: string;
   arweave_url?: string;
   slug?: string
+}
+
+export interface ArticleWithOwner extends Article {
+  owner: User
 }
 
 export interface Draft {

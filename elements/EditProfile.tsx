@@ -1,6 +1,7 @@
 // Module Imports
 import Modal from 'react-modal';
 import toast from 'react-hot-toast'
+import Link from 'next/link';
 import ClickAwayListener from 'react-click-away-listener';
 
 import { useEffect, useState, useRef } from 'react';
@@ -21,6 +22,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { getUserSignature } from '@/lib/signMessage';
 import { useRouter } from 'next/router';
 import { SecondaryInput } from './Inputs';
+import { Switch } from "@nextui-org/react";
 
 
 const modalStyles = {
@@ -153,6 +155,24 @@ export const EditProfile = ({
                       className={styles.uploadButton}
                     >Upload</button>
                   </div>
+                </div>
+                <div>
+                  <p className="input-label nm">
+                    Enable Tipping? By enabling this feature, you agree to our
+                    <span className="ml-0-5">
+                      <Link href="/terms">
+                        <a className={styles.termsLink}>terms of service.</a>
+                      </Link>
+                    </span>
+                    <div className="mt-1">
+                      {/* @ts-expect-error */}
+                      <Switch
+                        size="xl"
+                        checked={updateData.tip_enabled}
+                        onChange={(e) => setUpdateData({ ...updateData, tip_enabled: e.target.checked })}
+                      />
+                    </div>
+                  </p>
                 </div>
                 <SecondaryInput
                   placeHolder="Name"

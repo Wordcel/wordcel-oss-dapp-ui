@@ -1,5 +1,6 @@
 @import 'redesign.scss';
 @import 'text.scss';
+@import 'search.scss';
 
 :root {
   --text-color: hsl(0, 0%, 0%);
@@ -38,7 +39,7 @@ body {
 
 html {
   font-size: 62.5%; // setting the font size to 10px
-  @media only screen and (max-width: 1280px) {
+  @media only screen and (max-width: 1480px) {
     font-size: 55%;
   }
   @media only screen and (max-width: 768px) {
@@ -573,6 +574,9 @@ li {
 .text-align-center {
   text-align: center;
 }
+.text-align-left {
+  text-align: left;
+}
 
 i {
   font-style: italic;
@@ -928,6 +932,10 @@ figure {
 .cdx-quote__caption {
   padding: 0rem 2rem !important;
   padding-bottom: 1rem !important;
+}
+
+.ReactModal__Overlay--after-open {
+  background-color: rgba(30, 41, 59, 0.34) !important;
 }
 
 .codeBoxHolder{

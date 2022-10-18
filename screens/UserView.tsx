@@ -32,6 +32,7 @@ import { EditProfile } from '@/elements/EditProfile';
 import { NotFoundElement } from '@/components/404';
 import { User } from '@prisma/client';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
+import { TipButton } from '@/components/Buttons';
 
 
 export const UserProfile = ({
@@ -42,6 +43,7 @@ export const UserProfile = ({
 
   const router = useRouter();
   const wallet = useAnchorWallet();
+  const walletContext = useWallet();
   const { publicKey, signMessage } = useWallet();
 
   const [hideFollow, setHideFollow] = useState(false);
@@ -147,7 +149,14 @@ export const UserProfile = ({
                         </p>
                       </div>
                     </div>
-                    <div>
+                    <div className={styles.profileButtons}>
+                      {props.user.tip_enabled && (
+                        <div className='mr-1-5'>
+                          <ConnectWallet noFullSize={true} noToast={true}>
+                            <TipButton user={props.user} />
+                          </ConnectWallet>
+                        </div>
+                      )}
                       {!hideFollow && (
                         <ConnectWallet noFullSize={true} noToast={true}>
                           <button

@@ -324,3 +324,35 @@
     border-radius: 1rem !important;
   }
 }
+
+.tipButton {
+  width: 9rem;
+  height: 4.25rem;
+  border-radius: 0.8rem;
+  border: 0.1rem solid var(--gray-300);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 1.1rem;
+  font-weight: 600;
+  font-size: 1.6rem;
+  color: var(--gray-400);
+  background: none;
+  transition: 0.2s all ease-in-out;
+  &:hover {
+    background-color: var(--gray-100);
+  }
+}
+
+
+.tipButtonContent {
+  width: 9rem;
+  height: 4.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  & > span {
+    margin-left: 1.1rem;
+  }
+}

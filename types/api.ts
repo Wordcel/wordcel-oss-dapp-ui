@@ -27,6 +27,7 @@ export interface UpdatableUserDetails {
   image_url?: string | null;
   twitter?: string | null;
   discord?: string | null;
+  tip_enabled?: boolean;
 }
 
 export interface UpdateUser extends UpdatableUserDetails {

@@ -15,6 +15,7 @@ import { getReadingTime } from '@/lib/getReadingTime';
 import { useRouter } from 'next/router';
 import { NotFoundElement } from '@/components/404';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
+import { TipButton } from '@/components/Buttons';
 
 export const AuthorBox = (props: GetArticleServerSide) => {
   const Name = props.user?.name;
@@ -44,8 +45,10 @@ export const AuthorBox = (props: GetArticleServerSide) => {
           )}
         </div>
       </div>
+      {props.user && props.user.tip_enabled && <TipButton user={props.user} />}
     </div>
   );
+
 };
 
 
@@ -70,7 +73,7 @@ export const ViewArticle = (props: GetArticleServerSide) => {
     image: props.user?.image_url
   };
   const base64Data = Buffer.from(JSON.stringify(SEOData)).toString('base64');
-  const SEOImage = props.article?.image_url || `https://og.up.railway.app/article/${encodeURIComponent(base64Data)}`;
+  const SEOImage = props.article?.image_url || `https://og.wdclclub.com/article/${encodeURIComponent(base64Data)}`;
 
   const readingTime = getReadingTime(blocks);
 

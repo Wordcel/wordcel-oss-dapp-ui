@@ -4,13 +4,14 @@ export const getDefaultArticleImage = (
   article: Article,
   user?: User
 ) => {
+  console.log(user);
   const data = {
     title: article.title,
     name: user?.name,
     image: user?.image_url
   };
   const base64Data = Buffer.from(JSON.stringify(data)).toString('base64');
-  const defaultImage = `https://og.up.railway.app/article/${encodeURIComponent(base64Data)}`;
+  const defaultImage = `https://og.wdclclub.com/article/${encodeURIComponent(base64Data)}`;
   return defaultImage
 };
 
@@ -24,6 +25,6 @@ export const getDefaultUserImage = (
     username: user?.username
   }
   const base64Data = Buffer.from(JSON.stringify(data)).toString('base64');
-  const defaultImage = `https://og.up.railway.app/user/${encodeURIComponent(base64Data)}`;
+  const defaultImage = `https://og.wdclclub.com/user/${encodeURIComponent(base64Data)}`;
   return defaultImage;
 };

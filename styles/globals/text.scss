@@ -29,10 +29,10 @@
   color: var(--gray-900);
 }
 
-.text-size-12 {
+.text.size-12 {
   font-size: 1.2rem;
 }
-.text-size-14 {
+.text.size-14 {
   font-size: 1.4rem;
 }
 .text.size-16 {
@@ -49,6 +49,9 @@
 }
 .text.size-28 {
   font-size: 2.8rem;
+}
+.text.size-30 {
+  font-size: 3.0rem;
 }
 .text.size-32 {
   font-size: 3.2rem;

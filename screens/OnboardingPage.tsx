@@ -80,12 +80,12 @@ export const OnboardingPage = () => {
               {!done && (
                 <div className="flex align-items-center justify-content-center">
                   <div>
-                    {/* <p className="text size-20 weight-400 gray-400 text-align-center nm mt-4">By creating an account you agree to</p>
+                    <p className="text size-20 weight-400 gray-400 text-align-center nm mt-4">By creating an account you agree to</p>
                     <Link href="/terms">
                       <a>
                         <p className="text size-20 weight-400 gray-600 text-align-center nm mt-0-5 underline">{"Wordcel's Terms of Service"}</p>
                       </a>
-                    </Link> */}
+                    </Link>
                     <img className="mt-8" src={pattern.src} alt="" />
                   </div>
                 </div>

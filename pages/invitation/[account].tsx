@@ -12,7 +12,7 @@ interface InviteProps {
 
 const InviteRedirect = (props: InviteProps) => {
   const router = useRouter();
-  const OGImage = 'https://og.up.railway.app/invite/' + props.name;
+  const OGImage = 'https://og.wdclclub.com/invite/' + props.name;
 
   useEffect(() => {
     router.push('/onboarding')
