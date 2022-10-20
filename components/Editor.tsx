@@ -193,6 +193,11 @@ const CustomEditor = ({
                 success: 1,
                 file: { url: uploaded }
               }
+            } else {
+              return {
+                success: 0,
+                error: 'Error uploading image'
+              }
             }
           }
         }
