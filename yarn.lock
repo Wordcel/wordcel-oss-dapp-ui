@@ -3465,7 +3465,7 @@
 
 "@wordcel/dialect-react@1.0.0-beta.1.9":
   version "1.0.0-beta.1.9"
-  resolved "https://npm.pkg.github.com/download/@wordcel/dialect-react/1.0.0-beta.1.9/565289233815dd6c40e684be5be0f16ee084f9a0#565289233815dd6c40e684be5be0f16ee084f9a0"
+  resolved "https://registry.yarnpkg.com/@wordcel/dialect-react/-/dialect-react-1.0.0-beta.1.9.tgz#565289233815dd6c40e684be5be0f16ee084f9a0"
   integrity sha512-OG8Vdc5v+3rzNtZ/v9miIfDF86t4MWoSHghQ8sJngOyM1/aewkuZTPgoGhOoyv1JZjTjXh+eD12puYwLcSOf1g==
   dependencies:
     "@dialectlabs/react-sdk" "1.0.0-beta.29"
