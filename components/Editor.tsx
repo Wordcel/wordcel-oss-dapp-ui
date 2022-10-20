@@ -37,6 +37,7 @@ import { useWallet, WalletContextState } from "@solana/wallet-adapter-react";
 import { useEffect } from "react"
 import { timeout } from "@/lib/utils";
 import toast from 'react-hot-toast';
+import { uploadUsingURL } from '@/lib/networkRequests';
 
 
 interface Editor {
@@ -63,22 +64,30 @@ const allowLinks = (
   }
 }
 
+const getUserSig = async (wallet: WalletContextState) => {
+  const { signMessage } = wallet;
+  if (!signMessage || !wallet.publicKey) return;
+  const signature = await getUserSignature(signMessage, wallet.publicKey.toBase58());
+  return signature;
+}
+
 async function uploadImage(
   file: File,
   wallet: WalletContextState
 ) {
   let uploadedURL = '';
   return new Promise (async (resolve, reject) => {
-    const { signMessage } = wallet;
-    if (!signMessage || !wallet.publicKey) return;
-
-    const signature = await getUserSignature(signMessage, wallet.publicKey.toBase58());
+    if (!wallet.publicKey) return;
+    const signature = await getUserSig(wallet);
     const formData = new FormData();
     formData.append('file', file);
     formData.append('public_key', wallet.publicKey?.toBase58());
     formData.append('signature', JSON.stringify(signature));
 
-    const response = await fetch('https://wordcel.up.railway.app/upload', {
+    const response = await fetch(
+      'https://wordcel.up.railway.app/upload',
+      // 'http://localhost:8000/upload',
+    {
       method: 'POST',
       body: formData
     });
@@ -174,6 +183,17 @@ const CustomEditor = ({
               return { success: 0, error: 'Error uploading image' };
             }
             return uploadImage(file, wallet);
+          },
+          async uploadByUrl(url: string) {
+            const signature = await getUserSig(wallet);
+            if (!wallet.publicKey || !signature) return;
+            const uploaded = await uploadUsingURL(wallet.publicKey.toBase58(), signature, url);
+            if (uploaded) {
+              return {
+                success: 1,
+                file: { url: uploaded }
+              }
+            }
           }
         }
       }

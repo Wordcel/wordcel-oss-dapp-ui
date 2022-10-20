@@ -267,6 +267,32 @@ export async function addTip (
   }
 }
 
+export async function uploadUsingURL(
+  public_key: string,
+  signature: Uint8Array,
+  url: string,
+) {
+  try {
+    const request = await fetch(
+      'https://wordcel.up.railway.app/url',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        url,
+        public_key,
+        signature
+      })
+    });
+    const response = await request.json();
+    return response.url;
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export async function getTipDestination (txid: string) {
   const connection = new Connection(MAINNET_ENDPOINT);
   const data = {
