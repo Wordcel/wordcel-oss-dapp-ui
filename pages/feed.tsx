@@ -14,9 +14,11 @@ import { Loading } from '@/components/animations/Loading';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Preview } from '@/components/FeedPreview';
 import { SearchBar } from '@/components/SearchUsers';
+import { useWindowSize } from '@/components/Hooks';
 
 
 function Feed() {
+  const { width } = useWindowSize();
   const { publicKey } = useWallet();
   const getActiveTab = (t: number) => t === tab;
 
@@ -70,7 +72,9 @@ function Feed() {
           {/* Tabs */}
           <div className={styles.tabContainer}>
             <p className={getActiveTab(0) ? styles.activeTab : ""} onClick={() => setTab(0)}>Explore</p>
-            <p className={getActiveTab(1) ? styles.activeTab : ""} onClick={() => setTab(1)}>Following</p>
+            {(width === null || width > 900) && (
+              <p className={getActiveTab(1) ? styles.activeTab : ""} onClick={() => setTab(1)}>Following</p>
+            )}
             <div
               style={{
                 width: tab === 0 ? '7rem' : '9rem',
