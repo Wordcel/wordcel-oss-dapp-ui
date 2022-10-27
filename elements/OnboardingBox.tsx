@@ -14,7 +14,7 @@ import { createNewProfile, getUserTwitter, verifyTwitterRequest } from '@/lib/ne
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { createFreshProfile } from '@/lib/contractInteraction';
 import { getUserNFTs } from '@/lib/getAllUserNFTs';
-import { uploadImageBundlr } from '@/lib/uploadBundlr';
+import { uploadPicture } from '@/lib/networkRequests';
 import { messageToSign } from '@/lib/verifyTwitter';
 import { CreateButton } from './Buttons';
 import { useCardinal } from '@/components/Context';
@@ -253,7 +253,13 @@ export const OnboardingBox = ({
                     onChange={async (e) => {
                       const file = e.target.files?.[0];
                       if (!file) return;
-                      const url = await uploadImageBundlr(file, walletContext);
+                      const request = uploadPicture(file, walletContext);
+                      toast.promise(request, {
+                        loading: 'Uploading Image',
+                        success: 'Image Uploaded',
+                        error: 'Error Uploading Image'
+                      });
+                      const url = await request;
                       if (url) setImage(url);
                     }}
                   />

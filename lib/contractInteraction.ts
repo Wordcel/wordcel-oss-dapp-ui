@@ -3,9 +3,8 @@ import randombytes from 'randombytes';
 import toast from 'react-hot-toast';
 import idl from '@/lib/config/wordcel-idl.json';
 import { SystemProgram, PublicKey, Transaction } from '@solana/web3.js';
-import { ContentPayload } from '@/lib/upload';
 import { WalletContextState } from '@solana/wallet-adapter-react';
-import { uploadBundle } from '@/lib/uploadBundlr';
+import { ContentPayload, uploadContent } from '@/lib/uploadContent';
 import {
   MAINNET_ENDPOINT,
   WORDCEL_MAINNET_PROGRAM_ID,
@@ -111,7 +110,7 @@ export async function publishPost(
   toast.loading('Uploading');
   let metadataURI: (string|undefined) = '';
   try {
-    metadataURI = await uploadBundle(
+    metadataURI = await uploadContent(
       data,
       adapterWallet,
       postAccount.toBase58(),

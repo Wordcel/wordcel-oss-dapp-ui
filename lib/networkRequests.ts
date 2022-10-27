@@ -13,6 +13,9 @@ import { User } from '@prisma/client';
 import { BUNDLR_MAINNET_ENDPOINT, MAINNET_ENDPOINT } from './config/constants';
 import { Article } from '@/types/props';
 import { Connection, PublicKey, ParsedAccountData } from '@solana/web3.js'
+import { WalletContextState } from '@solana/wallet-adapter-react';
+import { getUserSignature } from './signMessage';
+import toast from 'react-hot-toast';
 
 export async function publishToServer (
   data: PublishArticleRequest
@@ -318,4 +321,46 @@ export async function getTipDestination (txid: string) {
   );
   const accountInfo = (tokenAccountInfo.value?.data as ParsedAccountData).parsed.info;
   return accountInfo.owner;
+}
+
+export async function uploadJSON (
+  data: any,
+  tags: { name: string, value: string }[],
+  public_key: string,
+  signature: Uint8Array,
+) {
+  const response = await fetch('https://wordcel.up.railway.app/json', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      data,
+      tags,
+      public_key,
+      signature
+    })
+  });
+  const json = await response.json();
+  return json;
+}
+
+export async function uploadPicture (
+  file: File,
+  wallet: WalletContextState
+) {
+  const { signMessage, publicKey } = wallet;
+  if (!publicKey || !signMessage) return;
+  const signature = await getUserSignature(signMessage, publicKey.toBase58());
+  if (!signature) return;
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('public_key', publicKey.toBase58());
+  formData.append('signature', JSON.stringify(signature));
+  const response = await fetch('https://wordcel.up.railway.app/upload', {
+    method: 'POST',
+    body: formData
+  });
+  const json = await response.json();
+  return json.url;
 }

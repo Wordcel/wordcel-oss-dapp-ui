@@ -17,12 +17,12 @@ import styles from '@/styles/EditProfile.module.scss';
 import { UpdatableUserDetails, UpdateUser } from '@/types/api';
 
 // Component Imports
-import { uploadImageBundlr } from '@/lib/uploadBundlr';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { getUserSignature } from '@/lib/signMessage';
 import { useRouter } from 'next/router';
 import { SecondaryInput } from './Inputs';
 import { Switch } from "@nextui-org/react";
+import { uploadPicture } from '@/lib/networkRequests';
 
 
 const modalStyles = {
@@ -141,7 +141,13 @@ export const EditProfile = ({
                       onChange={async (e) => {
                         const file = e.target.files?.[0];
                         if (!file) return;
-                        const url = await uploadImageBundlr(file, walletContext);
+                        const request = uploadPicture(file, walletContext);
+                        toast.promise(request, {
+                          loading: 'Uploading Image',
+                          success: 'Image Uploaded',
+                          error: 'Error Uploading Image'
+                        });
+                        const url = await request;
                         if (url) setUpdateData({ ...updateData, image_url: url });
                       }}
                     />
