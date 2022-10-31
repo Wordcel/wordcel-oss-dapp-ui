@@ -9,7 +9,9 @@ import {
   SolflareWalletAdapter,
   SolletExtensionWalletAdapter,
   SolletWalletAdapter,
-  GlowWalletAdapter
+  GlowWalletAdapter,
+  BraveWalletAdapter,
+  BackpackWalletAdapter
 } from '@solana/wallet-adapter-wallets';
 import {
   WalletModalProvider,
@@ -65,12 +67,14 @@ export const Wallet = ({
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
-      // new SlopeWalletAdapter(),
-      // new SolflareWalletAdapter({ network }),
-      // new LedgerWalletAdapter(),
-      // new SolletWalletAdapter({ network }),
-      // new SolletExtensionWalletAdapter({ network }),
-      // new GlowWalletAdapter(),
+      new SlopeWalletAdapter(),
+      new SolflareWalletAdapter({ network }),
+      new LedgerWalletAdapter(),
+      new SolletWalletAdapter({ network }),
+      new SolletExtensionWalletAdapter({ network }),
+      new GlowWalletAdapter(),
+      new BraveWalletAdapter(),
+      new BackpackWalletAdapter()
     ],
     [network]
   );
