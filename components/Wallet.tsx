@@ -10,7 +10,6 @@ import {
   SolletExtensionWalletAdapter,
   SolletWalletAdapter,
   GlowWalletAdapter,
-  BraveWalletAdapter,
   BackpackWalletAdapter
 } from '@solana/wallet-adapter-wallets';
 import {
@@ -73,7 +72,6 @@ export const Wallet = ({
       new SolletWalletAdapter({ network }),
       new SolletExtensionWalletAdapter({ network }),
       new GlowWalletAdapter(),
-      new BraveWalletAdapter(),
       new BackpackWalletAdapter()
     ],
     [network]
