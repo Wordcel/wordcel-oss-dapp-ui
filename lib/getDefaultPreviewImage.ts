@@ -11,7 +11,7 @@ export const getDefaultArticleImage = (
     image: user?.image_url
   };
   const base64Data = Buffer.from(JSON.stringify(data)).toString('base64');
-  const defaultImage = `https://og.wdclclub.com/article/${encodeURIComponent(base64Data)}`;
+  const defaultImage = `https://d3ztzybo1ne7w.cloudfront.net/article/${encodeURIComponent(base64Data)}`;
   return defaultImage
 };
 
@@ -25,6 +25,6 @@ export const getDefaultUserImage = (
     username: user?.username
   }
   const base64Data = Buffer.from(JSON.stringify(data)).toString('base64');
-  const defaultImage = `https://og.wdclclub.com/user/${encodeURIComponent(base64Data)}`;
+  const defaultImage = `https://d3ztzybo1ne7w.cloudfront.net/user/${encodeURIComponent(base64Data)}`;
   return defaultImage;
 };

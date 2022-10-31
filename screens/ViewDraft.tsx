@@ -70,7 +70,7 @@ export const ViewDraft = (props: GetDraftServerSide) => {
     image: props.user?.image_url
   };
   const base64Data = Buffer.from(JSON.stringify(SEOData)).toString('base64');
-  const SEOImage = props.draft?.image_url || `https://og.wdclclub.com/article/${encodeURIComponent(base64Data)}`;
+  const SEOImage = props.draft?.image_url || `https://d3ztzybo1ne7w.cloudfront.net/article/${encodeURIComponent(base64Data)}`;
 
   const readingTime = getReadingTime(blocks);
 
