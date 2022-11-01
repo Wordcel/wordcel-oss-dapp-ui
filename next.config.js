@@ -24,6 +24,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/adityashetty.sol/:slug',
+        destination: '/scriblooooor.sol/:slug',
+        permanent: true,
+      },
+      {
         source: '/shek',
         destination: '/shek.sol',
         permanent: true,
@@ -36,6 +41,11 @@ const nextConfig = {
       {
         source: '/paarug',
         destination: '/paarug.sol',
+        permanent: true,
+      },
+      {
+        source: '/adityashetty.sol',
+        destination: '/scriblooooor.sol',
         permanent: true,
       },
     ]
