@@ -85,9 +85,7 @@ const walletToDialectWallet = (
     !wallet.disconnecting &&
     Boolean(wallet.publicKey),
   signMessage: wallet.signMessage,
-  // @ts-expect-error
   signTransaction: wallet.signTransaction,
-  // @ts-expect-error
   signAllTransactions: wallet.signAllTransactions,
   //@ts-ignore
   diffieHellman: wallet.wallet?.adapter?._wallet?.diffieHellman
