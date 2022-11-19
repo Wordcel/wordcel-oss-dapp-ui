@@ -123,7 +123,7 @@ function InvitePage() {
 
   return (
     <div>
-      <DefaultHead title="InvitePage" />
+      <DefaultHead title="Invite to Wordcel" />
       <Navbar />
       <MainLayout>
       <div className={styles.container}>
@@ -138,7 +138,7 @@ function InvitePage() {
                   <div className={styles.header}>
                     <img src={quill.src} alt="" />
                     <h1 className="heading nm mt-2">You have {invitesLeft} {getInviteText(invitesLeft)}</h1>
-                    <p className="light-sub-heading thin">You can invite {invitesLeft} more friends to use the DApp</p>
+                    <p className="light-sub-heading thin">You can invite {invitesLeft} more {invitesLeft === 1 ? 'friend' : 'friends'} to use the DApp</p>
                   </div>
                   <div className={styles.form}>
                     <input
@@ -189,7 +189,6 @@ function InvitePage() {
       </MainLayout>
     </div>
   );
-
 }
 
 export default InvitePage;

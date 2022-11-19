@@ -18,7 +18,8 @@ async function handler(
     },
     orderBy: {
       created_at: 'desc',
-    }
+    },
+    take: 5
   });
   res.status(200).json({
     invites: JSON.parse(JSON.stringify(invites)),
