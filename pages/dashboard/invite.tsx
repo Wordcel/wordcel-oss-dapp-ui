@@ -37,6 +37,7 @@ function InvitePage() {
 
   const router = useRouter();
   const anchorWallet = useAnchorWallet();
+  const [refresh, setRefresh] = useState(0);
   const [address, setAddress] = useState('');
   const [loading, setLoading] = useState(false);
   const [invitesLeft, setInvitesLeft] = useState(2);
@@ -67,6 +68,7 @@ function InvitePage() {
   }, [publicKey]);
 
   useEffect(() => {
+    if (refresh > 0) console.log('Refreshing Invites');
     (async function () {
       if (!publicKey) return;
       toast.loading('Fetching Invites');
@@ -75,7 +77,7 @@ function InvitePage() {
       setUserInvites(response?.invites);
       toast.dismiss();
     })();
-  }, [publicKey])
+  }, [publicKey, refresh]);
 
   const getInviteText = (invitesLeft: number): string => {
     if (invitesLeft === 1) return 'invite';
@@ -111,7 +113,7 @@ function InvitePage() {
       receiver_name: receiverName
     });
     setInvitesLeft(invitesLeft - 1);
-    router.replace(router.asPath);
+    setRefresh(refresh + 1);
   };
 
   const copyLink = (account: string) => {
