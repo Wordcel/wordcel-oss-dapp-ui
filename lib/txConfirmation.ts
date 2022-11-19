@@ -29,6 +29,7 @@ export async function sendAndConfirmTransaction (
     };
     if (!txid || !confirmTransaction) return;
   } catch (e) {
+    toast.dismiss();
     toast.error('Failed to send transaction to the network');
     console.error(e);
     return false;
