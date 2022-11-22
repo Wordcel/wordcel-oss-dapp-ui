@@ -142,8 +142,15 @@
 
 .profileAdditional {
   display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.profileAdditionalLeft {
+  display: flex;
   align-items: center;
-  gap: 3.5%;
+  gap: 7%;
+  width: 50%;
 }
 
 .viewsIcon {

@@ -36,12 +36,26 @@ export const getUserServerSide = async (
   const connection_count = await prisma.connection.count({
     where: { profile_owner: user.public_key }
   });
-  const post_count = await prisma.article.count({
-    where: { user_id: user.id }
+  const invited_by_inv = await prisma.invite.findFirst({
+    where: {
+      receiver: user.public_key
+    }
   });
+  let invited_by;
+  if (invited_by_inv) {
+    invited_by = await prisma.user.findFirst({
+      where: {
+        id: invited_by_inv?.user_id
+      }
+    });
+  }
   const userData = {
     ...user,
-    connection_count
+    connection_count,
+    invited_by: invited_by ? {
+      name: invited_by.name,
+      username: invited_by.username,
+    } : null
   };
   if (articles) {
     const articles = await prisma.article.findMany({
@@ -56,7 +70,7 @@ export const getUserServerSide = async (
       props: {
         user: userData,
         articles: JSON.parse(JSON.stringify(articles)),
-        post_count
+        post_count: articles.length
       }
     }
   }

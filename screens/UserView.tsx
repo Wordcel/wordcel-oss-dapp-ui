@@ -9,6 +9,7 @@ import { ArticlePreview } from '../components/ArticlePreview';
 
 // @ts-expect-error
 import AnchorifyText from 'react-anchorify-text';
+import Link from 'next/link'
 
 import {
   closeConnection,
@@ -177,39 +178,48 @@ export const UserProfile = ({
                     </p>
                   )}
                   <div className={styles.profileAdditional}>
-                    {props.user.twitter && (
-                      <a
-                        href={`https://twitter.com/${props.user.twitter}`}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        key={props.user.twitter}>
-                          <TwitterIcon color="#94A3B8" />
-                      </a>
-                    )}
-                    {props.user.discord && (
-                      <a
-                        href={props.user.discord}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        key={props.user.discord}>
-                          <DiscordIcon color="#94A3B8" />
-                      </a>
-                    )}
-                    {typeof PostsCount !== 'undefined' && (
-                      <p className="text size-16 weight-700 gray-700">
-                        {PostsCount}
-                        <span className='ml-1 text size-16 weight-600 gray-400'>
-                          {PostsCount === 1 ? 'Post' : 'Posts'}
-                        </span>
-                      </p>
-                    )}
-                    {typeof FollowersCount !== 'undefined' && (
-                      <p className="text size-16 weight-700 gray-700">
-                        {FollowersCount}
-                        <span className='ml-1 text size-16 weight-600 gray-400'>
-                          {FollowersCount === 1 ? 'Follower' : 'Followers'}
-                        </span>
-                      </p>
+                    <div className={styles.profileAdditionalLeft}>
+                      {props.user.twitter && (
+                        <a
+                          href={`https://twitter.com/${props.user.twitter}`}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                          key={props.user.twitter}>
+                            <TwitterIcon color="#94A3B8" />
+                        </a>
+                      )}
+                      {props.user.discord && (
+                        <a
+                          href={props.user.discord}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                          key={props.user.discord}>
+                            <DiscordIcon color="#94A3B8" />
+                        </a>
+                      )}
+                      {typeof PostsCount !== 'undefined' && (
+                        <p className="text size-16 weight-700 gray-700">
+                          {PostsCount}
+                          <span className='ml-1 text size-16 weight-600 gray-400'>
+                            {PostsCount === 1 ? 'Post' : 'Posts'}
+                          </span>
+                        </p>
+                      )}
+                      {typeof FollowersCount !== 'undefined' && (
+                        <p className="text size-16 weight-700 gray-700">
+                          {FollowersCount}
+                          <span className='ml-1 text size-16 weight-600 gray-400'>
+                            {FollowersCount === 1 ? 'Follower' : 'Followers'}
+                          </span>
+                        </p>
+                      )}
+                    </div>
+                    {props.user.invited_by && (
+                      <p>Invited by <span className="text weight-600">
+                        <Link href={'/' + props.user.invited_by.username}>
+                          <a>{props.user.invited_by.name}</a>
+                        </Link>
+                      </span></p>
                     )}
                   </div>
                 </div>

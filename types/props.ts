@@ -12,6 +12,7 @@ export interface User {
   discord?: string;
   image_url?: string;
   banner_url?: string;
+  invited_by: { name: string; username: string } | null;
 }
 
 export interface Article {
