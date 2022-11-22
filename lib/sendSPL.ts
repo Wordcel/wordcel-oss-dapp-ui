@@ -9,7 +9,7 @@ import {
   Token,
 } from '@solana/spl-token';
 import { toast } from 'react-hot-toast';
-import { USDC_MINT } from './config/constants';
+import { MAINNET_ENDPOINT, USDC_MINT } from './config/constants';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { addTip } from './networkRequests';
 
@@ -33,7 +33,7 @@ export const sendSPL = async (
   // Construct wallet keypairs
   const fromWallet = Keypair.generate();
   const toWallet = new PublicKey(toWalletAddress);
-  const connection = new Connection('https://api.mainnet-beta.solana.com', {
+  const connection = new Connection(MAINNET_ENDPOINT, {
     confirmTransactionInitialTimeout: 120000,
   });
 
