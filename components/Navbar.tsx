@@ -102,6 +102,9 @@ export const Navbar = ({
 
   const handleDropDownItems = (key: string) => {
     switch (key) {
+      case 'dashboard':
+        router.push('/dashboard');
+        break;
       case 'profile':
         showEditProfile ? editProfile.edit() : router.push('/' + data?.user?.username)
         break;
@@ -119,6 +122,29 @@ export const Navbar = ({
       case 'preview':
         if (showPreview) showPreview();
         break;
+    }
+  }
+
+  const MenuItems = ({ dashboardEnabled }: {
+    dashboardEnabled: boolean;
+  }) => {
+    if (dashboardEnabled) {
+      return (
+        <Dropdown.Menu onAction={(key) => handleDropDownItems(key.toString())} aria-label="Profile Actions">
+          <Dropdown.Item key="dashboard">{'Go to Dashboard'}</Dropdown.Item>
+          <Dropdown.Item key="profile">{showEditProfile ? 'Edit Profile' : 'My Profile'}</Dropdown.Item>
+          <Dropdown.Item key="copy">Copy Address</Dropdown.Item>
+          <Dropdown.Item key="disconnect" withDivider color="error">Disconnect</Dropdown.Item>
+        </Dropdown.Menu>
+      )
+    } else {
+      return (
+        <Dropdown.Menu onAction={(key) => handleDropDownItems(key.toString())} aria-label="Profile Actions">
+          <Dropdown.Item key="profile">{showEditProfile ? 'Edit Profile' : 'My Profile'}</Dropdown.Item>
+          <Dropdown.Item key="copy">Copy Address</Dropdown.Item>
+          <Dropdown.Item key="disconnect" withDivider color="error">Disconnect</Dropdown.Item>
+        </Dropdown.Menu>
+      )
     }
   }
 
@@ -237,13 +263,7 @@ export const Navbar = ({
                   </div>
                 </Dropdown.Trigger>
                 <div className={styles.dropdownMenu}>
-                  <Dropdown.Menu onAction={(key) => handleDropDownItems(key.toString())} aria-label="Profile Actions">
-                    <Dropdown.Item key="profile">{showEditProfile ? 'Edit Profile' : 'My Profile'}</Dropdown.Item>
-                    <Dropdown.Item key="copy">Copy Address</Dropdown.Item>
-                    <Dropdown.Item key="disconnect" withDivider color="error">
-                      Disconnect
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
+                  <MenuItems dashboardEnabled={!router.asPath.includes('dashboard')} />
                 </div>
               </Dropdown>
             </div>

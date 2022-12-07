@@ -16,7 +16,7 @@ export const BUNDLR_DEVNET_ENDPOINT = 'https://devnet.bundlr.network';
 export const BUNDLR_MAINNET_ENDPOINT = 'https://node1.bundlr.network';
 
 export const WHITELIST_URL = 'https://tally.so/r/w2d59m';
-export const DEFAULT_OG_IMAGE = 'https://bafkreielxpcbzu7nmn7dctpyxwfshjwfgx7f3357k4jvz77gbvxk3oasim.ipfs.nftstorage.link/';
+export const DEFAULT_OG_IMAGE = 'https://arweave.net/DH2DiFPbWAl5zUBs5Z2fOi3fmMKHbs_zMA0sP6apa60';
 
 // PROGRAM IDs
 

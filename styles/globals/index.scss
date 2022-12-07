@@ -1,6 +1,7 @@
 @import 'redesign.scss';
 @import 'text.scss';
 @import 'search.scss';
+@import 'landing.scss';
 
 :root {
   --text-color: hsl(0, 0%, 0%);
@@ -460,6 +461,18 @@ li {
 }
 .mb-2 {
   margin-bottom: 2rem;
+}
+.mb-3 {
+  margin-bottom: 3rem;
+}
+.mb-4 {
+  margin-bottom: 4rem;
+}
+.mb-5 {
+  margin-bottom: 5rem;
+}
+.mb-6 {
+  margin-bottom: 6rem;
 }
 .mt-0-5 {
   margin-top: 0.5rem;
@@ -1026,4 +1039,14 @@ figure {
 .light{
   color: #383a42;
   background-color: #fafafa;
+}
+
+.z-1 {
+  z-index: 1;
+}
+.z-2 {
+  z-index: 2;
+}
+.z-3 {
+  z-index: 3;
 }

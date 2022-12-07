@@ -4,11 +4,6 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: "/",
-        destination: "/feed",
-        permanent: false
-      },
-      {
         source: '/shek/:slug',
         destination: '/shek.sol/:slug',
         permanent: true,

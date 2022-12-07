@@ -1,3 +1,13 @@
+.text.font-2 {
+  font-family: 'Plus Jakarta Sans' !important;
+}
+.text.center {
+  text-align: center;
+}
+.text.white {
+  color: hsl(0, 0%, 100%);
+}
+
 .text.gray-50 {
   color: var(--gray-50);
 }
@@ -73,6 +83,9 @@
 }
 .text.size-56 {
   font-size: 5.6rem;
+}
+.text.size-58 {
+  font-size: 5.8rem;
 }
 .text.size-60 {
   font-size: 6.0rem;
