@@ -9,7 +9,7 @@ import {
   verifyMethod,
   authenticate
 } from '@/lib/server';
-import { verifySolDomain } from '@/lib/verifySolDomain';
+import { verifySolDomain, verifyWAODomain } from '@/lib/verifyDomain';
 import { withSentry } from '@sentry/nextjs';
 import { newUserAlert } from '@/lib/sendUserActivity';
 import { ALGOLIA_APPLICATION_ID } from '@/lib/config/constants';
@@ -53,17 +53,22 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const authenticated = authenticate(public_key, signature, res);
     if (!authenticated) return;
 
-    if (!username.toLowerCase().includes('.sol')) {
+    const solDomain = username.includes('.sol');
+    const waoDomain = username.includes('.wao');
+    const validDomain = solDomain || waoDomain;
+
+    if (!validDomain) {
       res.status(400).json({
         error: 'You must have a .SOL domain to continue'
       });
       return;
     }
 
-    const verified = await verifySolDomain(public_key, username);
+    const verified = waoDomain ? await verifyWAODomain(public_key, username) : await verifySolDomain(public_key, username);
+
     if (!verified) {
       res.status(400).json({
-        error: 'Invalid SOL Domain'
+        error: 'Invalid Domain'
       });
       return;
     };

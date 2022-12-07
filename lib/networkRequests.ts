@@ -364,3 +364,29 @@ export async function uploadPicture (
   const json = await response.json();
   return json.url;
 }
+
+export async function getBagpackDomain (
+  public_key: string
+) {
+  try {
+    const request = await fetch('https://xnft-api-server.fly.dev/v1/users/fromPubkey?publicKey=' + public_key);
+    const response = await request.json();
+    return response.user.username + '.wao';
+  } catch (e) {
+    console.error(e);
+    return undefined
+  }
+};
+
+export async function getBagpackDomainProxied (
+  public_key: string
+) {
+  try {
+    const request = await fetch('/api/wao/get/' + public_key);
+    const response = await request.json();
+    return response.username;
+  } catch (e) {
+    console.error(e);
+    return undefined
+  }
+};

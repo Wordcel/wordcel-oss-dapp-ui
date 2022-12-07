@@ -10,7 +10,7 @@ import { Done, Step, SmallCheckIcon } from '@/images/dynamic/Step';
 import { useEffect, useRef, useState } from 'react';
 import { getUserSignature } from '@/lib/signMessage';
 import { getAllUserDomains } from '@/lib/getAllUserDomains';
-import { createNewProfile, getUserTwitter, verifyTwitterRequest } from '@/lib/networkRequests';
+import { createNewProfile, getBagpackDomainProxied, getUserTwitter, verifyTwitterRequest } from '@/lib/networkRequests';
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { createFreshProfile } from '@/lib/contractInteraction';
 import { getUserNFTs } from '@/lib/getAllUserNFTs';
@@ -34,7 +34,7 @@ export const OnboardingBox = ({
   const [refresher, setRefresher] = useState(0);
   const [nfts] = useState<Set<string>>(new Set());
   const [domains, setDomains] = useState<string[]>([]);
-
+  const [waoDomain, setWAODomain] = useState('');
   const wallet = useAnchorWallet();
   const walletContext = useWallet();
   const cardinalContext = useCardinal();
@@ -47,6 +47,15 @@ export const OnboardingBox = ({
       const sns_domains = await getAllUserDomains(publicKey);
       console.log('Domains:', sns_domains);
       setDomains(sns_domains);
+    })();
+  }, [publicKey]);
+
+  useEffect(() => {
+    (async function () {
+      if (!publicKey) return;
+      const owner_domain = await getBagpackDomainProxied(publicKey.toBase58());
+      console.log('WAO Domain:', owner_domain);
+      if (owner_domain) setWAODomain(owner_domain);
     })();
   }, [publicKey]);
 
@@ -279,6 +288,21 @@ export const OnboardingBox = ({
                 <p className="normal-text sm nm">{"Choose a domain as your username"}</p>
                 {domains.length > 0 && (
                   <div className={styles.domainGrid}>
+                    <div
+                      onClick={() => handleDomainChange(waoDomain)}
+                      className={styles.domain}
+                      style={{ border: (username === waoDomain) ? '0.15rem solid var(--gray-500)' : '0.15rem solid var(--gray-300)' }}
+                    >
+                      <div
+                        className={styles.domainSelectionCheck}
+                        style={{ border: (username === waoDomain) ? 'none' : ''}}
+                      >
+                        {(username === waoDomain) && <SmallCheckIcon />}
+                      </div>
+                      <p className={`nm text weight-500 ${(username === waoDomain) ? 'gray-500' : 'gray-300'}`}>{
+                        waoDomain.length > 20 ? `...${waoDomain.slice(waoDomain.length-18, waoDomain.length)}` : waoDomain
+                      }</p>
+                    </div>
                     {domains.map((domain) => {
                       const isActive = domain === username;
                       return (
@@ -302,8 +326,8 @@ export const OnboardingBox = ({
                     })}
                   </div>
                 )}
-                {domains.length === 0 && (
-                  <p className="normal-text sm">It seems like you don't have any domains, you need a .SOL domain to sign up</p>
+                {(domains.length === 0 || !waoDomain) && (
+                  <p className="normal-text sm">It seems like you don't have any domains, you need a .SOL or a bagpack domain to sign up</p>
                 )}
               </div>
 

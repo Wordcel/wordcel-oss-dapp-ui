@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 import { createNewInvite } from '@/lib/networkRequests';
 import { getUserSignature } from '@/lib/signMessage';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
-import { getDomainOwner } from '@/lib/verifySolDomain';
+import { getDomainOwner } from '@/lib/verifyDomain';
 import { PublicKey } from '@solana/web3.js';
 import { validateSolanaAddress } from '@/lib/utils';
 
