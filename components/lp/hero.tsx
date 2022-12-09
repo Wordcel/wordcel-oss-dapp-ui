@@ -9,10 +9,10 @@ import bonfida from '@/images/lp/partners/bonfida.svg';
 import snowflake from '@/images/lp/partners/snowflake.svg';
 import dialect from '@/images/lp/partners/dialect.svg';
 import marginfi from '@/images/lp/partners/marginfi.svg';
-import arweave from '@/images/lp/partners/arweave.svg';
+import solanafm from '@/images/lp/partners/solana-fm.svg';
 import squads from '@/images/lp/partners/squads.svg';
 
-const allPartners = [arweave, bundlr, bonfida, snowflake, dialect, marginfi, squads];
+const allPartners = [solanafm, bundlr, bonfida, snowflake, dialect, marginfi, squads];
 
 function HeroSection() {
   return (
