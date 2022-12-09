@@ -41,6 +41,11 @@ export const getUserServerSide = async (
       receiver: user.public_key
     }
   });
+  const post_count = await prisma.article.count({
+    where: {
+      owner: { id: user.id }
+    }
+  });
   let invited_by;
   if (invited_by_inv) {
     invited_by = await prisma.user.findFirst({
@@ -71,7 +76,7 @@ export const getUserServerSide = async (
       props: {
         user: userData,
         articles: JSON.parse(JSON.stringify(articles)),
-        post_count: articles.length
+        post_count
       }
     }
   }
