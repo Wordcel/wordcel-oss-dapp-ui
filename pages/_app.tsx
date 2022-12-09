@@ -1,6 +1,7 @@
 import Router from 'next/router';
 import NProgress from 'nprogress';
 
+import 'react-pagination-bar/dist/index.css'
 import 'nprogress/nprogress.css';
 import 'inter-ui/inter.css';
 import '@fontsource/spectral';

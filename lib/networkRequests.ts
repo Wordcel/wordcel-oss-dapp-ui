@@ -404,3 +404,19 @@ export async function getBackpackDomainOwner (
     return undefined
   }
 }
+
+export async function fetchUserArticles (
+  public_key: string,
+  page: number
+) {
+  try {
+    const skip = (page - 1) * 10;
+    const take = 10;
+    const request = await fetch('/api/articles/' + public_key + '?skip=' + skip + '&take=' + take);
+    const response = await request.json();
+    return response;
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
+}

@@ -36,6 +36,7 @@
 body {
   background-color: var(--inverse-color);
   color: var(--gray-500);
+  scroll-behavior: smooth;
 }
 
 html {
@@ -1049,4 +1050,20 @@ figure {
 }
 .z-3 {
   z-index: 3;
+}
+
+.rpb-root {
+  transform: scale(1.6);
+  width: 100%;
+  display: flex;
+  height: 100%;
+  margin-top: 3rem;
+  margin-bottom: 5rem;
+}
+
+#rpb-pagination {
+  & > li {
+    font-size: inherit !important;
+    list-style: none !important;
+  }
 }

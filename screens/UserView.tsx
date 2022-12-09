@@ -4,7 +4,7 @@ import styles from '@/styles/UserView.module.scss';
 import { Footer } from '../components/Footer';
 import { DefaultHead } from '../components/DefaultHead';
 import { Navbar } from '@/components/Navbar';
-import { GetUserServerSide } from '@/types/props';
+import { Article, GetUserServerSide } from '@/types/props';
 import { ArticlePreview } from '../components/ArticlePreview';
 
 // @ts-expect-error
@@ -15,13 +15,14 @@ import {
   closeConnection,
   createConnection
 } from '@/lib/contractInteraction';
-import { getIfConnected } from '@/lib/networkRequests';
+import { fetchUserArticles, getIfConnected } from '@/lib/networkRequests';
 
 // Images
 import defaultBanner from '@/images/gradients/user-default-banner.png';
 import TwitterIcon from '@/images/dynamic/Twitter';
 import DiscordIcon from '@/images/dynamic/Discord';
 
+import { Pagination } from "react-pagination-bar"
 import { useWallet, useAnchorWallet } from '@solana/wallet-adapter-react';
 import { getUserSignature } from '@/lib/signMessage';
 import { PublicKey } from '@solana/web3.js';
@@ -34,6 +35,7 @@ import { NotFoundElement } from '@/components/404';
 import { User } from '@prisma/client';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 import { TipButton } from '@/components/Buttons';
+import { Loading } from '@/components/animations/Loading';
 
 
 export const UserProfile = ({
@@ -44,12 +46,14 @@ export const UserProfile = ({
 
   const router = useRouter();
   const wallet = useAnchorWallet();
-  const walletContext = useWallet();
   const { publicKey, signMessage } = useWallet();
 
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [hideFollow, setHideFollow] = useState(false);
   const [connected, setConnected] = useState(false);
   const [connectionKey, setConnectionKey] = useState('');
+  const [currentPosts, setCurrentPosts] = useState<Article[]>([]);
 
   const Name = props.user?.name;
   const Bio = props.user?.bio;
@@ -124,6 +128,16 @@ export const UserProfile = ({
       setConnected(getConnected);
     })();
   }, [wallet, publicKey, connected]);
+
+  const handlePageChange = async (page: number) => {
+    if (!props.user?.public_key) return;
+    setPage(page);
+    setLoading(true);
+    typeof window !== 'undefined' && window.scrollTo(0, 0);
+    const posts = await fetchUserArticles(props.user?.public_key, page);
+    setCurrentPosts(posts);
+    setLoading(false);
+  }
 
   return (
     <>
@@ -227,14 +241,31 @@ export const UserProfile = ({
             </div>
           </div>
           <div className={styles.articles}>
-            {props.articles && props.articles.map((article) => article.arweave_url && (
+            {page === 1 && props.articles && props.articles.map((article) => article.arweave_url && (
               <ArticlePreview
                 key={article.slug}
                 article={article}
                 user={props.user as User}
               />
             ))}
+            {page > 1 && !loading && currentPosts.length > 0 && currentPosts.map((a, i) => (
+              <ArticlePreview
+                key={i}
+                article={a}
+                user={props.user as User}
+              />
+            ))}
+            {page > 1 && loading && (
+              <Loading width={200} height={200} />
+            )}
           </div>
+          <Pagination
+            currentPage={page}
+            itemsPerPage={10}
+            onPageChange={handlePageChange}
+            totalItems={props.post_count ? props.post_count : 0}
+            pageNeighbours={2}
+          />
         </div>
       )}
     </>

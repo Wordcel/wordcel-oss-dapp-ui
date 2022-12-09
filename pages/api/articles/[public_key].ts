@@ -9,7 +9,9 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { public_key } = req.query;
+  const { public_key, skip, take } = req.query;
+  console.log(skip, take);
+
   const articles = await prisma.article.findMany({
     where: {
       owner: {
@@ -18,7 +20,9 @@ async function handler(
     },
     orderBy: {
       created_at: 'desc',
-    }
+    },
+    skip: typeof skip === 'string' ? Number(skip) : undefined,
+    take: typeof take === 'string' ? Number(take) : undefined,
   });
   res.status(200).json(articles);
 };

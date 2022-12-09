@@ -67,6 +67,7 @@
     "react-lottie": "^1.2.3",
     "react-mathjax": "^1.0.1",
     "react-modal": "^3.15.1",
+    "react-pagination-bar": "^2.0.1",
     "react-photo-collage": "^1.0.9",
     "react-spinners-kit": "^1.9.1",
     "react-use": "^17.4.0",

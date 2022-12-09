@@ -3,7 +3,7 @@ import prisma from '@/lib/prisma'
 export const getUserServerSide = async (
   context: any,
   isUsername?: boolean,
-  articles?: boolean,
+  getArticles?: boolean,
   noRedirect?: boolean
 ) => {
   const public_key = context.query.publicKey as string;
@@ -57,8 +57,9 @@ export const getUserServerSide = async (
       username: invited_by.username,
     } : null
   };
-  if (articles) {
+  if (getArticles) {
     const articles = await prisma.article.findMany({
+      take: 10,
       where: {
         owner: { id: user.id }
       },
