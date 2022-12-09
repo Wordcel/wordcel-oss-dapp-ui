@@ -390,3 +390,17 @@ export async function getBagpackDomainProxied (
     return undefined
   }
 };
+
+export async function getBackpackDomainOwner (
+  domain: string
+) {
+  try {
+    const request = await fetch(`https://auth.xnfts.dev/users/${domain.split('.')[0]}/info`);
+    const response = await request.json();
+    const address = response.publicKeys.filter((p: any) => p.blockchain === 'solana')[0].publicKey;
+    return address;
+  } catch (e) {
+    console.error(e);
+    return undefined
+  }
+}

@@ -14,12 +14,11 @@ import {
   useWallet
 } from '@solana/wallet-adapter-react';
 import { useRouter } from 'next/router';
-import { createNewInvite } from '@/lib/networkRequests';
+import { createNewInvite, getBackpackDomainOwner } from '@/lib/networkRequests';
 import { getUserSignature } from '@/lib/signMessage';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 import { getDomainOwner } from '@/lib/verifyDomain';
 import { PublicKey } from '@solana/web3.js';
-import { validateSolanaAddress } from '@/lib/utils';
 
 // Image imports
 import quill from '@/images/elements/quill.svg';
@@ -84,6 +83,8 @@ function InvitePage() {
     return 'invites';
   }
 
+  const addressIsValid = address.toLowerCase().endsWith('.sol') || address.toLowerCase().endsWith('.wao');
+
   const handleSendInvite = async () => {
     if (!anchorWallet || !signMessage || !publicKey) return;
     if (invitesLeft === 0) {
@@ -93,12 +94,17 @@ function InvitePage() {
     const signature = await getUserSignature(signMessage, publicKey.toBase58());
     if (!signature) return;
     toast.loading('Fetching wallet address from domain');
-    const toInviteAddress = address.endsWith('.sol') ? await getDomainOwner(address.toLowerCase()) : new PublicKey(address);
+    const toInviteAddress = address.endsWith('.sol') ? await getDomainOwner(address.toLowerCase()) : await (async () => {
+      const _address = await getBackpackDomainOwner(address.toLowerCase());
+      if (!_address) return;
+      return new PublicKey(_address);
+    })();
+    toast.dismiss();
     if (!toInviteAddress) {
       toast.error('Invalid domain');
       return;
     }
-    toast.dismiss();
+    console.log('Inviting: ', toInviteAddress.toBase58());
     const invite = await sendInvite(
       anchorWallet as any,
       toInviteAddress
@@ -120,8 +126,6 @@ function InvitePage() {
     navigator.clipboard.writeText('https://wordcelclub.com/invitation/' + account);
     toast.success('Invitation link copied');
   };
-
-  const addressIsValid = address.toLowerCase().includes('.sol') || validateSolanaAddress(address);
 
   return (
     <div>
@@ -150,7 +154,7 @@ function InvitePage() {
                     />
                     <input
                       onChange={(e) => setAddress(e.target.value)}
-                      placeholder='Enter .SOL domain or wallet address'
+                      placeholder='Enter .SOL domain or .WAO domain'
                       className="secondary-input mt-2"
                     />
                     <button
