@@ -50,6 +50,7 @@ model Connection {
   account String
   connector String
   profile_owner String
+  created_at DateTime @default(now())
 }
 
 model Draft {

@@ -47,7 +47,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       data: {
         profile_owner: profile_owner,
         account: account,
-        connector: public_key
+        connector: public_key,
+        created_at: new Date()
       }
     });
 
