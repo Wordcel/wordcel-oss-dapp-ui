@@ -17,7 +17,7 @@ export const getDefaultArticleImage = (
 };
 
 export const getDefaultUserImage = (
-  user?: User
+  user?: PropsUser
 ) => {
   const data = {
     name: user?.name,
