@@ -1,10 +1,10 @@
-import type { Article, User } from '@/types/props';
+import type { Article } from '@/types/props';
+import type { User } from '@prisma/client';
 
 export const getDefaultArticleImage = (
   article: Article,
   user?: User
 ) => {
-  console.log(user);
   const data = {
     title: article.title,
     name: user?.name,

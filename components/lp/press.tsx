@@ -20,7 +20,7 @@ function PressCard({ article, vertical }: {
   const formatted_date = date.format(created_at, 'DD MMM YYYY');
   return (
     <div className={vertical ? styles.pressCardVertical : styles.pressCard}>
-      <img src={article.image_url || getDefaultArticleImage(article)} alt="" />
+      <img src={article.image_url || getDefaultArticleImage(article, article.owner)} alt="" />
       <div className={styles.pressCardText}>
         <p className="text nm font-2 white size-24 weight-600 pointer">
           {shortenSentence(article.title, 42)}
