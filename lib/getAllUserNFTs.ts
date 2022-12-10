@@ -2,6 +2,8 @@ import {
   resolveToWalletAddress,
   getParsedNftAccountsByOwner,
 } from "@nfteyez/sol-rayz";
+import { Connection } from "@solana/web3.js";
+import { MAINNET_ENDPOINT } from "./config/constants";
 
 export const getUserNFTsMetadata = async (
   public_key: string
@@ -10,8 +12,10 @@ export const getUserNFTsMetadata = async (
     const publicAddress = await resolveToWalletAddress({
       text: public_key
     });
+    const connection = new Connection(MAINNET_ENDPOINT);
     const nftArray = await getParsedNftAccountsByOwner({
       publicAddress,
+      connection
     });
     return nftArray.map((nft) => nft.data.uri);
   } catch (error) {

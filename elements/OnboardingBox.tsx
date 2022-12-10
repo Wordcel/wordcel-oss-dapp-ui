@@ -151,7 +151,7 @@ export const OnboardingBox = ({
   }
 
   const handleSubmit = async () => {
-    if (!publicKey || !signMessage) return;
+    if (!publicKey || !signMessage || !wallet) return;
     const signature = await getUserSignature(signMessage, publicKey.toBase58());
     if (!signature) {
       toast('Please sign the message to authenticate your wallet');
@@ -161,7 +161,7 @@ export const OnboardingBox = ({
       toast('Please enter your name, username, blog name and select an image');
       return;
     }
-    const profile_hash = await createFreshProfile(wallet as any);
+    const profile_hash = await createFreshProfile(wallet);
     if (!profile_hash) return;
     const request = createNewProfile({
       name: name,

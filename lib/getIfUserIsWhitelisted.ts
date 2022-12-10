@@ -1,10 +1,10 @@
-import * as anchor from '@project-serum/anchor';
 import { NextRouter } from 'next/router';
 import { getInviteAccount } from '@/lib/invitationIntegration';
 import { getUserExists } from '@/lib/networkRequests';
+import { AnchorWallet } from '@solana/wallet-adapter-react';
 
 export async function getIfWhitelisted(
-  user_wallet: anchor.Wallet,
+  user_wallet: AnchorWallet,
   router: NextRouter
 ) {
   const user_exists = await getUserExists(user_wallet.publicKey.toBase58());

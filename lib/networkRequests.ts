@@ -8,14 +8,13 @@ import {
 import { Draft } from '@/types/props';
 import crypto from 'crypto';
 import BigNumber from 'bignumber.js';
-import * as anchor from '@project-serum/anchor';
 import { User } from '@prisma/client';
 import { BUNDLR_MAINNET_ENDPOINT, MAINNET_ENDPOINT } from './config/constants';
 import { Article } from '@/types/props';
 import { Connection, PublicKey, ParsedAccountData } from '@solana/web3.js'
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { getUserSignature } from './signMessage';
-import toast from 'react-hot-toast';
+import { AnchorWallet } from '@solana/wallet-adapter-react';
 
 export async function publishToServer (
   data: PublishArticleRequest
@@ -60,7 +59,7 @@ export async function getProfileHash (
 };
 
 export async function getIfConnected(
-  wallet: anchor.Wallet,
+  wallet: AnchorWallet,
   profileOwner: string,
   returnResponse = false
 ) {

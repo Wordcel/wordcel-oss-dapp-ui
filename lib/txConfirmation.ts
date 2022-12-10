@@ -1,11 +1,11 @@
 import toast from 'react-hot-toast';
-import * as anchor from '@project-serum/anchor';
 import { Transaction, Connection } from '@solana/web3.js';
+import { AnchorWallet } from '@solana/wallet-adapter-react';
 
 export async function sendAndConfirmTransaction (
   connection: Connection,
   transaction: Transaction,
-  wallet: anchor.Wallet,
+  wallet: AnchorWallet,
   confirmTransaction = true
 ) {
   let _txid = '';

@@ -44,7 +44,7 @@ function InvitePage() {
   const [userInvites, setUserInvites] = useState<any[]>([]);
 
   useEffect(() => {
-    if (publicKey) {
+    if (publicKey && anchorWallet) {
       setLoading(true);
       if (isAdmin(publicKey)) {
         setInvitesLeft(Infinity);
@@ -54,7 +54,7 @@ function InvitePage() {
       (async function () {
         let user_account;
         try {
-          user_account = await getInviteAccount(anchorWallet as any);
+          user_account = await getInviteAccount(anchorWallet);
         } catch {
           router.push('/');
           return;
@@ -64,7 +64,7 @@ function InvitePage() {
         setLoading(false);
       })();
     }
-  }, [publicKey]);
+  }, [publicKey, anchorWallet]);
 
   useEffect(() => {
     if (refresh > 0) console.log('Refreshing Invites');
@@ -106,7 +106,7 @@ function InvitePage() {
     }
     console.log('Inviting: ', toInviteAddress.toBase58());
     const invite = await sendInvite(
-      anchorWallet as any,
+      anchorWallet,
       toInviteAddress
     );
     if (!invite) return;

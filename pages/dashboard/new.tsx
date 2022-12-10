@@ -55,7 +55,7 @@ function Dashboard() {
     console.log(payload);
     const response = await publishPost(
       payload,
-      anchorWallet as any,
+      anchorWallet,
       wallet,
       signature,
       undefined,

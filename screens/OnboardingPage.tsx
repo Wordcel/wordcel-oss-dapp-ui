@@ -19,30 +19,35 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
-import { getUserExists } from '@/lib/networkRequests';
 import { getInviteAccount } from '@/lib/invitationIntegration';
+import { getUserExists } from '@/lib/networkRequests';
 
 
 export const OnboardingPage = () => {
-  const wallet = useAnchorWallet();
   const router = useRouter();
   const windowSize = useWindowSize();
-  const { publicKey } = useWallet();
+  const wallet = useWallet();
+  const anchorWallet = useAnchorWallet();
+
   const [done, setDone] = useState(false);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
 
+  const publicKey = wallet.publicKey;
+
   useEffect(() => {
     (async function () {
-      if (!publicKey) return;
+      if (!publicKey || !anchorWallet) return;
       const user_exists = await getUserExists(publicKey.toBase58());
       if (user_exists) {
         router.push('/dashboard');
         return;
       };
       try {
-        await getInviteAccount(wallet as any);
-      } catch {
+        const account = await getInviteAccount(anchorWallet);
+        console.log(account);
+      } catch (e) {
+        console.error(e);
         toast('Sorry, you\'re not whitelisted');
         router.push('/');
       }

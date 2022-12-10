@@ -7,6 +7,7 @@ import {
 } from './config/constants';
 import { SystemProgram, PublicKey } from '@solana/web3.js';
 import { sendAndConfirmTransaction } from './txConfirmation';
+import { AnchorWallet } from '@solana/wallet-adapter-react';
 
 const invitationPrefix = Buffer.from("invite");
 
@@ -17,7 +18,7 @@ const connection = new anchor.web3.Connection(MAINNET_ENDPOINT, {
   confirmTransactionInitialTimeout: 120000,
 });
 
-const provider = (wallet: anchor.Wallet) => new anchor.AnchorProvider(
+const provider = (wallet: AnchorWallet) => new anchor.AnchorProvider(
   connection,
   wallet,
   { preflightCommitment }
@@ -40,14 +41,14 @@ const admin_accounts = [
 export const isAdmin = (user: PublicKey): boolean =>
   admin_accounts.includes(user.toBase58());
 
-export const getInviteAccount = async (user_wallet: anchor.Wallet) => {
+export const getInviteAccount = async (user_wallet: AnchorWallet) => {
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(user_wallet));
   const invite_key = await getInviteKey(user_wallet.publicKey);
   return await program.account.invite.fetch(invite_key);
 }
 
 async function adminInvite(
-  from_admin: anchor.Wallet,
+  from_admin: AnchorWallet,
   to_user: PublicKey,
 ) {
   toast.loading('Loading configurations');
@@ -77,7 +78,7 @@ export async function getInviteKey(public_key: PublicKey) {
 };
 
 export async function sendInvite(
-  from_user: anchor.Wallet,
+  from_user: AnchorWallet,
   to: PublicKey,
 ) {
   toast.loading('Loading configurations');

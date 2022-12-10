@@ -3,7 +3,7 @@ import randombytes from 'randombytes';
 import toast from 'react-hot-toast';
 import idl from '@/lib/config/wordcel-idl.json';
 import { SystemProgram, PublicKey, Transaction } from '@solana/web3.js';
-import { WalletContextState } from '@solana/wallet-adapter-react';
+import { AnchorWallet, WalletContextState } from '@solana/wallet-adapter-react';
 import { ContentPayload, uploadContent } from '@/lib/uploadContent';
 import {
   MAINNET_ENDPOINT,
@@ -25,7 +25,7 @@ const connection = new anchor.web3.Connection(MAINNET_ENDPOINT, {
   confirmTransactionInitialTimeout: 120000,
 });
 
-const provider = (wallet: anchor.Wallet) => new anchor.AnchorProvider(
+const provider = (wallet: AnchorWallet) => new anchor.AnchorProvider(
   connection,
   wallet,
   { preflightCommitment }
@@ -42,7 +42,7 @@ export async function getProfileKeyAndBump(
 };
 
 export async function createFreshProfile (
-  wallet: anchor.Wallet
+  wallet: AnchorWallet
 ) {
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
   const profileHash = randombytes(32);
@@ -74,7 +74,7 @@ export async function createFreshProfile (
 
 export async function publishPost(
   data: ContentPayload,
-  wallet: anchor.Wallet,
+  wallet: AnchorWallet,
   adapterWallet: WalletContextState,
   signature: Uint8Array,
   id?: string | number,
@@ -172,7 +172,7 @@ export async function publishPost(
 
 export async function getProfileKey (
   profileOwner: PublicKey,
-  wallet: anchor.Wallet
+  wallet: AnchorWallet
 ) {
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
   const existingHash = await getProfileHash(profileOwner.toBase58());
@@ -189,7 +189,7 @@ export async function getProfileKey (
 }
 
 export async function createConnection (
-  wallet: anchor.Wallet,
+  wallet: AnchorWallet,
   profileOwner: PublicKey,
   setConnected: (connected: boolean) => void,
   signature: Uint8Array
@@ -235,7 +235,7 @@ export async function createConnection (
 }
 
 export async function closeConnection (
-  wallet: anchor.Wallet,
+  wallet: AnchorWallet,
   profileOwner: PublicKey,
   setConnected: (connected: boolean) => void,
   signature: Uint8Array
@@ -301,7 +301,7 @@ export const getPostAccount = async (post_account: string) => {
   const program = new anchor.Program(
     idl as anchor.Idl,
     programID,
-    provider(new DummyWallet() as anchor.Wallet)
+    provider(new DummyWallet() as AnchorWallet)
   );
   const post_account_key = new PublicKey(post_account);
   return await program.account.post.fetch(post_account_key);

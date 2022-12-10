@@ -69,7 +69,7 @@ export const UserProfile = ({
   const checkIfConnected = async () => {
     if (wallet && props.user?.public_key) {
       try {
-        const res = await getIfConnected(wallet as any, props.user.public_key, true);
+        const res = await getIfConnected(wallet, props.user.public_key, true);
         if (res.error) return false;
         setConnectionKey(res.connection.account);
         setConnected(true);
@@ -86,12 +86,12 @@ export const UserProfile = ({
   const isSameUser = publicKey?.toBase58() === props.user?.public_key;
 
   const unfollow = async () => {
-    if (!props.user?.public_key || !signMessage || !publicKey || isSameUser) return;
+    if (!props.user?.public_key || !signMessage || !publicKey || isSameUser || !wallet) return;
     const signature = await getUserSignature(signMessage, publicKey.toBase58());
     if (!signature) return;
     if (connectionKey) {
       await closeConnection(
-        wallet as any,
+        wallet,
         new PublicKey(props.user.public_key),
         setConnected,
         signature
@@ -102,13 +102,13 @@ export const UserProfile = ({
   }
 
   const follow = async () => {
-    if (!props.user?.public_key || !signMessage || !publicKey || isSameUser) return;
+    if (!props.user?.public_key || !signMessage || !publicKey || isSameUser || !wallet) return;
     const alreadyConnected = await checkIfConnected();
     if (alreadyConnected) return;
     const signature = await getUserSignature(signMessage, publicKey.toBase58());
     if (!signature) return;
     await createConnection(
-      wallet as any,
+      wallet,
       new PublicKey(props.user.public_key),
       setConnected,
       signature
