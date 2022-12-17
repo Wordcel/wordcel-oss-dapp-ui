@@ -10,7 +10,7 @@ import { User } from '@prisma/client';
 
 interface UserData {
   user: User | null;
-  cardinal_verified: boolean;
+  fetched: boolean;
 }
 
 interface SidebarData {
@@ -29,24 +29,24 @@ const CardinalContext = createContext<CardinalData | null>(null);
 
 const UserProvider = ({ children }: any) => {
   const wallet = useWallet();
-  const [user, setUser] = useState<null | User>(null);
+  const [data, setData] = useState<null | UserData>(null);
 
   useEffect(() => {
     (async function () {
       if (wallet.publicKey) {
         const _user = await getUser(wallet.publicKey.toBase58());
         if (_user) {
-          setUser({ user: _user } as any);
+          setData({ user: _user, fetched: true });
         } else {
-          setUser(null)
+          setData({ user: null, fetched: true });
         }
       }
     })();
-    if (!wallet.publicKey) setUser(null);
+    if (!wallet.publicKey) setData(null);
   }, [wallet.publicKey]);
 
   return (
-    <UserContext.Provider value={user as any}>
+    <UserContext.Provider value={data}>
       {children}
     </UserContext.Provider>
   );

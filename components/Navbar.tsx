@@ -29,6 +29,7 @@ import { useUser } from './Context';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 import { useRouter } from 'next/router';
 import { Notification } from '@/components/Notification';
+import { requestInviteURL } from '@/lib/utils';
 
 
 export const LandingNavbar = ({
@@ -245,6 +246,17 @@ export const Navbar = ({
               <ConnectWallet noFullSize={true}>
                 <p style={{ width: '14rem' }} className="blue-text txt-right pointer">CONNECT WALLET</p>
               </ConnectWallet>
+            </div>
+          )}
+          {publicKey && data?.fetched && !data.user && (
+            <div className={styles.connectWalletText}>
+              <a
+                href={requestInviteURL()}
+                rel="noopener noreferrer"
+                target="_blank"
+                style={{ width: '14rem' }}
+                className="blue-text txt-right pointer"
+              >REQUEST INVITE</a>
             </div>
           )}
           {data?.user && (
