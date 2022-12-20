@@ -286,7 +286,7 @@ export const OnboardingBox = ({
 
               <div className="mt-2 mb-2">
                 <p className="normal-text sm nm">{"Choose a domain as your username"}</p>
-                {domains.length > 0 && (
+                {(domains.length > 0 || waoDomain) && (
                   <div className={styles.domainGrid}>
                     <div
                       onClick={() => handleDomainChange(waoDomain)}
@@ -326,7 +326,7 @@ export const OnboardingBox = ({
                     })}
                   </div>
                 )}
-                {(domains.length === 0 || !waoDomain) && (
+                {(domains.length === 0 && !waoDomain) && (
                   <p className="normal-text sm">It seems like you don't have any domains, you need a .SOL or a bagpack domain to sign up</p>
                 )}
               </div>
