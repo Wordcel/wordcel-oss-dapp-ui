@@ -28,6 +28,7 @@ export interface Article {
   proof_of_post?: string;
   arweave_url?: string;
   slug?: string
+  show__on_lp?: boolean;
 }
 
 export interface ArticleWithOwner extends Article {

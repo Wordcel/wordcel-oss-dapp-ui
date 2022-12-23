@@ -50,7 +50,7 @@ function PressSection() {
 
   useEffect(() => {
     (async function() {
-      const res = await fetch('/api/feed/explore');
+      const res = await fetch('/api/feed/lp');
       const data = await res.json();
       setArticles(data.splice(0, 4));
       setLoading(false);
