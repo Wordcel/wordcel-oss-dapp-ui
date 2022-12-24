@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import styles from '@/styles/Static.module.scss';
 import uploadImagePreview from '@/images/elements/upload.svg';
 import greenCheck from '@/images/elements/green-check.svg';
-import watchBtn from '@/images/elements/watch-btn.svg';
+import readBtn from '@/images/elements/read-btn.svg';
 
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 import { Done, Step, SmallCheckIcon } from '@/images/dynamic/Step';
@@ -74,7 +74,6 @@ export const OnboardingBox = ({
     (async function () {
       const verified_twitter = await getUserTwitter(publicKey.toBase58());
       if (!verified_twitter) return;
-      setUsername(verified_twitter);
       setTwitter(verified_twitter);
       setStep(2);
     })();
@@ -85,11 +84,7 @@ export const OnboardingBox = ({
       setStep(2);
       toast.success(`Twitter identity for @${cardinalContext.username} verified using Cardinal`);
     }
-  }, [cardinalContext])
-
-  useEffect(() => {
-    if (domains.length === 1) setUsername(domains[0]);
-  }, [domains]);
+  }, [cardinalContext]);
 
   const tabIsActive = (tab: number) => step === tab;
   const getTabClassName = (tab: number) => {
@@ -157,7 +152,7 @@ export const OnboardingBox = ({
       toast('Please sign the message to authenticate your wallet');
       return;
     }
-    if (!name || !blog_name || !image || !username) {
+    if (!name || !blog_name || !image ||  username === '') {
       toast('Please enter your name, username, blog name and select an image');
       return;
     }
@@ -351,6 +346,7 @@ export const OnboardingBox = ({
               <button
                 onClick={handleSubmit}
                 className="secondary-btn mt-2"
+                disabled={!name || !blog_name || !image || username === ''}
               >Continue</button>
 
             </div>
@@ -387,8 +383,8 @@ export const OnboardingBox = ({
                   <p className="text gray-700 weight-600 size-20 nm">See how it works</p>
                   <p className="text gray-400 weight-400 size-20 nm mt-0-5">Get a quick introduction to the platform</p>
                 </div>
-                <a href="/" target="_blank" rel="noopener noreferrer">
-                  <img src={watchBtn.src} alt="Watch Video" />
+                <a href="/wordcelclub.sol/wordcel-reimagined" target="_blank" rel="noopener noreferrer">
+                  <img src={readBtn.src} alt="Read Article" />
                 </a>
               </div>
             </div>
