@@ -1,3 +1,4 @@
+import NextCors from 'nextjs-cors';
 import prisma from '@/lib/prisma';
 import type {
   NextApiRequest,
@@ -12,6 +13,12 @@ import { withSentry } from '@sentry/nextjs';
 import { newConnectionAlert } from '@/lib/sendUserActivity';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
+  await NextCors(req, res, {
+    // Options
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    origin: '*',
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
   const allowed = verifyMethod(req, res, 'POST');
   if (!allowed) return;
   try {
