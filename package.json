@@ -51,7 +51,6 @@
     "html-entities": "^2.3.3",
     "inter-ui": "^3.19.3",
     "next": "12.1.0",
-    "nextjs-cors": "^2.1.2",
     "nprogress": "^0.2.0",
     "prisma": "^4.4.0",
     "randombytes": "^2.1.0",

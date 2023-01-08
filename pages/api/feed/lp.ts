@@ -1,4 +1,3 @@
-import NextCors from 'nextjs-cors';
 import prisma from '@/lib/prisma';
 import type {
   NextApiRequest,
@@ -7,15 +6,9 @@ import type {
 import { withSentry } from '@sentry/nextjs';
 
 async function handler(
-  req: NextApiRequest,
+  _req: NextApiRequest,
   res: NextApiResponse
 ) {
-  await NextCors(req, res, {
-    // Options
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    origin: '*',
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  });
   const from_date = new Date();
   from_date.setDate(from_date.getDate() - 28);
   const articles = await prisma.article.findMany({
