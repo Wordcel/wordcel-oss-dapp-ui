@@ -24,6 +24,11 @@ export const verifyMethod = (
   res: NextApiResponse,
   method: string,
 ): boolean => {
+  if (req.method == "OPTIONS") {
+    res.setHeader("Allow", method);
+    res.status(202).json({});
+    return false;
+  }
   if (req.method !== method) {
     res.setHeader('Allow', [method]);
     res.status(405).end(`Method ${req.method} Not Allowed`);
