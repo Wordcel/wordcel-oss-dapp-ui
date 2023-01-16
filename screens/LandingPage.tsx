@@ -21,7 +21,7 @@ function LandingPage() {
       <WhySection />
       <EditorSection />
       <TippingSection />
-      <ChirpSection />
+      // <ChirpSection />
       <ProtocolSection />
       <Footer />
     </div>
