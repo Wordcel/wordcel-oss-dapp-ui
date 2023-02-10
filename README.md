@@ -30,3 +30,4 @@ yarn dev
 ```
 yarn prisma studio
 ```
+

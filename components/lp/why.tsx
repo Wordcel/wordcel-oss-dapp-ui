@@ -33,7 +33,7 @@ const reasons = [{
 }, {
   icon: ossIcon.src,
   heading: "Open-sourced",
-  text: "Our protocol V1 is open-sourced for the community aligned with the ethos of web3."
+  text: "Wordcel is powered by Gum - An open source protocol for building sticky consumer apps"
 }, {
   icon: writeIcon.src,
   heading: "Seamless UX",

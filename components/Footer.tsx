@@ -23,8 +23,7 @@ export const Footer = () => {
               </a>
             </Link>
             <p className="normal-text mt-2 sm">
-              Wordcel enables anyone to publish rich articles on the blockchain that are censorship resistant
-            </p>
+Wordcel is a solana-native web3 blogging platform that enables writers to publish decentralised, censorship resistant content and get paid for it.            </p>
           </div>
           <div className={styles.socialContainer}>
             <p className="normal-text op-1 bold sm nm">Follow Us</p>

@@ -22,8 +22,8 @@ function HeroSection() {
 
       <div className={styles.heroContent}>
         <div className={styles.heroText}>
-          <h1 className="text center nm font-2 weight-800 size-56 gray-800 mb-0-5">The foundation for <br /><span>|</span> decentralized social apps</h1>
-          <p className="text center nm font-2 weight-400 size-24 gray-500 mt-3">Wordcel is building a protocol for the next generation of social network applications</p>
+          <h1 className="text center nm font-2 weight-800 size-56 gray-800 mb-0-5"> The future of web3 <br /><span>|</span> blogging on Solana </h1>
+          <p className="text center nm font-2 weight-400 size-24 gray-500 mt-3">Wordcel is a web3 blogging platform for creators to publish decentralised, censorship-resistant content and get paid for it.</p>
         </div>
         <img className={styles.heroVector} src={vector.src} alt="" />
 
