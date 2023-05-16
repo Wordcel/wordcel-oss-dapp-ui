@@ -368,7 +368,7 @@ export async function getBagpackDomain (
   public_key: string
 ) {
   try {
-    const request = await fetch('https://xnft-api-server.fly.dev/v1/users/fromPubkey?publicKey=' + public_key);
+    const request = await fetch('https://xnft-api-server.xnfts.dev/v1/users/fromPubkey?publicKey=' + public_key + '&blockchain=solana');
     const response = await request.json();
     return response.user.username + '.wao';
   } catch (e) {
