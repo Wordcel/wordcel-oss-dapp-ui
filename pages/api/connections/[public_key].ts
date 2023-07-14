@@ -3,7 +3,6 @@ import type {
   NextApiRequest,
   NextApiResponse,
 } from 'next';
-import { withSentry } from '@sentry/nextjs';
 
 // Get connections by profile owner
 async function handler(
@@ -33,4 +32,4 @@ async function handler(
   });
 };
 
-export default withSentry(handler);
+export default handler;

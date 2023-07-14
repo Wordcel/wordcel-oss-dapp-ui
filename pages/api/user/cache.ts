@@ -4,7 +4,6 @@ import type {
   NextApiRequest,
   NextApiResponse,
 } from 'next';
-import { withSentry } from '@sentry/nextjs';
 // import { ALGOLIA_APPLICATION_ID } from '@/lib/config/constants';
 
 async function handler(
@@ -25,4 +24,4 @@ async function handler(
   res.send('Uncomment the code to index all users :)');
 };
 
-export default withSentry(handler);
+export default handler;

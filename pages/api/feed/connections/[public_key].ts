@@ -3,7 +3,6 @@ import type {
   NextApiRequest,
   NextApiResponse,
 } from 'next';
-import { withSentry } from '@sentry/nextjs';
 
 // todo: add pagination
 async function handler(
@@ -33,4 +32,4 @@ async function handler(
   res.status(200).json(articles);
 };
 
-export default withSentry(handler);
+export default handler;

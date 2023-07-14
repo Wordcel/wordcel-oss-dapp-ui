@@ -8,7 +8,6 @@ import {
   verifyMethod,
   authenticate
 } from '@/lib/server';
-import { withSentry } from '@sentry/nextjs';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const allowed = verifyMethod(req, res, 'POST');
@@ -61,4 +60,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 };
 
-export default withSentry(handler);
+export default handler;

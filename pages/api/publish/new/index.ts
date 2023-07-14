@@ -11,7 +11,6 @@ import {
 import { getHeaderContent } from '@/lib/getHeaderContent';
 import { sanitizeHtml } from '@/lib/sanitize';
 import { getBlocks } from '@/lib/getArticleBlocks';
-import { withSentry } from '@sentry/nextjs';
 import slug from 'slug';
 import { newPostAlert } from '@/lib/sendUserActivity';
 
@@ -107,4 +106,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withSentry(handler);
+export default handler;

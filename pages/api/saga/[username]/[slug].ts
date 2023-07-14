@@ -3,7 +3,6 @@ import type {
   NextApiRequest,
   NextApiResponse,
 } from 'next';
-import { withSentry } from '@sentry/nextjs';
 import { getBlocks } from '@/lib/getArticleBlocks';
 
 async function handler (
@@ -69,4 +68,4 @@ async function handler (
 
 }
 
-export default withSentry(handler);
+export default handler;

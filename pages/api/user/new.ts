@@ -10,7 +10,6 @@ import {
   authenticate
 } from '@/lib/server';
 import { verifySolDomain, verifyWAODomain } from '@/lib/verifyDomain';
-import { withSentry } from '@sentry/nextjs';
 import { newUserAlert } from '@/lib/sendUserActivity';
 import { ALGOLIA_APPLICATION_ID } from '@/lib/config/constants';
 
@@ -123,4 +122,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withSentry(handler);
+export default handler;

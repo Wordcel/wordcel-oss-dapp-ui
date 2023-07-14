@@ -3,7 +3,6 @@ import type {
   NextApiRequest,
   NextApiResponse,
 } from 'next';
-import { withSentry } from '@sentry/nextjs';
 
 async function handler(
   req: NextApiRequest,
@@ -30,4 +29,4 @@ async function handler(
   });
 };
 
-export default withSentry(handler);
+export default handler;

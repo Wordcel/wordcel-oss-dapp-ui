@@ -10,7 +10,6 @@ import {
 } from '@/lib/server';
 import { getHeaderContent } from '@/lib/getHeaderContent';
 import { sanitizeHtml } from '@/lib/sanitize';
-import { withSentry } from '@sentry/nextjs';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const allowed = verifyMethod(req, res, 'POST');
@@ -103,4 +102,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withSentry(handler);
+export default handler;

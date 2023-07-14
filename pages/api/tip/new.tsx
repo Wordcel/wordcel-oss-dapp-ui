@@ -7,7 +7,6 @@ import {
   verifyKeys,
   verifyMethod
 } from '@/lib/server';
-import { withSentry } from '@sentry/nextjs';
 import { getTipDestination } from '@/lib/networkRequests';
 import { User } from '@prisma/client';
 import { newTipAlert } from '@/lib/sendUserActivity';
@@ -96,4 +95,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withSentry(handler);
+export default handler;

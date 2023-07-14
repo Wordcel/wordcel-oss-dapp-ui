@@ -61,11 +61,4 @@ const nextConfig = {
   },
 }
 
-const { withSentryConfig } = require('@sentry/nextjs');
-
-const sentryWebpackPluginOptions = {
-  silent: true,
-  dryRun: process.env.VERCEL_ENV !== "production"
-};
-
-module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
+module.exports = nextConfig;

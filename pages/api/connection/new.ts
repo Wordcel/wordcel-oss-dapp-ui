@@ -8,7 +8,6 @@ import {
   verifyMethod,
   authenticate
 } from '@/lib/server';
-import { withSentry } from '@sentry/nextjs';
 import { newConnectionAlert } from '@/lib/sendUserActivity';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -67,4 +66,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default withSentry(handler);
+export default handler;

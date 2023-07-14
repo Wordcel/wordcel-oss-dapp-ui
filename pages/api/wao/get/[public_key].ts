@@ -2,7 +2,6 @@ import type {
   NextApiRequest,
   NextApiResponse,
 } from 'next';
-import { withSentry } from '@sentry/nextjs';
 import { getBackpackDomain } from '@/lib/networkRequests';
 
 async function handler(
@@ -23,4 +22,4 @@ async function handler(
   });
 };
 
-export default withSentry(handler);
+export default handler;
