@@ -6,7 +6,7 @@ import greenCheck from '@/images/elements/green-check.svg';
 import readBtn from '@/images/elements/read-btn.svg';
 
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
-import { Done, Step, SmallCheckIcon } from '@/images/dynamic/Step';
+import { SmallCheckIcon } from '@/images/dynamic/Step';
 import { useEffect, useRef, useState } from 'react';
 import { getUserSignature } from '@/lib/signMessage';
 import { getAllUserDomains } from '@/lib/getAllUserDomains';
