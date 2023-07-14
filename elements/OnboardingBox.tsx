@@ -67,15 +67,15 @@ export const OnboardingBox = ({
     return () => clearInterval(interval);
   }, [publicKey]);
 
-  useEffect(() => {
-    if (!publicKey) return;
-    (async function () {
-      const verified_twitter = await getUserTwitter(publicKey.toBase58());
-      if (!verified_twitter) return;
-      setTwitter(verified_twitter);
-      setStep(2);
-    })();
-  }, [publicKey]);
+  // useEffect(() => {
+  //   if (!publicKey) return;
+  //   (async function () {
+  //     const verified_twitter = await getUserTwitter(publicKey.toBase58());
+  //     if (!verified_twitter) return;
+  //     setTwitter(verified_twitter);
+  //     setStep(2);
+  //   })();
+  // }, [publicKey]);
 
 
   const tabIsActive = (tab: number) => step === tab;

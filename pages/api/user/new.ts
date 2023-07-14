@@ -72,19 +72,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return;
     };
 
-    const twitter_exists = await prisma.verifiedTwitter.findFirst({
-      where: {
-        public_key
-      }
-    });
-
-    if (!twitter_exists) {
-      res.status(400).json({
-        error: 'Twitter not verified'
-      });
-      return;
-    }
-
     const new_profile = await prisma.user.create({
       data: {
         name,
