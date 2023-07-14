@@ -18,14 +18,9 @@ interface SidebarData {
   setCollapsed: (collapsed: boolean) => void;
 }
 
-interface CardinalData {
-  cardinal_verified: boolean;
-  username: string;
-}
 
 const UserContext = createContext<UserData | null>(null);
 const SidebarContext = createContext<SidebarData | null>(null);
-const CardinalContext = createContext<CardinalData | null>(null);
 
 const UserProvider = ({ children }: any) => {
   const wallet = useWallet();
@@ -64,43 +59,13 @@ const SidebarProvider = ({ children }: any) => {
   );
 }
 
-const CardinalProvider = ({ children }: any) => {
-  const wallet = useWallet();
-  const [cardinal_verified, setCardinalVerified] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>('');
-
-  useEffect(() => {
-    (async function () {
-      if (wallet.publicKey) {
-        const response = await fetch(`/api/cardinal/${wallet.publicKey.toBase58()}`);
-        const data = await response.json();
-        if (data.success) {
-          setCardinalVerified(true);
-          setUsername(data.identity.username);
-        }
-      }
-    })();
-  }, [wallet.publicKey]);
-
-  return (
-    <CardinalContext.Provider value={{
-      cardinal_verified,
-      username,
-    }}>
-      {children}
-    </CardinalContext.Provider>
-  );
-}
 
 const useUser = () => useContext(UserContext);
 const useSidebar = () => useContext(SidebarContext);
-const useCardinal = () => useContext(CardinalContext);
 
 export {
   useUser,
   UserProvider,
   useSidebar,
   SidebarProvider,
-  useCardinal,
-  CardinalProvider,
 };

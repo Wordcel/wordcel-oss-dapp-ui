@@ -8,7 +8,7 @@ import '@fontsource/spectral';
 import '@/styles/globals/index.scss';
 import '@wordcel/dialect-react/index.css';
 
-import { CardinalProvider, SidebarProvider, UserProvider } from '@/components/Context';
+import { SidebarProvider, UserProvider } from '@/components/Context';
 import { NextUIProvider } from '@nextui-org/react';
 import { Toaster } from 'react-hot-toast';
 import { Wallet } from '@/components/Wallet';
@@ -25,12 +25,10 @@ function Worcel({ Component, pageProps }: any) {
       <Wallet>
         <SidebarProvider>
           <UserProvider>
-            <CardinalProvider>
               <div style={{ fontSize: '170%' }}>
                 <Toaster />
               </div>
               <Component {...pageProps} />
-            </CardinalProvider>
           </UserProvider>
         </SidebarProvider>
       </Wallet>

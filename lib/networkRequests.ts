@@ -364,20 +364,25 @@ export async function uploadPicture (
   return json.url;
 }
 
-export async function getBagpackDomain (
-  public_key: string
-) {
+export async function getBackpackDomain (public_key: string) {
   try {
-    const request = await fetch('https://xnft-api-server.xnfts.dev/v1/users/fromPubkey?publicKey=' + public_key + '&blockchain=solana');
+    const url = `https://xnft-api-server.xnfts.dev/v1/users/fromPubkey?publicKey=${public_key}&blockchain=solana`;
+    const request = await fetch(url);
+    if (!request.ok) {
+      console.error(`Request failed with status ${request.status}`);
+      const text = await request.text();  // try to read the response body as text
+      console.error(`Response body: ${text}`);
+      return undefined;
+    }
     const response = await request.json();
     return response.user.username + '.wao';
   } catch (e) {
     console.error(e);
-    return undefined
+    return undefined;
   }
 };
 
-export async function getBagpackDomainProxied (
+export async function getBackpackDomainProxied (
   public_key: string
 ) {
   try {

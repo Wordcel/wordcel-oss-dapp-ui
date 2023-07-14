@@ -10,14 +10,13 @@ import { Done, Step, SmallCheckIcon } from '@/images/dynamic/Step';
 import { useEffect, useRef, useState } from 'react';
 import { getUserSignature } from '@/lib/signMessage';
 import { getAllUserDomains } from '@/lib/getAllUserDomains';
-import { createNewProfile, getBagpackDomainProxied, getUserTwitter, verifyTwitterRequest } from '@/lib/networkRequests';
+import { createNewProfile, getBackpackDomainProxied, getUserTwitter, verifyTwitterRequest } from '@/lib/networkRequests';
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { createFreshProfile } from '@/lib/contractInteraction';
 import { getUserNFTs } from '@/lib/getAllUserNFTs';
 import { uploadPicture } from '@/lib/networkRequests';
 import { messageToSign } from '@/lib/verifyTwitter';
 import { CreateButton } from './Buttons';
-import { useCardinal } from '@/components/Context';
 
 
 export const OnboardingBox = ({
@@ -30,14 +29,13 @@ export const OnboardingBox = ({
   const [blog_name, setBlogName] = useState('');
   const [username, setUsername] = useState('');
 
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [refresher, setRefresher] = useState(0);
   const [nfts] = useState<Set<string>>(new Set());
   const [domains, setDomains] = useState<string[]>([]);
   const [waoDomain, setWAODomain] = useState('');
   const wallet = useAnchorWallet();
   const walletContext = useWallet();
-  const cardinalContext = useCardinal();
   const fileInputRef = useRef(null);
   const { publicKey, signMessage } = useWallet();
 
@@ -53,7 +51,7 @@ export const OnboardingBox = ({
   useEffect(() => {
     (async function () {
       if (!publicKey) return;
-      const owner_domain = await getBagpackDomainProxied(publicKey.toBase58());
+      const owner_domain = await getBackpackDomainProxied(publicKey.toBase58());
       console.log('WAO Domain:', owner_domain);
       if (owner_domain) setWAODomain(owner_domain);
     })();
@@ -79,12 +77,6 @@ export const OnboardingBox = ({
     })();
   }, [publicKey]);
 
-  useEffect(() => {
-    if (cardinalContext?.cardinal_verified && cardinalContext?.username) {
-      setStep(2);
-      toast.success(`Twitter identity for @${cardinalContext.username} verified using Cardinal`);
-    }
-  }, [cardinalContext]);
 
   const tabIsActive = (tab: number) => step === tab;
   const getTabClassName = (tab: number) => {
@@ -184,7 +176,7 @@ export const OnboardingBox = ({
   const Header = () => {
     return (
       <div className={styles.obHeader}>
-        <div className={getTabClassName(1)}>
+        {/* <div className={getTabClassName(1)}>
           {step === 1 && (
             <Step step={1} />
           )}
@@ -192,10 +184,10 @@ export const OnboardingBox = ({
             <Done />
           )}
           <p className={`normal-text ml-3 sm ${tabIsActive(1) ? 'op-1' : ''}`}>Verify</p>
-        </div>
+        </div> */}
         <div className={getTabClassName(2)}>
-          <Step step={2} />
-          <p className={`normal-text ml-3 sm ${tabIsActive(2) ? 'op-1' : ''}`}>Complete Profile</p>
+          {/* <Step step={2} /> */}
+          <p className={`normal-text sm ${tabIsActive(2) ? 'op-1' : ''}`}>Setup your Profile</p>
         </div>
       </div>
     );
@@ -206,7 +198,7 @@ export const OnboardingBox = ({
       {(step === 1 || step === 2) && (
         <div className={styles.obBox}>
           <Header />
-          {step === 1 && (
+          {/* {step === 1 && (
             <div className={styles.obContent}>
               <p className="normal-text sm">What's your Twitter username?</p>
               <input
@@ -229,7 +221,7 @@ export const OnboardingBox = ({
                 </button>
               </div>
             </div>
-          )}
+          )} */}
           {step === 2 && (
             <div className={styles.obContent}>
               <p className="normal-text sm">What's your display name?</p>
@@ -322,7 +314,7 @@ export const OnboardingBox = ({
                   </div>
                 )}
                 {(domains.length === 0 && !waoDomain) && (
-                  <p className="normal-text sm">It seems like you don't have any domains, you need a .SOL or a bagpack domain to sign up</p>
+                  <p className="normal-text sm">It seems like you don't have any domains, you need a .SOL or a backpack domain to sign up</p>
                 )}
               </div>
 

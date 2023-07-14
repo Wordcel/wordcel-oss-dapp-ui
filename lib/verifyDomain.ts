@@ -5,7 +5,7 @@ import {
   NameRegistryState,
 } from "@bonfida/spl-name-service";
 import { Connection, PublicKey } from "@solana/web3.js";
-import { getBagpackDomain } from "./networkRequests";
+import { getBackpackDomain } from "./networkRequests";
 
 export const SOL_TLD_AUTHORITY = new PublicKey(
   "58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx"
@@ -40,7 +40,7 @@ export const verifyWAODomain = async (
   public_key: string,
   domain: string
 ) => {
-  const owner_domain = await getBagpackDomain(public_key);
+  const owner_domain = await getBackpackDomain(public_key);
   if (!owner_domain) return false;
   const verified = owner_domain === domain;
   return verified;
