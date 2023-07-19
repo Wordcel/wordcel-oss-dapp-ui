@@ -6,9 +6,9 @@ import { SystemProgram, PublicKey, Transaction } from '@solana/web3.js';
 import { AnchorWallet, WalletContextState } from '@solana/wallet-adapter-react';
 import { ContentPayload, uploadContent } from '@/lib/uploadContent';
 import {
-  MAINNET_ENDPOINT,
-  WORDCEL_MAINNET_PROGRAM_ID,
-  INVITATION_MAINNET_PROGRAM_ID
+  CLUSTER,
+  WORDCEL_DEVNET_PROGRAM_ID,
+  WORDCEL_MAINNET_PROGRAM_ID
 } from './config/constants';
 import {
   publishToServer,
@@ -16,11 +16,13 @@ import {
   getProfileHash
 } from '@/lib/networkRequests';
 import { sendAndConfirmTransaction } from './txConfirmation';
+import { clusterApiUrl } from '@/components/Wallet';
+import { Program } from '@project-serum/anchor';
 
 const preflightCommitment = "processed";
-const programID = WORDCEL_MAINNET_PROGRAM_ID;
-const invitationProgramID = INVITATION_MAINNET_PROGRAM_ID;
-const connection = new anchor.web3.Connection(MAINNET_ENDPOINT, {
+const programID = CLUSTER === "devnet" ? WORDCEL_DEVNET_PROGRAM_ID : WORDCEL_MAINNET_PROGRAM_ID;
+const rpcUrl = clusterApiUrl(CLUSTER);
+const connection = new anchor.web3.Connection(rpcUrl, {
   commitment: preflightCommitment,
   confirmTransactionInitialTimeout: 120000,
 });
@@ -47,21 +49,14 @@ export async function createFreshProfile (
   const program = new anchor.Program(idl as anchor.Idl, programID, provider(wallet));
   const profileHash = randombytes(32);
   const profileSeeds = [Buffer.from("profile"), profileHash];
-  const inviteSeeds = [Buffer.from("invite"), wallet.publicKey.toBuffer()];
   const [profileKey] = await anchor.web3.PublicKey.findProgramAddress(
     profileSeeds,
     program.programId
   );
-  const [inviteKey] = await anchor.web3.PublicKey.findProgramAddress(
-    inviteSeeds,
-    invitationProgramID
-  );
   const transaction = await program.methods.initialize(profileHash).accounts({
     profile: profileKey,
-    invitation: inviteKey,
     user: wallet.publicKey,
-    systemProgram: SystemProgram.programId,
-    invitationProgram: invitationProgramID
+    systemProgram: SystemProgram.programId
   }).transaction();
   const confirmed = await sendAndConfirmTransaction(
     connection,

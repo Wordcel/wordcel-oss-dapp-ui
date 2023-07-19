@@ -18,8 +18,9 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import styles from '@/styles/Notification.module.scss';
 import {
-  MAINNET_ENDPOINT
+  CLUSTER
 } from '../lib/config/constants';
+import { clusterApiUrl } from './Wallet';
 
 const DIALECT_PUBLIC_KEY = new anchor.web3.PublicKey(
  process.env.NEXT_PUBLIC_DIALECT_PUBLIC_KEY as string
@@ -119,6 +120,7 @@ export function Notification(): JSX.Element {
   const { connection } = useConnection();
   const wallet = useWallet();
   const theme = 'light' as ThemeType;
+  const rpcUrl = clusterApiUrl(CLUSTER);
 
   const [dialectWalletAdapter, setDialectWalletAdapter] =
     useState<DialectWalletAdapter>(() => walletToDialectWallet(wallet));
@@ -135,7 +137,7 @@ export function Notification(): JSX.Element {
         tokenStore: 'local-storage',
       },
       solana: {
-        rpcUrl: MAINNET_ENDPOINT
+        rpcUrl: rpcUrl
       },
     }),
     [connection]

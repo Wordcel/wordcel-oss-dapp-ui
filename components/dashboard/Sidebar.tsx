@@ -6,8 +6,6 @@ import createIcon from '@/images/icons/create-icon-sm.svg';
 import articlesIcon from '@/images/icons/sidebar/articles.svg';
 import profileIcon from '@/images/icons/sidebar/profile.svg';
 import arrowRight from '@/images/icons/arrow-right.svg';
-import inviteIcon from '@/images/icons/sidebar/invite.svg';
-// import importIcon from '@/images/icons/sidebar/import.svg';
 import { useRouter } from 'next/router';
 import { useSidebar } from '../Context';
 
@@ -15,8 +13,6 @@ import { useSidebar } from '../Context';
 const links = [
   {name: "Articles", icon: articlesIcon.src, href: "/dashboard"},
   {name: "Profile", icon: profileIcon.src, href: "/dashboard/profile"},
-  {name: "Invite", icon: inviteIcon.src, href: "/dashboard/invite"},
-  // {name: "Import", icon: importIcon.src, href: "/dashboard/import"},
 ]
 
 function Sidebar () {

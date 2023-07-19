@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-import { User, Connection, Article, Invite } from '@prisma/client';
+import { User, Connection, Article } from '@prisma/client';
 import { getTrimmedPublicKey } from './getTrimmedPublicKey';
 
 const getUserProfileURL = (user: User) => `*<https://wordcelclub.com/${user.username}|${user.name}>*`
@@ -112,27 +112,3 @@ export const newPostAlert = async (
     ]
   });
 }
-
-export const newInviteAlert = async (
-  invite: Invite
-) => {
-  const inviter = await prisma.user.findFirst({
-    where: {
-      id: invite.user_id
-    }
-  });
-  if (!inviter) return;
-  sendAlert({
-    blocks: [
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: `${getUserProfileURL(inviter)} has just invited *<https://explorer.solana.com/address/${invite.receiver}|${
-            invite.receiver_name ? invite.receiver_name : getTrimmedPublicKey(invite.receiver)
-          }>* to Wordcel!`
-        }
-      },
-    ]
-  });
-};

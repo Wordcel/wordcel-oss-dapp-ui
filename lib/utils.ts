@@ -24,24 +24,3 @@ export const validateSolanaAddress = (addr: string) => {
     return false;
   }
 };
-
-function getRandomTweet() {
-  const tweets = [
-    "I'm dying to get my hands on this invite-only platform! Can someone hook me up?",
-    "I'm not begging, I'm just strongly suggesting that someone send me an invite to this exclusive platform.",
-    "I'll do a happy dance if someone sends me an invite to this exclusive platform.",
-    "I've been dreaming about joining this invite-only platform. Can someone make my dream come true?",
-    "I'll bake you cookies if you send me an invite to this exclusive platform.",
-    "I'll do your laundry for a month if you send me an invite to this invite-only platform.",
-    "I'll name my firstborn child after you if you send me an invite to this exclusive platform.",
-    "I'll sing you a personalized love song if you send me an invite to this invite-only platform.",
-    "I'll do a handstand in public if you send me an invite to this exclusive platform."
-  ];
-  return tweets[Math.floor(Math.random() * tweets.length)];
-}
-
-export const requestInviteURL = () => {
-  const tweet = getRandomTweet();
-  const encodedTweet = encodeURIComponent(`${tweet}\n\nhttps://wordcelclub.com\n\n@wordcel_club`);
-  return `https://twitter.com/intent/tweet?text=${encodedTweet}`;
-}

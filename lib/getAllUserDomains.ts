@@ -1,6 +1,7 @@
 import { Connection, PublicKey } from "@solana/web3.js";
 import { NAME_PROGRAM_ID, performReverseLookup } from "@bonfida/spl-name-service";
-import { MAINNET_ENDPOINT } from "@/lib/config/constants";
+import { CLUSTER } from "@/lib/config/constants";
+import { clusterApiUrl } from "@/components/Wallet";
 
 const SOL_TLD_AUTHORITY = new PublicKey(
   "58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx"
@@ -9,7 +10,8 @@ const SOL_TLD_AUTHORITY = new PublicKey(
 export async function findOwnedNameAccountsForUser(
   userAccount: PublicKey
 ): Promise<PublicKey[]> {
-  const connection = new Connection(MAINNET_ENDPOINT);
+  const rpcUrl = clusterApiUrl(CLUSTER);
+  const connection = new Connection(rpcUrl);
   const filters = [
     {
       memcmp: {
@@ -32,7 +34,8 @@ export async function findOwnedNameAccountsForUser(
 
 export async function getAllUserDomains (publicKey: PublicKey): Promise<string[]> {
   const domains: string[] = [];
-  const connection = new Connection(MAINNET_ENDPOINT);
+  const rpcUrl = clusterApiUrl(CLUSTER);
+  const connection = new Connection(rpcUrl);
   const domainKeys = await findOwnedNameAccountsForUser(publicKey);
   return new Promise((resolve, reject) => {
     domainKeys.forEach(async (key, index) => {

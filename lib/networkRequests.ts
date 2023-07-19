@@ -3,18 +3,18 @@ import {
   Connect,
   UpdateDraft,
   NewProfile,
-  NewInvite
 } from '@/types/api';
 import { Draft } from '@/types/props';
 import crypto from 'crypto';
 import BigNumber from 'bignumber.js';
 import { User } from '@prisma/client';
-import { BUNDLR_MAINNET_ENDPOINT, MAINNET_ENDPOINT } from './config/constants';
+import { BUNDLR_DEVNET_ENDPOINT, BUNDLR_MAINNET_ENDPOINT, CLUSTER } from './config/constants';
 import { Article } from '@/types/props';
 import { Connection, PublicKey, ParsedAccountData } from '@solana/web3.js'
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import { getUserSignature } from './signMessage';
 import { AnchorWallet } from '@solana/wallet-adapter-react';
+import { clusterApiUrl } from '@/components/Wallet';
 
 export async function publishToServer (
   data: PublishArticleRequest
@@ -176,27 +176,12 @@ export async function createNewProfile (
   throw new Error('Invalid request');
 };
 
-export async function createNewInvite (
-  data: NewInvite
-) {
-  const request = await fetch(
-    '/api/invite/create',
-  {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  });
-  if (request.ok) return true;
-  throw new Error('Invalid request');
-};
-
 export async function getBundlrBalance (
   public_key: string
 ) {
+  const bundlrUrl = CLUSTER === 'devnet' ? BUNDLR_DEVNET_ENDPOINT : BUNDLR_MAINNET_ENDPOINT;
   try {
-    const request = await fetch(BUNDLR_MAINNET_ENDPOINT + '/account/balance/solana?address=' + public_key);
+    const request = await fetch(bundlrUrl + '/account/balance/solana?address=' + public_key);
     const response = await request.json();
     const balance = new BigNumber(response.balance);
     return balance;
@@ -296,7 +281,8 @@ export async function uploadUsingURL(
 }
 
 export async function getTipDestination (txid: string) {
-  const connection = new Connection(MAINNET_ENDPOINT);
+  const rpcUrl = clusterApiUrl(CLUSTER);
+  const connection = new Connection(rpcUrl);
   const data = {
     method: 'getTransaction',
     jsonrpc: '2.0',
@@ -306,7 +292,7 @@ export async function getTipDestination (txid: string) {
       { encoding: 'jsonParsed', commitment: 'confirmed' }
     ],
   };
-  const res = await fetch(MAINNET_ENDPOINT, {
+  const res = await fetch(rpcUrl, {
     method: "POST",
     body: JSON.stringify(data),
     headers: {"Content-Type": "application/json"}

@@ -15,7 +15,6 @@ import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { createFreshProfile } from '@/lib/contractInteraction';
 import { getUserNFTs } from '@/lib/getAllUserNFTs';
 import { uploadPicture } from '@/lib/networkRequests';
-import { messageToSign } from '@/lib/verifyTwitter';
 import { CreateButton } from './Buttons';
 
 
@@ -83,52 +82,6 @@ export const OnboardingBox = ({
     if (tabIsActive(tab)) return styles.activeTab;
     return styles.tab;
   }
-
-  const handleTweetButton = async () => {
-    if (!publicKey || !signMessage) return;
-    const sanitizedTwitterHandle = twitter.replaceAll('@', '');
-    setTwitter(sanitizedTwitterHandle);
-    if (sanitizedTwitterHandle.length === 0) {
-      toast('Please enter a Twitter username');
-      return;
-    };
-    const signature = await signMessage(
-      new TextEncoder().encode(messageToSign(sanitizedTwitterHandle))
-    );
-    if (!signature) return;
-    const tweet = `I'm verifying my Twitter account for @Wordcel_Club\n\nhttps://wordcelclub.com/\n\n${Buffer.from(signature).toString('base64')}`
-    const encodedTweet = encodeURIComponent(tweet);
-    window.open(`https://twitter.com/intent/tweet?text=${encodedTweet}`, '_blank');
-  }
-
-  const handleTweetedButton = async () => {
-    const sanitizedTwitterHandle = twitter.replaceAll('@', '');
-    setTwitter(sanitizedTwitterHandle);
-    if (sanitizedTwitterHandle.length === 0) {
-      toast('Please enter a Twitter username');
-      return;
-    };
-    if (!publicKey || !signMessage) return;
-    const signature = await getUserSignature(signMessage, publicKey.toBase58());
-    if (!signature) {
-      toast('Please sign the message to authenticate your wallet');
-      return;
-    }
-    const request = verifyTwitterRequest(
-      publicKey.toBase58(),
-      sanitizedTwitterHandle,
-      signature
-    );
-    toast.promise(request, {
-      success: 'Successfully verified your Twitter account',
-      error: 'Failed to verify your Twitter account, please try again',
-      loading: 'Verifying your Twitter account',
-    });
-    const verified = await request;
-    if (verified) {
-      setStep(2);
-    }
-  };
 
   const handleDomainChange = (domain: string) => setUsername(domain);
 

@@ -29,9 +29,7 @@ import { useUser } from './Context';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 import { useRouter } from 'next/router';
 import { Notification } from '@/components/Notification';
-import { requestInviteURL } from '@/lib/utils';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
-import { getInviteAccount } from '@/lib/invitationIntegration';
 
 
 export const LandingNavbar = ({
@@ -83,10 +81,6 @@ interface EditProfile {
   edit: () => void;
 }
 
-interface InviteDetails {
-  invited: boolean | null;
-  fetched: boolean | null;
-}
 
 export const Navbar = ({
   publish,
@@ -106,22 +100,8 @@ export const Navbar = ({
   const router = useRouter();
   const wallet = useAnchorWallet();
   const { publicKey, disconnect } = useWallet();
-  const [inviteDetails, setInviteDetails] = useState<InviteDetails>({ invited: null, fetched: null });
   const showEditProfile = editProfile && data && editProfile.owner === data?.user?.public_key;
 
-  useEffect(() => {
-    (async function () {
-      try {
-        if (!wallet) return;
-        const account = await getInviteAccount(wallet);
-        console.log(account);
-        setInviteDetails({ invited: true, fetched: true });
-      } catch {
-        setInviteDetails({ invited: false, fetched: true });
-        console.log('Invite account does not exist');
-      }
-    })();
-  }, [wallet]);
 
   const handleDropDownItems = (key: string) => {
     switch (key) {
@@ -270,25 +250,13 @@ export const Navbar = ({
               </ConnectWallet>
             </div>
           )}
-          {publicKey && data?.fetched && !data.user && inviteDetails.invited === false && inviteDetails.fetched && (
-            <div className={styles.connectWalletText}>
-              <a
-                href={requestInviteURL()}
-                rel="noopener noreferrer"
-                target="_blank"
-                style={{ width: '14rem' }}
-                className="blue-text txt-right pointer"
-              >REQUEST INVITE</a>
-            </div>
-          )}
-          {publicKey && data?.fetched && !data.user && inviteDetails.invited === true && inviteDetails.fetched && (
+          {publicKey && data?.fetched && !data.user && (
             <div className={styles.connectWalletText}>
               <Link href="/onboarding">
-                <a
-                  href={requestInviteURL()}
+                <p
                   style={{ width: '14rem' }}
                   className="blue-text txt-right pointer"
-                >SET UP AN ACCOUNT</a>
+                >SET UP AN ACCOUNT</p>
               </Link>
             </div>
           )}

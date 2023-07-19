@@ -11,7 +11,7 @@ export const DEVNET_ENDPOINT = 'https://api.devnet.solana.com/';
 // Dedicated RPC Node
 export const MAINNET_ENDPOINT = 'https://crimson-patient-silence.solana-mainnet.quiknode.pro/5f5a55cc4a967286e0868cd78e2eedf0e8bcc234/';
 
-export const CLUSTER = 'mainnet-beta';
+export const CLUSTER = 'mainnet-beta' as "devnet" | "mainnet-beta"
 export const BUNDLR_DEVNET_ENDPOINT = 'https://devnet.bundlr.network';
 export const BUNDLR_MAINNET_ENDPOINT = 'https://node1.bundlr.network';
 
@@ -21,11 +21,10 @@ export const DEFAULT_OG_IMAGE = 'https://arweave.net/DH2DiFPbWAl5zUBs5Z2fOi3fmMK
 // PROGRAM IDs
 
 export const WORDCEL_DEVNET_PROGRAM_ID = new PublicKey('D9JJgeRf2rKq5LNMHLBMb92g4ZpeMgCyvZkd7QKwSCzg');
-export const INVITATION_DEVNET_PROGRAM_ID = new PublicKey('6G5x4Es2YZYB5e4QkFJN88TrfLABkYEQpkUH5Gob9Cut');
 
 export const WORDCEL_MAINNET_PROGRAM_ID = new PublicKey('EXzAYHZ8xS6QJ6xGRsdKZXixoQBLsuMbmwJozm85jHp');
-export const INVITATION_MAINNET_PROGRAM_ID = new PublicKey('Fc4q6ttyDHr11HjMHRvanG9SskeR24Q62egdwsUUMHLf');
 
 
 // Token Mint Addresses
 export const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
+export const DEVNET_USDC_MINT = '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU';

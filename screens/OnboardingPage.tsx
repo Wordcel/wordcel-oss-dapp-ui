@@ -19,7 +19,6 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
-import { getInviteAccount } from '@/lib/invitationIntegration';
 import { getUserExists } from '@/lib/networkRequests';
 
 
@@ -43,14 +42,6 @@ export const OnboardingPage = () => {
         router.push('/dashboard');
         return;
       };
-      try {
-        const account = await getInviteAccount(anchorWallet);
-        console.log(account);
-      } catch (e) {
-        console.error(e);
-        toast('Sorry, you\'re not whitelisted');
-        router.push('/');
-      }
     })();
   }, [publicKey]);
 
