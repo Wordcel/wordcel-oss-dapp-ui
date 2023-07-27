@@ -21,6 +21,9 @@ import {
   CLUSTER
 } from '../lib/config/constants';
 import { clusterApiUrl } from './Wallet';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const DIALECT_PUBLIC_KEY = new anchor.web3.PublicKey(
  process.env.NEXT_PUBLIC_DIALECT_PUBLIC_KEY as string

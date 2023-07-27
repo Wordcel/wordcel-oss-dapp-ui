@@ -13,7 +13,6 @@ import { ArticleWithOwner } from '@/types/props';
 import { Loading } from '@/components/animations/Loading';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Preview } from '@/components/FeedPreview';
-import { SearchBar } from '@/components/SearchUsers';
 import { useWindowSize } from '@/components/Hooks';
 
 
@@ -60,7 +59,6 @@ function Feed() {
           <img className="mb-2" src={newsIcon.src} alt="" />
           <h1 className="nm text gray-800 size-24 weight-600">Your Feed</h1>
           <p className="nm text gray-500 size-22 weight-400 text-align-left mt-1">Read the hottest this week or from your following</p>
-          <SearchBar />
           <img className={styles.headerPattern} src={pattern.src} alt="" />
         </div>
       </div>

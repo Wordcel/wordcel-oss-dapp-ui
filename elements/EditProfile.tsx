@@ -164,12 +164,7 @@ export const EditProfile = ({
                 </div>
                 <div>
                   <p className="input-label nm">
-                    Enable Tipping? By enabling this feature, you agree to our
-                    <span className="ml-0-5">
-                      <Link href="/terms">
-                        <a className={styles.termsLink}>terms of service.</a>
-                      </Link>
-                    </span>
+                    Enable Tipping?
                     <div className="mt-1">
                       {/* @ts-expect-error */}
                       <Switch

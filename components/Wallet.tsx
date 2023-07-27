@@ -16,7 +16,7 @@ import {
   WalletModalProvider,
   useWalletModal
 } from '@solana/wallet-adapter-react-ui';
-import { DEVNET_ENDPOINT, MAINNET_ENDPOINT } from '@/lib/config/constants';
+import { CLUSTER, DEVNET_ENDPOINT, MAINNET_ENDPOINT } from '@/lib/config/constants';
 
 // Default styles that can be overridden by your app
 require('@solana/wallet-adapter-react-ui/styles.css');
@@ -60,7 +60,7 @@ export const Wallet = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const network = WalletAdapterNetwork.Mainnet;
+  const network = CLUSTER === 'devnet' ? WalletAdapterNetwork.Devnet : WalletAdapterNetwork.Mainnet;
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
   const wallets = useMemo(
     () => [

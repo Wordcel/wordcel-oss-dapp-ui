@@ -2,6 +2,7 @@
 // Default Imports
 import Link from 'next/link';
 import Image from 'next/image';
+import dotenv from 'dotenv';
 // import toast from 'react-hot-toast';
 
 // Styles
@@ -23,51 +24,12 @@ import pop_open_image from '@/images/elements/proof-of-post-open.svg';
 import { useState, useEffect, MutableRefObject } from 'react';
 import { Dropdown, Popover } from '@nextui-org/react';
 import { ConnectWallet } from '@/components/Wallet';
-import { WHITELIST_URL } from '@/lib/config/constants';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useUser } from './Context';
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 import { useRouter } from 'next/router';
 import { Notification } from '@/components/Notification';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
-
-
-export const LandingNavbar = ({
-  whitelisted,
-  clicked,
-  setClicked
-}: {
-  whitelisted: boolean | null;
-  clicked: number;
-  setClicked(clicked: number): void;
-}) => {
-  return (
-    <div className={styles.landingContainer}>
-      <Link href="/">
-        <a>
-          <div className={styles.maxWidthLogo}>
-            <Image alt="Wordcel" src={logo} />
-          </div>
-        </a>
-      </Link>
-      <div className={styles.landingConnect}>
-        <div className={styles.connectVector} />
-        <ConnectWallet noFullSize={true} noToast={true}>
-          <p onClick={() => {
-            setClicked(clicked + 1);
-            if (whitelisted === false) {
-              window.open(WHITELIST_URL, '_blank');
-            }
-          }} className="dark-text pointer">
-            {whitelisted === null ? 'Connect Wallet' : ''}
-            {whitelisted === false ? 'Request Access' : ''}
-            {whitelisted === true ? 'Dashboard' : ''}
-          </p>
-        </ConnectWallet>
-      </div>
-    </div>
-  );
-};
 
 interface ProofOfPost {
   arweave_url: string | undefined;
@@ -95,13 +57,13 @@ export const Navbar = ({
   showPreview?: () => void;
   saveText?: string;
 }) => {
-
+  dotenv.config();
   const data = useUser();
   const router = useRouter();
   const wallet = useAnchorWallet();
   const { publicKey, disconnect } = useWallet();
   const showEditProfile = editProfile && data && editProfile.owner === data?.user?.public_key;
-
+  const adminPublicKey = process.env.NEXT_PUBLIC_ADMIN_PUBLIC_KEY;
 
   const handleDropDownItems = (key: string) => {
     switch (key) {
@@ -238,7 +200,7 @@ export const Navbar = ({
               )}
             </div>
           )}
-          {data?.user && (
+          {publicKey && (
             <div style={{ fontSize: '170%', paddingRight:'12px' }}>
               <Notification />
             </div>
@@ -250,7 +212,7 @@ export const Navbar = ({
               </ConnectWallet>
             </div>
           )}
-          {publicKey && data?.fetched && !data.user && (
+          {publicKey && adminPublicKey && publicKey.toBase58() === adminPublicKey  && data?.fetched && !data?.user && (
             <div className={styles.connectWalletText}>
               <Link href="/onboarding">
                 <p
