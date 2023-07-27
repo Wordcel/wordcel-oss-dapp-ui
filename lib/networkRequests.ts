@@ -12,9 +12,10 @@ import { BUNDLR_DEVNET_ENDPOINT, BUNDLR_MAINNET_ENDPOINT, CLUSTER } from './conf
 import { Article } from '@/types/props';
 import { Connection, PublicKey, ParsedAccountData } from '@solana/web3.js'
 import { WalletContextState } from '@solana/wallet-adapter-react';
-import { getUserSignature } from './signMessage';
 import { AnchorWallet } from '@solana/wallet-adapter-react';
 import { clusterApiUrl } from '@/components/Wallet';
+import { BundlrService } from './bundlrService';
+import axios from 'axios';
 
 export async function publishToServer (
   data: PublishArticleRequest
@@ -255,25 +256,15 @@ export async function addTip (
 }
 
 export async function uploadUsingURL(
-  public_key: string,
-  signature: Uint8Array,
+  wallet: WalletContextState,
   url: string,
 ) {
   try {
-    const request = await fetch(
-      'https://wordcel.up.railway.app/url',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        url,
-        public_key,
-        signature
-      })
-    });
-    const response = await request.json();
+    // Get image data from URL
+    const imageData = await axios.get(url, { responseType: 'arraybuffer' });
+    const file = new File([imageData.data], 'image.png', { type: imageData.headers['content-type'] });
+    const bundlrUploader = new BundlrService(wallet);
+    const response = await bundlrUploader.uploadImage(file);
     return response.url;
   } catch (e) {
     console.error(e)
@@ -311,43 +302,20 @@ export async function getTipDestination (txid: string) {
 export async function uploadJSON (
   data: any,
   tags: { name: string, value: string }[],
-  public_key: string,
-  signature: Uint8Array,
+  wallet: WalletContextState,
 ) {
-  const response = await fetch('https://wordcel.up.railway.app/json', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      data,
-      tags,
-      public_key,
-      signature
-    })
-  });
-  const json = await response.json();
-  return json;
+  const bundlrUploader = new BundlrService(wallet);
+  const response = await bundlrUploader.uploadData(data, tags);
+  return response;
 }
 
 export async function uploadPicture (
   file: File,
   wallet: WalletContextState
 ) {
-  const { signMessage, publicKey } = wallet;
-  if (!publicKey || !signMessage) return;
-  const signature = await getUserSignature(signMessage, publicKey.toBase58());
-  if (!signature) return;
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('public_key', publicKey.toBase58());
-  formData.append('signature', JSON.stringify(signature));
-  const response = await fetch('https://wordcel.up.railway.app/upload', {
-    method: 'POST',
-    body: formData
-  });
-  const json = await response.json();
-  return json.url;
+  const bundlrUploader = new BundlrService(wallet);
+  const response = await bundlrUploader.uploadImage(file);
+  return response.url;
 }
 
 export async function getBackpackDomain (public_key: string) {

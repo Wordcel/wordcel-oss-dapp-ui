@@ -4,6 +4,7 @@ import styles from '@/styles/Static.module.scss';
 import uploadImagePreview from '@/images/elements/upload.svg';
 import greenCheck from '@/images/elements/green-check.svg';
 import readBtn from '@/images/elements/read-btn.svg';
+import dotenv from 'dotenv';
 
 import { getTrimmedPublicKey } from '@/lib/getTrimmedPublicKey';
 import { SmallCheckIcon } from '@/images/dynamic/Step';
@@ -17,6 +18,7 @@ import { getUserNFTs } from '@/lib/getAllUserNFTs';
 import { uploadPicture } from '@/lib/networkRequests';
 import { CreateButton } from './Buttons';
 
+dotenv.config();
 
 export const OnboardingBox = ({
   setDone
@@ -37,6 +39,7 @@ export const OnboardingBox = ({
   const walletContext = useWallet();
   const fileInputRef = useRef(null);
   const { publicKey, signMessage } = useWallet();
+  const adminPublicKey = process.env.NEXT_PUBLIC_ADMIN_PUBLIC_KEY;
 
   useEffect(() => {
     (async function () {
@@ -66,17 +69,6 @@ export const OnboardingBox = ({
     return () => clearInterval(interval);
   }, [publicKey]);
 
-  // useEffect(() => {
-  //   if (!publicKey) return;
-  //   (async function () {
-  //     const verified_twitter = await getUserTwitter(publicKey.toBase58());
-  //     if (!verified_twitter) return;
-  //     setTwitter(verified_twitter);
-  //     setStep(2);
-  //   })();
-  // }, [publicKey]);
-
-
   const tabIsActive = (tab: number) => step === tab;
   const getTabClassName = (tab: number) => {
     if (tabIsActive(tab)) return styles.activeTab;
@@ -92,6 +84,10 @@ export const OnboardingBox = ({
 
   const handleSubmit = async () => {
     if (!publicKey || !signMessage || !wallet) return;
+    if (publicKey.toBase58() !== adminPublicKey) {
+      toast('You are not authorized to create a profile');
+      return;
+    }
     const signature = await getUserSignature(signMessage, publicKey.toBase58());
     if (!signature) {
       toast('Please sign the message to authenticate your wallet');

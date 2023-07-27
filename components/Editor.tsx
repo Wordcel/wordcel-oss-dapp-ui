@@ -38,6 +38,7 @@ import { useEffect } from "react"
 import { timeout } from "@/lib/utils";
 import toast from 'react-hot-toast';
 import { uploadUsingURL } from '@/lib/networkRequests';
+import { BundlrService } from '@/lib/bundlrService';
 
 
 interface Editor {
@@ -75,29 +76,18 @@ async function uploadImage(
   file: File,
   wallet: WalletContextState
 ) {
+  
+  const bundlrUploader = new BundlrService(wallet);
   let uploadedURL = '';
   return new Promise (async (resolve, reject) => {
     if (!wallet.publicKey) return;
-    const signature = await getUserSig(wallet);
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('public_key', wallet.publicKey?.toBase58());
-    formData.append('signature', JSON.stringify(signature));
-
-    const response = await fetch(
-      'https://wordcel.up.railway.app/upload',
-      // 'http://localhost:8000/upload',
-    {
-      method: 'POST',
-      body: formData
-    });
-    const data = await response.json();
-    if (data.url) {
-      uploadedURL = data.url;
-      resolve(data.url);
+    const response = await bundlrUploader.uploadImage(file);
+    if (response.url) {
+      uploadedURL = response.url;
+      resolve(response.url);
     } else {
-      toast.error(data.error);
-      reject(data.error);
+      toast.error(response.error);
+      reject(response.error);
     }
 
   }).then(() => {
@@ -187,7 +177,7 @@ const CustomEditor = ({
           async uploadByUrl(url: string) {
             const signature = await getUserSig(wallet);
             if (!wallet.publicKey || !signature) return;
-            const uploaded = await uploadUsingURL(wallet.publicKey.toBase58(), signature, url);
+            const uploaded = await uploadUsingURL(wallet, url);
             if (uploaded) {
               return {
                 success: 1,

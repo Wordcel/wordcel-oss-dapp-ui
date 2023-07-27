@@ -33,6 +33,7 @@ export const OnboardingPage = () => {
   const [height, setHeight] = useState(0);
 
   const publicKey = wallet.publicKey;
+  const adminPublicKey = process.env.NEXT_PUBLIC_ADMIN_PUBLIC_KEY;
 
   useEffect(() => {
     (async function () {
@@ -41,7 +42,11 @@ export const OnboardingPage = () => {
       if (user_exists) {
         router.push('/dashboard');
         return;
-      };
+      }
+      else if (publicKey.toBase58() !== adminPublicKey) {
+        router.push('/');
+        return;
+      }
     })();
   }, [publicKey]);
 

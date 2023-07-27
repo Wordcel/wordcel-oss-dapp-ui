@@ -15,6 +15,7 @@ export const DefaultHead = (config: SEO) => {
   return (
     <>
       <Head>
+        {/* // REPLACE: URL, TITLE, DESCRIPTION, IMAGE */}
         <title>{config.title || 'Wordcel - Read, Write, Own'}</title>
         <meta name='description' content={config.description || 'Wordcel - Read, Write, Own'} />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
@@ -29,12 +30,14 @@ export const DefaultHead = (config: SEO) => {
           <meta name='og:site_name' content={config.blog_name} />
         )}
 
+        {/* // REPLACE: URL, TITLE, DESCRIPTION, IMAGE */}
         <meta property='og:type' content={config.author ? 'article' : 'website'} />
         <meta property='og:url' content={config.url || 'https://wordcelclub.com'} />
         <meta property='og:title' content={config.title || 'Wordcel - Read, Write, Own'} />
         <meta property='og:description' content={config.description || 'Wordcel - Read, Write, Own'} />
         <meta property='og:image' content={config.image || DEFAULT_OG_IMAGE} />
-
+        
+        {/* // REPLACE: URL, TITLE, DESCRIPTION, IMAGE */}
         <meta property='twitter:card' content='summary_large_image' />
         <meta property='twitter:url' content={config.url || 'https://wordcelclub.com'} />
         <meta property='twitter:title' content={config.title || 'Wordcel - Read, Write, Own'} />
@@ -42,6 +45,7 @@ export const DefaultHead = (config: SEO) => {
         <meta property='twitter:image' content={config.image || DEFAULT_OG_IMAGE} />
       </Head>
 
+      {/* // REPLACE: GOOGLE ANALYTICS */}
       {/* Google Analytics -- Start */}
       <Script
         async

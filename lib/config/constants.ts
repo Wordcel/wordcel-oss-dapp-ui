@@ -1,21 +1,19 @@
 import { PublicKey } from "@solana/web3.js";
 
-export const ALGOLIA_APPLICATION_ID = 'L7IX5NUB4W';
 export const MESSAGE_TO_SIGN = 'WORDCEL';
 
-// export const ENDPOINT = 'https://devnet.genesysgo.net/';
 // Dedicated RPC Node
 //export const DEVNET_ENDPOINT = 'https://wild-shy-sea.solana-devnet.quiknode.pro/';
 export const DEVNET_ENDPOINT = 'https://api.devnet.solana.com/';
 
 // Dedicated RPC Node
-export const MAINNET_ENDPOINT = 'https://crimson-patient-silence.solana-mainnet.quiknode.pro/5f5a55cc4a967286e0868cd78e2eedf0e8bcc234/';
+export const MAINNET_ENDPOINT = 'https://api.mainnet-beta.solana.com/';
 
-export const CLUSTER = 'mainnet-beta' as "devnet" | "mainnet-beta"
+export const CLUSTER = 'mainnet-beta' as "devnet" | "mainnet-beta";
 export const BUNDLR_DEVNET_ENDPOINT = 'https://devnet.bundlr.network';
 export const BUNDLR_MAINNET_ENDPOINT = 'https://node1.bundlr.network';
 
-export const WHITELIST_URL = 'https://tally.so/r/w2d59m';
+// REPLACE WITH YOUR OWN OG IMAGE
 export const DEFAULT_OG_IMAGE = 'https://arweave.net/DH2DiFPbWAl5zUBs5Z2fOi3fmMKHbs_zMA0sP6apa60';
 
 // PROGRAM IDs

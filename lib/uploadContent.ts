@@ -79,6 +79,6 @@ export const uploadContent = async (
   const userSignature = await getUserSignature(wallet.signMessage, wallet.publicKey.toBase58());
   if (!userSignature) return;
 
-  const response = await uploadJSON(finalData, tags, wallet.publicKey.toBase58(), userSignature);
+  const response = await uploadJSON(finalData, tags, wallet);
   if (response.url) return response.url;
 };
