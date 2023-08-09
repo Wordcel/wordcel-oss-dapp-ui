@@ -22,7 +22,7 @@
 
 .obBox {
   margin: 0 auto;
-  margin-top: 5.5rem;
+  margin-top: 3.5rem;
   max-width: 55rem;
   width: 100%;
   min-height: 30rem;
@@ -357,4 +357,100 @@
   & > span {
     margin-left: 1.1rem;
   }
+}
+
+.importContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  /* Gap between the button and OR indicator */
+  width: 100%;
+  /* This ensures the container takes full width of its parent (header) */
+}
+
+.importButton {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #f7f7f7;
+  }
+}
+
+.importButtonBig {
+  /* Inheriting properties from importButton and making it bigger */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px 20px;
+  /* Increase padding to make the button bigger */
+  font-size: 18px;
+  /* Larger font */
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #f7f7f7;
+  }
+}
+
+.orIndicator {
+  font-size: 18px;
+  color: #888;
+  margin: 0 10px;
+  /* Add some margin on left and right side */
+}
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  /* Ensuring the modal stays on top */
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.modal h2,
+.modal p,
+.modal button {
+  margin-bottom: 20px;
+}
+
+.closeButton {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  background: #f7f7f7;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 6px 12px;
+}
+
+.closeButton:hover {
+  background: #e6e6e6;
 }

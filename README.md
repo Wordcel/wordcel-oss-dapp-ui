@@ -26,13 +26,19 @@ yarn
 yarn prisma generate
 ```
 
-4. Run the development server
+4. Deploy the Prisma schema
+
+```
+yarn prisma db push
+```
+
+5. Run the development server
 
 ```
 yarn dev
 ```
 
-5. Open the Prisma GUI to add values to your db
+6. Open the Prisma GUI to add values to your db
 
 ```
 yarn prisma studio

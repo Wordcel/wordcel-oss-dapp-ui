@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { getUserExists } from '@/lib/networkRequests';
+import { getUserSignature } from '@/lib/signMessage';
 
 
 export const OnboardingPage = () => {
@@ -31,6 +32,7 @@ export const OnboardingPage = () => {
   const [done, setDone] = useState(false);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   const publicKey = wallet.publicKey;
   const adminPublicKey = process.env.NEXT_PUBLIC_ADMIN_PUBLIC_KEY;
@@ -57,6 +59,76 @@ export const OnboardingPage = () => {
     }
   }, []);
 
+  const importArticles = async () => {
+    console.log('importing articles');
+
+    if (!wallet.signMessage || !publicKey) return;
+    const signature = await getUserSignature(wallet.signMessage, publicKey.toBase58());
+    if (!signature) return;
+
+    // Create an input element for file selection
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json'; // Only accept JSON files
+
+    // Listen for the change event (file selection)
+    input.onchange = async (event) => {
+      const file = event.target.files[0]; // Get the selected file
+
+      // Check if a file was selected
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = async (fileEvent) => {
+          try {
+            // Parse the uploaded JSON file
+            const jsonData = JSON.parse(fileEvent.target.result.toString());
+
+            // Call the import API with the parsed data
+            const response = await fetch('/api/import', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                public_key: publicKey?.toBase58(),
+                signature,
+                data: jsonData
+              })
+            });
+
+            const data = await response.json();
+            console.log(data);
+          } catch (error) {
+            console.error('There was an error importing!', error);
+          }
+        };
+
+        // Read the file contents
+        reader.readAsText(file);
+      }
+    };
+
+    // Programmatically trigger the file input to show the file picker dialog
+    input.click();
+  };
+
+  function ImportModal({ close }) {
+      return (
+          <div className={styles.modalOverlay}>
+              <div className={styles.modal}>
+                  <h2>Import your data</h2>
+                  <p>By importing, you can quickly set up your profile with existing data. Please have your JSON file exported from wordcel.club</p>
+                  
+                  
+                  <button onClick={() => importArticles()} className={styles.importButton}>Upload JSON file</button>
+                  
+                  <button onClick={close} className={styles.closeButton}>Close</button>
+              </div>
+          </div>
+      );
+  }
+
+
   return (
     <div className='container-flex'>
       <DefaultHead title='Welcome to Wordcel' />
@@ -77,6 +149,14 @@ export const OnboardingPage = () => {
                   <p className="text size-20 weight-400 gray-400 center">{"We're glad to have to onboard. Let's setup your account"}</p>
                 </div>
               )}
+            <div className={styles.header}>
+                <div className={styles.importContainer}>
+                    <button onClick={() => setShowModal(true)} className={styles.importButtonBig}>Import your profile</button>
+                    <span className={styles.orIndicator}>OR</span>
+                </div>
+                {showModal && <ImportModal close={() => setShowModal(false)} />}
+            </div>
+
               <OnboardingBox setDone={setDone} />
               {!done && (
                 <div className="flex align-items-center justify-content-center">
