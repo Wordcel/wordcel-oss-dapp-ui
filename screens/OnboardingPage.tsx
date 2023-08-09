@@ -22,6 +22,9 @@ import { useAnchorWallet, useWallet } from '@solana/wallet-adapter-react';
 import { getUserExists } from '@/lib/networkRequests';
 import { getUserSignature } from '@/lib/signMessage';
 
+type ImportModalProps = {
+    close: () => void;
+};
 
 export const OnboardingPage = () => {
   const router = useRouter();
@@ -60,68 +63,78 @@ export const OnboardingPage = () => {
   }, []);
 
   const importArticles = async () => {
-    console.log('importing articles');
+      console.log('importing articles');
 
-    if (!wallet.signMessage || !publicKey) return;
-    const signature = await getUserSignature(wallet.signMessage, publicKey.toBase58());
-    if (!signature) return;
+      if (!wallet.signMessage || !publicKey) return;
 
-    // Create an input element for file selection
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.json'; // Only accept JSON files
+      const signature = await getUserSignature(wallet.signMessage, publicKey.toBase58());
+      if (!signature) return;
 
-    // Listen for the change event (file selection)
-    input.onchange = async (event) => {
-      const file = event.target.files[0]; // Get the selected file
+      // Create an input element for file selection
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json'; // Only accept JSON files
 
-      // Check if a file was selected
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = async (fileEvent) => {
-          try {
-            // Parse the uploaded JSON file
-            const jsonData = JSON.parse(fileEvent.target.result.toString());
+      // Listen for the change event (file selection)
+      input.onchange = async (event: Event) => {
+        // Ensure event.target is an instance of HTMLInputElement
+        const target = event.target as HTMLInputElement;
 
-            // Call the import API with the parsed data
-            const response = await fetch('/api/import', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                public_key: publicKey?.toBase58(),
-                signature,
-                data: jsonData
-              })
-            });
+        // Safely access the files property
+        const file = target.files ? target.files[0] : null; // Get the selected file
 
-            const data = await response.json();
-            console.log(data);
-          } catch (error) {
-            console.error('There was an error importing!', error);
-          }
-        };
+        // Check if a file was selected
+        if (file) {
+          const reader = new FileReader();
 
-        // Read the file contents
-        reader.readAsText(file);
-      }
-    };
+          reader.onload = async (fileEvent: ProgressEvent<FileReader>) => {
+            // Ensure event.target is an instance of FileReader
+            const fileReaderTarget = fileEvent.target as FileReader;
 
-    // Programmatically trigger the file input to show the file picker dialog
-    input.click();
+            try {
+              // Safely access the result property and parse the uploaded JSON file
+              const jsonData = fileReaderTarget.result ? JSON.parse(fileReaderTarget.result.toString()) : null;
+
+              if (jsonData) {
+                // Call the import API with the parsed data
+                const response = await fetch('/api/import', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    public_key: publicKey?.toBase58(),
+                    signature,
+                    data: jsonData
+                  })
+                });
+
+                const data = await response.json();
+                console.log(data);
+              }
+            } catch (error) {
+              console.error('There was an error importing!', error);
+            }
+          };
+
+          // Read the file contents
+          reader.readAsText(file);
+        }
+      };
+
+      // Programmatically trigger the file input to show the file picker dialog
+      input.click();
   };
 
-  function ImportModal({ close }) {
+  function ImportModal({ close }: ImportModalProps) {
       return (
           <div className={styles.modalOverlay}>
               <div className={styles.modal}>
                   <h2>Import your data</h2>
                   <p>By importing, you can quickly set up your profile with existing data. Please have your JSON file exported from wordcel.club</p>
-                  
-                  
+
                   <button onClick={() => importArticles()} className={styles.importButton}>Upload JSON file</button>
-                  
+
                   <button onClick={close} className={styles.closeButton}>Close</button>
               </div>
           </div>

@@ -12,11 +12,12 @@ export class BundlrService {
     constructor(private wallet: WalletContextState) {}
 
     private async initializeBundlr() {
-        const connection = new Connection(clusterApiUrl(CLUSTER), {
+        const rpcEndpoint = clusterApiUrl(CLUSTER);
+        const connection = new Connection(rpcEndpoint, {
             commitment: 'processed',
             confirmTransactionInitialTimeout: 120000,
         });
-        const rpcEndpoint = clusterApiUrl(CLUSTER);
+        
         const provider = this.wallet.wallet?.adapter;
         if (!provider) {
             throw new Error('Wallet provider not found');

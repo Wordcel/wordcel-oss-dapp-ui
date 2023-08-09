@@ -3,10 +3,10 @@ import { PublicKey } from "@solana/web3.js";
 export const MESSAGE_TO_SIGN = 'WORDCEL';
 
 // Dedicated RPC Node
-export const DEVNET_ENDPOINT = process.env.NEXT_PUBLIC_DEVNET_ENDPOINT;
+export const DEVNET_ENDPOINT = process.env.NEXT_PUBLIC_DEVNET_ENDPOINT || 'https://rpc.ankr.com/solana_devnet';
 
 // Dedicated RPC Node
-export const MAINNET_ENDPOINT = process.env.NEXT_PUBLIC_MAINNET_ENDPOINT;
+export const MAINNET_ENDPOINT = process.env.NEXT_PUBLIC_MAINNET_ENDPOINT || 'https://rpc.ankr.com/solana';
 
 export const CLUSTER = 'mainnet-beta' as "devnet" | "mainnet-beta";
 export const BUNDLR_DEVNET_ENDPOINT = 'https://devnet.bundlr.network';
