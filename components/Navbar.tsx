@@ -71,7 +71,7 @@ export const Navbar = ({
         router.push('/dashboard');
         break;
       case 'profile':
-        showEditProfile ? editProfile.edit() : router.push('/' + data?.user?.username)
+        showEditProfile ? editProfile.edit() : router.push('/')
         break;
       case 'copy':
         if (data?.user) navigator.clipboard.writeText(data.user.public_key);

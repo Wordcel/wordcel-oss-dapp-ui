@@ -16,19 +16,13 @@ export const getArticleServerSide = async (
 ) => {
   const id = context.query.id;
   const slug = context.query.slug;
-  const username = context.query.username;
+  // const ADMIN_PUBLIC_KEY = process.env.NEXT_PUBLIC_ADMIN_PUBLIC_KEY;
 
   let article;
   if (!getFromID) {
     article = await prisma.article.findFirst({
       where: {
-        slug,
-        owner: {
-          username: {
-            equals: username,
-            mode: 'insensitive'
-          }
-        }
+        slug
       }
     });
   } else {

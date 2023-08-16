@@ -6,29 +6,39 @@ export const getUserServerSide = async (
   getArticles?: boolean,
   noRedirect?: boolean
 ) => {
+  const ADMIN_PUBLIC_KEY = process.env.NEXT_PUBLIC_ADMIN_PUBLIC_KEY;
+
   const public_key = context.query.publicKey as string;
   const username = context.query.username as string;
   let user;
-  if (!isUsername) {
-    const user_ = await prisma.user.findFirst({ where: {
-      public_key
-    }});
-    user = user_;
-  } else {
-    const user_ = await prisma.user.findFirst({ where: {
-      username: {
-        equals: username,
-        mode: 'insensitive'
+
+    // Check if both public_key and username are null
+  if (!public_key && !username) {
+    const adminUser = await prisma.user.findFirst({
+      where: {
+        public_key: ADMIN_PUBLIC_KEY
       }
-    }});
-    user = user_;
+    });
+    user = adminUser;
+  } else if (!isUsername) {
+    user = await prisma.user.findFirst({ where: { public_key } });
+  } else {
+    user = await prisma.user.findFirst({ 
+      where: {
+        username: {
+          equals: username,
+          mode: 'insensitive'
+        }
+      }
+    });
   }
+
   if (!user) {
     if (noRedirect) return { props: {} }
     return {
       redirect: {
         permanent: false,
-        destination: '/'
+        destination: '/onboarding'
       },
       props: {}
     }

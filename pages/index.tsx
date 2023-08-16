@@ -15,7 +15,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     context,
     true,
     true,
-    true,
+    false,
   );
   return getPropsToReturn;
 }

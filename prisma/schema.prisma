@@ -7,96 +7,96 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  name String
-  username String
-  public_key String
-  blog_name String
+  id           Int       @id @default(autoincrement())
+  name         String
+  username     String
+  public_key   String
+  blog_name    String
   profile_hash String?
-  bio String?
-  twitter String?
-  discord String?
-  image_url String?
-  banner_url String?
-  tip_enabled Boolean @default(false)
-  invites Invite[]
-  articles Article[]
-  drafts Draft[]
-  tips Tip[]
+  bio          String?
+  twitter      String?
+  discord      String?
+  image_url    String?
+  banner_url   String?
+  tip_enabled  Boolean   @default(false)
+  invites      Invite[]
+  articles     Article[]
+  drafts       Draft[]
+  tips         Tip[]
 }
 
 model Article {
-  id Int @id @default(autoincrement())
-  title String
-  description String
-  image_url String
-  views Int @default(0)
-  on_chain Boolean @default(false)
-  created_at DateTime @default(now())
-  updated_at DateTime?
+  id            Int       @id @default(autoincrement())
+  title         String
+  description   String
+  image_url     String
+  views         Int       @default(0)
+  on_chain      Boolean   @default(false)
+  created_at    DateTime  @default(now())
+  updated_at    DateTime?
   proof_of_post String
-  arweave_url String
-  slug String
-  show_on_lp Boolean @default(true)
-  user_id Int
-  owner User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  arweave_url   String
+  slug          String
+  show_on_lp    Boolean   @default(true)
+  user_id       Int
+  owner         User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Connection {
-  id Int @id @default(autoincrement())
-  account String
-  connector String
+  id            Int      @id @default(autoincrement())
+  account       String
+  connector     String
   profile_owner String
-  created_at DateTime @default(now())
+  created_at    DateTime @default(now())
 }
 
 model Draft {
-  id Int @id @default(autoincrement())
-  title String
+  id          Int       @id @default(autoincrement())
+  title       String
   description String
-  image_url String
-  source String @default("dapp")
-  created_at DateTime @default(now())
-  updated_at DateTime?
-  blocks Block?
-  share_hash String?
-  user_id Int
-  owner User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  image_url   String
+  source      String    @default("dapp")
+  created_at  DateTime  @default(now())
+  updated_at  DateTime?
+  blocks      Block?
+  share_hash  String?
+  user_id     Int
+  owner       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model Block {
-  id Int @id @default(autoincrement())
-  data String
-  draft_id Int @unique
-  draft Draft @relation(fields: [draft_id], references: [id], onDelete: Cascade)
+  id       Int    @id @default(autoincrement())
+  data     String
+  draft_id Int    @unique
+  draft    Draft  @relation(fields: [draft_id], references: [id], onDelete: Cascade)
 }
 
 model VerifiedTwitter {
-  id Int @id @default(autoincrement())
-  public_key String
-  username String
+  id              Int     @id @default(autoincrement())
+  public_key      String
+  username        String
   twitter_user_id String?
 }
 
 model Invite {
-  id Int @id @default(autoincrement())
-  created_at DateTime @default(now())
-  account String
-  user_id Int
-  sender User @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  receiver String
+  id            Int      @id @default(autoincrement())
+  created_at    DateTime @default(now())
+  account       String
+  user_id       Int
+  sender        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  receiver      String
   receiver_name String?
 }
 
 model Tip {
-  id Int @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   created_at DateTime @default(now())
-  from String
-  txid String
-  user_id Int
-  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  from       String
+  txid       String
+  user_id    Int
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }

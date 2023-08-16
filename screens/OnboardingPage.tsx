@@ -63,41 +63,36 @@ export const OnboardingPage = () => {
   }, []);
 
   const importArticles = async () => {
-      console.log('importing articles');
+    console.log('importing articles');
 
-      if (!wallet.signMessage || !publicKey) return;
+    if (!wallet.signMessage || !publicKey) return;
 
-      const signature = await getUserSignature(wallet.signMessage, publicKey.toBase58());
-      if (!signature) return;
+    const signature = await getUserSignature(wallet.signMessage, publicKey.toBase58());
+    if (!signature) return;
 
-      // Create an input element for file selection
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = '.json'; // Only accept JSON files
+    // Create an input element for file selection
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json'; // Only accept JSON files
 
-      // Listen for the change event (file selection)
-      input.onchange = async (event: Event) => {
-        // Ensure event.target is an instance of HTMLInputElement
-        const target = event.target as HTMLInputElement;
+    // Listen for the change event (file selection)
+    input.onchange = async (event: Event) => {
+      const target = event.target as HTMLInputElement;
+      const file = target.files ? target.files[0] : null;
 
-        // Safely access the files property
-        const file = target.files ? target.files[0] : null; // Get the selected file
+      if (file) {
+        const reader = new FileReader();
 
-        // Check if a file was selected
-        if (file) {
-          const reader = new FileReader();
+        reader.onload = async (fileEvent: ProgressEvent<FileReader>) => {
+          const fileReaderTarget = fileEvent.target as FileReader;
 
-          reader.onload = async (fileEvent: ProgressEvent<FileReader>) => {
-            // Ensure event.target is an instance of FileReader
-            const fileReaderTarget = fileEvent.target as FileReader;
+          try {
+            const jsonData = fileReaderTarget.result ? JSON.parse(fileReaderTarget.result.toString()) : null;
 
-            try {
-              // Safely access the result property and parse the uploaded JSON file
-              const jsonData = fileReaderTarget.result ? JSON.parse(fileReaderTarget.result.toString()) : null;
-
-              if (jsonData) {
-                // Call the import API with the parsed data
-                const response = await fetch('/api/import', {
+            if (jsonData) {
+              // Use toast.promise to handle the three stages of the promise
+              toast.promise(
+                fetch('/api/import', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
@@ -107,23 +102,34 @@ export const OnboardingPage = () => {
                     signature,
                     data: jsonData
                   })
-                });
-
-                const data = await response.json();
-                console.log(data);
-              }
-            } catch (error) {
-              console.error('There was an error importing!', error);
+                }).then(response => {
+                  if (!response.ok) {
+                    throw new Error('Failed to import');
+                  }
+                  return response.json();
+                }),
+                {
+                  loading: 'Importing...',
+                  success: (res) => {
+                    console.log(res);
+                    // Redirect to root route after successful import
+                    router.push('/');
+                    return 'Articles imported successfully!';
+                  },
+                  error: (err) => `Failed to import: ${err.message}`
+                }
+              );
             }
-          };
+          } catch (error) {
+            console.error('There was an error importing!', error);
+          }
+        };
 
-          // Read the file contents
-          reader.readAsText(file);
-        }
-      };
+        reader.readAsText(file);
+      }
+    };
 
-      // Programmatically trigger the file input to show the file picker dialog
-      input.click();
+    input.click();
   };
 
   function ImportModal({ close }: ImportModalProps) {

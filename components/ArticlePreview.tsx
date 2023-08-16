@@ -36,7 +36,7 @@ export const ArticlePreview = ({
 
   return (
     <div className={styles.articleContainer}>
-      <Link href={`/${user?.username}/${article.slug}`}>
+      <Link href={`/${article.slug}`}>
         <a>
           <p className="text gray-700 weight-700 size-32 md nm pointer">{article.title}</p>
         </a>
@@ -46,7 +46,7 @@ export const ArticlePreview = ({
           <span className="text size-20 weight-400 gray-400">
             {shortenSentence(article.description)}
           </span>
-          <Link href={`/${user?.username}/${article.slug}`}><a>
+          <Link href={`/${article.slug}`}><a>
             <span className="text size-16 weight-700 gray-500 pointer ml-1 op-1">
               READ MORE
             </span>
@@ -76,7 +76,7 @@ export const VerticalArticlePreview = ({
       <div className={styles.verticalPreview}>
         <img src={article.image_url || defaultGradient.src} className={styles.verticalImage} />
         <div className={styles.verticalArticleText}>
-          <Link href={isNotDraft ? `/${user?.username}/${article.slug}` : `/dashboard/edit/draft/${article.id}`}>
+          <Link href={isNotDraft ? `/${article.slug}` : `/dashboard/edit/draft/${article.id}`}>
             <a>
               <p
                 className={`text gray-600 weight-600 size-20 nm ${isNotDraft ? 'pointer' : ''}`}
@@ -123,7 +123,7 @@ export const VerticalArticlePreview = ({
         <img
           onClick={() => {
             if (isNotDraft) {
-              router.push(`/dashboard/edit/${user?.username}/${article.slug}`)
+              router.push(`/dashboard/edit/${article.slug}`)
             } else {
               router.push(`/dashboard/edit/draft/${article.id}`)
             }

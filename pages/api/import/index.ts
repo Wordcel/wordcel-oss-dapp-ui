@@ -49,7 +49,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   } else {
     console.log('User does not exist on database, creating new user');
     // Importing user
-    await prisma.user.create({
+    const userRes = await prisma.user.create({
       data: {
         public_key: data.user.public_key,
         username: data.user.username,
@@ -64,6 +64,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         tip_enabled: data.user.tip_enabled,
       }
     });
+    userId = userRes.id;
   }
 
     // Importing drafts
