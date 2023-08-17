@@ -16,11 +16,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     data
   } = req.body;
 
-  const user = await prisma.user.findFirst({
-    where: {
-      public_key,
-    }
-  });
+  let user;
+  try {
+    user = await prisma.user.findFirst({
+      where: {
+        public_key,
+      }
+    });
+  } catch (e) {
+    console.error('Error fetching user', e);
+  }
 
   const authenticated = authenticate(public_key, signature, res);
   if (!authenticated) return;

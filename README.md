@@ -46,7 +46,7 @@ yarn prisma studio
 
 # Deploying on Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWordcel%2Fwordcel-oss-dapp-ui&env=NEXT_PUBLIC_ADMIN_PUBLIC_KEY,NEXT_PUBLIC_DIALECT_PUBLIC_KEY,NEXT_PUBLIC_MAINNET_ENDPOINT,NEXT_PUBLIC_DEVNET_ENDPOINT&stores=%5B%7B"type"%3A"postgres"%7D%5D)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWordcel%2Fwordcel-oss-dapp-ui&env=NEXT_PUBLIC_ADMIN_PUBLIC_KEY,NEXT_PUBLIC_DIALECT_PUBLIC_KEY,NEXT_PUBLIC_MAINNET_ENDPOINT,NEXT_PUBLIC_DEVNET_ENDPOINT&stores=%5B%7B"type"%3A"postgres"%7D%5D&build-command=yarn%20prisma%20generate%20%26%26%20yarn%20prisma%20db%20push%20%26%26%20next%20build)
 
 ## Prerequisites:
 
