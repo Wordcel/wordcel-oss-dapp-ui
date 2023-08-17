@@ -77,7 +77,7 @@ function Dashboard(props: GetDraftServerSide) {
     });
     if (!response.article) return;
     toast('Redirecting...');
-    router.push(`/${response.username}/${response.article.slug}`);
+    router.push(`/${response.article.slug}`);
   };
 
   // Get User's Signature for auto saving drafts

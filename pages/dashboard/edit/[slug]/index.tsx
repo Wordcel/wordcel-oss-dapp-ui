@@ -74,7 +74,7 @@ function Dashboard(props: GetArticleServerSide) {
     );
     if (!response.article) return;
     toast('Redirecting...');
-    router.push(`/${response.username}/${response.article.slug}`);
+    router.push(`/${response.article.slug}`);
   };
 
   return (
