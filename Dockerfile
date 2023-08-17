@@ -1,7 +1,7 @@
 FROM node:16
 ARG ABC=1
-ARG DATABASE_URL
-ENV DATABASE_URL ${DATABASE_URL?envdberror}
+ARG POSTGRES_URL
+ENV POSTGRES_URL ${POSTGRES_URL?envdberror}
 
 WORKDIR /usr/src/app
 COPY package.json yarn.lock ./

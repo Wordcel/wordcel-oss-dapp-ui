@@ -7,7 +7,7 @@
 1. Create a .env.local file and populate it with a PostgreSQL Database URL, Admin Public Key and RPC Url
 
 ```
-DATABASE_URL=
+POSTGRES_URL=
 NEXT_PUBLIC_ADMIN_PUBLIC_KEY=
 NEXT_PUBLIC_MAINNET_ENDPOINT=
 NEXT_PUBLIC_DEVNET_ENDPOINT=
@@ -46,7 +46,7 @@ yarn prisma studio
 
 # Deploying on Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWordcel%2Fwordcel-oss-dapp-ui&env=DATABASE_URL,NEXT_PUBLIC_ADMIN_PUBLIC_KEY,NEXT_PUBLIC_DIALECT_PUBLIC_KEY,NEXT_PUBLIC_MAINNET_ENDPOINT,NEXT_PUBLIC_DEVNET_ENDPOINT)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWordcel%2Fwordcel-oss-dapp-ui&env=NEXT_PUBLIC_ADMIN_PUBLIC_KEY,NEXT_PUBLIC_DIALECT_PUBLIC_KEY,NEXT_PUBLIC_MAINNET_ENDPOINT,NEXT_PUBLIC_DEVNET_ENDPOINT&stores=%5B%7B"type"%3A"postgres"%7D%5D)
 
 ## Prerequisites:
 
@@ -58,7 +58,7 @@ yarn prisma studio
 
 1. **Click the 'Deploy with Vercel' Button**
 
-   This will take you to the Vercel platform where you can set up your project. You'll be prompted to provide values for environment variables such as DATABASE_URL, NEXT_PUBLIC_ADMIN_PUBLIC_KEY, etc.
+   This will take you to the Vercel platform where you can set up your project. You'll be prompted to provide values for environment variables such as POSTGRES_URL, NEXT_PUBLIC_ADMIN_PUBLIC_KEY, etc.
 
 2. **Override the Build Command**
 
