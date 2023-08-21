@@ -3,7 +3,7 @@ import { PublicKey } from "@solana/web3.js";
 export const MESSAGE_TO_SIGN = 'WORDCEL';
 
 // Dedicated RPC Node
-export const DEVNET_ENDPOINT = process.env.NEXT_PUBLIC_DEVNET_ENDPOINT || 'https://rpc.ankr.com/solana_devnet';
+export const DEVNET_ENDPOINT = 'https://rpc.ankr.com/solana_devnet';
 
 // Dedicated RPC Node
 export const MAINNET_ENDPOINT = process.env.NEXT_PUBLIC_MAINNET_ENDPOINT || 'https://rpc.ankr.com/solana';

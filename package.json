@@ -38,7 +38,6 @@
     "@solana/wallet-adapter-react-ui": "^0.9.32",
     "@solana/wallet-adapter-wallets": "^0.19.19",
     "@solana/web3.js": "^1.75.0",
-    "@wordcel/dialect-react": "^1.0.0-beta.1.9",
     "axios": "^0.27.2",
     "date-and-time": "^2.3.1",
     "dotenv": "^16.3.1",

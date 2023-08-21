@@ -10,8 +10,6 @@
 POSTGRES_URL=
 NEXT_PUBLIC_ADMIN_PUBLIC_KEY=
 NEXT_PUBLIC_MAINNET_ENDPOINT=
-NEXT_PUBLIC_DEVNET_ENDPOINT=
-NEXT_PUBLIC_DIALECT_PUBLIC_KEY=
 ```
 
 2. Install all dependencies
@@ -44,30 +42,26 @@ yarn dev
 yarn prisma studio
 ```
 
-# Deploying on Vercel
+## Deploying with Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWordcel%2Fwordcel-oss-dapp-ui&env=NEXT_PUBLIC_ADMIN_PUBLIC_KEY,NEXT_PUBLIC_DIALECT_PUBLIC_KEY,NEXT_PUBLIC_MAINNET_ENDPOINT,NEXT_PUBLIC_DEVNET_ENDPOINT&stores=%5B%7B"type"%3A"postgres"%7D%5D&build-command=yarn%20prisma%20generate%20%26%26%20yarn%20prisma%20db%20push%20%26%26%20next%20build)
+**Prerequisites:**
 
-## Prerequisites:
+- A Vercel account.
+- A GitHub account.
 
-- Ensure you have a Vercel account.
+### Step-by-step Guide:
 
-- Before deploying, make sure you have set up a PostgreSQL instance. This can be done on platforms like Railway, Heroku, or other cloud providers.
+1. **Use the 'Deploy with Vercel' Button:**
 
-## Steps:
+   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWordcel%2Fwordcel-oss-dapp-ui&env=NEXT_PUBLIC_ADMIN_PUBLIC_KEY,NEXT_PUBLIC_MAINNET_ENDPOINT&stores=%5B%7B"type"%3A"postgres"%7D%5D&build-command=yarn%20prisma%20generate%20%26%26%20yarn%20prisma%20db%20push%20%26%26%20next%20build)
 
-1. **Click the 'Deploy with Vercel' Button**
+   Clicking on the button will navigate you to the Vercel platform for deployment initialization. Through this process:
 
-   This will take you to the Vercel platform where you can set up your project. You'll be prompted to provide values for environment variables such as POSTGRES_URL, NEXT_PUBLIC_ADMIN_PUBLIC_KEY, etc.
+   - A new repository is created in your GitHub account with the source code.
+   - A PostgreSQL storage instance is set up on Vercel. If you're inclined to use an external PostgreSQL instance, you'll need to set the `POSTGRES_URL` environment variable in the Vercel app.
 
-2. **Override the Build Command**
+   During this deployment phase, be ready to provide values for certain environment variables (`NEXT_PUBLIC_ADMIN_PUBLIC_KEY` and `NEXT_PUBLIC_MAINNET_ENDPOINT`).
 
-   After deploying, go to your project settings on Vercel. In the "General" section, override the build command with the following:
+2. **Post-Deployment Configurations:**
 
-   ```
-   yarn prisma generate && next build
-   ```
-
-3. **Post Deployment Configurations (If Necessary)**
-
-   Depending on your PostgreSQL hosting, you might need to whitelist the Vercel deployment URL to allow the application to access the database.
+   Should you decide to host your PostgreSQL externally, make it a point to whitelist the Vercel deployment URL, ensuring uninterrupted access for the application to the database.
