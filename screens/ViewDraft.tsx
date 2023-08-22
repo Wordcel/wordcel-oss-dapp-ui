@@ -156,7 +156,7 @@ export const ViewDraft = (props: GetDraftServerSide) => {
         <NotFoundElement />
       )}
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

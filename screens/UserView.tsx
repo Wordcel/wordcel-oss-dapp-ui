@@ -59,7 +59,7 @@ export const UserProfile = ({
   const Bio = props.user?.bio;
   const Banner = props.user?.banner_url || defaultBanner.src;
   const Avatar = props.user?.image_url || `https://avatars.wagmi.bio/${props.user?.name}`;
-  const FollowersCount = props.user?.connection_count;
+  // const FollowersCount = props.user?.connection_count;
   const PostsCount = props.post_count;
 
   const refreshData = () => {
@@ -219,14 +219,14 @@ export const UserProfile = ({
                           </span>
                         </p>
                       )}
-                      {typeof FollowersCount !== 'undefined' && (
+                      {/* {typeof FollowersCount !== 'undefined' && (
                         <p className="text size-16 weight-700 gray-700">
                           {FollowersCount}
                           <span className='ml-1 text size-16 weight-600 gray-400'>
                             {FollowersCount === 1 ? 'Follower' : 'Followers'}
                           </span>
                         </p>
-                      )}
+                      )} */}
                     </div>
                     {props.user.invited_by && (
                       <p>Invited by <span className="text weight-600">
@@ -312,7 +312,7 @@ export const UserView = (props: GetUserServerSide) => {
       {!props.user && (
         <NotFoundElement />
       )}
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

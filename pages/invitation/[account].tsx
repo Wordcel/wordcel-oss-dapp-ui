@@ -25,7 +25,7 @@ const InviteRedirect = (props: InviteProps) => {
         title={props.name + ' has invited you to the future of publishing.'}
         image={OGImage}
       />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

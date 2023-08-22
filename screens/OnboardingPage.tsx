@@ -197,7 +197,7 @@ export const OnboardingPage = () => {
           )}
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

@@ -166,7 +166,7 @@ export const ViewArticle = (props: GetArticleServerSide) => {
         <NotFoundElement />
       )}
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

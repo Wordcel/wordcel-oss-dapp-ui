@@ -9,7 +9,7 @@ import dotenv from 'dotenv';
 import styles from '@/styles/Navbar.module.scss';
 
 // Images
-import logo from '@/images/logo.svg';
+// import logo from '@/images/logo.svg';
 import logoSmall from '@/images/logo-vector.svg';
 import checkIcon from '@/images/icons/check.svg';
 import menuIcon from '@/images/icons/menu.svg';
@@ -118,11 +118,11 @@ export const Navbar = ({
       <div
         className={`${styles.staticContainer}`}>
         <div className={styles.logoMaxWidth}>
-          <Link href={data?.user ? '/dashboard' : '/'}>
+          {/* <Link href={data?.user ? '/dashboard' : '/'}>
             <a>
               <Image alt="Wordcel" src={logo} />
             </a>
-          </Link>
+          </Link> */}
         </div>
         <div className={styles.logoSmall}>
           <Link href="/">

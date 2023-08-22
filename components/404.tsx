@@ -32,7 +32,7 @@ export const NotFoundPage = () => {
       <DefaultHead />
       <Navbar />
       <NotFoundElement />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }
